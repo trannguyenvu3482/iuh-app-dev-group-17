@@ -10,7 +10,7 @@ Nhóm 17 chọn **Java** làm ngôn ngữ lập trình chính cho dự án
 ```
 diagrams/ (Chứa các diagrams như Use case, Class,...)
 src/
-└── com.nhom17.quanlykaraoke
+└── nhom17.quanlykaraoke.app
     ├── entities (Chứa các lớp thực thể)
     │   └── User.java
     ├── dao (Chứa các lớp DAO)
@@ -36,6 +36,7 @@ src/
     │   │   └── ...
     │   └── ...
     └── Main.java
+libs/ (Chứa các file thư viện ngoài)
 ```
 ## Cập nhật
 Nhánh `code` sẽ được cập nhật trong các tuần thực hiện coding. Tất cả file code đều tuân thủ coding convention chuẩn của Java  
