@@ -1,4 +1,4 @@
-package com.nhom17.quanlykaraoke;
+package nhom17.quanlykaraoke.app;
 
 public class Main {
 	public static void main(String[] args) {
