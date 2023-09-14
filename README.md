@@ -10,7 +10,7 @@ Nhóm 17 chọn **Java** làm ngôn ngữ lập trình chính cho dự án
 ```
 diagrams/ (Chứa các diagrams như Use case, Class,...)
 src/
-└── com.nhom17.app
+└── com.nhom17.quanlykaraoke
     ├── entities (Chứa các lớp thực thể)
     │   └── User.java
     ├── dao (Chứa các lớp DAO)
@@ -20,7 +20,11 @@ src/
     ├── views (Chứa các lớp liên quan đến UI)
     │   └── UserView.java
     ├── database (Chứa các lớp liên quan đến kết nối DB và các file query)
-    │   	└── ConnectDatabase.java
+    │   ├── ConnectDatabase.java
+    │   ├── sql
+    │   │   ├── icon.png
+    │   │   ├── logo.png
+    │   │   └── ...
     ├── utils (Chứa các lớp để xử lý dữ liệu như chuỗi, ngày,...)
     │   ├── StringUtils.java
     │   ├── DateUtils.java
@@ -34,7 +38,8 @@ src/
     └── Main.java
 ```
 ## Cập nhật
-Nhánh `code` sẽ được cập nhật trong các tuần thực hiện coding. Tất cả file code đều tuân thủ coding convention chuẩn của Java
+Nhánh `code` sẽ được cập nhật trong các tuần thực hiện coding. Tất cả file code đều tuân thủ coding convention chuẩn của Java  
+Tham khảo thêm: https://gpcoder.com/1775-tieu-chuan-coding-trong-java-coding-standards
 
 ## Sử dụng
-Để truy cập vào tài liệu, hãy clone repo này về bằng lệnh `git clone` và chuyển sang nhánh `code` bằng cách sử dụng lệnh `git checkout code`
+Để truy cập vào tài liệu, hãy clone repo này về bằng lệnh `git clone`.
