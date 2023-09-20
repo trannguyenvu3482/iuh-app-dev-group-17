@@ -11,19 +11,18 @@ Nhóm 17 chọn **Java** làm ngôn ngữ lập trình chính cho dự án
 diagrams/ (Chứa các diagrams như Use case, Class,...)
 src/
 └── nhom17.quanlykaraoke.app
-    ├── entities (Chứa các lớp thực thể)
-    │   └── User.java
+    ├── dto (Chứa các lớp thực thể)
+    │   └── NhanVienDTO.java
     ├── dao (Chứa các lớp DAO)
-    │   └── UserDAO.java
-    ├── controllers (Chứa các lớp Controller xử lí logic)
-    │   └── UserController.java
-    ├── views (Chứa các lớp liên quan đến UI)
-    │   └── UserView.java
+    │   └── NhanVienDAO.java
+    ├── bus (Chứa các lớp BLL (BUS) xử lí logic)
+    │   └── NhanVienBUS.java
+    ├── ui (Chứa các lớp liên quan đến UI)
+    │   └── NhanVien.java
     ├── database (Chứa các lớp liên quan đến kết nối DB và các file query)
     │   ├── ConnectDatabase.java
     │   ├── sql
-    │   │   ├── icon.png
-    │   │   ├── logo.png
+    │   │   ├── KhoiTao.sql
     │   │   └── ...
     ├── utils (Chứa các lớp để xử lý dữ liệu như chuỗi, ngày,...)
     │   ├── StringUtils.java
@@ -36,7 +35,7 @@ src/
     │   │   └── ...
     │   └── ...
     └── Main.java
-libs/ (Chứa các file thư viện ngoài)
+libs/ (Chứa các file thư viện ngoài như JDBC)
 ```
 ## Cập nhật
 Nhánh `code` sẽ được cập nhật trong các tuần thực hiện coding. Tất cả file code đều tuân thủ coding convention chuẩn của Java  
