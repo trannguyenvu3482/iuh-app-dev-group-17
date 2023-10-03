@@ -6,6 +6,7 @@ import org.hibernate.Transaction;
 
 import com.nhom17.quanlykaraoke.entities.NhanVien;
 import com.nhom17.quanlykaraoke.utils.HibernateUtil;
+import com.nhom17.quanlykaraoke.utils.PasswordUtil;
 
 public class NhanVienDAO {
 	private SessionFactory factory = null;
@@ -35,7 +36,6 @@ public class NhanVienDAO {
 		Transaction t = session.beginTransaction();
 
 		try {
-
 			NhanVien nv = session.get(NhanVien.class, maNV);
 
 			System.out.println("Tên: " + nv.getHoTen());
@@ -46,6 +46,22 @@ public class NhanVienDAO {
 		} catch (Exception e) {
 			t.rollback();
 			return null;
+		}
+	}
+
+	public boolean checkDangNhap(String maNV, String password) {
+		Session session = factory.getCurrentSession();
+		Transaction t = session.beginTransaction();
+
+		try {
+			NhanVien nv = session.get(NhanVien.class, maNV);
+
+			t.commit();
+			return PasswordUtil.check(password, nv.getMatKhau());
+
+		} catch (Exception e) {
+			t.rollback();
+			return false;
 		}
 	}
 

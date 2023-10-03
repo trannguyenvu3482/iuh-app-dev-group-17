@@ -11,7 +11,12 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
+import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatLightLaf;
 import com.nhom17.quanlykaraoke.dao.NhanVienDAO;
 import com.nhom17.quanlykaraoke.entities.NhanVien;
 import com.nhom17.quanlykaraoke.utils.PasswordUtil;
@@ -22,8 +27,9 @@ public class QuanLyNhanVienGUI extends JFrame implements ActionListener {
 	private JTextField txtHoTen;
 	private JTextField txtMatKhau;
 	private JButton btnThem = new JButton("Thêm");
-	private JButton btnLay = new JButton("Lấy");
+	private JButton btnLay = new JButton("Set dark mode");
 	private NhanVienDAO nvDAO = new NhanVienDAO();
+	private int mode = 0;
 
 	public QuanLyNhanVienGUI() {
 		setTitle("Quản lý nhân viên");
@@ -84,13 +90,20 @@ public class QuanLyNhanVienGUI extends JFrame implements ActionListener {
 				JOptionPane.showMessageDialog(null, "Thêm thành công");
 			}
 		} else if (o.equals(btnLay)) {
-			String maNV = txtMaNV.getText().trim();
-			NhanVien nv = nvDAO.getNhanVien(maNV);
+			try {
+				if (mode == 0) {
+					UIManager.setLookAndFeel(new FlatDarkLaf());
+					SwingUtilities.updateComponentTreeUI(this);
+					mode = 1;
+				} else {
+					UIManager.setLookAndFeel(new FlatLightLaf());
+					SwingUtilities.updateComponentTreeUI(this);
+					mode = 0;
+				}
 
-			if (nv != null) {
-				JOptionPane.showMessageDialog(null, "Lấy thành công");
-			} else {
-				JOptionPane.showMessageDialog(null, "Không thấy bro");
+			} catch (UnsupportedLookAndFeelException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
 		}
 	}
