@@ -21,6 +21,7 @@ import javax.swing.SwingConstants;
 
 import com.nhom17.quanlykaraoke.bus.DangNhapBUS;
 
+
 public class DangNhapGUI extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	private JTextField txtMaNV;
@@ -178,9 +179,11 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 				if (ketQua) {
 					JOptionPane.showMessageDialog(null, "Đúng mật khẩu");
 				} else {
-					JOptionPane.showMessageDialog(null, "Sai mật khẩu");
-					txtMaNV.setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 0));
-					txtMatKhau.setBorder(BorderFactory.createLineBorder(Color.RED));
+					JOptionPane.showMessageDialog(null, "Sai tên đăng nhập hoặc mật khẩu");
+					txtMaNV.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.RED, 3, true),
+							BorderFactory.createEmptyBorder(0, 50, 0, 0)));
+					txtMatKhau.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.RED, 3, true),
+							BorderFactory.createEmptyBorder(0, 50, 0, 0)));
 				}
 			}
 

@@ -14,21 +14,23 @@
 			<artifactId>hibernate-core</artifactId>
 			<version>6.1.1.Final</version>
 		</dependency>
-		
-		<!-- https://mvnrepository.com/artifact/com.microsoft.sqlserver/mssql-jdbc -->
+
+		<!--
+		https://mvnrepository.com/artifact/com.microsoft.sqlserver/mssql-jdbc -->
 		<dependency>
 			<groupId>com.microsoft.sqlserver</groupId>
 			<artifactId>mssql-jdbc</artifactId>
-			<version>9.2.0.jre8</version>
+			<version>9.5.0.jre17-preview</version>
 		</dependency>
-		
+
+
 		<!-- https://mvnrepository.com/artifact/com.formdev/flatlaf -->
 		<dependency>
 			<groupId>com.formdev</groupId>
 			<artifactId>flatlaf</artifactId>
 			<version>3.2.1</version>
 		</dependency>
-		
+
 		<!-- https://mvnrepository.com/artifact/org.mindrot/jbcrypt -->
 		<dependency>
 			<groupId>org.mindrot</groupId>

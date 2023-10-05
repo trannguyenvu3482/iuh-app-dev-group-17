@@ -55,10 +55,14 @@ public class NhanVienDAO {
 
 		try {
 			NhanVien nv = session.get(NhanVien.class, maNV);
-
-			t.commit();
-			return PasswordUtil.check(password, nv.getMatKhau());
-
+			
+			if (nv != null) {
+				t.commit();
+				return PasswordUtil.check(password, nv.getMatKhau());
+			} else {
+				t.rollback();
+				return false;
+			}
 		} catch (Exception e) {
 			t.rollback();
 			return false;
