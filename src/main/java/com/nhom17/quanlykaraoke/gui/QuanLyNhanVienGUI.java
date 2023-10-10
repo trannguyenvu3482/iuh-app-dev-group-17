@@ -15,21 +15,18 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import org.hibernate.internal.build.AllowSysOut;
+
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.nhom17.quanlykaraoke.dao.NhanVienDAO;
 import com.nhom17.quanlykaraoke.entities.NhanVien;
+import com.nhom17.quanlykaraoke.utils.ClockUtil;
 import com.nhom17.quanlykaraoke.utils.PasswordUtil;
 
 public class QuanLyNhanVienGUI extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
-	private JTextField txtMaNV;
-	private JTextField txtHoTen;
-	private JTextField txtMatKhau;
-	private JButton btnThem = new JButton("Thêm");
-	private JButton btnLay = new JButton("Set dark mode");
-	private NhanVienDAO nvDAO = new NhanVienDAO();
-	private int mode = 0;
+	private final JLabel lbl = new JLabel("Time");
 
 	public QuanLyNhanVienGUI() {
 		setTitle("Quản lý nhân viên");
@@ -39,73 +36,28 @@ public class QuanLyNhanVienGUI extends JFrame implements ActionListener {
 		setResizable(false);
 		getContentPane().setLayout(new BorderLayout(0, 0));
 
-		JPanel centerPanel = new JPanel();
-		getContentPane().add(centerPanel, BorderLayout.CENTER);
-		centerPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		System.out.println("YES");
+		add(lbl);
 
-		JLabel lblMaNV = new JLabel("Nhập mã nhân viên:");
-		centerPanel.add(lblMaNV);
+		ClockUtil.startUpdating();
 
-		txtMaNV = new JTextField();
-		centerPanel.add(txtMaNV);
-		txtMaNV.setColumns(10);
+		System.out.println("YES");
+		
+		while (true) {
 
-		JLabel lblNhpHTn = new JLabel("Nhập họ tên:");
-		centerPanel.add(lblNhpHTn);
+			String currentTime = ClockUtil.getCurrentTime();
 
-		txtHoTen = new JTextField();
-		txtHoTen.setColumns(10);
-		centerPanel.add(txtHoTen);
+			SwingUtilities.invokeLater(() -> {
+				lbl.setText(currentTime);
+			});
+		}
 
-		JLabel lblMaNV_1_1 = new JLabel("Nhập mật khẩu:");
-		centerPanel.add(lblMaNV_1_1);
-
-		txtMatKhau = new JTextField();
-		txtMatKhau.setColumns(10);
-		centerPanel.add(txtMatKhau);
-
-		centerPanel.add(btnThem);
-		centerPanel.add(btnLay);
-
-		btnThem.addActionListener(this);
-		btnLay.addActionListener(this);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
 
-		if (o.equals(btnThem)) {
-			String maNV = txtMaNV.getText().trim();
-			String hoTen = txtHoTen.getText().trim();
-			String matKhau = PasswordUtil.encrypt(txtMatKhau.getText().trim());
-
-			System.out.println(matKhau);
-			if (PasswordUtil.check("23112003", matKhau)) {
-				JOptionPane.showMessageDialog(null, "Chuẩn");
-			}
-
-			NhanVien nv = new NhanVien(maNV, hoTen, matKhau);
-			if (nvDAO.addNhanVien(nv)) {
-				JOptionPane.showMessageDialog(null, "Thêm thành công");
-			}
-		} else if (o.equals(btnLay)) {
-			try {
-				if (mode == 0) {
-					UIManager.setLookAndFeel(new FlatDarkLaf());
-					SwingUtilities.updateComponentTreeUI(this);
-					mode = 1;
-				} else {
-					UIManager.setLookAndFeel(new FlatLightLaf());
-					SwingUtilities.updateComponentTreeUI(this);
-					mode = 0;
-				}
-
-			} catch (UnsupportedLookAndFeelException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		}
 	}
 
 }

@@ -2,6 +2,7 @@ package com.nhom17.quanlykaraoke.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -20,6 +21,10 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import com.nhom17.quanlykaraoke.bus.DangNhapBUS;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
+
+import java.awt.SystemColor;
 
 
 public class DangNhapGUI extends JFrame implements ActionListener {
@@ -97,6 +102,7 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 		btnShow.setBorder(BorderFactory.createEmptyBorder());
 		btnShow.setIcon(new ImageIcon("src/main/resources/images/icon-hide.png"));
 		btnShow.setBounds(1098, 286, 50, 50);
+		btnShow.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		mainPanel.add(btnShow);
 
 		JLabel lblMaNV = new JLabel("Mã nhân viên:");
@@ -113,7 +119,8 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 
 		btnDangNhap = new JButton("Đăng nhập");
 		btnDangNhap.setFont(new Font("Dialog", Font.BOLD, 30));
-		btnDangNhap.setBounds(628, 372, 520, 87);
+		btnDangNhap.setBounds(628, 412, 520, 87);
+		btnDangNhap.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		mainPanel.add(btnDangNhap);
 
 		JLabel lblNhnVinng = new JLabel("Nhân viên đăng nhập");
@@ -121,8 +128,19 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 		lblNhnVinng.setFont(new Font("Dialog", Font.BOLD, 36));
 		lblNhnVinng.setBounds(628, 58, 520, 50);
 		mainPanel.add(lblNhnVinng);
+		
+		JButton btnQuenMatKhau = new JButton("Quên mật khẩu?");
+		btnQuenMatKhau.setBackground(new Color(240, 240, 240));
+		btnQuenMatKhau.setForeground(Color.BLUE);
+		btnQuenMatKhau.setFont(new Font("Dialog", Font.BOLD, 14));
+		btnQuenMatKhau.setBorder(BorderFactory.createEmptyBorder());
+		btnQuenMatKhau.setBounds(995, 346, 153, 32);
+		btnQuenMatKhau.setOpaque(false);
+		btnQuenMatKhau.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		mainPanel.add(btnQuenMatKhau);
 
 		btnDangNhap.addActionListener(this);
+		btnQuenMatKhau.addActionListener(this);
 		btnShow.addActionListener(this);
 
 		// Add key listener for enter key
