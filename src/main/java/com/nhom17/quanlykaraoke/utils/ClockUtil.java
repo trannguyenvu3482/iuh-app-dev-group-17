@@ -3,11 +3,16 @@
  */
 package com.nhom17.quanlykaraoke.utils;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Locale;
 
 import javax.swing.JLabel;
@@ -19,30 +24,40 @@ import javax.swing.Timer;
  * @created 10-Oct-2023 16:36:00
  */
 public class ClockUtil {
-	private static ClockUtil instance = new ClockUtil();
-
-	private static Clock clock;
-	private static Timer timer;
-
-	private ClockUtil() {
-		clock = Clock.systemDefaultZone();
+	private ActionListener al = new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			Date date = new Date();
+			DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+			String time = timeFormat.format(date);
+			lbl.setText(time);
+			
+		}
+	};
+	
+	private static JLabel lbl;
+	
+	
+	public ClockUtil(JLabel label) {
+		ClockUtil.lbl = label;
 	}
 
-	public static void startUpdating() {
-
-		timer = new Timer(1000, e -> {
-			// just update clock
-		});
-
+	public static void updateClock(JLabel label) {
+		Date date = new Date();
+		DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+		String time = timeFormat.format(date);
+		label.setText(time);
+	}
+	
+	public void startClock() {
+		// TODO Auto-generated method stub
+		Timer timer = new Timer(0, al);
+		timer.setInitialDelay(0);
 		timer.start();
-
 	}
 
-	public static String getCurrentTime() {
-
-		Instant instant = clock.instant();
-
-		return DateTimeFormatter.ISO_DATE_TIME.withZone(ZoneId.of("GMT+7")).format(instant);
+	public ActionListener getAl() {
+		return al;
 	}
 
 }

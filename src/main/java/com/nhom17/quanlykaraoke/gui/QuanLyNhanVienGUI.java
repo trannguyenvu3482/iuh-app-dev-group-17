@@ -2,6 +2,7 @@ package com.nhom17.quanlykaraoke.gui;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -12,6 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -36,22 +38,13 @@ public class QuanLyNhanVienGUI extends JFrame implements ActionListener {
 		setResizable(false);
 		getContentPane().setLayout(new BorderLayout(0, 0));
 
-		System.out.println("YES");
+		lbl.setHorizontalTextPosition((int) CENTER_ALIGNMENT);
+		lbl.setVerticalAlignment((int) CENTER_ALIGNMENT);
+		lbl.setFont(new Font("Dialog", Font.BOLD, 50));
 		add(lbl);
 
-		ClockUtil.startUpdating();
-
-		System.out.println("YES");
-		
-		while (true) {
-
-			String currentTime = ClockUtil.getCurrentTime();
-
-			SwingUtilities.invokeLater(() -> {
-				lbl.setText(currentTime);
-			});
-		}
-
+		ClockUtil clock = new ClockUtil(lbl);
+		clock.startClock();
 	}
 
 	@Override
