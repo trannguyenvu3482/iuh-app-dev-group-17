@@ -4,6 +4,7 @@ import javax.swing.UIManager;
 
 
 import com.formdev.flatlaf.FlatLightLaf;
+import com.nhom17.quanlykaraoke.gui.DangNhapGUI;
 import com.nhom17.quanlykaraoke.gui.QuanLyNhanVienGUI;
 import com.nhom17.quanlykaraoke.utils.HibernateUtil;
 
@@ -27,7 +28,7 @@ public class Main {
 		}
 		
 		// Start clock
-		new QuanLyNhanVienGUI().setVisible(true);
+		new DangNhapGUI().setVisible(true);
 		System.out.println("YES");
 	}
 }

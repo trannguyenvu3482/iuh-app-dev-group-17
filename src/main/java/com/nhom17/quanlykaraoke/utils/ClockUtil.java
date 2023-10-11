@@ -50,7 +50,6 @@ public class ClockUtil {
 	}
 	
 	public void startClock() {
-		// TODO Auto-generated method stub
 		Timer timer = new Timer(0, al);
 		timer.setInitialDelay(0);
 		timer.start();
