@@ -5,8 +5,6 @@
 		<!-- Database connection settings -->
 		<property name="connection.driver_class">
 			com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
-		<property name="connection.url">
-			jdbc:sqlserver://localhost:1433;databaseName=quanlykaraoke</property>
 		<!-- SQL dialect -->
 		<property name="dialect">org.hibernate.dialect.SQLServerDialect</property>
 		<!-- Enable Hibernate's automatic session context management -->

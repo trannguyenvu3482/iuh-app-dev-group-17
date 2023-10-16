@@ -11,7 +11,6 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,6 +18,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -38,7 +38,7 @@ import org.kordamp.ikonli.materialdesign2.MaterialDesignR;
 
 import com.nhom17.quanlykaraoke.bus.DangNhapBUS;
 import com.nhom17.quanlykaraoke.common.MyIcon;
-import javax.swing.JFormattedTextField;
+import com.nhom17.quanlykaraoke.common.MyMessageDialog;
 
 /**
  * @author Trần Nguyên Vũ, Trần Ngọc Phát, Mai Nhật Hào, Trần Thanh Vy
@@ -51,7 +51,7 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 
 	// BUS
 	private DangNhapBUS dangNhapBUS;
-	
+
 	// COMPONENTS
 	private final JTextField txtMaNV;
 	private final JPasswordField txtMatKhau;
@@ -72,6 +72,8 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 	// LOCAL VARIABLES
 	private Map<JPasswordField, Boolean> isPasswordShownStates = new HashMap<>();
 	private long duration = 10000;
+
+	private String loggedInEmployeeID = null;
 
 	// Create UI
 	public DangNhapGUI() throws Exception {
@@ -111,8 +113,7 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 		panelForgot.setLayout(null);
 		panelForgot.setBounds(56, 20, 520, 533);
 		rightPanel.add(panelForgot);
-		
-		
+
 		btnReturn.setBounds(479, 5, 40, 40);
 		panelForgot.add(btnReturn);
 		btnReturn.setIcon(MyIcon.getIcon(MaterialDesignR.RESTORE, MyIcon.DEFAULT_SIZE, null));
@@ -295,14 +296,16 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 		isPasswordShownStates.put(txtMatKhau, false);
 		isPasswordShownStates.put(txtNewPassword, false);
 
-		txtMatKhau.addKeyListener(new java.awt.event.KeyAdapter() {
-			@Override
-			public void keyPressed(java.awt.event.KeyEvent evt) {
-				if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
-					btnDangNhap.doClick();
-				}
-			}
-		});
+		this.
+
+				txtMatKhau.addKeyListener(new java.awt.event.KeyAdapter() {
+					@Override
+					public void keyPressed(java.awt.event.KeyEvent evt) {
+						if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
+							btnDangNhap.doClick();
+						}
+					}
+				});
 
 		// Add key listener for enter key
 		txtMaNV.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -369,7 +372,7 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 			panelLogin.setVisible(false);
 			panelForgot.setVisible(true);
 		} else if (o.equals(btnGetOTP)) {
-			JOptionPane.showMessageDialog(null, "Get OTP");
+			MyMessageDialog.showMessage(null, "Nhận OTP", "Lấy OTP thành công");
 			timeoutBtnGetOTP();
 		} else if (o.equals(btnReturn)) {
 			setTitle("Đăng nhập");
@@ -378,13 +381,10 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 		}
 	}
 
-	
 	private void timeoutBtnGetOTP() {
 		btnGetOTP.setEnabled(false);
 
-		Timer timer = new Timer((int) duration, e -> 
-			btnGetOTP.setEnabled(true)
-		);
+		Timer timer = new Timer((int) duration, e -> btnGetOTP.setEnabled(true));
 
 		timer.setRepeats(false);
 		timer.start();
@@ -404,7 +404,8 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 			boolean ketQua = dangNhapBUS.checkDangNhap(maNV, password);
 
 			if (ketQua) {
-				JOptionPane.showMessageDialog(null, "Đúng mật khẩu");
+				setLoggedInEmployeeID(maNV);
+				dispose();
 			} else {
 				JOptionPane.showMessageDialog(null, "Sai tên đăng nhập hoặc mật khẩu");
 				txtMaNV.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.RED, 3, true),
@@ -436,7 +437,6 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 		return true;
 	}
 
-	
 	private void toggleVisibility(JButton btn, JPasswordField txt) {
 		boolean visible = isPasswordShownStates.get(txt);
 		visible = !visible;
@@ -451,5 +451,13 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 			txt.setEchoChar('*');
 		}
 
+	}
+
+	public String getLoggedInEmployeeID() {
+		return loggedInEmployeeID;
+	}
+
+	public void setLoggedInEmployeeID(String loggedInEmployeeID) {
+		this.loggedInEmployeeID = loggedInEmployeeID;
 	}
 }

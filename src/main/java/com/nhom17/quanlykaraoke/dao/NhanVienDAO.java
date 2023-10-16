@@ -1,8 +1,11 @@
 package com.nhom17.quanlykaraoke.dao;
 
+import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import com.nhom17.quanlykaraoke.entities.NhanVien;
 import com.nhom17.quanlykaraoke.utils.HibernateUtil;
@@ -20,7 +23,9 @@ public class NhanVienDAO {
 		Transaction t = session.beginTransaction();
 
 		try {
-
+			String maNV = getNextMaNV();
+			System.out.println("MaNV: " + getNextMaNV());
+			nv.setMaNhanVien(maNV);
 			session.persist(nv);
 			t.commit();
 			return true;
@@ -28,6 +33,35 @@ public class NhanVienDAO {
 		} catch (Exception e) {
 			t.rollback();
 			return false;
+		}
+	}
+
+	private String getNextMaNV() {
+		String idPrefix = "NV";
+
+		int count = countNhanVien();
+		System.out.println("COUNT: " + String.valueOf(count));
+
+		if (count < 1 || count > 999) {
+			return null;
+		}
+
+		return idPrefix + String.format("%03d", count);
+	}
+
+	private int countNhanVien() {
+		Session session = factory.getCurrentSession();
+		Transaction t = session.getTransaction();
+
+		try {
+			String hql = "From NhanVien";
+			Query<NhanVien> query = session.createQuery(hql, NhanVien.class);
+			List<NhanVien> listNhanVien = query.getResultList();
+
+			return listNhanVien.size();
+
+		} catch (Exception e) {
+			return -1;
 		}
 	}
 
@@ -55,7 +89,7 @@ public class NhanVienDAO {
 
 		try {
 			NhanVien nv = session.get(NhanVien.class, maNV);
-			
+
 			if (nv != null) {
 				t.commit();
 				return PasswordUtil.check(password, nv.getMatKhau());

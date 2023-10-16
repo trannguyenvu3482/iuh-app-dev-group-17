@@ -3,6 +3,7 @@ package com.nhom17.quanlykaraoke.entities;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,15 +12,15 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
-
 /**
- * @author  Trần Nguyên Vũ, Trần Ngọc Phát, Mai Nhật Hào, Trần Thanh Vy
+ * @author Trần Nguyên Vũ, Trần Ngọc Phát, Mai Nhật Hào, Trần Thanh Vy
  * @version 1.0
  * @created 10-Oct-2023 13:36:00
  */
 @Entity
 @Table(name = "NhanVien")
 public class NhanVien implements Serializable {
+
 	/**
 	 * 
 	 */
@@ -62,16 +63,32 @@ public class NhanVien implements Serializable {
 
 	public NhanVien(String hoTen, int gioiTinh, String matKhau, LocalDate ngaySinh, ChucVu chucVu, String soDienThoai,
 			String cCCD, byte[] anhDaiDien, boolean trangThai) {
-		super();
 		this.hoTen = hoTen;
 		this.gioiTinh = gioiTinh;
 		this.matKhau = matKhau;
 		this.ngaySinh = ngaySinh;
 		this.chucVu = chucVu;
 		this.soDienThoai = soDienThoai;
-		CCCD = cCCD;
+		this.CCCD = cCCD;
 		this.anhDaiDien = anhDaiDien;
 		this.trangThai = trangThai;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(maNhanVien);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		NhanVien other = (NhanVien) obj;
+		return Objects.equals(maNhanVien, other.maNhanVien);
 	}
 
 	public String getMaNhanVien() {
