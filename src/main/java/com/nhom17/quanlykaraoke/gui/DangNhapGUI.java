@@ -45,7 +45,13 @@ import com.nhom17.quanlykaraoke.common.MyMessageDialog;
  * @version 1.0
  * @created 12-Oct-2023 14:23:00
  */
+
 public class DangNhapGUI extends JFrame implements ActionListener {
+	// INTERFACE
+	public interface LoginListener {
+		void onLogin(String employeeId);
+	}
+
 	// SERIAL VERSION UID
 	private static final long serialVersionUID = 1L;
 
@@ -71,9 +77,15 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 
 	// LOCAL VARIABLES
 	private Map<JPasswordField, Boolean> isPasswordShownStates = new HashMap<>();
+	private LoginListener listener;
+
 	private long duration = 10000;
 
 	private String loggedInEmployeeID = null;
+
+	public void setLoginListener(LoginListener listener) {
+		this.listener = listener;
+	}
 
 	// Create UI
 	public DangNhapGUI() throws Exception {
@@ -405,6 +417,10 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 
 			if (ketQua) {
 				setLoggedInEmployeeID(maNV);
+				if (listener != null) {
+					listener.onLogin(maNV);
+				}
+
 				dispose();
 			} else {
 				JOptionPane.showMessageDialog(null, "Sai tên đăng nhập hoặc mật khẩu");

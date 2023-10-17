@@ -1,5 +1,8 @@
 package com.nhom17.quanlykaraoke.entities;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -33,6 +36,7 @@ public class NhanVien implements Serializable {
 	@Column(columnDefinition = "nvarchar(30)")
 	private String hoTen;
 
+	// Nam = 0, Nữ = 1
 	private int gioiTinh;
 
 	@Column(columnDefinition = "varchar(60)")
@@ -62,7 +66,7 @@ public class NhanVien implements Serializable {
 	}
 
 	public NhanVien(String hoTen, int gioiTinh, String matKhau, LocalDate ngaySinh, ChucVu chucVu, String soDienThoai,
-			String cCCD, byte[] anhDaiDien, boolean trangThai) {
+			String cCCD) {
 		this.hoTen = hoTen;
 		this.gioiTinh = gioiTinh;
 		this.matKhau = matKhau;
@@ -70,8 +74,24 @@ public class NhanVien implements Serializable {
 		this.chucVu = chucVu;
 		this.soDienThoai = soDienThoai;
 		this.CCCD = cCCD;
-		this.anhDaiDien = anhDaiDien;
-		this.trangThai = trangThai;
+		this.trangThai = true;
+
+		setAnhDaiDien(null);
+	}
+
+	public NhanVien(String hoTen, int gioiTinh, String matKhau, LocalDate ngaySinh, ChucVu chucVu, String soDienThoai,
+			String cCCD, byte[] anhDaiDien) {
+		this.hoTen = hoTen;
+		this.gioiTinh = gioiTinh;
+		this.matKhau = matKhau;
+		this.ngaySinh = ngaySinh;
+		this.chucVu = chucVu;
+		this.soDienThoai = soDienThoai;
+		this.CCCD = cCCD;
+
+		setAnhDaiDien(anhDaiDien);
+
+		this.trangThai = true;
 	}
 
 	@Override
@@ -160,7 +180,42 @@ public class NhanVien implements Serializable {
 	}
 
 	public void setAnhDaiDien(byte[] anhDaiDien) {
-		this.anhDaiDien = anhDaiDien;
+		// Nếu có avatar thì set avatar
+		if (anhDaiDien != null) {
+			this.anhDaiDien = anhDaiDien;
+			return;
+		}
+
+		// Nếu không có (tức null) thì set avatar mặc định
+		File maleAvatar = new File("src/main/resources/images/male-avatar.jpg");
+		File femaleAvatar = new File("src/main/resources/images/female-avatar.jpg");
+		FileInputStream fis = null;
+		byte[] data = null;
+
+		try {
+
+			if (this.gioiTinh == 0) {
+				fis = new FileInputStream(maleAvatar);
+				data = new byte[(int) maleAvatar.length()];
+			} else if (this.gioiTinh == 1) {
+				fis = new FileInputStream(femaleAvatar);
+				data = new byte[(int) femaleAvatar.length()];
+			}
+
+			if (data != null) {
+				fis.read(data);
+
+				this.anhDaiDien = data;
+
+				fis.close();
+			} else {
+				return;
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 	public boolean isTrangThai() {
