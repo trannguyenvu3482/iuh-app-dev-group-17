@@ -7,13 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.Clock;
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.Locale;
 
 import javax.swing.JLabel;
 import javax.swing.Timer;
@@ -31,13 +25,11 @@ public class ClockUtil {
 			DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
 			String time = timeFormat.format(date);
 			lbl.setText(time);
-			
 		}
 	};
-	
+
 	private static JLabel lbl;
-	
-	
+
 	public ClockUtil(JLabel label) {
 		ClockUtil.lbl = label;
 	}
@@ -48,7 +40,7 @@ public class ClockUtil {
 		String time = timeFormat.format(date);
 		label.setText(time);
 	}
-	
+
 	public void startClock() {
 		Timer timer = new Timer(0, al);
 		timer.setInitialDelay(0);
