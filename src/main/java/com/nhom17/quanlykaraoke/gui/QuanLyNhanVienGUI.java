@@ -10,6 +10,8 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -249,6 +251,24 @@ public class QuanLyNhanVienGUI extends MyFrame implements ActionListener {
 		btnBack.addActionListener(this);
 		clock.startClock();
 		startWorkTimer();
+
+		this.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				System.out.println("PRESSED");
+				if (e.getKeyCode() == 112) {
+					btnHelp.doClick();
+				}
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				System.out.println("PRESSED");
+				if (e.getKeyCode() == 112) {
+					btnHelp.doClick();
+				}
+			}
+		});
 	}
 
 	@Override

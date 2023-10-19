@@ -21,7 +21,6 @@ import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -34,11 +33,12 @@ import org.kordamp.ikonli.materialdesign2.MaterialDesignA;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignE;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignL;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignP;
-import org.kordamp.ikonli.materialdesign2.MaterialDesignR;
 
 import com.nhom17.quanlykaraoke.bus.DangNhapBUS;
 import com.nhom17.quanlykaraoke.common.MyIcon;
 import com.nhom17.quanlykaraoke.common.MyMessageDialog;
+
+import raven.toast.Notifications;
 
 /**
  * @author Trần Nguyên Vũ, Trần Ngọc Phát, Mai Nhật Hào, Trần Thanh Vy
@@ -89,6 +89,9 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 
 	// Create UI
 	public DangNhapGUI() throws Exception {
+		// Init
+		Notifications.getInstance().setJFrame(this);
+
 		setTitle("Đăng nhập");
 		setSize(1200, 600);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -128,7 +131,7 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 
 		btnReturn.setBounds(479, 5, 40, 40);
 		panelForgot.add(btnReturn);
-		btnReturn.setIcon(MyIcon.getIcon(MaterialDesignR.RESTORE, MyIcon.DEFAULT_SIZE, null));
+		btnReturn.setIcon(MyIcon.getIcon(MaterialDesignA.ARROW_LEFT_BOLD, MyIcon.DEFAULT_SIZE, null));
 
 		btnShow2.setPreferredSize(new Dimension(40, 30));
 		btnShow2.setBorder(BorderFactory.createEmptyBorder());
@@ -423,7 +426,8 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 
 				dispose();
 			} else {
-				JOptionPane.showMessageDialog(null, "Sai tên đăng nhập hoặc mật khẩu");
+				Notifications.getInstance().show(Notifications.Type.ERROR, Notifications.Location.BOTTOM_RIGHT,
+						"Sai tên đăng nhập hoặc mật khẩu");
 				txtMaNV.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.RED, 3, true),
 						BorderFactory.createEmptyBorder(0, 50, 0, 0)));
 				txtMatKhau.setBorder(
@@ -435,7 +439,8 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 
 	private boolean isPasswordValid(String maNV, String password) {
 		if (!maNV.matches("NV\\d{3}")) {
-			JOptionPane.showMessageDialog(null, "Mã nhân viên phải có định dạng NVXXX");
+			Notifications.getInstance().show(Notifications.Type.ERROR, Notifications.Location.BOTTOM_RIGHT,
+					"Mã nhân viên phải có dạng NVXXX");
 			txtMaNV.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.RED, 3, true),
 					BorderFactory.createEmptyBorder(0, 50, 0, 0)));
 			return false;
@@ -444,7 +449,8 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 		txtMaNV.setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 0));
 
 		if (password.equals("")) {
-			JOptionPane.showMessageDialog(null, "Mật khẩu không được rỗng");
+			Notifications.getInstance().show(Notifications.Type.ERROR, Notifications.Location.BOTTOM_RIGHT,
+					"Mật khẩu không được rỗng");
 			txtMatKhau.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.RED, 3, true),
 					BorderFactory.createEmptyBorder(0, 50, 0, 0)));
 			return false;

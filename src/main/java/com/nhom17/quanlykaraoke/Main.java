@@ -1,8 +1,7 @@
 package com.nhom17.quanlykaraoke;
 
-import javax.swing.UIManager;
-
-import com.formdev.flatlaf.FlatLightLaf;
+import com.formdev.flatlaf.FlatIntelliJLaf;
+import com.formdev.flatlaf.FlatLaf;
 import com.nhom17.quanlykaraoke.dao.ChucVuDAO;
 import com.nhom17.quanlykaraoke.dao.NhanVienDAO;
 import com.nhom17.quanlykaraoke.gui.DangNhapGUI;
@@ -23,11 +22,8 @@ public class Main {
 		HibernateUtil.provideSessionFactory();
 
 		// Set look and feel to be FlatLaf
-		try {
-			UIManager.setLookAndFeel(new FlatLightLaf());
-		} catch (Exception ex) {
-			System.err.println("Failed to initialize LaF");
-		}
+		FlatLaf.registerCustomDefaultsSource("com.nhom17.quanlykaraoke.themes");
+		FlatIntelliJLaf.setup();
 
 		ChucVuDAO cvDAO = new ChucVuDAO();
 		NhanVienDAO nvDAO = new NhanVienDAO();
@@ -47,6 +43,5 @@ public class Main {
 		});
 
 		loginGUI.setVisible(true);
-
 	}
 }

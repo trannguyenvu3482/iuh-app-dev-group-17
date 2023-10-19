@@ -11,6 +11,7 @@ public class MyFrame extends JFrame {
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(1280, 720);
+		setFocusable(true);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setIconImage(new ImageIcon("src/main/resources/images/logo-icon.png").getImage());
 	}
