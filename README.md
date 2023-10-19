@@ -9,34 +9,48 @@ Nhóm 17 chọn **Java** làm ngôn ngữ lập trình chính cho dự án
 ## Cấu trúc cây thư mục
 ```
 diagrams/ (Chứa các diagrams như Use case, Class,...)
-src/
-└── nhom17.quanlykaraoke.app
-    ├── dto (Chứa các lớp thực thể)
-    │   └── NhanVienDTO.java
-    ├── dao (Chứa các lớp DAO)
+src/main/
+└── java
+│   └── com.nhom17.quanlykaraoke
+│       ├── entities (Chứa các lớp thực thể)
+│       └── NhanVien.java
+│       ├── dao (Chứa các lớp DAO)
+│       │   └── NhanVienDAO.java
+│       ├── bus (Chứa các lớp BLL (BUS) xử lí logic)
+│       │   └── NhanVienBUS.java
+│       ├── gui (Chứa các lớp liên quan đến UI)
+│       │   └── NhanVien.java
+│       ├── database (Chứa các lớp liên quan đến kết nối DB và các file query)
+│       │   └── backupDatabase.sql
+│       ├── utils (Chứa các lớp để xử lý dữ liệu như chuỗi, ngày,...)
+│       │   ├── StringUtils.java
+|       │   ├── DateUtils.java
+|       │   └── ...
+|       └── Main.java
+└── resources
+    ├── images (Chứa các file hình)
+    │   └── logo.png
+    ├── pdf (Chứa các file PDF như hướng dẫn sử dụng, hóa đơn,...)
     │   └── NhanVienDAO.java
-    ├── bus (Chứa các lớp BLL (BUS) xử lí logic)
-    │   └── NhanVienBUS.java
-    ├── ui (Chứa các lớp liên quan đến UI)
-    │   └── NhanVien.java
-    ├── database (Chứa các lớp liên quan đến kết nối DB và các file query)
-    │   ├── ConnectDatabase.java
-    │   ├── sql
-    │   │   ├── KhoiTao.sql
-    │   │   └── ...
-    ├── utils (Chứa các lớp để xử lý dữ liệu như chuỗi, ngày,...)
-    │   ├── StringUtils.java
-    │   ├── DateUtils.java
-    │   └── ...
-    ├── resources (Chứa các tài nguyên như hình ảnh, file pdf,...)
-    │   ├── images
-    │   │   ├── icon.png
-    │   │   ├── logo.png
-    │   │   └── ...
-    │   └── ...
-    └── Main.java
-libs/ (Chứa các file thư viện ngoài như JDBC)
+    └── hibernate.cfg.xml (File config của Hibernate)
+diagrams/ (Chứa các file diagrams)
+.env.example (Chứa ví dụ về file biến môi trường .env)
+libs/ (Chứa các file thư viện khác)
+pom.xml (File config dự án Maven)
+...
 ```
+
+## Danh sách các thư viện ngoài được sử dụng:
+1. Hibernate 6.1.1
+2. mssql-jdbc 9.5.0jre17
+2. MigLayout 3.7.4
+3. FlatLaf 3.2.2
+4. jbcrypt 0.4
+5. twilio 9.13.1
+6. dotenv-java 3.0.0
+7. ikonli-swing 12.3.1
+8. jgoodies-forms 1.8.0
+
 ## Cập nhật
 Nhánh `code` sẽ được cập nhật trong các tuần thực hiện coding. Tất cả file code đều tuân thủ coding convention chuẩn của Java  
 Tham khảo thêm: https://gpcoder.com/1775-tieu-chuan-coding-trong-java-coding-standards

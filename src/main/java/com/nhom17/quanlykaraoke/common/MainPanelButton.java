@@ -1,5 +1,6 @@
 package com.nhom17.quanlykaraoke.common;
 
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -20,11 +21,16 @@ public class MainPanelButton extends JPanel implements MouseListener {
 	private JLabel buttonTitle;
 	private JLabel buttonIcon;
 	private Component horizontalStrut_1;
+	private JPanel activatePanel = new JPanel();
+	private JPanel panelContent = new JPanel();
 
-	public MainPanelButton(int width, int height, String title, Ikon icon, JPanel activatePanel) {
+	public MainPanelButton(int width, int height, String title, Ikon icon, JPanel activatePanel, JPanel panelContent) {
+		this.activatePanel = activatePanel;
+		this.panelContent = panelContent;
+		setMinimumSize(new Dimension(10, 100));
 		setMaximumSize(new Dimension(32767, 100));
 		setSize(width, height);
-		setPreferredSize(new Dimension(width, height));
+		setPreferredSize(new Dimension(width, 100));
 		setBackground(Color.BLACK);
 		setForeground(Color.WHITE);
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
@@ -52,8 +58,8 @@ public class MainPanelButton extends JPanel implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-
+		CardLayout layout = (CardLayout) panelContent.getLayout();
+		layout.show(panelContent, activatePanel.getName());
 	}
 
 	@Override

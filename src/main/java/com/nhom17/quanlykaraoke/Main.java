@@ -2,8 +2,6 @@ package com.nhom17.quanlykaraoke;
 
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.FlatLaf;
-import com.nhom17.quanlykaraoke.dao.ChucVuDAO;
-import com.nhom17.quanlykaraoke.dao.NhanVienDAO;
 import com.nhom17.quanlykaraoke.gui.DangNhapGUI;
 import com.nhom17.quanlykaraoke.gui.DangNhapGUI.LoginListener;
 import com.nhom17.quanlykaraoke.gui.QuanLyNhanVienGUI;
@@ -21,21 +19,19 @@ public class Main {
 		// Start Hibernate
 		HibernateUtil.provideSessionFactory();
 
-		// Set look and feel to be FlatLaf
+		// Setup Flatlaf
 		FlatLaf.registerCustomDefaultsSource("com.nhom17.quanlykaraoke.themes");
 		FlatIntelliJLaf.setup();
 
-		ChucVuDAO cvDAO = new ChucVuDAO();
-		NhanVienDAO nvDAO = new NhanVienDAO();
-
-		// Hiện giao diện đăng nhập
+		// Show loginGUI
 		DangNhapGUI loginGUI = new DangNhapGUI();
 
-		// Kiểm tra đăng nhập thành công hay chưa
+		// Check if login is complete
 		loginGUI.setLoginListener(new LoginListener() {
 			public void onLogin(String id) {
 				if (id != null) {
 					QuanLyNhanVienGUI main = new QuanLyNhanVienGUI(id);
+					main.setLogoutListener(() -> showLoginScreen());
 					main.setVisible(true);
 					System.out.println("Nhân viên hiện tại: " + id);
 				}
@@ -43,5 +39,27 @@ public class Main {
 		});
 
 		loginGUI.setVisible(true);
+	}
+
+	private static void showLoginScreen() {
+		DangNhapGUI login = null;
+		try {
+			login = new DangNhapGUI();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		login.setLoginListener(id -> {
+			if (id != null) {
+				QuanLyNhanVienGUI main = new QuanLyNhanVienGUI(id);
+
+				main.setLogoutListener(() -> showLoginScreen());
+
+				main.setVisible(true);
+			}
+		});
+
+		login.setVisible(true);
 	}
 }

@@ -1,6 +1,7 @@
 package com.nhom17.quanlykaraoke.gui;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Desktop;
@@ -12,6 +13,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -40,11 +43,11 @@ import com.nhom17.quanlykaraoke.bus.NhanVienBUS;
 import com.nhom17.quanlykaraoke.common.MainPanelButton;
 import com.nhom17.quanlykaraoke.common.MyFrame;
 import com.nhom17.quanlykaraoke.common.MyIcon;
-import com.nhom17.quanlykaraoke.dao.ChucVuDAO;
 import com.nhom17.quanlykaraoke.entities.NhanVien;
 import com.nhom17.quanlykaraoke.utils.ClockUtil;
 
 import net.miginfocom.swing.MigLayout;
+import raven.toast.Notifications;
 
 /**
  * @author Trần Nguyên Vũ, Trần Ngọc Phát, Mai Nhật Hào, Trần Thanh Vy
@@ -53,6 +56,11 @@ import net.miginfocom.swing.MigLayout;
  */
 public class QuanLyNhanVienGUI extends MyFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
+
+	// INTERFACE
+	public interface LogoutListener {
+		void onLogout();
+	}
 
 	// COMPONENTS
 	private final JLabel lblTime = new JLabel("Time");
@@ -68,12 +76,16 @@ public class QuanLyNhanVienGUI extends MyFrame implements ActionListener {
 	private final Box vBoxAvatar = Box.createVerticalBox();
 	private final Component verticalStrut_1 = Box.createVerticalStrut(20);
 	private final Box hBoxPanelBtn2 = Box.createHorizontalBox();
+	private final JPanel panelContent = new JPanel();
+	private final JPanel panelOne = new JPanel();
+	private final JPanel panelTwo = new JPanel();
+	private final JPanel panelThree = new JPanel();
 	private final MainPanelButton mainPanelButton = new MainPanelButton(1280, 20, "Quản lý dịch vụ",
-			MaterialDesignS.SILVERWARE_FORK_KNIFE, (JPanel) null);
+			MaterialDesignS.SILVERWARE_FORK_KNIFE, panelTwo, panelContent);
 	private final Component verticalStrut_1_1 = Box.createVerticalStrut(20);
 	private final Box hBoxPanelBtn3 = Box.createHorizontalBox();
 	private final MainPanelButton mainPanelButton_1 = new MainPanelButton(1280, 20, "Xem thông tin cá nhân",
-			MaterialDesignA.ACCOUNT, (JPanel) null);
+			MaterialDesignA.ACCOUNT, panelThree, panelContent);
 	private final Component verticalStrut_1_1_1 = Box.createVerticalStrut(20);
 	private final Component horizontalGlue = Box.createHorizontalGlue();
 	private final Component horizontalGlue_1 = Box.createHorizontalGlue();
@@ -87,24 +99,27 @@ public class QuanLyNhanVienGUI extends MyFrame implements ActionListener {
 	private final Box horizontalBox = Box.createHorizontalBox();
 	private final Component horizontalGlue_2 = Box.createHorizontalGlue();
 	private final JPanel leftPanel = new JPanel();
-	private final JLabel lblLogo = new JLabel("");
 	private final JPanel rightPanel = new JPanel();
 	private final JPanel panelTop = new JPanel();
 	private final JLabel lblName = new JLabel("Date");
 	private final JLabel lblWorkTime = new JLabel("00:00:00");
+	private final Component verticalGlue = Box.createVerticalGlue();
 
 	// VARIABLES
-	private ChucVuDAO cvDAO = new ChucVuDAO();
 	private NhanVienBUS nvBUS = new NhanVienBUS();
 	private NhanVien currentNhanVien = null;
 	private boolean isSidebarMinimized = false;
 	private final int screenWidth = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice()
 			.getDisplayMode().getWidth();
 	private int worktimeSeconds = 0;
+	private LogoutListener logoutListener;
+	private final JPanel panelAppInfo = new JPanel();
+	private final JLabel lblNewLabel = new JLabel("New label");
 
 	public QuanLyNhanVienGUI(String maNV) {
 		// Init
 		this.currentNhanVien = nvBUS.getNhanVien(maNV);
+		Notifications.getInstance().setJFrame(this);
 
 		getContentPane().setLayout(new BorderLayout(0, 0));
 
@@ -163,18 +178,7 @@ public class QuanLyNhanVienGUI extends MyFrame implements ActionListener {
 		vBoxAvatar.add(userChucVu);
 
 		leftVBox.add(hBoxCurrentTime);
-		hBoxCurrentTime.add(lblTime);
-		lblTime.setHorizontalTextPosition((int) CENTER_ALIGNMENT);
-		lblTime.setVerticalAlignment((int) CENTER_ALIGNMENT);
-		lblTime.setFont(new Font("Dialog", Font.BOLD, 50));
-		lblName.setFont(new Font("Dialog", Font.BOLD, 20));
-		lblName.setText(new SimpleDateFormat("EEEE, dd/MM/yyyy", new Locale("vi", "VN")).format(new Date()));
-
-		ClockUtil clock = new ClockUtil(lblTime);
 		hBoxPanelBtn.setAlignmentY(Component.CENTER_ALIGNMENT);
-
-		hBoxPanelBtn.add(new MainPanelButton(this.getWidth(), 20, "Quản lý phiếu đặt phòng", MaterialDesignH.HOME,
-				new JPanel()));
 
 		leftVBox.add(hBoxPanelBtn);
 
@@ -197,17 +201,19 @@ public class QuanLyNhanVienGUI extends MyFrame implements ActionListener {
 		leftVBox.add(verticalStrut_1_1_1);
 		hBoxPanelBtn4.setAlignmentY(Component.CENTER_ALIGNMENT);
 
-		MainPanelButton mainPanelButton_2 = new MainPanelButton(this.getWidth(), 20, "Đăng xuất",
-				MaterialDesignE.EXIT_TO_APP, new JPanel());
-		hBoxPanelBtn4.add(mainPanelButton_2);
+		MainPanelButton btnDangXuat = new MainPanelButton(this.getWidth(), 20, "Đăng xuất", MaterialDesignE.EXIT_TO_APP,
+				new JPanel(), panelContent);
+		hBoxPanelBtn4.add(btnDangXuat);
 
-		mainPanelButton_2.add(horizontalGlue_1_1_1);
+		btnDangXuat.add(horizontalGlue_1_1_1);
 
 		leftVBox.add(hBoxPanelBtn4);
+
+		leftVBox.add(verticalGlue);
 		hBoxInfo.setAlignmentY(Component.CENTER_ALIGNMENT);
 
 		leftVBox.add(hBoxInfo);
-		panelInfo.setMaximumSize(new Dimension(3276, 150));
+		panelInfo.setMaximumSize(new Dimension(32767, 100));
 		panelInfo.setAlignmentY(Component.BOTTOM_ALIGNMENT);
 		panelInfo.setBackground(Color.CYAN);
 
@@ -221,11 +227,12 @@ public class QuanLyNhanVienGUI extends MyFrame implements ActionListener {
 		ImageIcon icon = new ImageIcon("src/main/resources/images/logo.png");
 		Image img = icon.getImage().getScaledInstance(200, 150, Image.SCALE_SMOOTH);
 		icon.setImage(img);
+		panelInfo.add(lblTime, "cell 1 0");
+		lblTime.setHorizontalTextPosition((int) CENTER_ALIGNMENT);
+		lblTime.setVerticalAlignment((int) CENTER_ALIGNMENT);
+		lblTime.setFont(new Font("Dialog", Font.BOLD, 50));
 
-		lblLogo.setIcon(icon);
-		lblLogo.setPreferredSize(new Dimension(200, 50));
-
-		panelInfo.add(lblLogo, "cell 1 0, push, alignx center");
+		ClockUtil clock = new ClockUtil(lblTime);
 		panelInfo.add(btnHelp, "cell 2 0,push,alignx right");
 		btnHelp.setIcon(MyIcon.getIcon(MaterialDesignH.HELP_CIRCLE, 20, null));
 		btnHelp.setPreferredSize(new Dimension(50, 50));
@@ -234,6 +241,8 @@ public class QuanLyNhanVienGUI extends MyFrame implements ActionListener {
 
 		getContentPane().add(rightPanel, BorderLayout.CENTER);
 		rightPanel.setLayout(new BorderLayout(0, 0));
+		lblName.setFont(new Font("Dialog", Font.BOLD, 20));
+		lblName.setText(new SimpleDateFormat("EEEE, dd/MM/yyyy", new Locale("vi", "VN")).format(new Date()));
 		panelTop.setBackground(Color.PINK);
 
 		rightPanel.add(panelTop, BorderLayout.NORTH);
@@ -242,6 +251,32 @@ public class QuanLyNhanVienGUI extends MyFrame implements ActionListener {
 		panelTop.add(lblName, "push, cell 0 0, alignx left");
 		lblWorkTime.setFont(new Font("Dialog", Font.BOLD, 20));
 		panelTop.add(lblWorkTime, "push, cell 1 0, alignx right");
+		panelContent.setBackground(Color.ORANGE);
+		rightPanel.add(panelContent, BorderLayout.CENTER);
+		panelThree.setName("panelThree");
+		panelThree.setVisible(false);
+		panelContent.setLayout(new CardLayout(0, 0));
+
+		hBoxPanelBtn.add(new MainPanelButton(this.getWidth(), 20, "Quản lý phiếu đặt phòng", MaterialDesignH.HOME,
+				panelOne, panelContent));
+		panelOne.setName("panelOne");
+		panelOne.setBackground(Color.RED);
+		panelContent.add(panelOne, "panelOne");
+		panelOne.setLayout(null);
+		panelThree.setBackground(Color.CYAN);
+
+		panelContent.add(panelThree, "panelThree");
+		panelThree.setLayout(null);
+		panelTwo.setName("panelTwo");
+		panelTwo.setVisible(false);
+		panelContent.add(panelTwo, "panelTwo");
+		panelTwo.setLayout(null);
+		panelTwo.setBackground(Color.YELLOW);
+		panelAppInfo.setName("panelAppInfo");
+
+		panelContent.add(panelAppInfo, "panelAppInfo");
+
+		panelAppInfo.add(lblNewLabel);
 
 		btnInfo.addActionListener(this);
 		btnHelp.addActionListener(this);
@@ -252,6 +287,20 @@ public class QuanLyNhanVienGUI extends MyFrame implements ActionListener {
 		clock.startClock();
 		startWorkTimer();
 
+		// Handle logout
+		btnDangXuat.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (logoutListener != null) {
+					dispose();
+					logoutListener.onLogout();
+					Notifications.getInstance().show(Notifications.Type.SUCCESS, Notifications.Location.BOTTOM_RIGHT,
+							"Đăng xuất thành công");
+				}
+			}
+		});
+
+		// Handle key presser
 		this.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
@@ -269,6 +318,9 @@ public class QuanLyNhanVienGUI extends MyFrame implements ActionListener {
 				}
 			}
 		});
+
+		// Handle menu switch
+
 	}
 
 	@Override
@@ -281,10 +333,9 @@ public class QuanLyNhanVienGUI extends MyFrame implements ActionListener {
 				hBoxAvatar.setVisible(true);
 				btnInfo.setVisible(true);
 				btnHelp.setVisible(true);
-				lblLogo.setVisible(true);
-				leftPanel.setPreferredSize(new Dimension((int) (screenWidth * 0.25), this.getHeight()));
 				btnBack.setIcon(MyIcon.getIcon(MaterialDesignC.CHEVRON_LEFT_CIRCLE, 40, null));
 				btnBack.setRolloverIcon(MyIcon.getIcon(MaterialDesignC.CHEVRON_LEFT_CIRCLE, 40, Color.RED));
+				openSidebar();
 
 				isSidebarMinimized = false;
 			} else {
@@ -292,10 +343,9 @@ public class QuanLyNhanVienGUI extends MyFrame implements ActionListener {
 				hBoxAvatar.setVisible(false);
 				btnInfo.setVisible(false);
 				btnHelp.setVisible(false);
-				lblLogo.setVisible(false);
-				leftPanel.setPreferredSize(new Dimension((int) (screenWidth * 0.04), this.getHeight()));
 				btnBack.setIcon(MyIcon.getIcon(MaterialDesignC.CHEVRON_RIGHT_CIRCLE, 40, null));
 				btnBack.setRolloverIcon(MyIcon.getIcon(MaterialDesignC.CHEVRON_RIGHT_CIRCLE, 40, Color.RED));
+				closeSidebar();
 
 				isSidebarMinimized = true;
 
@@ -307,11 +357,60 @@ public class QuanLyNhanVienGUI extends MyFrame implements ActionListener {
 			} catch (IOException ex) {
 				// no application registered for PDFs
 			}
-		} else if (o.equals(lblWorkTime)) {
+		} else if (o.equals(btnInfo)) {
+			CardLayout layout = (CardLayout) panelContent.getLayout();
+			layout.show(panelContent, panelAppInfo.getName());
 		}
 	}
 
-	public void startWorkTimer() {
+	private void openSidebar() {
+		Thread th = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				for (int i = (int) (screenWidth * 0.04); (int) i < screenWidth * 0.25; i += 2) {
+
+					try {
+						Thread.sleep(1);
+						leftPanel.setSize(i, leftPanel.getHeight());
+//					leftPanel.setPreferredSize(new Dimension(i, leftPanel.getHeight()));
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+
+			}
+		});
+
+		th.start();
+		leftPanel.setPreferredSize(new Dimension((int) (screenWidth * 0.25), leftPanel.getHeight()));
+	}
+
+	private void closeSidebar() {
+		Thread th = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				for (int i = (int) (screenWidth * 0.25); (int) i >= screenWidth * 0.04; i -= 2) {
+					try {
+						Thread.sleep(1);
+						leftPanel.setSize(i, leftPanel.getHeight());
+//						leftPanel.setPreferredSize(new Dimension(i, leftPanel.getHeight()));
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		});
+
+		th.start();
+		leftPanel.setPreferredSize(new Dimension((int) (screenWidth * 0.04), leftPanel.getHeight()));
+
+	}
+
+	private void startWorkTimer() {
 		Timer timer = new Timer(1000, e -> {
 
 			worktimeSeconds++;
@@ -324,5 +423,9 @@ public class QuanLyNhanVienGUI extends MyFrame implements ActionListener {
 		});
 
 		timer.start();
+	}
+
+	public void setLogoutListener(LogoutListener listener) {
+		this.logoutListener = listener;
 	}
 }

@@ -423,7 +423,8 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 				if (listener != null) {
 					listener.onLogin(maNV);
 				}
-
+				Notifications.getInstance().show(Notifications.Type.SUCCESS, Notifications.Location.BOTTOM_RIGHT,
+						"Đăng nhập thành công");
 				dispose();
 			} else {
 				Notifications.getInstance().show(Notifications.Type.ERROR, Notifications.Location.BOTTOM_RIGHT,
