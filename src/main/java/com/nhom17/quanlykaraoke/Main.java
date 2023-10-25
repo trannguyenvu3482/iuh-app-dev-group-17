@@ -1,10 +1,13 @@
 package com.nhom17.quanlykaraoke;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.FlatLaf;
 import com.nhom17.quanlykaraoke.gui.DangNhapGUI;
-import com.nhom17.quanlykaraoke.gui.DangNhapGUI.LoginListener;
 import com.nhom17.quanlykaraoke.gui.QuanLyNhanVienGUI;
+import com.nhom17.quanlykaraoke.gui.SplashScreen;
 import com.nhom17.quanlykaraoke.utils.HibernateUtil;
 
 /**
@@ -20,25 +23,43 @@ public class Main {
 		HibernateUtil.provideSessionFactory();
 
 		// Setup Flatlaf
-		FlatLaf.registerCustomDefaultsSource("com.nhom17.quanlykaraoke.themes");
+		FlatLaf.registerCustomDefaultsSource("com.theme");
 		FlatIntelliJLaf.setup();
 
-		// Show loginGUI
-		DangNhapGUI loginGUI = new DangNhapGUI();
+		// Show splash screen
+		SplashScreen splashGUI = new SplashScreen();
+		splashGUI.setVisible(true);
 
-		// Check if login is complete
-		loginGUI.setLoginListener(new LoginListener() {
-			public void onLogin(String id) {
-				if (id != null) {
-					QuanLyNhanVienGUI main = new QuanLyNhanVienGUI(id);
-					main.setLogoutListener(() -> showLoginScreen());
-					main.setVisible(true);
-					System.out.println("Nhân viên hiện tại: " + id);
+		// Add window listener to detect when splash closes
+		splashGUI.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosed(WindowEvent e) {
+
+				// Splash closed, show login screen
+				DangNhapGUI loginGUI = null;
+				try {
+					loginGUI = new DangNhapGUI();
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
+
+				// Add listener for login
+				loginGUI.setLoginListener(userId -> {
+					if (userId != null) {
+
+						// Login success, show main window
+						QuanLyNhanVienGUI main = new QuanLyNhanVienGUI(userId);
+						main.setLogoutListener(() -> showLoginScreen());
+						main.setVisible(true);
+
+					}
+				});
+
+				loginGUI.setVisible(true);
+
 			}
 		});
-
-		loginGUI.setVisible(true);
 	}
 
 	private static void showLoginScreen() {

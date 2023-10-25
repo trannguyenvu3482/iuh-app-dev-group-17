@@ -21,6 +21,7 @@ import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -36,7 +37,7 @@ import org.kordamp.ikonli.materialdesign2.MaterialDesignP;
 
 import com.nhom17.quanlykaraoke.bus.DangNhapBUS;
 import com.nhom17.quanlykaraoke.common.MyIcon;
-import com.nhom17.quanlykaraoke.common.MyMessageDialog;
+import com.nhom17.quanlykaraoke.utils.OTPUtil;
 
 import raven.toast.Notifications;
 
@@ -74,14 +75,13 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 			MyIcon.getIcon(MaterialDesignE.EYE_OFF, MyIcon.DEFAULT_SIZE, null));
 	private final JButton btnGetOTP = new JButton("Lấy mã OTP");
 	private final JButton btnReturn = new JButton("");
-
+	private final JButton btnResetPassword = new JButton("Cấp lại mật khẩu mới");
 	// LOCAL VARIABLES
 	private Map<JPasswordField, Boolean> isPasswordShownStates = new HashMap<>();
 	private LoginListener listener;
-
 	private long duration = 10000;
-
 	private String loggedInEmployeeID = null;
+	private String phoneNo = "";
 
 	public void setLoginListener(LoginListener listener) {
 		this.listener = listener;
@@ -188,7 +188,6 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 		lblMatKhau_1.setBounds(4, 187, 229, 26);
 		panelForgot.add(lblMatKhau_1);
 
-		JButton btnResetPassword = new JButton("Cấp lại mật khẩu mới");
 		btnResetPassword.addActionListener(this);
 		btnResetPassword.setFont(new Font(Font.DIALOG, Font.BOLD, 30));
 		btnResetPassword.setBounds(2, 412, 517, 87);
@@ -387,8 +386,24 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 			panelLogin.setVisible(false);
 			panelForgot.setVisible(true);
 		} else if (o.equals(btnGetOTP)) {
-			MyMessageDialog.showMessage(null, "Nhận OTP", "Lấy OTP thành công");
-			timeoutBtnGetOTP();
+			if (txtPhoneNo.getText().matches("^0\\d9$")) {
+				phoneNo = "+84" + txtPhoneNo.getText().substring(1);
+				OTPUtil.sendSMS("+" + phoneNo);
+				System.out.println("Send SMS to: " + phoneNo);
+				timeoutBtnGetOTP();
+				Notifications.getInstance().show(Notifications.Type.SUCCESS, Notifications.Location.BOTTOM_RIGHT,
+						"Đã gửi OTP thành công");
+			} else {
+				Notifications.getInstance().show(Notifications.Type.ERROR, Notifications.Location.BOTTOM_RIGHT,
+						"Số điện thoại phải có dạng 0xxxxxxxxx");
+			}
+
+		} else if (o.equals(btnResetPassword)) {
+			if (OTPUtil.checkOTP(phoneNo, txtOTP.getText())) {
+
+			} else {
+				JOptionPane.showMessageDialog(null, "OTP không đúng", "Thông báo", JOptionPane.ERROR_MESSAGE);
+			}
 		} else if (o.equals(btnReturn)) {
 			setTitle("Đăng nhập");
 			panelLogin.setVisible(true);

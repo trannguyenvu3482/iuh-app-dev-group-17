@@ -44,6 +44,7 @@ import com.nhom17.quanlykaraoke.common.MainPanelButton;
 import com.nhom17.quanlykaraoke.common.MyFrame;
 import com.nhom17.quanlykaraoke.common.MyIcon;
 import com.nhom17.quanlykaraoke.entities.NhanVien;
+import com.nhom17.quanlykaraoke.gui.panels.QuanLyPhieuDatPhongPanel;
 import com.nhom17.quanlykaraoke.utils.ClockUtil;
 
 import net.miginfocom.swing.MigLayout;
@@ -74,19 +75,19 @@ public class QuanLyNhanVienGUI extends MyFrame implements ActionListener {
 	private final JLabel userFullName = new JLabel("Trần Nguyên Vũ");
 	private final JLabel userChucVu = new JLabel("Quản lý");
 	private final Box vBoxAvatar = Box.createVerticalBox();
-	private final Component verticalStrut_1 = Box.createVerticalStrut(20);
+	private final Component verticalStrut_1 = Box.createVerticalStrut(40);
 	private final Box hBoxPanelBtn2 = Box.createHorizontalBox();
 	private final JPanel panelContent = new JPanel();
-	private final JPanel panelOne = new JPanel();
+	private final JPanel quanLyPDPPanel = (JPanel) new QuanLyPhieuDatPhongPanel();
 	private final JPanel panelTwo = new JPanel();
 	private final JPanel panelThree = new JPanel();
 	private final MainPanelButton mainPanelButton = new MainPanelButton(1280, 20, "Quản lý dịch vụ",
 			MaterialDesignS.SILVERWARE_FORK_KNIFE, panelTwo, panelContent);
-	private final Component verticalStrut_1_1 = Box.createVerticalStrut(20);
+	private final Component verticalStrut_1_1 = Box.createVerticalStrut(40);
 	private final Box hBoxPanelBtn3 = Box.createHorizontalBox();
 	private final MainPanelButton mainPanelButton_1 = new MainPanelButton(1280, 20, "Xem thông tin cá nhân",
 			MaterialDesignA.ACCOUNT, panelThree, panelContent);
-	private final Component verticalStrut_1_1_1 = Box.createVerticalStrut(20);
+	private final Component verticalStrut_1_1_1 = Box.createVerticalStrut(40);
 	private final Component horizontalGlue = Box.createHorizontalGlue();
 	private final Component horizontalGlue_1 = Box.createHorizontalGlue();
 	private final Component horizontalGlue_1_1 = Box.createHorizontalGlue();
@@ -104,6 +105,9 @@ public class QuanLyNhanVienGUI extends MyFrame implements ActionListener {
 	private final JLabel lblName = new JLabel("Date");
 	private final JLabel lblWorkTime = new JLabel("00:00:00");
 	private final Component verticalGlue = Box.createVerticalGlue();
+	private final JPanel panelAppInfo = new JPanel();
+	private final JLabel lblNewLabel = new JLabel("New label");
+	private final Component verticalStrut = Box.createVerticalStrut(20);
 
 	// VARIABLES
 	private NhanVienBUS nvBUS = new NhanVienBUS();
@@ -113,8 +117,6 @@ public class QuanLyNhanVienGUI extends MyFrame implements ActionListener {
 			.getDisplayMode().getWidth();
 	private int worktimeSeconds = 0;
 	private LogoutListener logoutListener;
-	private final JPanel panelAppInfo = new JPanel();
-	private final JLabel lblNewLabel = new JLabel("New label");
 
 	public QuanLyNhanVienGUI(String maNV) {
 		// Init
@@ -122,8 +124,21 @@ public class QuanLyNhanVienGUI extends MyFrame implements ActionListener {
 		Notifications.getInstance().setJFrame(this);
 
 		getContentPane().setLayout(new BorderLayout(0, 0));
+		// TODO: Un-comment this when done
+		ImageIcon avatar = null;
+		try {
+			avatar = new ImageIcon(ImageIO.read(new ByteArrayInputStream(currentNhanVien.getAnhDaiDien())));
+			avatar.setImage(avatar.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-		leftPanel.setBackground(Color.CYAN);
+		ImageIcon icon = new ImageIcon("src/main/resources/images/logo.png");
+		Image img = icon.getImage().getScaledInstance(200, 150, Image.SCALE_SMOOTH);
+		icon.setImage(img);
+
+		leftPanel.setBackground(Color.BLACK);
 		leftPanel.setPreferredSize(new Dimension((int) (screenWidth * 0.25), this.getHeight()));
 		getContentPane().add(leftPanel, BorderLayout.WEST);
 		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
@@ -138,7 +153,7 @@ public class QuanLyNhanVienGUI extends MyFrame implements ActionListener {
 		btnBack.setMaximumSize(new Dimension(50, 50));
 		btnBack.setPreferredSize(new Dimension(50, 50));
 		btnBack.setHorizontalAlignment(SwingConstants.CENTER);
-		btnBack.setIcon(MyIcon.getIcon(MaterialDesignC.CHEVRON_LEFT_CIRCLE, 40, null));
+		btnBack.setIcon(MyIcon.getIcon(MaterialDesignC.CHEVRON_LEFT_CIRCLE, 40, Color.white));
 		btnBack.setRolloverIcon(MyIcon.getIcon(MaterialDesignC.CHEVRON_LEFT_CIRCLE, 40, Color.RED));
 		btnBack.setOpaque(false);
 		btnBack.setBackground(null);
@@ -153,19 +168,11 @@ public class QuanLyNhanVienGUI extends MyFrame implements ActionListener {
 		userAvatar.setAlignmentY(Component.TOP_ALIGNMENT);
 		vBoxAvatar.add(userAvatar);
 		userAvatar.setAlignmentX(CENTER_ALIGNMENT);
-		// TODO: Un-comment this when done
-		ImageIcon avatar = null;
-		try {
-			avatar = new ImageIcon(ImageIO.read(new ByteArrayInputStream(currentNhanVien.getAnhDaiDien())));
-			avatar.setImage(avatar.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH));
-			userAvatar.setIcon(avatar);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		userAvatar.setIcon(avatar);
 		userAvatar.setIcon(avatar);
 
 		userAvatar.setPreferredSize(new Dimension(200, 200));
+		userFullName.setForeground(Color.WHITE);
 		userFullName.setAlignmentY(Component.TOP_ALIGNMENT);
 		userFullName.setFont(new Font("Dialog", Font.BOLD, 30));
 
@@ -173,9 +180,10 @@ public class QuanLyNhanVienGUI extends MyFrame implements ActionListener {
 		userChucVu.setAlignmentY(Component.TOP_ALIGNMENT);
 		userChucVu.setFont(new Font("Dialog", Font.ITALIC, 18));
 		userChucVu.setAlignmentX(CENTER_ALIGNMENT);
-		userChucVu.setForeground(new Color(0, 0, 0, 128));
+		userChucVu.setForeground(new Color(255, 255, 255, 128));
 		vBoxAvatar.add(userFullName);
 		vBoxAvatar.add(userChucVu);
+		leftVBox.add(verticalStrut);
 
 		leftVBox.add(hBoxCurrentTime);
 		hBoxPanelBtn.setAlignmentY(Component.CENTER_ALIGNMENT);
@@ -215,28 +223,53 @@ public class QuanLyNhanVienGUI extends MyFrame implements ActionListener {
 		leftVBox.add(hBoxInfo);
 		panelInfo.setMaximumSize(new Dimension(32767, 100));
 		panelInfo.setAlignmentY(Component.BOTTOM_ALIGNMENT);
-		panelInfo.setBackground(Color.CYAN);
+		panelInfo.setBackground(Color.BLACK);
 
 		hBoxInfo.add(panelInfo);
 		panelInfo.setLayout(new MigLayout("alignx center, aligny bottom", "[][][]", "[]"));
+		btnInfo.setFont(new Font("Dialog", Font.BOLD, 20));
+		btnInfo.setOpaque(false);
 		panelInfo.add(btnInfo, "push, cell 0 0, width 50px");
 
-		btnInfo.setIcon(MyIcon.getIcon(MaterialDesignI.INFORMATION, 20, null));
+		btnInfo.setIcon(MyIcon.getIcon(MaterialDesignI.INFORMATION, 34, Color.WHITE));
+		btnInfo.setRolloverIcon(MyIcon.getIcon(MaterialDesignI.INFORMATION, 34, Color.RED));
 		btnInfo.setPreferredSize(new Dimension(50, 50));
-
-		ImageIcon icon = new ImageIcon("src/main/resources/images/logo.png");
-		Image img = icon.getImage().getScaledInstance(200, 150, Image.SCALE_SMOOTH);
-		icon.setImage(img);
+		btnInfo.setBackground(null);
+		btnInfo.setBorder(null);
+		lblTime.setForeground(Color.WHITE);
 		panelInfo.add(lblTime, "cell 1 0");
 		lblTime.setHorizontalTextPosition((int) CENTER_ALIGNMENT);
 		lblTime.setVerticalAlignment((int) CENTER_ALIGNMENT);
 		lblTime.setFont(new Font("Dialog", Font.BOLD, 50));
 
 		ClockUtil clock = new ClockUtil(lblTime);
+		btnHelp.setOpaque(false);
 		panelInfo.add(btnHelp, "cell 2 0,push,alignx right");
-		btnHelp.setIcon(MyIcon.getIcon(MaterialDesignH.HELP_CIRCLE, 20, null));
+		btnHelp.setIcon(MyIcon.getIcon(MaterialDesignH.HELP_CIRCLE, 34, Color.WHITE));
+		btnHelp.setRolloverIcon(MyIcon.getIcon(MaterialDesignH.HELP_CIRCLE, 34, Color.RED));
 		btnHelp.setPreferredSize(new Dimension(50, 50));
 		btnHelp.setToolTipText("Hiển thị file pdf hướng dẫn sử dụng phần mềm");
+		btnHelp.setBackground(null);
+		btnHelp.setBorder(null);
+		hBoxPanelBtn.add(new MainPanelButton(this.getWidth(), 20, "Quản lý phiếu đặt phòng", MaterialDesignH.HOME,
+				quanLyPDPPanel, panelContent));
+
+		btnInfo.addActionListener(this);
+		btnHelp.addActionListener(this);
+		btnBack.addActionListener(this);
+
+		// Handle logout
+		btnDangXuat.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (logoutListener != null) {
+					dispose();
+					logoutListener.onLogout();
+					Notifications.getInstance().show(Notifications.Type.SUCCESS, Notifications.Location.BOTTOM_RIGHT,
+							"Đăng xuất thành công");
+				}
+			}
+		});
 		rightPanel.setBackground(Color.YELLOW);
 
 		getContentPane().add(rightPanel, BorderLayout.CENTER);
@@ -256,13 +289,8 @@ public class QuanLyNhanVienGUI extends MyFrame implements ActionListener {
 		panelThree.setName("panelThree");
 		panelThree.setVisible(false);
 		panelContent.setLayout(new CardLayout(0, 0));
-
-		hBoxPanelBtn.add(new MainPanelButton(this.getWidth(), 20, "Quản lý phiếu đặt phòng", MaterialDesignH.HOME,
-				panelOne, panelContent));
-		panelOne.setName("panelOne");
-		panelOne.setBackground(Color.RED);
-		panelContent.add(panelOne, "panelOne");
-		panelOne.setLayout(null);
+		quanLyPDPPanel.setName("quanLyPDPPanel");
+		panelContent.add(quanLyPDPPanel, "quanLyPDPPanel");
 		panelThree.setBackground(Color.CYAN);
 
 		panelContent.add(panelThree, "panelThree");
@@ -278,33 +306,15 @@ public class QuanLyNhanVienGUI extends MyFrame implements ActionListener {
 
 		panelAppInfo.add(lblNewLabel);
 
-		btnInfo.addActionListener(this);
-		btnHelp.addActionListener(this);
-
 		btnSend.setFont(new Font("Tahoma", Font.PLAIN, 42));
 		btnSend.addActionListener(this);
-		btnBack.addActionListener(this);
 		clock.startClock();
 		startWorkTimer();
-
-		// Handle logout
-		btnDangXuat.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (logoutListener != null) {
-					dispose();
-					logoutListener.onLogout();
-					Notifications.getInstance().show(Notifications.Type.SUCCESS, Notifications.Location.BOTTOM_RIGHT,
-							"Đăng xuất thành công");
-				}
-			}
-		});
 
 		// Handle key presser
 		this.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				System.out.println("PRESSED");
 				if (e.getKeyCode() == 112) {
 					btnHelp.doClick();
 				}
@@ -333,7 +343,7 @@ public class QuanLyNhanVienGUI extends MyFrame implements ActionListener {
 				hBoxAvatar.setVisible(true);
 				btnInfo.setVisible(true);
 				btnHelp.setVisible(true);
-				btnBack.setIcon(MyIcon.getIcon(MaterialDesignC.CHEVRON_LEFT_CIRCLE, 40, null));
+				btnBack.setIcon(MyIcon.getIcon(MaterialDesignC.CHEVRON_LEFT_CIRCLE, 40, Color.white));
 				btnBack.setRolloverIcon(MyIcon.getIcon(MaterialDesignC.CHEVRON_LEFT_CIRCLE, 40, Color.RED));
 				openSidebar();
 
@@ -343,7 +353,7 @@ public class QuanLyNhanVienGUI extends MyFrame implements ActionListener {
 				hBoxAvatar.setVisible(false);
 				btnInfo.setVisible(false);
 				btnHelp.setVisible(false);
-				btnBack.setIcon(MyIcon.getIcon(MaterialDesignC.CHEVRON_RIGHT_CIRCLE, 40, null));
+				btnBack.setIcon(MyIcon.getIcon(MaterialDesignC.CHEVRON_RIGHT_CIRCLE, 40, Color.white));
 				btnBack.setRolloverIcon(MyIcon.getIcon(MaterialDesignC.CHEVRON_RIGHT_CIRCLE, 40, Color.RED));
 				closeSidebar();
 
@@ -368,12 +378,11 @@ public class QuanLyNhanVienGUI extends MyFrame implements ActionListener {
 
 			@Override
 			public void run() {
-				for (int i = (int) (screenWidth * 0.04); (int) i < screenWidth * 0.25; i += 2) {
+				for (int i = (int) (screenWidth * 0.04); (int) i <= screenWidth * 0.25; i += 2) {
 
 					try {
 						Thread.sleep(1);
 						leftPanel.setSize(i, leftPanel.getHeight());
-//					leftPanel.setPreferredSize(new Dimension(i, leftPanel.getHeight()));
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -396,7 +405,6 @@ public class QuanLyNhanVienGUI extends MyFrame implements ActionListener {
 					try {
 						Thread.sleep(1);
 						leftPanel.setSize(i, leftPanel.getHeight());
-//						leftPanel.setPreferredSize(new Dimension(i, leftPanel.getHeight()));
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

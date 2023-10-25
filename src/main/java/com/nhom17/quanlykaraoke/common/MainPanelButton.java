@@ -31,7 +31,7 @@ public class MainPanelButton extends JPanel implements MouseListener {
 		setMaximumSize(new Dimension(32767, 100));
 		setSize(width, height);
 		setPreferredSize(new Dimension(width, 100));
-		setBackground(Color.BLACK);
+		setBackground(Color.WHITE);
 		setForeground(Color.WHITE);
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -40,17 +40,17 @@ public class MainPanelButton extends JPanel implements MouseListener {
 		add(horizontalStrut_1);
 
 		this.buttonIcon = new JLabel();
-		buttonIcon.setForeground(Color.WHITE);
+		buttonIcon.setForeground(Color.BLACK);
 
-		buttonIcon.setIcon(MyIcon.getIcon(icon, 30, Color.WHITE));
+		buttonIcon.setIcon(MyIcon.getIcon(icon, 50, null));
 		add(buttonIcon);
 
 		Component horizontalStrut = Box.createHorizontalStrut(60);
 		add(horizontalStrut);
 
 		this.buttonTitle = new JLabel(title);
-		buttonTitle.setFont(new Font("Dialog", Font.BOLD, 24));
-		buttonTitle.setForeground(Color.WHITE);
+		buttonTitle.setFont(new Font("Dialog", Font.BOLD, 26));
+		buttonTitle.setForeground(Color.BLACK);
 		add(buttonTitle);
 
 		addMouseListener(this);
@@ -58,6 +58,9 @@ public class MainPanelButton extends JPanel implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		System.out.println("CLICKED");
+		System.out.println("Show panel: " + activatePanel.getName());
+
 		CardLayout layout = (CardLayout) panelContent.getLayout();
 		layout.show(panelContent, activatePanel.getName());
 	}
@@ -70,18 +73,12 @@ public class MainPanelButton extends JPanel implements MouseListener {
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		setBackground(Color.RED);
-		setForeground(Color.BLACK);
-		buttonIcon.setForeground(Color.BLACK);
-		buttonTitle.setForeground(Color.BLACK);
+		setBackground(Color.CYAN);
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		setBackground(Color.BLACK);
-		setForeground(Color.WHITE);
-		buttonIcon.setForeground(Color.WHITE);
-		buttonTitle.setForeground(Color.WHITE);
+		setBackground(Color.WHITE);
 	}
 
 	@Override
