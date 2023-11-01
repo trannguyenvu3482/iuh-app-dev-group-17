@@ -106,5 +106,13 @@
 			<version>1.8.0</version>
 		</dependency>
 
+		<!--
+		https://mvnrepository.com/artifact/net.java.dev.timingframework/timingframework -->
+		<dependency>
+			<groupId>net.java.dev.timingframework</groupId>
+			<artifactId>timingframework</artifactId>
+			<version>1.0</version>
+		</dependency>
+
 	</dependencies>
 </project>

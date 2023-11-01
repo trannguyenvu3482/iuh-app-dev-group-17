@@ -9,6 +9,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -30,9 +31,9 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import javax.swing.Timer;
 
 import org.kordamp.ikonli.materialdesign2.MaterialDesignA;
+import org.kordamp.ikonli.materialdesign2.MaterialDesignB;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignC;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignE;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignH;
@@ -44,10 +45,16 @@ import com.nhom17.quanlykaraoke.common.MainPanelButton;
 import com.nhom17.quanlykaraoke.common.MyFrame;
 import com.nhom17.quanlykaraoke.common.MyIcon;
 import com.nhom17.quanlykaraoke.entities.NhanVien;
+import com.nhom17.quanlykaraoke.gui.panels.NotificationPanel;
 import com.nhom17.quanlykaraoke.gui.panels.QuanLyPhieuDatPhongPanel;
 import com.nhom17.quanlykaraoke.utils.ClockUtil;
 
+import net.miginfocom.layout.ComponentWrapper;
+import net.miginfocom.layout.LayoutCallback;
 import net.miginfocom.swing.MigLayout;
+import raven.glasspanepopup.DefaultLayoutCallBack;
+import raven.glasspanepopup.DefaultOption;
+import raven.glasspanepopup.GlassPanePopup;
 import raven.toast.Notifications;
 
 /**
@@ -103,7 +110,7 @@ public class QuanLyNhanVienGUI extends MyFrame implements ActionListener {
 	private final JPanel rightPanel = new JPanel();
 	private final JPanel panelTop = new JPanel();
 	private final JLabel lblName = new JLabel("Date");
-	private final JLabel lblWorkTime = new JLabel("00:00:00");
+	private final JButton btnNotifications = new JButton("");
 	private final Component verticalGlue = Box.createVerticalGlue();
 	private final JPanel panelAppInfo = new JPanel();
 	private final JLabel lblNewLabel = new JLabel("New label");
@@ -115,16 +122,17 @@ public class QuanLyNhanVienGUI extends MyFrame implements ActionListener {
 	private boolean isSidebarMinimized = false;
 	private final int screenWidth = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice()
 			.getDisplayMode().getWidth();
-	private int worktimeSeconds = 0;
 	private LogoutListener logoutListener;
 
 	public QuanLyNhanVienGUI(String maNV) {
 		// Init
 		this.currentNhanVien = nvBUS.getNhanVien(maNV);
 		Notifications.getInstance().setJFrame(this);
+		GlassPanePopup.install(this);
 
 		getContentPane().setLayout(new BorderLayout(0, 0));
-		// TODO: Un-comment this when done
+
+		// Set avatar
 		ImageIcon avatar = null;
 		try {
 			avatar = new ImageIcon(ImageIO.read(new ByteArrayInputStream(currentNhanVien.getAnhDaiDien())));
@@ -149,6 +157,7 @@ public class QuanLyNhanVienGUI extends MyFrame implements ActionListener {
 		leftVBox.add(horizontalBox);
 
 		horizontalBox.add(horizontalGlue_2);
+		btnBack.setToolTipText("(Phím tắt: Esc)");
 		btnBack.setMinimumSize(new Dimension(50, 50));
 		btnBack.setMaximumSize(new Dimension(50, 50));
 		btnBack.setPreferredSize(new Dimension(50, 50));
@@ -186,6 +195,7 @@ public class QuanLyNhanVienGUI extends MyFrame implements ActionListener {
 		leftVBox.add(verticalStrut);
 
 		leftVBox.add(hBoxCurrentTime);
+		hBoxPanelBtn.setToolTipText("(Phím tắt: F3)");
 		hBoxPanelBtn.setAlignmentY(Component.CENTER_ALIGNMENT);
 
 		leftVBox.add(hBoxPanelBtn);
@@ -194,6 +204,7 @@ public class QuanLyNhanVienGUI extends MyFrame implements ActionListener {
 
 		leftVBox.add(verticalStrut_1);
 		leftVBox.add(hBoxPanelBtn2);
+		mainPanelButton.setToolTipText("(Phím tắt: F4)");
 
 		hBoxPanelBtn2.add(mainPanelButton);
 
@@ -201,16 +212,19 @@ public class QuanLyNhanVienGUI extends MyFrame implements ActionListener {
 		leftVBox.add(verticalStrut_1_1);
 		hBoxPanelBtn3.setAlignmentY(Component.CENTER_ALIGNMENT);
 		leftVBox.add(hBoxPanelBtn3);
+		mainPanelButton_1.setToolTipText("(Phím tắt: F5)");
 
 		hBoxPanelBtn3.add(mainPanelButton_1);
 
 		hBoxPanelBtn3.add(horizontalGlue_1_1);
 
 		leftVBox.add(verticalStrut_1_1_1);
+		hBoxPanelBtn4.setToolTipText("");
 		hBoxPanelBtn4.setAlignmentY(Component.CENTER_ALIGNMENT);
 
 		MainPanelButton btnDangXuat = new MainPanelButton(this.getWidth(), 20, "Đăng xuất", MaterialDesignE.EXIT_TO_APP,
 				new JPanel(), panelContent);
+		btnDangXuat.setToolTipText("(Phím tắt: F6)");
 		hBoxPanelBtn4.add(btnDangXuat);
 
 		btnDangXuat.add(horizontalGlue_1_1_1);
@@ -251,12 +265,15 @@ public class QuanLyNhanVienGUI extends MyFrame implements ActionListener {
 		btnHelp.setToolTipText("Hiển thị file pdf hướng dẫn sử dụng phần mềm");
 		btnHelp.setBackground(null);
 		btnHelp.setBorder(null);
-		hBoxPanelBtn.add(new MainPanelButton(this.getWidth(), 20, "Quản lý phiếu đặt phòng", MaterialDesignH.HOME,
-				quanLyPDPPanel, panelContent));
+		MainPanelButton mainPanelButton_2 = new MainPanelButton(this.getWidth(), 20, "Quản lý phiếu đặt phòng",
+				MaterialDesignH.HOME, quanLyPDPPanel, panelContent);
+		mainPanelButton_2.setToolTipText("(Phím tắt: F3)");
+		hBoxPanelBtn.add(mainPanelButton_2);
 
 		btnInfo.addActionListener(this);
 		btnHelp.addActionListener(this);
 		btnBack.addActionListener(this);
+		btnNotifications.addActionListener(this);
 
 		// Handle logout
 		btnDangXuat.addMouseListener(new MouseAdapter() {
@@ -274,16 +291,22 @@ public class QuanLyNhanVienGUI extends MyFrame implements ActionListener {
 
 		getContentPane().add(rightPanel, BorderLayout.CENTER);
 		rightPanel.setLayout(new BorderLayout(0, 0));
+		lblName.setForeground(Color.WHITE);
 		lblName.setFont(new Font("Dialog", Font.BOLD, 20));
 		lblName.setText(new SimpleDateFormat("EEEE, dd/MM/yyyy", new Locale("vi", "VN")).format(new Date()));
-		panelTop.setBackground(Color.PINK);
+		panelTop.setBackground(Color.DARK_GRAY);
 
 		rightPanel.add(panelTop, BorderLayout.NORTH);
 		panelTop.setLayout(new MigLayout("alignx center, aligny center", "[][]", "[]"));
 
 		panelTop.add(lblName, "push, cell 0 0, alignx left");
-		lblWorkTime.setFont(new Font("Dialog", Font.BOLD, 20));
-		panelTop.add(lblWorkTime, "push, cell 1 0, alignx right");
+
+		btnNotifications.setFont(new Font("Dialog", Font.BOLD, 20));
+		btnNotifications.setIcon(MyIcon.getIcon(MaterialDesignB.BELL_CIRCLE, 40, Color.WHITE));
+		btnNotifications.setBackground(null);
+		btnNotifications.setOpaque(false);
+		btnNotifications.setBorder(null);
+		panelTop.add(btnNotifications, "push, cell 1 0, alignx right");
 		panelContent.setBackground(Color.ORANGE);
 		rightPanel.add(panelContent, BorderLayout.CENTER);
 		panelThree.setName("panelThree");
@@ -309,22 +332,19 @@ public class QuanLyNhanVienGUI extends MyFrame implements ActionListener {
 		btnSend.setFont(new Font("Tahoma", Font.PLAIN, 42));
 		btnSend.addActionListener(this);
 		clock.startClock();
-		startWorkTimer();
+//		startWorkTimer();
 
 		// Handle key presser
 		this.addKeyListener(new KeyAdapter() {
 			@Override
-			public void keyTyped(KeyEvent e) {
+			public void keyPressed(KeyEvent e) {
+				System.out.println("KEYCODE: " + e.getKeyCode());
 				if (e.getKeyCode() == 112) {
 					btnHelp.doClick();
 				}
-			}
 
-			@Override
-			public void keyPressed(KeyEvent e) {
-				System.out.println("PRESSED");
-				if (e.getKeyCode() == 112) {
-					btnHelp.doClick();
+				if (e.getKeyCode() == 27) {
+					btnBack.doClick();
 				}
 			}
 		});
@@ -345,7 +365,9 @@ public class QuanLyNhanVienGUI extends MyFrame implements ActionListener {
 				btnHelp.setVisible(true);
 				btnBack.setIcon(MyIcon.getIcon(MaterialDesignC.CHEVRON_LEFT_CIRCLE, 40, Color.white));
 				btnBack.setRolloverIcon(MyIcon.getIcon(MaterialDesignC.CHEVRON_LEFT_CIRCLE, 40, Color.RED));
-				openSidebar();
+
+//				openSidebar();
+				leftPanel.setPreferredSize(new Dimension((int) (screenWidth * 0.25), leftPanel.getHeight()));
 
 				isSidebarMinimized = false;
 			} else {
@@ -355,7 +377,9 @@ public class QuanLyNhanVienGUI extends MyFrame implements ActionListener {
 				btnHelp.setVisible(false);
 				btnBack.setIcon(MyIcon.getIcon(MaterialDesignC.CHEVRON_RIGHT_CIRCLE, 40, Color.white));
 				btnBack.setRolloverIcon(MyIcon.getIcon(MaterialDesignC.CHEVRON_RIGHT_CIRCLE, 40, Color.RED));
-				closeSidebar();
+
+//				closeSidebar();
+				leftPanel.setPreferredSize(new Dimension((int) (screenWidth * 0.04), leftPanel.getHeight()));
 
 				isSidebarMinimized = true;
 
@@ -370,67 +394,41 @@ public class QuanLyNhanVienGUI extends MyFrame implements ActionListener {
 		} else if (o.equals(btnInfo)) {
 			CardLayout layout = (CardLayout) panelContent.getLayout();
 			layout.show(panelContent, panelAppInfo.getName());
+		} else if (o.equals(btnNotifications)) {
+			GlassPanePopup.showPopup(new NotificationPanel(), new DefaultOption() {
+				@Override
+				public float opacity() {
+					// TODO Auto-generated method stub
+					return (float) 0.2;
+				}
+
+				@Override
+				public LayoutCallback getLayoutCallBack(Component parent) {
+					return new DefaultLayoutCallBack(parent) {
+						@Override
+						public void correctBounds(ComponentWrapper comp) {
+							if (parent.isVisible()) {
+								Point pl = parent.getLocationOnScreen();
+								Point bl = btnNotifications.getLocationOnScreen();
+								int x = bl.x - pl.x;
+								int y = bl.y - pl.y;
+								y += (1f - getAnimate()) * 10f;
+								comp.setBounds(x - comp.getWidth() + btnNotifications.getWidth(),
+										y + btnNotifications.getHeight(), comp.getWidth(), comp.getHeight());
+							} else {
+								super.correctBounds(comp);
+							}
+						}
+					};
+				}
+
+				@Override
+				public String getLayout(Component parent, float animate) {
+					// TODO Auto-generated method stub
+					return null;
+				}
+			});
 		}
-	}
-
-	private void openSidebar() {
-		Thread th = new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-				for (int i = (int) (screenWidth * 0.04); (int) i <= screenWidth * 0.25; i += 2) {
-
-					try {
-						Thread.sleep(1);
-						leftPanel.setSize(i, leftPanel.getHeight());
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-
-			}
-		});
-
-		th.start();
-		leftPanel.setPreferredSize(new Dimension((int) (screenWidth * 0.25), leftPanel.getHeight()));
-	}
-
-	private void closeSidebar() {
-		Thread th = new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-				for (int i = (int) (screenWidth * 0.25); (int) i >= screenWidth * 0.04; i -= 2) {
-					try {
-						Thread.sleep(1);
-						leftPanel.setSize(i, leftPanel.getHeight());
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			}
-		});
-
-		th.start();
-		leftPanel.setPreferredSize(new Dimension((int) (screenWidth * 0.04), leftPanel.getHeight()));
-
-	}
-
-	private void startWorkTimer() {
-		Timer timer = new Timer(1000, e -> {
-
-			worktimeSeconds++;
-
-			String time = String.format("%02d:%02d:%02d", worktimeSeconds / 3600, (worktimeSeconds % 3600) / 60,
-					worktimeSeconds % 60);
-
-			lblWorkTime.setText(time);
-
-		});
-
-		timer.start();
 	}
 
 	public void setLogoutListener(LogoutListener listener) {

@@ -75,7 +75,7 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 			MyIcon.getIcon(MaterialDesignE.EYE_OFF, MyIcon.DEFAULT_SIZE, null));
 	private final JButton btnGetOTP = new JButton("Lấy mã OTP");
 	private final JButton btnReturn = new JButton("");
-	private final JButton btnResetPassword = new JButton("Cấp lại mật khẩu mới");
+	private final JButton btnResetPassword = new JButton("Tạo mật khẩu mới");
 	// LOCAL VARIABLES
 	private Map<JPasswordField, Boolean> isPasswordShownStates = new HashMap<>();
 	private LoginListener listener;
@@ -179,13 +179,13 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 		JLabel lblMaNV_1 = new JLabel("Nhập mật khẩu mới:");
 		lblMaNV_1.setForeground(Color.BLACK);
 		lblMaNV_1.setFont(new Font(Font.DIALOG, Font.BOLD, 20));
-		lblMaNV_1.setBounds(4, 85, 190, 26);
+		lblMaNV_1.setBounds(4, 85, 206, 28);
 		panelForgot.add(lblMaNV_1);
 
 		JLabel lblMatKhau_1 = new JLabel("Xác nhận mật khẩu mới:");
 		lblMatKhau_1.setForeground(Color.BLACK);
 		lblMatKhau_1.setFont(new Font(Font.DIALOG, Font.BOLD, 20));
-		lblMatKhau_1.setBounds(4, 187, 229, 26);
+		lblMatKhau_1.setBounds(4, 187, 243, 28);
 		panelForgot.add(lblMatKhau_1);
 
 		btnResetPassword.addActionListener(this);
@@ -335,7 +335,6 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 		txtPhoneNo.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-
 				char c = e.getKeyChar();
 
 				// Not allow user to enter different characters except for digit

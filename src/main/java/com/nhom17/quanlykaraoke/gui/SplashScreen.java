@@ -45,7 +45,7 @@ public class SplashScreen extends JDialog {
 		ImageIcon icon = null;
 		try {
 			Image image = ImageIO.read(new File("src/main/resources/images/logo.png"));
-			Image scaledImage = image.getScaledInstance(600, 600, Image.SCALE_SMOOTH);
+			Image scaledImage = image.getScaledInstance(700, 700, Image.SCALE_SMOOTH);
 			icon = new ImageIcon(scaledImage);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

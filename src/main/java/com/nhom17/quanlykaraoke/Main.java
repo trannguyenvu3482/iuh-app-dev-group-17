@@ -30,7 +30,7 @@ public class Main {
 		SplashScreen splashGUI = new SplashScreen();
 		splashGUI.setVisible(true);
 
-		// Add window listener to detect when splash closes
+		// Add window listener to detect when splash screen close
 		splashGUI.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosed(WindowEvent e) {

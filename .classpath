@@ -38,5 +38,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="libs/swing-toast-notifications-1.0.1.jar"/>
+	<classpathentry kind="lib" path="libs/glasspane-popup.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

@@ -51,7 +51,6 @@ public class NhanVienDAO {
 
 	private int countNhanVien() {
 		Session session = factory.getCurrentSession();
-		Transaction t = session.getTransaction();
 
 		try {
 			String hql = "From NhanVien";
