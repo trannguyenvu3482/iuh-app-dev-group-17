@@ -1,7 +1,9 @@
 package com.nhom17.quanlykaraoke.gui.panels;
 
+import java.awt.Component;
 import java.awt.Font;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -21,6 +23,9 @@ public class NotificationItem extends JPanel {
 
 		lblTitle.setText(name);
 		lblDesc.setText(des);
+
+		Component horizontalGlue = Box.createHorizontalGlue();
+		add(horizontalGlue);
 	}
 
 }

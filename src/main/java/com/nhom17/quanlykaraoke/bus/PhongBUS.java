@@ -25,7 +25,7 @@ public class PhongBUS {
 		return pDAO.getAllPhongs();
 	}
 
-	public List<Phong> getPhongPage(int page) {
-		return pDAO.getPhongPage(page);
-	}
+//	public List<Phong> getPhongPage(int page) {
+//		return pDAO.getPhongPage(page);
+//	}
 }

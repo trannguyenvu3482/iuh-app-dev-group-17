@@ -67,14 +67,14 @@ public class QuanLyPhieuDatPhongPanel extends JPanel implements ActionListener {
 	private final JPanel panel8 = new JPanel();
 
 	// VARIABLES
+	private final PhongBUS pBUS = new PhongBUS();
 	private int currentPage = 1;
 	private int maxPageSize = -1;
+	private List<Phong> listRooms = null;
+	private RoomPanel currentSelectedRoomPanel = null;
 
 	public QuanLyPhieuDatPhongPanel() {
-		PhongBUS pBUS = new PhongBUS();
-		this.maxPageSize = (int) Math.ceil((double) pBUS.getAllPhongs().size() / 8);
 
-		System.out.println("MAX PAGE SIZE: " + maxPageSize);
 		setSize(1200, 800);
 		setLayout(new BorderLayout(0, 0));
 
@@ -343,16 +343,33 @@ public class QuanLyPhieuDatPhongPanel extends JPanel implements ActionListener {
 			}
 		});
 
+		refreshListRooms();
 		loadPageRoom(currentPage);
+		btnAdd.setVisible(false);
+		btnRemove.setVisible(false);
 	}
 
 	/**
 	 * 
 	 */
 	private void loadPageRoom(int page) {
-		PhongBUS phongBus = new PhongBUS();
+		int startIndex = 0;
+		int endIndex = 0;
+		if (page != 1) {
+			startIndex = (page - 1) * 8;
+		}
 
-		List<Phong> rooms = phongBus.getPhongPage(page);
+		// By default, always get next 8 items
+		endIndex = startIndex + 8;
+
+		// If there is less than 8 items on next page, only get the maximum allowed
+		if (endIndex > listRooms.size() - 1) {
+			endIndex = listRooms.size();
+		}
+
+		System.out.println("Start: " + startIndex + ", End: " + endIndex);
+		List<Phong> roomPage = this.listRooms.subList(startIndex, endIndex);
+		System.out.println("roomPage Size: " + roomPage.size());
 
 		// Handle edge case
 //		if (rooms.size() < pageSize) {
@@ -377,24 +394,57 @@ public class QuanLyPhieuDatPhongPanel extends JPanel implements ActionListener {
 			panel.setVisible(false);
 		});
 
-		rooms.forEach((room) -> {
+		roomPage.forEach((room) -> {
 
-			int index = rooms.indexOf(room);
+			int index = roomPage.indexOf(room);
 
-			if (index < panels.size()) {
+			if (index <= panels.size()) {
 
 				JPanel panel = panels.get(index);
 
 				panel.removeAll();
 
 				RoomPanel roomPanel = new RoomPanel(room);
+
+				roomPanel.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						handleRoomClick(roomPanel);
+					}
+				});
+
 				panel.add(roomPanel);
 				panel.setVisible(true);
+
 			} else {
 				// handle overflow rooms
 			}
-
 		});
+
+	}
+
+	private void handleRoomClick(RoomPanel clickedPanel) {
+		List<JPanel> panels = List.of(panel1, panel2, panel3, panel4, panel5, panel6, panel7, panel8);
+		// Deselect all
+		panels.forEach(panel -> {
+			((RoomPanel) panel.getComponent(0)).deselect();
+		});
+
+		// Select clicked
+		clickedPanel.select();
+		currentSelectedRoomPanel = clickedPanel;
+
+		// Show plus if room selected
+		btnAdd.setVisible(true);
+		btnRemove.setVisible(true);
+	}
+
+	private void refreshListRooms() {
+		this.listRooms = pBUS.getAllPhongs();
+		System.out.println("Original list room size: " + listRooms.size());
+		this.maxPageSize = (int) Math.ceil((double) this.listRooms.size() / 8);
+
+		System.out.println("MAX PAGE SIZE: " + maxPageSize);
 	}
 
 	@Override
@@ -408,6 +458,10 @@ public class QuanLyPhieuDatPhongPanel extends JPanel implements ActionListener {
 		} else if (o.equals(btnRight)) {
 			currentPage++;
 			loadPageRoom(currentPage);
+		} else if (o.equals(btnAdd)) {
+			currentSelectedRoomPanel.createPDP();
+		} else if (o.equals(btnRemove)) {
+			currentSelectedRoomPanel.removePDP();
 		}
 
 	}

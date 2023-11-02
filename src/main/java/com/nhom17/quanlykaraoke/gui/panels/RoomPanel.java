@@ -2,6 +2,7 @@ package com.nhom17.quanlykaraoke.gui.panels;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.event.MouseEvent;
@@ -40,8 +41,11 @@ public class RoomPanel extends JPanel implements MouseListener {
 
 	// VARIABLES
 	private String roomName = "Phòng ";
+	private boolean isSelected = false;
+	private Phong p = null;
 
 	public RoomPanel(Phong p) {
+		this.p = p;
 		this.roomName = roomName.concat(p.getMaPhong());
 		setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
@@ -90,10 +94,30 @@ public class RoomPanel extends JPanel implements MouseListener {
 		lblStatus.setText("Trạng thái: " + (p.isTrangThai() == true ? "Đã đặt" : "Trống"));
 	}
 
+	public void createPDP() {
+		System.out.println("Tạo phiếu đặt phòng cho phòng: " + p.getMaPhong());
+	}
+
+	public void removePDP() {
+		System.out.println("Hủy phiếu đặt phòng cho phòng: " + p.getMaPhong());
+	}
+
+	public void select() {
+		mainPanel.setBackground(Color.cyan);
+		infoPanel.setBackground(Color.cyan);
+
+		this.isSelected = true;
+	}
+
+	public void deselect() {
+		mainPanel.setBackground(Color.white);
+		infoPanel.setBackground(Color.white);
+
+		this.isSelected = false;
+	}
+
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override

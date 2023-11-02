@@ -53,27 +53,27 @@ public class PhongDAO {
 		}
 	}
 
-	public List<Phong> getPhongPage(int page) {
-		Session session = factory.getCurrentSession();
-		Transaction t = session.beginTransaction();
-		List<Phong> listPhong = null;
-		try {
-			String hql = "from Phong";
-			int startIndex = 0;
-			if (page != 1) {
-				startIndex = (page - 1) * 8;
-			}
-
-			System.out.println("Start Index: " + startIndex);
-			listPhong = session.createQuery(hql, Phong.class).setFirstResult(startIndex).setMaxResults(8)
-					.getResultList();
-
-			t.commit();
-			return listPhong;
-		} catch (Exception e) {
-			System.out.println("ROLLBACK!");
-			t.rollback();
-			return listPhong;
-		}
-	}
+//	public List<Phong> getPhongPage(int page) {
+//		Session session = factory.getCurrentSession();
+//		Transaction t = session.beginTransaction();
+//		List<Phong> listPhong = null;
+//		try {
+//			String hql = "from Phong";
+//			int startIndex = 0;
+//			if (page != 1) {
+//				startIndex = (page - 1) * 8;
+//			}
+//
+//			System.out.println("Start Index: " + startIndex);
+//			listPhong = session.createQuery(hql, Phong.class).setFirstResult(startIndex).setMaxResults(8)
+//					.getResultList();
+//
+//			t.commit();
+//			return listPhong;
+//		} catch (Exception e) {
+//			System.out.println("ROLLBACK!");
+//			t.rollback();
+//			return listPhong;
+//		}
+//	}
 }
