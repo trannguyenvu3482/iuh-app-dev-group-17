@@ -7,15 +7,19 @@ import java.awt.Component;
 import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Ellipse2D;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -58,6 +62,9 @@ import raven.glasspanepopup.GlassPanePopup;
 import raven.toast.Notifications;
 
 /**
+ * 
+ * Màn hình quản lý nhân viên
+ * 
  * @author Trần Nguyên Vũ, Trần Ngọc Phát, Mai Nhật Hào, Trần Thanh Vy
  * @version 1.0
  * @created 17-Oct-2023 22:13:00
@@ -135,8 +142,23 @@ public class QuanLyNhanVienGUI extends MyFrame implements ActionListener {
 		// Set avatar
 		ImageIcon avatar = null;
 		try {
-			avatar = new ImageIcon(ImageIO.read(new ByteArrayInputStream(currentNhanVien.getAnhDaiDien())));
-			avatar.setImage(avatar.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH));
+			BufferedImage img = ImageIO.read(new ByteArrayInputStream(currentNhanVien.getAnhDaiDien()));
+
+			int width = img.getWidth(null);
+			int height = img.getHeight(null);
+
+			BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g2 = bi.createGraphics();
+
+			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			int circleDiameter = Math.min(width, height);
+			Ellipse2D.Double circle = new Ellipse2D.Double(0, 0, circleDiameter, circleDiameter);
+			g2.setClip(circle);
+			g2.drawImage(img, 0, 0, null);
+
+			// Display circular image
+			avatar = new ImageIcon(bi.getScaledInstance(200, 200, Image.SCALE_SMOOTH));
+//			avatar.setImage(avatar.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -366,7 +388,6 @@ public class QuanLyNhanVienGUI extends MyFrame implements ActionListener {
 				btnBack.setIcon(MyIcon.getIcon(MaterialDesignC.CHEVRON_LEFT_CIRCLE, 40, Color.white));
 				btnBack.setRolloverIcon(MyIcon.getIcon(MaterialDesignC.CHEVRON_LEFT_CIRCLE, 40, Color.RED));
 
-//				openSidebar();
 				leftPanel.setPreferredSize(new Dimension((int) (screenWidth * 0.25), leftPanel.getHeight()));
 
 				isSidebarMinimized = false;
@@ -378,7 +399,6 @@ public class QuanLyNhanVienGUI extends MyFrame implements ActionListener {
 				btnBack.setIcon(MyIcon.getIcon(MaterialDesignC.CHEVRON_RIGHT_CIRCLE, 40, Color.white));
 				btnBack.setRolloverIcon(MyIcon.getIcon(MaterialDesignC.CHEVRON_RIGHT_CIRCLE, 40, Color.RED));
 
-//				closeSidebar();
 				leftPanel.setPreferredSize(new Dimension((int) (screenWidth * 0.04), leftPanel.getHeight()));
 
 				isSidebarMinimized = true;

@@ -1,3 +1,8 @@
+/**
+ * @author Trần Nguyên Vũ, Trần Ngọc Phát, Mai Nhật Hào, Trần Thanh Vy
+ * @version 1.0
+ * @created Nov 3, 2023 2:51:22 PM
+ */
 package com.nhom17.quanlykaraoke.gui.panels;
 
 import java.awt.AWTException;
@@ -19,6 +24,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -26,6 +32,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import org.kordamp.ikonli.materialdesign2.MaterialDesignC;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignF;
@@ -36,20 +43,26 @@ import org.kordamp.ikonli.materialdesign2.MaterialDesignS;
 
 import com.nhom17.quanlykaraoke.bus.PhongBUS;
 import com.nhom17.quanlykaraoke.common.MyIcon;
+import com.nhom17.quanlykaraoke.common.PhieuDatPhongPage;
 import com.nhom17.quanlykaraoke.entities.Phong;
+import com.nhom17.quanlykaraoke.utils.ConstantUtil;
 
 import net.miginfocom.swing.MigLayout;
+import raven.toast.Notifications;
 
 /**
+ * Màn hình quản lý phiếu đặt phòng
+ *
  * @author Trần Nguyên Vũ, Trần Ngọc Phát, Mai Nhật Hào, Trần Thanh Vy
  * @version 1.0
  * @created 25-Oct-2023 16:39:00
  */
 public class QuanLyPhieuDatPhongPanel extends JPanel implements ActionListener {
+
 	private static final long serialVersionUID = 1L;
 
 	// COMPONENTS
-	private final JTextField txtSearchMaPhong;
+	private final JTextField txtSearchMaPhong = new JTextField();
 	private final JButton btnLichSuPDP = new JButton("");
 	private final JButton btnLeft = new JButton("");
 	private final JButton btnRight = new JButton("");
@@ -57,6 +70,7 @@ public class QuanLyPhieuDatPhongPanel extends JPanel implements ActionListener {
 	private final JButton btnChangeRoom = new JButton("");
 	private final JButton btnRemove = new JButton("");
 	private final JButton btnCheckout = new JButton("");
+	private final JPanel roomsPanel = new JPanel();
 	private final JPanel panel1 = new JPanel();
 	private final JPanel panel2 = new JPanel();
 	private final JPanel panel3 = new JPanel();
@@ -71,10 +85,202 @@ public class QuanLyPhieuDatPhongPanel extends JPanel implements ActionListener {
 	private int currentPage = 1;
 	private int maxPageSize = -1;
 	private List<Phong> listRooms = null;
+	private List<Phong> listFilteredRooms = null;
 	private RoomPanel currentSelectedRoomPanel = null;
+	private final List<JPanel> roomUIPanels = List.of(panel1, panel2, panel3, panel4, panel5, panel6, panel7, panel8);
+	private String searchString = "";
 
+	/**
+	 * Instantiates a new quan ly phieu dat phong panel.
+	 */
 	public QuanLyPhieuDatPhongPanel() {
+		// Create the UI
+		initUI();
 
+		// Initiate the rooms
+		this.listRooms = pBUS.getAllPhongs();
+		this.maxPageSize = (int) Math.ceil((double) listRooms.size() / 8);
+
+		// Load first page
+		loadPageRoom(listRooms, currentPage);
+	}
+
+	/**
+	 * Handle show pagination buttons.
+	 * 
+	 * @author trannguyenvu3482
+	 * @param page The page that is paginated to
+	 */
+	private void handleShowPaginationButtons(int page) {
+		if (maxPageSize == 1) {
+			btnLeft.setVisible(false);
+			btnRight.setVisible(false);
+		} else if (page == 1) {
+			btnLeft.setVisible(false);
+			btnRight.setVisible(true);
+		} else if (page == maxPageSize) {
+			btnLeft.setVisible(true);
+			btnRight.setVisible(false);
+		} else {
+			btnLeft.setVisible(true);
+			btnRight.setVisible(true);
+		}
+	}
+
+	/**
+	 * Load the list of rooms onto the panels.
+	 *
+	 * @author trannguyenvu3482
+	 * @param currentPageRooms the current list of rooms
+	 */
+	private void loadRoomPanels(List<Phong> currentPageRooms) {
+		// TODO Auto-generated method stub
+
+		// Disable all panels
+		roomUIPanels.forEach(panel -> {
+			panel.setVisible(false);
+		});
+
+		// Handle empty room panels
+		if (currentPageRooms == null) {
+			Notifications.getInstance().show(Notifications.Type.ERROR, Notifications.Location.BOTTOM_RIGHT,
+					"Không tìm thấy phòng cần tìm!");
+			return;
+		}
+
+		// Add RoomPanel inside each panel
+		currentPageRooms.forEach((room) -> {
+
+			int index = currentPageRooms.indexOf(room);
+
+			JPanel panel = roomUIPanels.get(index);
+
+			panel.removeAll();
+
+			RoomPanel roomPanel = new RoomPanel(room);
+
+			roomPanel.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					handleRoomClick(roomPanel);
+				}
+			});
+
+			panel.add(roomPanel);
+			panel.setVisible(true);
+
+		});
+	}
+
+	/**
+	 * Handle pagination and loading of rooms.
+	 *
+	 * @author trannguyenvu3482
+	 * @param listRooms The current list of rooms
+	 * @param page      The page that the user wants to go to
+	 */
+	private void loadPageRoom(List<Phong> listRooms, int page) {
+		// Invlid page check
+		if (page < 1 || page > maxPageSize) {
+			return;
+		}
+
+		// Calculate page size
+		this.maxPageSize = (int) Math.ceil((double) listRooms.size() / ConstantUtil.MAXIMUM_PAGE_SIZE);
+
+		// Get pages
+		PhieuDatPhongPage<Phong> currentPage = new PhieuDatPhongPage<Phong>(page, listRooms);
+
+		// Handle left, right btns
+		handleShowPaginationButtons(currentPage.getPageNumber());
+
+		// Load all room panels
+		loadRoomPanels(currentPage.getItems());
+	}
+
+	/**
+	 * Handle room click.
+	 * 
+	 * @author trannguyenvu3482
+	 * @param clickedPanel the clicked panel
+	 */
+	private void handleRoomClick(RoomPanel clickedPanel) {
+		// Deselect all
+		roomUIPanels.forEach(panel -> {
+			((RoomPanel) panel.getComponent(0)).deselect();
+		});
+
+		// Select clicked
+		clickedPanel.select();
+		currentSelectedRoomPanel = clickedPanel;
+
+		// Show plus if room selected
+		btnAdd.setVisible(true);
+		btnRemove.setVisible(true);
+	}
+
+	/**
+	 * Handle filter rooms.
+	 * 
+	 * @author trannguyenvu3482
+	 * @param newRoomList the new room list
+	 */
+	private void handleFilterRooms(List<Phong> newRoomList) {
+		this.listFilteredRooms = newRoomList;
+		this.maxPageSize = (int) Math.ceil((double) listFilteredRooms.size() / ConstantUtil.MAXIMUM_PAGE_SIZE);
+		this.currentPage = 1;
+		loadPageRoom(newRoomList, currentPage);
+	}
+
+	/**
+	 * Action performed.
+	 * 
+	 * @author trannguyenvu3482
+	 * @param e the event
+	 */
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		Object o = e.getSource();
+
+		if (o.equals(btnLeft)) {
+			currentPage--;
+			loadPageRoom(listRooms, currentPage);
+		} else if (o.equals(btnRight)) {
+			currentPage++;
+			loadPageRoom(listRooms, currentPage);
+		} else if (o.equals(btnAdd)) {
+			currentSelectedRoomPanel.createPDP();
+		} else if (o.equals(btnRemove)) {
+			currentSelectedRoomPanel.removePDP();
+		}
+
+	}
+
+	/**
+	 * Handle search function
+	 * 
+	 * @author trannguyenvu3482
+	 */
+	private void handleSearch() {
+		listFilteredRooms = listFilteredRooms.stream().filter(room -> {
+			return room.getMaPhong().contains(searchString);
+		}).collect(Collectors.toList());
+
+		handleFilterRooms(listFilteredRooms);
+		if (listFilteredRooms.size() > 0) {
+			loadPageRoom(listFilteredRooms, currentPage);
+		} else {
+			loadRoomPanels(null);
+		}
+	}
+
+	/**
+	 * Initiate the UI
+	 * 
+	 * @author trannguyenvu3482
+	 */
+	private void initUI() {
 		setSize(1200, 800);
 		setLayout(new BorderLayout(0, 0));
 
@@ -99,7 +305,6 @@ public class QuanLyPhieuDatPhongPanel extends JPanel implements ActionListener {
 		panel.setBackground(null);
 		panelTop.add(panel, "cell 2 0,push ,alignx right,aligny center");
 
-		txtSearchMaPhong = new JTextField();
 		panel.add(txtSearchMaPhong);
 		txtSearchMaPhong.setFont(new Font("Dialog", Font.PLAIN, 20));
 		txtSearchMaPhong.setForeground(Color.LIGHT_GRAY);
@@ -128,7 +333,6 @@ public class QuanLyPhieuDatPhongPanel extends JPanel implements ActionListener {
 		gbc_btnLeft.gridy = 0;
 		panelCenter.add(btnLeft, gbc_btnLeft);
 
-		JPanel roomsPanel = new JPanel();
 		roomsPanel.setBackground(Color.GRAY);
 		GridBagConstraints gbc_roomsPanel = new GridBagConstraints();
 		gbc_roomsPanel.fill = GridBagConstraints.BOTH;
@@ -303,7 +507,6 @@ public class QuanLyPhieuDatPhongPanel extends JPanel implements ActionListener {
 
 			@Override
 			public void focusLost(FocusEvent e) {
-				System.out.println("FocusLost");
 				if (txtSearchMaPhong.getText().isEmpty()) {
 					txtSearchMaPhong.setForeground(Color.GRAY);
 					txtSearchMaPhong.setText("Nhập vào mã phòng cần tìm...");
@@ -315,15 +518,25 @@ public class QuanLyPhieuDatPhongPanel extends JPanel implements ActionListener {
 		txtSearchMaPhong.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				System.out.println("User typed: " + txtSearchMaPhong.getText());
+				SwingUtilities.invokeLater(() -> {
+					searchString = txtSearchMaPhong.getText().trim();
+					if (searchString.equals("")) {
+						handleFilterRooms(listRooms);
+						return;
+					} else {
+						listFilteredRooms = listRooms;
+						handleSearch();
+					}
+				});
 			}
+
 		});
 
 		// Check if click outside of txtSearch
 		this.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (!txtSearchMaPhong.contains(e.getX(), e.getY())) {
+				if (!txtSearchMaPhong.contains(e.getX(), e.getY()) && txtSearchMaPhong.isFocusOwner()) {
 					if (txtSearchMaPhong.getText().isEmpty()) {
 						txtSearchMaPhong.setForeground(Color.GRAY);
 						txtSearchMaPhong.setText("Nhập vào mã phòng cần tìm...");
@@ -343,126 +556,7 @@ public class QuanLyPhieuDatPhongPanel extends JPanel implements ActionListener {
 			}
 		});
 
-		refreshListRooms();
-		loadPageRoom(currentPage);
 		btnAdd.setVisible(false);
 		btnRemove.setVisible(false);
-	}
-
-	/**
-	 * 
-	 */
-	private void loadPageRoom(int page) {
-		int startIndex = 0;
-		int endIndex = 0;
-		if (page != 1) {
-			startIndex = (page - 1) * 8;
-		}
-
-		// By default, always get next 8 items
-		endIndex = startIndex + 8;
-
-		// If there is less than 8 items on next page, only get the maximum allowed
-		if (endIndex > listRooms.size() - 1) {
-			endIndex = listRooms.size();
-		}
-
-		System.out.println("Start: " + startIndex + ", End: " + endIndex);
-		List<Phong> roomPage = this.listRooms.subList(startIndex, endIndex);
-		System.out.println("roomPage Size: " + roomPage.size());
-
-		// Handle edge case
-//		if (rooms.size() < pageSize) {
-//			return;
-//		}
-
-		// Handle pagination btns
-		if (page == 1) {
-			btnLeft.setVisible(false);
-			btnRight.setVisible(true);
-		} else if (page == maxPageSize) {
-			btnLeft.setVisible(true);
-			btnRight.setVisible(false);
-		} else {
-			btnLeft.setVisible(true);
-			btnRight.setVisible(true);
-		}
-
-		List<JPanel> panels = List.of(panel1, panel2, panel3, panel4, panel5, panel6, panel7, panel8);
-
-		panels.forEach(panel -> {
-			panel.setVisible(false);
-		});
-
-		roomPage.forEach((room) -> {
-
-			int index = roomPage.indexOf(room);
-
-			if (index <= panels.size()) {
-
-				JPanel panel = panels.get(index);
-
-				panel.removeAll();
-
-				RoomPanel roomPanel = new RoomPanel(room);
-
-				roomPanel.addMouseListener(new MouseAdapter() {
-					@Override
-					public void mouseClicked(MouseEvent e) {
-						handleRoomClick(roomPanel);
-					}
-				});
-
-				panel.add(roomPanel);
-				panel.setVisible(true);
-
-			} else {
-				// handle overflow rooms
-			}
-		});
-
-	}
-
-	private void handleRoomClick(RoomPanel clickedPanel) {
-		List<JPanel> panels = List.of(panel1, panel2, panel3, panel4, panel5, panel6, panel7, panel8);
-		// Deselect all
-		panels.forEach(panel -> {
-			((RoomPanel) panel.getComponent(0)).deselect();
-		});
-
-		// Select clicked
-		clickedPanel.select();
-		currentSelectedRoomPanel = clickedPanel;
-
-		// Show plus if room selected
-		btnAdd.setVisible(true);
-		btnRemove.setVisible(true);
-	}
-
-	private void refreshListRooms() {
-		this.listRooms = pBUS.getAllPhongs();
-		System.out.println("Original list room size: " + listRooms.size());
-		this.maxPageSize = (int) Math.ceil((double) this.listRooms.size() / 8);
-
-		System.out.println("MAX PAGE SIZE: " + maxPageSize);
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		Object o = e.getSource();
-
-		if (o.equals(btnLeft)) {
-			currentPage--;
-			loadPageRoom(currentPage);
-		} else if (o.equals(btnRight)) {
-			currentPage++;
-			loadPageRoom(currentPage);
-		} else if (o.equals(btnAdd)) {
-			currentSelectedRoomPanel.createPDP();
-		} else if (o.equals(btnRemove)) {
-			currentSelectedRoomPanel.removePDP();
-		}
-
 	}
 }

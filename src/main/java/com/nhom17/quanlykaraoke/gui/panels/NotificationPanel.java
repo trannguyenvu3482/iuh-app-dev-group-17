@@ -1,6 +1,12 @@
 package com.nhom17.quanlykaraoke.gui.panels;
 
 import java.awt.BorderLayout;
+
+/**
+ * @author Trần Nguyên Vũ, Trần Ngọc Phát, Mai Nhật Hào, Trần Thanh Vy
+ * @version 1.0
+ * @created Nov 3, 2023 1:33:55 PM
+ */
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -20,7 +26,6 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
 import net.miginfocom.swing.MigLayout;
-
 public class NotificationPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private final JPanel panel = new JPanel();

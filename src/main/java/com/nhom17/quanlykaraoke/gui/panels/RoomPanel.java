@@ -20,6 +20,7 @@ import com.nhom17.quanlykaraoke.common.MyIcon;
 import com.nhom17.quanlykaraoke.entities.Phong;
 import com.nhom17.quanlykaraoke.utils.MoneyFormatUtil;
 
+// TODO: Auto-generated Javadoc
 /**
  * @author Trần Nguyên Vũ, Trần Ngọc Phát, Mai Nhật Hào, Trần Thanh Vy
  * @version 1.0
@@ -44,9 +45,58 @@ public class RoomPanel extends JPanel implements MouseListener {
 	private boolean isSelected = false;
 	private Phong p = null;
 
+	/**
+	 * Instantiates a new room panel.
+	 *
+	 * @param p the Phong
+	 */
 	public RoomPanel(Phong p) {
+		// Set variables
 		this.p = p;
 		this.roomName = roomName.concat(p.getMaPhong());
+
+		// Create the UI
+		initUI();
+	}
+
+	/**
+	 * Create a PhieuDatPhong
+	 */
+	public void createPDP() {
+		System.out.println("Tạo phiếu đặt phòng cho phòng: " + p.getMaPhong());
+	}
+
+	/**
+	 * Remove a PhieuDatPhong
+	 */
+	public void removePDP() {
+		System.out.println("Hủy phiếu đặt phòng cho phòng: " + p.getMaPhong());
+	}
+
+	/**
+	 * Select a Phong
+	 */
+	public void select() {
+		mainPanel.setBackground(Color.cyan);
+		infoPanel.setBackground(Color.cyan);
+
+		this.isSelected = true;
+	}
+
+	/**
+	 * Deselect a Phong
+	 */
+	public void deselect() {
+		mainPanel.setBackground(Color.white);
+		infoPanel.setBackground(Color.white);
+
+		this.isSelected = false;
+	}
+
+	/**
+	 * Initiate the UI
+	 */
+	private void initUI() {
 		setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 		if (p.isTrangThai()) {
@@ -64,6 +114,9 @@ public class RoomPanel extends JPanel implements MouseListener {
 		panel.add(mainPanel, "mainPanel");
 		mainPanel.setLayout(new BorderLayout(0, 0));
 		mainPanel.add(lblRoom, BorderLayout.SOUTH);
+
+		mainPanel.setBackground(Color.white);
+		infoPanel.setBackground(Color.white);
 
 		lblRoom.setText(roomName);
 
@@ -94,50 +147,53 @@ public class RoomPanel extends JPanel implements MouseListener {
 		lblStatus.setText("Trạng thái: " + (p.isTrangThai() == true ? "Đã đặt" : "Trống"));
 	}
 
-	public void createPDP() {
-		System.out.println("Tạo phiếu đặt phòng cho phòng: " + p.getMaPhong());
-	}
-
-	public void removePDP() {
-		System.out.println("Hủy phiếu đặt phòng cho phòng: " + p.getMaPhong());
-	}
-
-	public void select() {
-		mainPanel.setBackground(Color.cyan);
-		infoPanel.setBackground(Color.cyan);
-
-		this.isSelected = true;
-	}
-
-	public void deselect() {
-		mainPanel.setBackground(Color.white);
-		infoPanel.setBackground(Color.white);
-
-		this.isSelected = false;
-	}
-
+	/**
+	 * Mouse clicked.
+	 *
+	 * @param e the event
+	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
 	}
 
+	/**
+	 * Mouse entered.
+	 *
+	 * @param e the event
+	 */
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		CardLayout cl = (CardLayout) panel.getLayout();
 		cl.show(panel, "infoPanel");
 	}
 
+	/**
+	 * Mouse pressed.
+	 *
+	 * @param e the event
+	 */
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
 
 	}
 
+	/**
+	 * Mouse released.
+	 *
+	 * @param e the event
+	 */
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
 
 	}
 
+	/**
+	 * Mouse exited.
+	 *
+	 * @param e the event
+	 */
 	@Override
 	public void mouseExited(MouseEvent e) {
 		CardLayout cl = (CardLayout) panel.getLayout();

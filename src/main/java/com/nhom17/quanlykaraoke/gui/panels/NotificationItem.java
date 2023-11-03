@@ -1,3 +1,4 @@
+
 package com.nhom17.quanlykaraoke.gui.panels;
 
 import java.awt.Component;
@@ -8,6 +9,11 @@ import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+/**
+ * @author Trần Nguyên Vũ, Trần Ngọc Phát, Mai Nhật Hào, Trần Thanh Vy
+ * @version 1.0
+ * @created Nov 3, 2023 1:34:06 PM
+ */
 public class NotificationItem extends JPanel {
 	private static final long serialVersionUID = 1L;
 

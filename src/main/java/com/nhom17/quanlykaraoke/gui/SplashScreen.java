@@ -16,6 +16,8 @@ import javax.swing.JProgressBar;
 import javax.swing.SwingConstants;
 
 /**
+ * Màn hình chờ khi load ứng dụng
+ * 
  * @author Trần Nguyên Vũ, Trần Ngọc Phát, Mai Nhật Hào, Trần Thanh Vy
  * @version 1.0
  * @created 25-Oct-2023 14:51:00
@@ -27,6 +29,59 @@ public class SplashScreen extends JDialog {
 	private final JLabel lblStatus = new JLabel("");
 
 	public SplashScreen() {
+		initUI();
+		startLoadingBar();
+	}
+
+	/**
+	 * Bắt đầu chạy thanh loading
+	 */
+	private void startLoadingBar() {
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					for (int i = 0; i <= 100; i++) {
+						// Speed of the progress bar
+						Thread.sleep(60);
+						lblPercent.setText(i + "%");
+
+						if (i == 10) {
+							lblStatus.setText("Đang bật hệ thống...");
+						}
+
+						if (i == 20) {
+							lblStatus.setText("Đang bắt đầu hệ thống...");
+						}
+
+						if (i == 50) {
+							lblStatus.setText("Đang kết nối đến cơ sở dữ liệu...");
+						}
+
+						if (i == 70) {
+							lblStatus.setText("Đang kiểm tra các lỗi...");
+						}
+
+						if (i == 80) {
+							lblStatus.setText("Đang hoàn tất...");
+						}
+
+						loadingBar.setValue(i);
+					}
+
+					dispose();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}).start();
+	}
+
+	/**
+	 * Khởi tạo UI
+	 */
+	private void initUI() {
 		setSize(1280, 720);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
@@ -72,48 +127,5 @@ public class SplashScreen extends JDialog {
 		lblStatus.setBounds(920, 675, 340, 26);
 		mainPanel.add(lblStatus);
 
-		startLoadingBar();
-	}
-
-	private void startLoadingBar() {
-		new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-				try {
-					for (int i = 0; i <= 100; i++) {
-						// Speed of the progress bar
-						Thread.sleep(60);
-						lblPercent.setText(i + "%");
-
-						if (i == 10) {
-							lblStatus.setText("Đang bật hệ thống...");
-						}
-
-						if (i == 20) {
-							lblStatus.setText("Đang bắt đầu hệ thống...");
-						}
-
-						if (i == 50) {
-							lblStatus.setText("Đang kết nối đến cơ sở dữ liệu...");
-						}
-
-						if (i == 70) {
-							lblStatus.setText("Đang kiểm tra các lỗi...");
-						}
-
-						if (i == 80) {
-							lblStatus.setText("Đang hoàn tất...");
-						}
-
-						loadingBar.setValue(i);
-					}
-
-					dispose();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		}).start();
 	}
 }

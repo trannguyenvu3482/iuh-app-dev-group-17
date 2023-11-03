@@ -114,5 +114,32 @@
 			<version>1.0</version>
 		</dependency>
 
+		<dependency>
+			<groupId>glasspane-popup</groupId>
+			<artifactId>glasspane-popup</artifactId>
+			<scope>system</scope>
+			<version>1.0</version>
+			<systemPath>${project.basedir}/libs/glasspane-popup.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>swing-toast-notifications</groupId>
+			<artifactId>swing-toast-notifications</artifactId>
+			<scope>system</scope>
+			<version>1.0</version>
+			<systemPath>${project.basedir}/libs/swing-toast-notifications-1.0.1.jar</systemPath>
+		</dependency>
 	</dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>9</source>
+                    <target>9</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
