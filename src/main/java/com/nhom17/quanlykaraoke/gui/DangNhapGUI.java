@@ -1,3 +1,8 @@
+/**
+ * @author Trần Nguyên Vũ, Trần Ngọc Phát, Mai Nhật Hào, Trần Thanh Vy
+ * @version 1.0
+ * @created Nov 6, 2023 1:06:43 AM
+ */
 package com.nhom17.quanlykaraoke.gui;
 
 import java.awt.BorderLayout;
@@ -7,10 +12,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,10 +25,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 import javax.swing.text.MaskFormatter;
 
 import org.kordamp.ikonli.materialdesign2.MaterialDesignA;
@@ -60,14 +62,14 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 	private DangNhapBUS dangNhapBUS;
 
 	// COMPONENTS
-	private final JTextField txtMaNV;
-	private final JPasswordField txtMatKhau;
+	private JFormattedTextField txtMaNV = null;
+	private JPasswordField txtMatKhau;
 	private final JButton btnDangNhap;
 	private final JButton btnShow = new JButton("");
 	private final JPasswordField txtNewPassword;
 	private final JPasswordField txtConfirmNewPassword;
 	private final JFormattedTextField txtPhoneNo;
-	private final JTextField txtOTP;
+	private final JFormattedTextField txtOTP;
 	private final JButton btnQuenMatKhau = new JButton("Quên mật khẩu?");
 	private final JPanel panelLogin = new JPanel();
 	private final JPanel panelForgot = new JPanel();
@@ -76,6 +78,7 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 	private final JButton btnGetOTP = new JButton("Lấy mã OTP");
 	private final JButton btnReturn = new JButton("");
 	private final JButton btnResetPassword = new JButton("Tạo mật khẩu mới");
+
 	// LOCAL VARIABLES
 	private Map<JPasswordField, Boolean> isPasswordShownStates = new HashMap<>();
 	private LoginListener listener;
@@ -146,6 +149,7 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 
 		btnGetOTP.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		btnGetOTP.setBounds(378, 330, 141, 52);
+		btnGetOTP.setEnabled(false);
 		panelForgot.add(btnGetOTP);
 
 		JLabel lblNewPassWordIcon = new JLabel("", MyIcon.getIcon(MaterialDesignL.LOCK, MyIcon.DEFAULT_SIZE, null),
@@ -188,6 +192,7 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 		lblMatKhau_1.setBounds(4, 187, 243, 28);
 		panelForgot.add(lblMatKhau_1);
 
+		btnResetPassword.setEnabled(false);
 		btnResetPassword.addActionListener(this);
 		btnResetPassword.setFont(new Font(Font.DIALOG, Font.BOLD, 30));
 		btnResetPassword.setBounds(2, 412, 517, 87);
@@ -205,9 +210,21 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 		lblMatKhau_1_1.setBounds(4, 300, 229, 26);
 		panelForgot.add(lblMatKhau_1_1);
 
-		txtPhoneNo = new JFormattedTextField();
-		MaskFormatter formatter = new MaskFormatter("0###########");
-		formatter.setValidCharacters("0123456789");
+		MaskFormatter txtphoneNoFormatter = new MaskFormatter("0#########");
+		txtPhoneNo = new JFormattedTextField(txtphoneNoFormatter);
+
+		txtPhoneNo.addCaretListener(new CaretListener() {
+
+			@Override
+			public void caretUpdate(CaretEvent e) {
+				// TODO Auto-generated method stub
+				if (txtPhoneNo.getText().trim().length() == 10) {
+					btnGetOTP.setEnabled(true);
+				} else {
+					btnGetOTP.setEnabled(false);
+				}
+			}
+		});
 
 		txtPhoneNo.setFont(new Font(Font.DIALOG, Font.PLAIN, 20));
 		txtPhoneNo.setColumns(10);
@@ -221,7 +238,20 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 		btnShow_1_1.setBounds(474, 116, 50, 50);
 		panelForgot.add(btnShow_1_1);
 
-		txtOTP = new JTextField();
+		MaskFormatter txtOTPFormatter = new MaskFormatter("######");
+		txtOTP = new JFormattedTextField(txtOTPFormatter);
+
+		txtOTP.addCaretListener(new CaretListener() {
+
+			@Override
+			public void caretUpdate(CaretEvent e) {
+				if (txtOTP.getText().trim().length() == 6) {
+					btnResetPassword.setEnabled(true);
+				} else {
+					btnResetPassword.setEnabled(false);
+				}
+			}
+		});
 		txtOTP.setFont(new Font(Font.DIALOG, Font.PLAIN, 20));
 		txtOTP.setColumns(10);
 		txtOTP.setBorder(new EmptyBorder(0, 20, 0, 0));
@@ -244,7 +274,8 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 		lblMatKhauIcon.setHorizontalAlignment(SwingConstants.CENTER);
 		lblMatKhauIcon.setIcon(MyIcon.getIcon(MaterialDesignL.LOCK, MyIcon.DEFAULT_SIZE, null));
 
-		txtMaNV = new JTextField();
+		MaskFormatter txtMaNVFormatter = new MaskFormatter("NV###");
+		txtMaNV = new JFormattedTextField(txtMaNVFormatter);
 		txtMaNV.setBounds(0, 116, 520, 50);
 		panelLogin.add(txtMaNV);
 		txtMaNV.setFont(new Font(Font.DIALOG, Font.PLAIN, 20));
@@ -320,56 +351,13 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 						}
 					}
 				});
-
-		// Add key listener for enter key
-		txtMaNV.addKeyListener(new java.awt.event.KeyAdapter() {
-			@Override
-			public void keyPressed(java.awt.event.KeyEvent evt) {
-				if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
-					btnDangNhap.doClick();
-				}
-			}
-		});
-
-		// Add phone-number listener
-		txtPhoneNo.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyTyped(KeyEvent e) {
-				char c = e.getKeyChar();
-
-				// Not allow user to enter different characters except for digit
-				if (!Character.isDigit(c)) {
-					e.consume();
-				}
-			}
-		});
-
-		txtPhoneNo.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusLost(FocusEvent e) {
-				// Auto add 0 to text field
-				if (txtPhoneNo.getText().startsWith("0")) {
-					return;
-				}
-				txtPhoneNo.setValue("0" + txtPhoneNo.getText());
-			}
-		});
-
-		// Add otp-listener
-		txtOTP.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyTyped(KeyEvent e) {
-
-				char c = e.getKeyChar();
-
-				// Not allow user to enter different characters except for digit
-				if (!Character.isDigit(c)) {
-					e.consume();
-				}
-			}
-		});
 	}
 
+	/**
+	 * Action performed.
+	 *
+	 * @param e the event
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
@@ -377,29 +365,24 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 		if (o.equals(btnDangNhap)) {
 			handleLogin();
 		} else if (o.equals(btnShow)) {
-			toggleVisibility(btnShow, txtMatKhau);
+			togglePasswordVisibility(btnShow, txtMatKhau);
 		} else if (o.equals(btnShow2)) {
-			toggleVisibility(btnShow2, txtNewPassword);
+			togglePasswordVisibility(btnShow2, txtNewPassword);
 		} else if (o.equals(btnQuenMatKhau)) {
 			setTitle("Quên mật khẩu");
 			panelLogin.setVisible(false);
 			panelForgot.setVisible(true);
 		} else if (o.equals(btnGetOTP)) {
-			if (txtPhoneNo.getText().matches("^0\\d9$")) {
-				phoneNo = "+84" + txtPhoneNo.getText().substring(1);
-				OTPUtil.sendSMS("+" + phoneNo);
-				System.out.println("Send SMS to: " + phoneNo);
-				timeoutBtnGetOTP();
-				Notifications.getInstance().show(Notifications.Type.SUCCESS, Notifications.Location.BOTTOM_RIGHT,
-						"Đã gửi OTP thành công");
-			} else {
-				Notifications.getInstance().show(Notifications.Type.ERROR, Notifications.Location.BOTTOM_RIGHT,
-						"Số điện thoại phải có dạng 0xxxxxxxxx");
-			}
+			phoneNo = "+84" + txtPhoneNo.getText().substring(1);
+			OTPUtil.sendSMS("+" + phoneNo);
+			System.out.println("Send SMS to: " + phoneNo);
+			timeoutBtnGetOTP();
+			Notifications.getInstance().show(Notifications.Type.SUCCESS, Notifications.Location.BOTTOM_RIGHT,
+					"Đã gửi OTP thành công");
 
 		} else if (o.equals(btnResetPassword)) {
 			if (OTPUtil.checkOTP(phoneNo, txtOTP.getText())) {
-
+				// TODO: Thêm logic reset password tại đây
 			} else {
 				JOptionPane.showMessageDialog(null, "OTP không đúng", "Thông báo", JOptionPane.ERROR_MESSAGE);
 			}
@@ -410,6 +393,9 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 		}
 	}
 
+	/**
+	 * Timeout btn get OTP, timeout will increase: 10secs, 30secs, 1min, 5mins
+	 */
 	private void timeoutBtnGetOTP() {
 		btnGetOTP.setEnabled(false);
 
@@ -424,6 +410,9 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 		}
 	}
 
+	/**
+	 * Handle login action
+	 */
 	private void handleLogin() {
 		String maNV = txtMaNV.getText().trim();
 
@@ -474,7 +463,7 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 		return true;
 	}
 
-	private void toggleVisibility(JButton btn, JPasswordField txt) {
+	private void togglePasswordVisibility(JButton btn, JPasswordField txt) {
 		boolean visible = isPasswordShownStates.get(txt);
 		visible = !visible;
 
@@ -487,7 +476,6 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 			btn.setIcon(MyIcon.getIcon(MaterialDesignE.EYE_OFF, MyIcon.DEFAULT_SIZE, null));
 			txt.setEchoChar('*');
 		}
-
 	}
 
 	public String getLoggedInEmployeeID() {

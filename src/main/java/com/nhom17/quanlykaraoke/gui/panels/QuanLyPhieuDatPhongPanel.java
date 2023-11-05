@@ -254,7 +254,6 @@ public class QuanLyPhieuDatPhongPanel extends JPanel implements ActionListener {
 		} else if (o.equals(btnRemove)) {
 			currentSelectedRoomPanel.removePDP();
 		}
-
 	}
 
 	/**

@@ -18,9 +18,9 @@ import org.kordamp.ikonli.materialdesign2.MaterialDesignM;
 
 import com.nhom17.quanlykaraoke.common.MyIcon;
 import com.nhom17.quanlykaraoke.entities.Phong;
+import com.nhom17.quanlykaraoke.gui.TaoPhieuDatPhongDialog;
 import com.nhom17.quanlykaraoke.utils.MoneyFormatUtil;
 
-// TODO: Auto-generated Javadoc
 /**
  * @author Trần Nguyên Vũ, Trần Ngọc Phát, Mai Nhật Hào, Trần Thanh Vy
  * @version 1.0
@@ -63,7 +63,7 @@ public class RoomPanel extends JPanel implements MouseListener {
 	 * Create a PhieuDatPhong
 	 */
 	public void createPDP() {
-		System.out.println("Tạo phiếu đặt phòng cho phòng: " + p.getMaPhong());
+		new TaoPhieuDatPhongDialog(p).setVisible(true);
 	}
 
 	/**
