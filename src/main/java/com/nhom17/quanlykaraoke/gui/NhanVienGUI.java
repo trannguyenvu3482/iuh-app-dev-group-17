@@ -64,7 +64,7 @@ import raven.toast.Notifications;
 
 /**
  * 
- * Màn hình quản lý nhân viên
+ * Màn hình quản lý
  * 
  * @author Trần Nguyên Vũ, Trần Ngọc Phát, Mai Nhật Hào, Trần Thanh Vy
  * @version 1.0
@@ -90,19 +90,18 @@ public class NhanVienGUI extends MyFrame implements ActionListener {
 	private final JLabel userFullName = new JLabel("Trần Nguyên Vũ");
 	private final JLabel userChucVu = new JLabel("Nhân viên");
 	private final Box vBoxAvatar = Box.createVerticalBox();
-	private final Component verticalStrut_1 = Box.createVerticalStrut(40);
+	private final Component verticalStrut_1 = Box.createVerticalStrut(20);
 	private final Box hBoxPanelBtn2 = Box.createHorizontalBox();
 	private final JPanel panelContent = new JPanel();
 	private final JPanel quanLyPDPPanel = (JPanel) new QuanLyPhieuDatPhongPanel();
-	private final JPanel xemThongTinCaNhanPanel = new XemThongTinCaNhanPanel();
+
 	private final JPanel panelTwo = new JPanel();
 	private final MainPanelButton mainPanelButton = new MainPanelButton(1280, 20, "Quản lý dịch vụ",
 			MaterialDesignS.SILVERWARE_FORK_KNIFE, panelTwo, panelContent);
-	private final Component verticalStrut_1_1 = Box.createVerticalStrut(40);
+	private final Component verticalStrut_1_1 = Box.createVerticalStrut(20);
 	private final Box hBoxPanelBtn3 = Box.createHorizontalBox();
-	private final MainPanelButton mainPanelButton_1 = new MainPanelButton(1280, 20, "Xem thông tin cá nhân",
-			MaterialDesignA.ACCOUNT, xemThongTinCaNhanPanel, panelContent);
-	private final Component verticalStrut_1_1_1 = Box.createVerticalStrut(40);
+
+	private final Component verticalStrut_1_1_1 = Box.createVerticalStrut(20);
 	private final MainPanelButton mainPanelButton_1_1 = new MainPanelButton(1280, 20, "Xem báo cáo thống kê",
 			MaterialDesignC.CHART_BAR, (JPanel) null, panelContent);
 	private final Box hBoxPanelBtn5 = Box.createHorizontalBox();
@@ -134,13 +133,18 @@ public class NhanVienGUI extends MyFrame implements ActionListener {
 	private final int screenWidth = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice()
 			.getDisplayMode().getWidth();
 	private LogoutListener logoutListener;
-	private final Component verticalStrut_1_1_2 = Box.createVerticalStrut(40);
+	private final Component verticalStrut_1_1_2 = Box.createVerticalStrut(20);
 
 	public NhanVienGUI(String maNV) {
 		// Init
 		this.currentNhanVien = nvBUS.getNhanVien(maNV);
 		Notifications.getInstance().setJFrame(this);
 		GlassPanePopup.install(this);
+
+		final JPanel xemThongTinCaNhanPanel = new XemThongTinCaNhanPanel(currentNhanVien);
+		final MainPanelButton mainPanelButton_1 = new MainPanelButton(1280, 20, "Xem thông tin cá nhân",
+				MaterialDesignA.ACCOUNT, xemThongTinCaNhanPanel, panelContent);
+		userFullName.setText(currentNhanVien.getHoTen());
 
 		getContentPane().setLayout(new BorderLayout(0, 0));
 
@@ -341,6 +345,7 @@ public class NhanVienGUI extends MyFrame implements ActionListener {
 		panelTop.add(btnNotifications, "push, cell 1 0, alignx right");
 		panelContent.setBackground(Color.ORANGE);
 		rightPanel.add(panelContent, BorderLayout.CENTER);
+
 		xemThongTinCaNhanPanel.setName("xemThongTinCaNhanPanel");
 		xemThongTinCaNhanPanel.setVisible(false);
 		panelContent.setLayout(new CardLayout(0, 0));

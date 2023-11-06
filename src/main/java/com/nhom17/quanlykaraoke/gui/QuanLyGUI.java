@@ -64,7 +64,7 @@ import raven.toast.Notifications;
 
 /**
  * 
- * Màn hình quản lý nhân viên
+ * Màn hình nhân viên
  * 
  * @author Trần Nguyên Vũ, Trần Ngọc Phát, Mai Nhật Hào, Trần Thanh Vy
  * @version 1.0
@@ -90,22 +90,21 @@ public class QuanLyGUI extends MyFrame implements ActionListener {
 	private final JLabel userFullName = new JLabel("Trần Nguyên Vũ");
 	private final JLabel userChucVu = new JLabel("Quản lý");
 	private final Box vBoxAvatar = Box.createVerticalBox();
-	private final Component verticalStrut_1 = Box.createVerticalStrut(40);
+	private final Component verticalStrut_1 = Box.createVerticalStrut(20);
 	private final Box hBoxPanelBtn2 = Box.createHorizontalBox();
 	private final JPanel panelContent = new JPanel();
 	private final JPanel quanLyPDPPanel = (JPanel) new QuanLyPhieuDatPhongPanel();
-	private final JPanel xemThongTinCaNhanPanel = new XemThongTinCaNhanPanel();
+
 	private final JPanel panelTwo = new JPanel();
-	private final MainPanelButton mainPanelButton = new MainPanelButton(1280, 20, "Quản lý dịch vụ",
-			MaterialDesignS.SILVERWARE_FORK_KNIFE, panelTwo, panelContent);
-	private final Component verticalStrut_1_1 = Box.createVerticalStrut(40);
+	private final MainPanelButton mainPanelButton = new MainPanelButton(1280, 20, "Quản lý phòng", MaterialDesignH.HOME,
+			panelTwo, panelContent);
+	private final Component verticalStrut_1_1 = Box.createVerticalStrut(20);
 	private final Box hBoxPanelBtn3 = Box.createHorizontalBox();
-	private final MainPanelButton mainPanelButton_1 = new MainPanelButton(1280, 20, "Xem thông tin cá nhân",
-			MaterialDesignA.ACCOUNT, xemThongTinCaNhanPanel, panelContent);
-	private final MainPanelButton mainPanelButton_1_1 = new MainPanelButton(1280, 20, "Xem báo cáo thống kê",
+
+	private final MainPanelButton mainPanelButton_1_1 = new MainPanelButton(1280, 20, "Thống kê",
 			MaterialDesignC.CHART_BAR, (JPanel) null, panelContent);
 	private final Box horizontalBox_1 = Box.createHorizontalBox();
-	private final Component verticalStrut_1_1_1 = Box.createVerticalStrut(40);
+	private final Component verticalStrut_1_1_1 = Box.createVerticalStrut(20);
 	private final Component horizontalGlue = Box.createHorizontalGlue();
 	private final Component horizontalGlue_1 = Box.createHorizontalGlue();
 	private final Component horizontalGlue_1_1 = Box.createHorizontalGlue();
@@ -134,7 +133,7 @@ public class QuanLyGUI extends MyFrame implements ActionListener {
 	private final int screenWidth = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice()
 			.getDisplayMode().getWidth();
 	private LogoutListener logoutListener;
-	private final Component verticalStrut_1_1_1_1 = Box.createVerticalStrut(40);
+	private final Component verticalStrut_1_1_1_1 = Box.createVerticalStrut(20);
 
 	public QuanLyGUI(String maNV) {
 		// Init
@@ -143,6 +142,11 @@ public class QuanLyGUI extends MyFrame implements ActionListener {
 		GlassPanePopup.install(this);
 
 		getContentPane().setLayout(new BorderLayout(0, 0));
+
+		final JPanel xemThongTinCaNhanPanel = new XemThongTinCaNhanPanel(currentNhanVien);
+		final MainPanelButton mainPanelButton_1 = new MainPanelButton(1280, 20, "Quản lý hàng hóa",
+				MaterialDesignS.SILVERWARE_FORK_KNIFE, xemThongTinCaNhanPanel, panelContent);
+		userFullName.setText(currentNhanVien.getHoTen());
 
 		// Set avatar
 		ImageIcon avatar = null;
@@ -296,8 +300,8 @@ public class QuanLyGUI extends MyFrame implements ActionListener {
 		btnHelp.setToolTipText("Hiển thị file pdf hướng dẫn sử dụng phần mềm");
 		btnHelp.setBackground(null);
 		btnHelp.setBorder(null);
-		MainPanelButton mainPanelButton_2 = new MainPanelButton(this.getWidth(), 20, "Quản lý phiếu đặt phòng",
-				MaterialDesignH.HOME, quanLyPDPPanel, panelContent);
+		MainPanelButton mainPanelButton_2 = new MainPanelButton(this.getWidth(), 20, "Quản lý thông tin nhân viên",
+				MaterialDesignA.ACCOUNT, quanLyPDPPanel, panelContent);
 		mainPanelButton_2.setToolTipText("(Phím tắt: F3)");
 		hBoxPanelBtn.add(mainPanelButton_2);
 
