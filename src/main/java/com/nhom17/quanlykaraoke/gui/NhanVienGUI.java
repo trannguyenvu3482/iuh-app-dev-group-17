@@ -51,6 +51,7 @@ import com.nhom17.quanlykaraoke.common.MyIcon;
 import com.nhom17.quanlykaraoke.entities.NhanVien;
 import com.nhom17.quanlykaraoke.gui.panels.NotificationPanel;
 import com.nhom17.quanlykaraoke.gui.panels.QuanLyPhieuDatPhongPanel;
+import com.nhom17.quanlykaraoke.gui.panels.XemThongTinCaNhanPanel;
 import com.nhom17.quanlykaraoke.utils.ClockUtil;
 
 import net.miginfocom.layout.ComponentWrapper;
@@ -69,7 +70,7 @@ import raven.toast.Notifications;
  * @version 1.0
  * @created 17-Oct-2023 22:13:00
  */
-public class QuanLyNhanVienGUI extends MyFrame implements ActionListener {
+public class NhanVienGUI extends MyFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
 
 	// INTERFACE
@@ -87,21 +88,24 @@ public class QuanLyNhanVienGUI extends MyFrame implements ActionListener {
 	private final Box hBoxAvatar = Box.createHorizontalBox();
 	private final JLabel userAvatar = new JLabel("");
 	private final JLabel userFullName = new JLabel("Trần Nguyên Vũ");
-	private final JLabel userChucVu = new JLabel("Quản lý");
+	private final JLabel userChucVu = new JLabel("Nhân viên");
 	private final Box vBoxAvatar = Box.createVerticalBox();
 	private final Component verticalStrut_1 = Box.createVerticalStrut(40);
 	private final Box hBoxPanelBtn2 = Box.createHorizontalBox();
 	private final JPanel panelContent = new JPanel();
 	private final JPanel quanLyPDPPanel = (JPanel) new QuanLyPhieuDatPhongPanel();
+	private final JPanel xemThongTinCaNhanPanel = new XemThongTinCaNhanPanel();
 	private final JPanel panelTwo = new JPanel();
-	private final JPanel panelThree = new JPanel();
 	private final MainPanelButton mainPanelButton = new MainPanelButton(1280, 20, "Quản lý dịch vụ",
 			MaterialDesignS.SILVERWARE_FORK_KNIFE, panelTwo, panelContent);
 	private final Component verticalStrut_1_1 = Box.createVerticalStrut(40);
 	private final Box hBoxPanelBtn3 = Box.createHorizontalBox();
 	private final MainPanelButton mainPanelButton_1 = new MainPanelButton(1280, 20, "Xem thông tin cá nhân",
-			MaterialDesignA.ACCOUNT, panelThree, panelContent);
+			MaterialDesignA.ACCOUNT, xemThongTinCaNhanPanel, panelContent);
 	private final Component verticalStrut_1_1_1 = Box.createVerticalStrut(40);
+	private final MainPanelButton mainPanelButton_1_1 = new MainPanelButton(1280, 20, "Xem báo cáo thống kê",
+			MaterialDesignC.CHART_BAR, (JPanel) null, panelContent);
+	private final Box hBoxPanelBtn5 = Box.createHorizontalBox();
 	private final Component horizontalGlue = Box.createHorizontalGlue();
 	private final Component horizontalGlue_1 = Box.createHorizontalGlue();
 	private final Component horizontalGlue_1_1 = Box.createHorizontalGlue();
@@ -130,8 +134,9 @@ public class QuanLyNhanVienGUI extends MyFrame implements ActionListener {
 	private final int screenWidth = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice()
 			.getDisplayMode().getWidth();
 	private LogoutListener logoutListener;
+	private final Component verticalStrut_1_1_2 = Box.createVerticalStrut(40);
 
-	public QuanLyNhanVienGUI(String maNV) {
+	public NhanVienGUI(String maNV) {
 		// Init
 		this.currentNhanVien = nvBUS.getNhanVien(maNV);
 		Notifications.getInstance().setJFrame(this);
@@ -239,6 +244,11 @@ public class QuanLyNhanVienGUI extends MyFrame implements ActionListener {
 		hBoxPanelBtn3.add(mainPanelButton_1);
 
 		hBoxPanelBtn3.add(horizontalGlue_1_1);
+		leftVBox.add(verticalStrut_1_1_2);
+
+		leftVBox.add(hBoxPanelBtn5);
+		hBoxPanelBtn5.add(mainPanelButton_1_1);
+		mainPanelButton_1_1.setToolTipText("(Phím tắt: F5)");
 
 		leftVBox.add(verticalStrut_1_1_1);
 		hBoxPanelBtn4.setToolTipText("");
@@ -331,15 +341,13 @@ public class QuanLyNhanVienGUI extends MyFrame implements ActionListener {
 		panelTop.add(btnNotifications, "push, cell 1 0, alignx right");
 		panelContent.setBackground(Color.ORANGE);
 		rightPanel.add(panelContent, BorderLayout.CENTER);
-		panelThree.setName("panelThree");
-		panelThree.setVisible(false);
+		xemThongTinCaNhanPanel.setName("xemThongTinCaNhanPanel");
+		xemThongTinCaNhanPanel.setVisible(false);
 		panelContent.setLayout(new CardLayout(0, 0));
 		quanLyPDPPanel.setName("quanLyPDPPanel");
 		panelContent.add(quanLyPDPPanel, "quanLyPDPPanel");
-		panelThree.setBackground(Color.CYAN);
 
-		panelContent.add(panelThree, "panelThree");
-		panelThree.setLayout(null);
+		panelContent.add(xemThongTinCaNhanPanel, "xemThongTinCaNhanPanel");
 		panelTwo.setName("panelTwo");
 		panelTwo.setVisible(false);
 		panelContent.add(panelTwo, "panelTwo");

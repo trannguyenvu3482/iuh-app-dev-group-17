@@ -6,7 +6,8 @@ import java.awt.event.WindowEvent;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.FlatLaf;
 import com.nhom17.quanlykaraoke.gui.DangNhapGUI;
-import com.nhom17.quanlykaraoke.gui.QuanLyNhanVienGUI;
+import com.nhom17.quanlykaraoke.gui.NhanVienGUI;
+import com.nhom17.quanlykaraoke.gui.QuanLyGUI;
 import com.nhom17.quanlykaraoke.gui.SplashScreen;
 import com.nhom17.quanlykaraoke.utils.HibernateUtil;
 
@@ -49,10 +50,15 @@ public class Main {
 					if (userId != null) {
 
 						// Login success, show main window
-						QuanLyNhanVienGUI main = new QuanLyNhanVienGUI(userId);
-						main.setLogoutListener(() -> showLoginScreen());
-						main.setVisible(true);
-
+						if (userId.equals("NV001")) {
+							QuanLyGUI main = new QuanLyGUI(userId);
+							main.setLogoutListener(() -> showLoginScreen());
+							main.setVisible(true);
+						} else {
+							NhanVienGUI main = new NhanVienGUI(userId);
+							main.setLogoutListener(() -> showLoginScreen());
+							main.setVisible(true);
+						}
 					}
 				});
 
@@ -73,11 +79,15 @@ public class Main {
 
 		login.setLoginListener(id -> {
 			if (id != null) {
-				QuanLyNhanVienGUI main = new QuanLyNhanVienGUI(id);
-
-				main.setLogoutListener(() -> showLoginScreen());
-
-				main.setVisible(true);
+				if (id.equals("NV001")) {
+					QuanLyGUI main = new QuanLyGUI(id);
+					main.setLogoutListener(() -> showLoginScreen());
+					main.setVisible(true);
+				} else {
+					NhanVienGUI main = new NhanVienGUI(id);
+					main.setLogoutListener(() -> showLoginScreen());
+					main.setVisible(true);
+				}
 			}
 		});
 

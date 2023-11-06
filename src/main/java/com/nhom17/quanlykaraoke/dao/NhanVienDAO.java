@@ -40,7 +40,6 @@ public class NhanVienDAO {
 		String idPrefix = "NV";
 
 		int count = countNhanVien();
-		System.out.println("COUNT: " + String.valueOf(count));
 
 		if (count < 1 || count > 999) {
 			return null;
@@ -70,8 +69,6 @@ public class NhanVienDAO {
 
 		try {
 			NhanVien nv = session.get(NhanVien.class, maNV);
-
-			System.out.println("Tên: " + nv.getHoTen());
 
 			t.commit();
 			return nv;

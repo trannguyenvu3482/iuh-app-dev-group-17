@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -19,12 +18,19 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 import javax.swing.text.MaskFormatter;
 
 import org.kordamp.ikonli.materialdesign2.MaterialDesignA;
 
+import com.nhom17.quanlykaraoke.bus.KhachHangBUS;
 import com.nhom17.quanlykaraoke.common.MyIcon;
+import com.nhom17.quanlykaraoke.entities.KhachHang;
 import com.nhom17.quanlykaraoke.entities.Phong;
+
+import raven.toast.Notifications;
+import raven.toast.Notifications.Location;
 
 /**
  * @author Trần Nguyên Vũ, Trần Ngọc Phát, Mai Nhật Hào, Trần Thanh Vy
@@ -40,8 +46,11 @@ public class TaoPhieuDatPhongDialog extends JDialog implements ActionListener {
 	private JFormattedTextField txtCCCD = null;
 	private final JButton btnLapPhieu = new JButton("Lập phiếu");
 	private final JButton btnHuy = new JButton("Hủy");
-	private final JButton btnSearch = new JButton("");
 	private final JLabel lblTenPhong = new JLabel("Tên phòng: Phòng ");
+	private final JButton btnSearch = new JButton("");
+
+	// VARIABLES
+	private final KhachHangBUS khBUS = new KhachHangBUS();
 
 	/**
 	* 
@@ -52,10 +61,25 @@ public class TaoPhieuDatPhongDialog extends JDialog implements ActionListener {
 
 		// Load data
 		lblTenPhong.setText(lblTenPhong.getText().concat(phong.getMaPhong()));
+
 		// Action listeners
-		btnSearch.addActionListener(this);
 		btnLapPhieu.addActionListener(this);
 		btnHuy.addActionListener(this);
+		btnSearch.addActionListener(this);
+
+		// Caret listeners
+		txtSDT.addCaretListener(new CaretListener() {
+
+			@Override
+			public void caretUpdate(CaretEvent e) {
+				// TODO Auto-generated method stub
+				if (txtSDT.getText().trim().length() != 10) {
+					btnSearch.setEnabled(false);
+				} else {
+					btnSearch.setEnabled(true);
+				}
+			}
+		});
 	}
 
 	@Override
@@ -66,7 +90,19 @@ public class TaoPhieuDatPhongDialog extends JDialog implements ActionListener {
 		if (o.equals(btnHuy)) {
 			this.dispose();
 		} else if (o.equals(btnSearch)) {
+			KhachHang kh = khBUS.getKhachHangBySDT(txtSDT.getText().trim());
 
+			if (kh != null) {
+				txtHoTen.setText(kh.getHoTen());
+				txtCCCD.setText(kh.getCCCD());
+				btnLapPhieu.setEnabled(true);
+
+				Notifications.getInstance().show(raven.toast.Notifications.Type.SUCCESS, Location.BOTTOM_RIGHT,
+						"Đã tìm thấy khách hàng trong hệ thống!");
+			} else {
+				Notifications.getInstance().show(raven.toast.Notifications.Type.ERROR, Location.BOTTOM_RIGHT,
+						"Không tìm thấy khách hàng có số điện thoại trên!");
+			}
 		} else if (o.equals(btnLapPhieu)) {
 
 		}
@@ -163,17 +199,13 @@ public class TaoPhieuDatPhongDialog extends JDialog implements ActionListener {
 		Component horizontalStrut_4 = Box.createHorizontalStrut(20);
 		horizontalBox_1_1.add(horizontalStrut_4);
 
-		btnSearch.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnSearch.setAlignmentX(Component.CENTER_ALIGNMENT);
-		btnSearch.setPreferredSize(new Dimension(48, 30));
-
-		btnSearch.setIcon(MyIcon.getIcon(MaterialDesignA.ACCOUNT_SEARCH, 40, null));
+		btnSearch.setIcon(MyIcon.getIcon(MaterialDesignA.ACCOUNT_SEARCH, 32, null));
 		horizontalBox_1_1.add(btnSearch);
 
 		Component horizontalStrut_3_3 = Box.createHorizontalStrut(50);
 		horizontalBox_1_1.add(horizontalStrut_3_3);
 
-		Component verticalStrut_1_2 = Box.createVerticalStrut(30);
+		Component verticalStrut_1_2 = Box.createVerticalStrut(50);
 		verticalBox.add(verticalStrut_1_2);
 
 		Box horizontalBox = Box.createHorizontalBox();

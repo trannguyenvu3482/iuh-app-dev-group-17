@@ -4,6 +4,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 import com.nhom17.quanlykaraoke.entities.ChucVu;
+import com.nhom17.quanlykaraoke.entities.KhachHang;
 import com.nhom17.quanlykaraoke.entities.LoaiPhong;
 import com.nhom17.quanlykaraoke.entities.NhanVien;
 import com.nhom17.quanlykaraoke.entities.Phong;
@@ -42,6 +43,7 @@ public class HibernateUtil {
 		config.addAnnotatedClass(ChucVu.class);
 		config.addAnnotatedClass(Phong.class);
 		config.addAnnotatedClass(LoaiPhong.class);
+		config.addAnnotatedClass(KhachHang.class);
 
 		// Build session factory
 		mySessionFactory = config.buildSessionFactory();
