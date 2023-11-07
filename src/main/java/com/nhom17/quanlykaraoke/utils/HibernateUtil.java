@@ -3,10 +3,15 @@ package com.nhom17.quanlykaraoke.utils;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import com.nhom17.quanlykaraoke.entities.ChiTietDichVu;
+import com.nhom17.quanlykaraoke.entities.ChiTietPhieuDatPhong;
 import com.nhom17.quanlykaraoke.entities.ChucVu;
+import com.nhom17.quanlykaraoke.entities.HangHoa;
 import com.nhom17.quanlykaraoke.entities.KhachHang;
+import com.nhom17.quanlykaraoke.entities.LoaiHangHoa;
 import com.nhom17.quanlykaraoke.entities.LoaiPhong;
 import com.nhom17.quanlykaraoke.entities.NhanVien;
+import com.nhom17.quanlykaraoke.entities.PhieuDatPhong;
 import com.nhom17.quanlykaraoke.entities.Phong;
 
 import io.github.cdimascio.dotenv.Dotenv;
@@ -39,11 +44,16 @@ public class HibernateUtil {
 		config.setProperty("hibernate.enable_lazy_load_no_trans", "false");
 
 		// Add annotated classes
-		config.addAnnotatedClass(NhanVien.class);
+		config.addAnnotatedClass(ChiTietDichVu.class);
+		config.addAnnotatedClass(ChiTietPhieuDatPhong.class);
 		config.addAnnotatedClass(ChucVu.class);
-		config.addAnnotatedClass(Phong.class);
-		config.addAnnotatedClass(LoaiPhong.class);
+		config.addAnnotatedClass(HangHoa.class);
 		config.addAnnotatedClass(KhachHang.class);
+		config.addAnnotatedClass(LoaiHangHoa.class);
+		config.addAnnotatedClass(LoaiPhong.class);
+		config.addAnnotatedClass(NhanVien.class);
+		config.addAnnotatedClass(PhieuDatPhong.class);
+		config.addAnnotatedClass(Phong.class);
 
 		// Build session factory
 		mySessionFactory = config.buildSessionFactory();

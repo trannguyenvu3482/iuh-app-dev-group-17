@@ -3,12 +3,14 @@ package com.nhom17.quanlykaraoke;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import javax.swing.UIManager;
+
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.FlatLaf;
+import com.nhom17.quanlykaraoke.common.SplashScreen;
 import com.nhom17.quanlykaraoke.gui.DangNhapGUI;
 import com.nhom17.quanlykaraoke.gui.NhanVienGUI;
 import com.nhom17.quanlykaraoke.gui.QuanLyGUI;
-import com.nhom17.quanlykaraoke.gui.SplashScreen;
 import com.nhom17.quanlykaraoke.utils.HibernateUtil;
 
 /**
@@ -26,6 +28,9 @@ public class Main {
 		// Setup Flatlaf
 		FlatLaf.registerCustomDefaultsSource("com.theme");
 		FlatIntelliJLaf.setup();
+
+		UIManager.put("Table.showHorizontalLines", true);
+		UIManager.put("Table.showVerticalLines", true);
 
 		// Show splash screen
 		SplashScreen splashGUI = new SplashScreen();

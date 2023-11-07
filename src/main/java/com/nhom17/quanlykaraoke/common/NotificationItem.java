@@ -1,5 +1,5 @@
 
-package com.nhom17.quanlykaraoke.gui.panels;
+package com.nhom17.quanlykaraoke.common;
 
 import java.awt.Component;
 import java.awt.Font;

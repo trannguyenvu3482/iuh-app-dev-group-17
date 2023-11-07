@@ -48,8 +48,9 @@ import com.nhom17.quanlykaraoke.bus.NhanVienBUS;
 import com.nhom17.quanlykaraoke.common.MainPanelButton;
 import com.nhom17.quanlykaraoke.common.MyFrame;
 import com.nhom17.quanlykaraoke.common.MyIcon;
+import com.nhom17.quanlykaraoke.common.NotificationPanel;
 import com.nhom17.quanlykaraoke.entities.NhanVien;
-import com.nhom17.quanlykaraoke.gui.panels.NotificationPanel;
+import com.nhom17.quanlykaraoke.gui.panels.QuanLyDichVuPanel;
 import com.nhom17.quanlykaraoke.gui.panels.QuanLyPhieuDatPhongPanel;
 import com.nhom17.quanlykaraoke.gui.panels.XemThongTinCaNhanPanel;
 import com.nhom17.quanlykaraoke.utils.ClockUtil;
@@ -94,10 +95,9 @@ public class NhanVienGUI extends MyFrame implements ActionListener {
 	private final Box hBoxPanelBtn2 = Box.createHorizontalBox();
 	private final JPanel panelContent = new JPanel();
 	private final JPanel quanLyPDPPanel = (JPanel) new QuanLyPhieuDatPhongPanel();
-
-	private final JPanel panelTwo = new JPanel();
+	private final JPanel quanLyDichVuPanel = (JPanel) new QuanLyDichVuPanel();
 	private final MainPanelButton mainPanelButton = new MainPanelButton(1280, 20, "Quản lý dịch vụ",
-			MaterialDesignS.SILVERWARE_FORK_KNIFE, panelTwo, panelContent);
+			MaterialDesignS.SILVERWARE_FORK_KNIFE, quanLyDichVuPanel, panelContent);
 	private final Component verticalStrut_1_1 = Box.createVerticalStrut(20);
 	private final Box hBoxPanelBtn3 = Box.createHorizontalBox();
 
@@ -346,20 +346,18 @@ public class NhanVienGUI extends MyFrame implements ActionListener {
 		panelContent.setBackground(Color.ORANGE);
 		rightPanel.add(panelContent, BorderLayout.CENTER);
 
-		xemThongTinCaNhanPanel.setName("xemThongTinCaNhanPanel");
-		xemThongTinCaNhanPanel.setVisible(false);
 		panelContent.setLayout(new CardLayout(0, 0));
+
 		quanLyPDPPanel.setName("quanLyPDPPanel");
 		panelContent.add(quanLyPDPPanel, "quanLyPDPPanel");
 
+		xemThongTinCaNhanPanel.setName("xemThongTinCaNhanPanel");
 		panelContent.add(xemThongTinCaNhanPanel, "xemThongTinCaNhanPanel");
-		panelTwo.setName("panelTwo");
-		panelTwo.setVisible(false);
-		panelContent.add(panelTwo, "panelTwo");
-		panelTwo.setLayout(null);
-		panelTwo.setBackground(Color.YELLOW);
-		panelAppInfo.setName("panelAppInfo");
 
+		quanLyDichVuPanel.setName("quanLyDichVuPanel");
+		panelContent.add(quanLyDichVuPanel, "quanLyDichVuPanel");
+
+		panelAppInfo.setName("panelAppInfo");
 		panelContent.add(panelAppInfo, "panelAppInfo");
 
 		panelAppInfo.add(lblNewLabel);

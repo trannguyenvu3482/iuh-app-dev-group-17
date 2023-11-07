@@ -1,4 +1,4 @@
-package com.nhom17.quanlykaraoke.gui.panels;
+package com.nhom17.quanlykaraoke.common;
 
 import java.awt.BorderLayout;
 

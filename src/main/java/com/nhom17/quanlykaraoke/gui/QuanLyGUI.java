@@ -48,9 +48,12 @@ import com.nhom17.quanlykaraoke.bus.NhanVienBUS;
 import com.nhom17.quanlykaraoke.common.MainPanelButton;
 import com.nhom17.quanlykaraoke.common.MyFrame;
 import com.nhom17.quanlykaraoke.common.MyIcon;
+import com.nhom17.quanlykaraoke.common.NotificationPanel;
 import com.nhom17.quanlykaraoke.entities.NhanVien;
-import com.nhom17.quanlykaraoke.gui.panels.NotificationPanel;
-import com.nhom17.quanlykaraoke.gui.panels.QuanLyPhieuDatPhongPanel;
+import com.nhom17.quanlykaraoke.gui.panels.QuanLyHangHoaPanel;
+import com.nhom17.quanlykaraoke.gui.panels.QuanLyPhongPanel;
+import com.nhom17.quanlykaraoke.gui.panels.QuanLyThongTinNhanVienPanel;
+import com.nhom17.quanlykaraoke.gui.panels.ThongKePanel;
 import com.nhom17.quanlykaraoke.gui.panels.XemThongTinCaNhanPanel;
 import com.nhom17.quanlykaraoke.utils.ClockUtil;
 
@@ -93,16 +96,19 @@ public class QuanLyGUI extends MyFrame implements ActionListener {
 	private final Component verticalStrut_1 = Box.createVerticalStrut(20);
 	private final Box hBoxPanelBtn2 = Box.createHorizontalBox();
 	private final JPanel panelContent = new JPanel();
-	private final JPanel quanLyPDPPanel = (JPanel) new QuanLyPhieuDatPhongPanel();
-
-	private final JPanel panelTwo = new JPanel();
+	private final JPanel quanLyThongTinNhanVienPanel = (JPanel) new QuanLyThongTinNhanVienPanel();
+	private final JPanel quanLyPhongPanel = (JPanel) new QuanLyPhongPanel();
+	private final JPanel QuanLyHangHoaPanel = (JPanel) new QuanLyHangHoaPanel();
+	private final JPanel ThongKePanel = (JPanel) new ThongKePanel();
 	private final MainPanelButton mainPanelButton = new MainPanelButton(1280, 20, "Quản lý phòng", MaterialDesignH.HOME,
-			panelTwo, panelContent);
+			quanLyPhongPanel, panelContent);
 	private final Component verticalStrut_1_1 = Box.createVerticalStrut(20);
 	private final Box hBoxPanelBtn3 = Box.createHorizontalBox();
 
 	private final MainPanelButton mainPanelButton_1_1 = new MainPanelButton(1280, 20, "Thống kê",
-			MaterialDesignC.CHART_BAR, (JPanel) null, panelContent);
+			MaterialDesignC.CHART_BAR, (JPanel) ThongKePanel, panelContent);
+	private final MainPanelButton mainPanelButton_1 = new MainPanelButton(1280, 20, "Quản lý hàng hóa",
+			MaterialDesignS.SILVERWARE_FORK_KNIFE, QuanLyHangHoaPanel, panelContent);
 	private final Box horizontalBox_1 = Box.createHorizontalBox();
 	private final Component verticalStrut_1_1_1 = Box.createVerticalStrut(20);
 	private final Component horizontalGlue = Box.createHorizontalGlue();
@@ -144,8 +150,6 @@ public class QuanLyGUI extends MyFrame implements ActionListener {
 		getContentPane().setLayout(new BorderLayout(0, 0));
 
 		final JPanel xemThongTinCaNhanPanel = new XemThongTinCaNhanPanel(currentNhanVien);
-		final MainPanelButton mainPanelButton_1 = new MainPanelButton(1280, 20, "Quản lý hàng hóa",
-				MaterialDesignS.SILVERWARE_FORK_KNIFE, xemThongTinCaNhanPanel, panelContent);
 		userFullName.setText(currentNhanVien.getHoTen());
 
 		// Set avatar
@@ -167,7 +171,6 @@ public class QuanLyGUI extends MyFrame implements ActionListener {
 
 			// Display circular image
 			avatar = new ImageIcon(bi.getScaledInstance(200, 200, Image.SCALE_SMOOTH));
-//			avatar.setImage(avatar.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -300,8 +303,8 @@ public class QuanLyGUI extends MyFrame implements ActionListener {
 		btnHelp.setToolTipText("Hiển thị file pdf hướng dẫn sử dụng phần mềm");
 		btnHelp.setBackground(null);
 		btnHelp.setBorder(null);
-		MainPanelButton mainPanelButton_2 = new MainPanelButton(this.getWidth(), 20, "Quản lý thông tin nhân viên",
-				MaterialDesignA.ACCOUNT, quanLyPDPPanel, panelContent);
+		MainPanelButton mainPanelButton_2 = new MainPanelButton(this.getWidth(), 20, "Quản lý nhân viên",
+				MaterialDesignA.ACCOUNT, quanLyThongTinNhanVienPanel, panelContent);
 		mainPanelButton_2.setToolTipText("(Phím tắt: F3)");
 		hBoxPanelBtn.add(mainPanelButton_2);
 
@@ -344,20 +347,24 @@ public class QuanLyGUI extends MyFrame implements ActionListener {
 		panelTop.add(btnNotifications, "push, cell 1 0, alignx right");
 		panelContent.setBackground(Color.ORANGE);
 		rightPanel.add(panelContent, BorderLayout.CENTER);
-		xemThongTinCaNhanPanel.setName("xemThongTinCaNhanPanel");
-		xemThongTinCaNhanPanel.setVisible(false);
 		panelContent.setLayout(new CardLayout(0, 0));
-		quanLyPDPPanel.setName("quanLyPDPPanel");
-		panelContent.add(quanLyPDPPanel, "quanLyPDPPanel");
 
+		quanLyThongTinNhanVienPanel.setName("quanLyThongTinNhanVienPanel");
+		panelContent.add(quanLyThongTinNhanVienPanel, "quanLyThongTinNhanVienPanel");
+
+		xemThongTinCaNhanPanel.setName("xemThongTinCaNhanPanel");
 		panelContent.add(xemThongTinCaNhanPanel, "xemThongTinCaNhanPanel");
-		panelTwo.setName("panelTwo");
-		panelTwo.setVisible(false);
-		panelContent.add(panelTwo, "panelTwo");
-		panelTwo.setLayout(null);
-		panelTwo.setBackground(Color.YELLOW);
-		panelAppInfo.setName("panelAppInfo");
 
+		quanLyPhongPanel.setName("quanLyPhongPanel");
+		panelContent.add(quanLyPhongPanel, "quanLyPhongPanel");
+
+		QuanLyHangHoaPanel.setName("quanLyHangHoaPanel");
+		panelContent.add(QuanLyHangHoaPanel, "quanLyHangHoaPanel");
+
+		ThongKePanel.setName("thongKePanel");
+		panelContent.add(QuanLyHangHoaPanel, "thongKePanel");
+
+		panelAppInfo.setName("panelAppInfo");
 		panelContent.add(panelAppInfo, "panelAppInfo");
 
 		panelAppInfo.add(lblNewLabel);
