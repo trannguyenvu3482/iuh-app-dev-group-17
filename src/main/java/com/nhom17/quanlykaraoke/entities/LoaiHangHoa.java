@@ -10,7 +10,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "LoaiHangHoa")
 public class LoaiHangHoa {
-	
+
 	/**
 	 * 
 	 */
@@ -19,10 +19,10 @@ public class LoaiHangHoa {
 	@Id
 	@Column(columnDefinition = "char(6)")
 	private String maLoaiHangHoa;
-	
+
 	@Column(columnDefinition = "nvarchar(30)")
 	private String tenLoaihangHoa;
-	
+
 	public LoaiHangHoa(String maLoaiHangHoa, String tenLoaihangHoa) {
 		this.maLoaiHangHoa = maLoaiHangHoa;
 		this.tenLoaihangHoa = tenLoaihangHoa;
@@ -65,5 +65,5 @@ public class LoaiHangHoa {
 	public String toString() {
 		return "LoaiHangHoa [maLoaiHangHoa=" + maLoaiHangHoa + ", tenLoaihangHoa=" + tenLoaihangHoa + "]";
 	}
-	
+
 }

@@ -12,7 +12,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "HangHoa")
 public class HangHoa {
-	
+
 	/**
 	 * 
 	 */
@@ -21,23 +21,23 @@ public class HangHoa {
 	@Id
 	@Column(columnDefinition = "char(5)")
 	private String maHangHoa;
-	
+
 	@Column(columnDefinition = "nvarchar(30)")
 	private String tenHanghoa;
-	
+
 	@ManyToOne
-	@JoinColumn(name = "maLoaiHangHoa",columnDefinition = "char(6)")
+	@JoinColumn(name = "maLoaiHangHoa", columnDefinition = "char(6)")
 	private LoaiHangHoa loaiHangHoa;
-	
+
 	@Column(columnDefinition = "int")
 	private int soLuongTon;
-	
+
 	@Column(columnDefinition = "money")
 	private double donGia;
-	
+
 	@Column(columnDefinition = "bit")
 	private boolean trangThai;
-	
+
 	public HangHoa(String maHangHoa, String tenHanghoa, LoaiHangHoa loaiHangHoa, int soLuongTon, double donGia,
 			boolean trangThai) {
 		this.maHangHoa = maHangHoa;
@@ -118,5 +118,5 @@ public class HangHoa {
 		return "HangHoa [maHangHoa=" + maHangHoa + ", tenHanghoa=" + tenHanghoa + ", loaiHangHoa=" + loaiHangHoa
 				+ ", soLuongTon=" + soLuongTon + ", donGia=" + donGia + ", trangThai=" + trangThai + "]";
 	}
-	
+
 }

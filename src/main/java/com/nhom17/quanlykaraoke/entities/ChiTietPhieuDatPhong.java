@@ -19,7 +19,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "ChiTietPhieuDatPhong")
 public class ChiTietPhieuDatPhong implements Serializable {
-	
+
 	/**
 	 * 
 	 */
@@ -27,23 +27,23 @@ public class ChiTietPhieuDatPhong implements Serializable {
 
 	@Id
 	@ManyToOne
-	@JoinColumn(name = "maPhong",columnDefinition = "char(4)")
+	@JoinColumn(name = "maPhong", columnDefinition = "char(4)")
 	private Phong phong;
-	
+
 	@Id
 	@ManyToOne
-	@JoinColumn(name = "maPhieuDatPhong",columnDefinition = "char(7)")
+	@JoinColumn(name = "maPhieuDatPhong", columnDefinition = "char(7)")
 	private PhieuDatPhong phieuDatPhong;
-	
+
 	@Column(columnDefinition = "int")
 	private int thoiLuong;
-	
+
 	@Column(columnDefinition = "datetime")
 	private LocalDateTime thoiGianBatDau;
-	
+
 	@Column(columnDefinition = "datetime")
 	private LocalDateTime thoiGianKetThuc;
-	
+
 	public ChiTietPhieuDatPhong(Phong phong, PhieuDatPhong phieuDatPhong, int thoiLuong, LocalDateTime thoiGianBatDau,
 			LocalDateTime thoiGianKetThuc) {
 		this.phong = phong;
@@ -98,5 +98,5 @@ public class ChiTietPhieuDatPhong implements Serializable {
 		return "ChiTietPhieuDatPhong [phong=" + phong + ", phieuDatPhong=" + phieuDatPhong + ", thoiLuong=" + thoiLuong
 				+ ", thoiGianBatDau=" + thoiGianBatDau + ", thoiGianKetThuc=" + thoiGianKetThuc + "]";
 	}
-	
+
 }
