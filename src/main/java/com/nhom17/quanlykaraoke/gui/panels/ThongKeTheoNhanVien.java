@@ -16,7 +16,6 @@ import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
 import javax.swing.border.EmptyBorder;
 
 import org.jfree.chart.ChartFactory;
@@ -27,11 +26,7 @@ import org.jfree.chart.axis.NumberTickUnit;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
-import org.kordamp.ikonli.materialdesign2.MaterialDesignA;
-import org.kordamp.ikonli.materialdesign2.MaterialDesignB;
-import org.kordamp.ikonli.materialdesign2.MaterialDesignC;
 
-import com.nhom17.quanlykaraoke.common.MyIcon;
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JMonthChooser;
 import com.toedter.calendar.JYearChooser;
@@ -39,9 +34,9 @@ import com.toedter.calendar.JYearChooser;
 /**
  * @author Trần Nguyên Vũ, Trần Ngọc Phát, Mai Nhật Hào, Trần Thanh Vy
  * @version 1.0
- * @created 07-Nov-2023 1:18:03 PM
+ * @created 08-Nov-2023 2:54:49 PM
  */
-public class ThongKePanel extends JPanel implements ActionListener {
+public class ThongKeTheoNhanVien extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	private final JComboBox<String> boxFilterNgay = new JComboBox<String>();
 	private final JPanel panelFilters = new JPanel();
@@ -49,21 +44,12 @@ public class ThongKePanel extends JPanel implements ActionListener {
 	/**
 	 * 
 	 */
-	public ThongKePanel() {
+	public ThongKeTheoNhanVien() {
 		setSize(1200, 800);
 		setLayout(new BorderLayout(0, 0));
 
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setFont(new Font("Dialog", Font.BOLD, 24));
-		add(tabbedPane, BorderLayout.CENTER);
-
-		JPanel panelTheoNgay = new JPanel();
-		tabbedPane.addTab("Theo thời gian", MyIcon.getIcon(MaterialDesignC.CALENDAR_CLOCK, 24, null), panelTheoNgay,
-				null);
-		panelTheoNgay.setLayout(new BorderLayout(0, 0));
-
 		JPanel panelCenterTheoNgay = new JPanel();
-		panelTheoNgay.add(panelCenterTheoNgay, BorderLayout.CENTER);
+		add(panelCenterTheoNgay, BorderLayout.NORTH);
 		panelCenterTheoNgay.setLayout(new BorderLayout(0, 0));
 
 		JPanel panelFilterTheoNgay = new JPanel();
@@ -144,6 +130,17 @@ public class ThongKePanel extends JPanel implements ActionListener {
 
 		JPanel panelContentTheoNgay = new JPanel();
 		panelCenterTheoNgay.add(panelContentTheoNgay, BorderLayout.CENTER);
+		panelContentTheoNgay.setLayout(new BorderLayout(0, 0));
+
+		JFreeChart barChart = ChartFactory.createBarChart("BIỂU ĐỒ THỐNG KÊ DOANH SỐ THEO NGÀY", "Tháng", "Doanh thu",
+				createDataset(), PlotOrientation.VERTICAL, false, false, false);
+
+		ChartPanel chartPanel = new ChartPanel(barChart);
+
+		panelContentTheoNgay.add(chartPanel);
+
+		// Action listeners
+		boxFilterNgay.addActionListener(this);
 
 		JFreeChart barChart = ChartFactory.createBarChart("BIỂU ĐỒ THỐNG KÊ DOANH SỐ THEO NGÀY", "Tháng", "Doanh thu",
 				createDataset(), PlotOrientation.VERTICAL, false, false, false);
@@ -154,21 +151,6 @@ public class ThongKePanel extends JPanel implements ActionListener {
 		yAxis.setNumberFormatOverride(NumberFormat.getNumberInstance());
 		yAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
 		yAxis.setTickUnit(new NumberTickUnit(1000000));
-		panelContentTheoNgay.setLayout(new BorderLayout(0, 0));
-
-		ChartPanel chartPanel = new ChartPanel(barChart);
-
-		panelContentTheoNgay.add(chartPanel);
-
-		JPanel panelTheoNV = new JPanel();
-		tabbedPane.addTab("Theo nhân viên", MyIcon.getIcon(MaterialDesignB.BADGE_ACCOUNT, 24, null), panelTheoNV, null);
-
-		JPanel panelTheoKhachHang = new JPanel();
-		tabbedPane.addTab("Theo khách hàng", MyIcon.getIcon(MaterialDesignA.ACCOUNT, 24, null), panelTheoKhachHang,
-				null);
-
-		// Action listeners
-		boxFilterNgay.addActionListener(this);
 	}
 
 	private static CategoryDataset createDataset() {

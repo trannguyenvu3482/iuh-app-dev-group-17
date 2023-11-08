@@ -52,6 +52,7 @@ import com.nhom17.quanlykaraoke.common.NotificationPanel;
 import com.nhom17.quanlykaraoke.entities.NhanVien;
 import com.nhom17.quanlykaraoke.gui.panels.QuanLyDichVuPanel;
 import com.nhom17.quanlykaraoke.gui.panels.QuanLyPhieuDatPhongPanel;
+import com.nhom17.quanlykaraoke.gui.panels.ThongKePanel;
 import com.nhom17.quanlykaraoke.gui.panels.XemThongTinCaNhanPanel;
 import com.nhom17.quanlykaraoke.utils.ClockUtil;
 
@@ -96,6 +97,7 @@ public class NhanVienGUI extends MyFrame implements ActionListener {
 	private final JPanel panelContent = new JPanel();
 	private final JPanel quanLyPDPPanel = (JPanel) new QuanLyPhieuDatPhongPanel();
 	private final JPanel quanLyDichVuPanel = (JPanel) new QuanLyDichVuPanel();
+	private final JPanel thongKePanel = (JPanel) new ThongKePanel();
 	private final MainPanelButton mainPanelButton = new MainPanelButton(1280, 20, "Quản lý dịch vụ",
 			MaterialDesignS.SILVERWARE_FORK_KNIFE, quanLyDichVuPanel, panelContent);
 	private final Component verticalStrut_1_1 = Box.createVerticalStrut(20);
@@ -103,7 +105,7 @@ public class NhanVienGUI extends MyFrame implements ActionListener {
 
 	private final Component verticalStrut_1_1_1 = Box.createVerticalStrut(20);
 	private final MainPanelButton mainPanelButton_1_1 = new MainPanelButton(1280, 20, "Xem báo cáo thống kê",
-			MaterialDesignC.CHART_BAR, (JPanel) null, panelContent);
+			MaterialDesignC.CHART_BAR, thongKePanel, panelContent);
 	private final Box hBoxPanelBtn5 = Box.createHorizontalBox();
 	private final Component horizontalGlue = Box.createHorizontalGlue();
 	private final Component horizontalGlue_1 = Box.createHorizontalGlue();
@@ -356,6 +358,9 @@ public class NhanVienGUI extends MyFrame implements ActionListener {
 
 		quanLyDichVuPanel.setName("quanLyDichVuPanel");
 		panelContent.add(quanLyDichVuPanel, "quanLyDichVuPanel");
+
+		thongKePanel.setName("thongKePanel");
+		panelContent.add(thongKePanel, "thongKePanel");
 
 		panelAppInfo.setName("panelAppInfo");
 		panelContent.add(panelAppInfo, "panelAppInfo");

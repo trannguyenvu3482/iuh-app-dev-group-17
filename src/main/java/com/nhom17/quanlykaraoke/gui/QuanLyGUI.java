@@ -99,14 +99,14 @@ public class QuanLyGUI extends MyFrame implements ActionListener {
 	private final JPanel quanLyThongTinNhanVienPanel = (JPanel) new QuanLyThongTinNhanVienPanel();
 	private final JPanel quanLyPhongPanel = (JPanel) new QuanLyPhongPanel();
 	private final JPanel QuanLyHangHoaPanel = (JPanel) new QuanLyHangHoaPanel();
-	private final JPanel ThongKePanel = (JPanel) new ThongKePanel();
+	private final JPanel thongKePanel = (JPanel) new ThongKePanel();
 	private final MainPanelButton mainPanelButton = new MainPanelButton(1280, 20, "Quản lý phòng", MaterialDesignH.HOME,
 			quanLyPhongPanel, panelContent);
 	private final Component verticalStrut_1_1 = Box.createVerticalStrut(20);
 	private final Box hBoxPanelBtn3 = Box.createHorizontalBox();
 
 	private final MainPanelButton mainPanelButton_1_1 = new MainPanelButton(1280, 20, "Thống kê",
-			MaterialDesignC.CHART_BAR, (JPanel) ThongKePanel, panelContent);
+			MaterialDesignC.CHART_BAR, (JPanel) thongKePanel, panelContent);
 	private final MainPanelButton mainPanelButton_1 = new MainPanelButton(1280, 20, "Quản lý hàng hóa",
 			MaterialDesignS.SILVERWARE_FORK_KNIFE, QuanLyHangHoaPanel, panelContent);
 	private final Box horizontalBox_1 = Box.createHorizontalBox();
@@ -361,8 +361,8 @@ public class QuanLyGUI extends MyFrame implements ActionListener {
 		QuanLyHangHoaPanel.setName("quanLyHangHoaPanel");
 		panelContent.add(QuanLyHangHoaPanel, "quanLyHangHoaPanel");
 
-		ThongKePanel.setName("thongKePanel");
-		panelContent.add(QuanLyHangHoaPanel, "thongKePanel");
+		thongKePanel.setName("thongKePanel");
+		panelContent.add(thongKePanel, "thongKePanel");
 
 		panelAppInfo.setName("panelAppInfo");
 		panelContent.add(panelAppInfo, "panelAppInfo");

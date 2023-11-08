@@ -39,12 +39,27 @@ public class KhachHangDAO {
 		}
 	}
 
+	public KhachHang updateKhachHang(KhachHang kh) {
+		Session session = factory.getCurrentSession();
+		Transaction t = session.beginTransaction();
+
+		try {
+			KhachHang updatedKhachHang = session.merge(kh);
+
+			t.commit();
+			return updatedKhachHang;
+
+		} catch (Exception e) {
+			t.rollback();
+			return null;
+		}
+	}
+
 	public KhachHang getKhachHang(String maKH) {
 		Session session = factory.getCurrentSession();
 		Transaction t = session.beginTransaction();
 
 		try {
-			System.out.println("Searching...");
 			KhachHang kh = session.get(KhachHang.class, maKH);
 
 			t.commit();
@@ -74,6 +89,22 @@ public class KhachHangDAO {
 		} catch (Exception e) {
 			t.rollback();
 			return null;
+		}
+	}
+
+	public boolean deleteKhachHang(KhachHang kh) {
+		Session session = factory.getCurrentSession();
+		Transaction t = session.beginTransaction();
+
+		try {
+			session.remove(kh);
+
+			t.commit();
+			return true;
+
+		} catch (Exception e) {
+			t.rollback();
+			return false;
 		}
 	}
 

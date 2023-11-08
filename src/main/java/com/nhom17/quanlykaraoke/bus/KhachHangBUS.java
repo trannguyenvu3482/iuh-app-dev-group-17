@@ -29,4 +29,8 @@ public class KhachHangBUS {
 	public KhachHang getKhachHangBySDT(String sdt) {
 		return khDAO.getKhachHangBySDT(sdt);
 	}
+
+	public KhachHang updateKhachHang(KhachHang kh) {
+		return khDAO.updateKhachHang(kh);
+	}
 }

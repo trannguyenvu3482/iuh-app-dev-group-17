@@ -26,11 +26,7 @@ public class Main {
 		HibernateUtil.provideSessionFactory();
 
 		// Setup Flatlaf
-		FlatLaf.registerCustomDefaultsSource("com.theme");
-		FlatIntelliJLaf.setup();
-
-		UIManager.put("Table.showHorizontalLines", true);
-		UIManager.put("Table.showVerticalLines", true);
+		setupFlatLaf();
 
 		// Show splash screen
 		SplashScreen splashGUI = new SplashScreen();
@@ -71,6 +67,19 @@ public class Main {
 
 			}
 		});
+	}
+
+	/**
+	 * 
+	 */
+	private static void setupFlatLaf() {
+		// TODO Auto-generated method stub
+		FlatLaf.registerCustomDefaultsSource("com.theme");
+		FlatIntelliJLaf.setup();
+
+		UIManager.put("Table.showHorizontalLines", true);
+		UIManager.put("Table.showVerticalLines", true);
+		UIManager.put("JTabbedPane.showTabSeparators", true);
 	}
 
 	private static void showLoginScreen() {
