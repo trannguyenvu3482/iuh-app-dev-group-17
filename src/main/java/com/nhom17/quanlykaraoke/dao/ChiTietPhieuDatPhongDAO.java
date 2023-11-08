@@ -5,45 +5,45 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import com.nhom17.quanlykaraoke.entities.ChucVu;
+import com.nhom17.quanlykaraoke.entities.ChiTietPhieuDatPhong;
 import com.nhom17.quanlykaraoke.utils.HibernateUtil;
 
-public class ChucVuDAO {
+public class ChiTietPhieuDatPhongDAO {
 	private SessionFactory factory = null;
 
-	public ChucVuDAO() {
+	public ChiTietPhieuDatPhongDAO() {
 		factory = HibernateUtil.getMySessionFactory();
 	}
 
-	public ChucVu getChucVu(String maChucVu) {
+	public boolean addChiTietPhieuDatPhong(ChiTietPhieuDatPhong chiTietPhieuDatPhong) {
 		Session session = factory.getCurrentSession();
 		Transaction t = session.beginTransaction();
 
 		try {
-			ChucVu cv = session.get(ChucVu.class, maChucVu);
-
+			session.persist(chiTietPhieuDatPhong);
 			t.commit();
-			return cv;
+			return true;
 
 		} catch (Exception e) {
 			t.rollback();
-			return null;
+			return false;
 		}
 	}
-	
-	public List<ChucVu> getAllChucVus() {
+
+	public List<ChiTietPhieuDatPhong> getAllChiTietPhieuDatPhongs() {
 		Session session = factory.getCurrentSession();
 		Transaction t = session.beginTransaction();
-		List<ChucVu> listChucVu = null;
+		List<ChiTietPhieuDatPhong> listChiTietPhieuDatPhong = null;
 		try {
-			String hql = "from ChiTietDichVu";
-			listChucVu = session.createQuery(hql, ChucVu.class).getResultList();
+			String hql = "from ChiTietPhieuDatPhong";
+			listChiTietPhieuDatPhong = session.createQuery(hql, ChiTietPhieuDatPhong.class).getResultList();
 			t.commit();
-			return listChucVu;
+			return listChiTietPhieuDatPhong;
 		} catch (Exception e) {
 			System.out.println("ROLLBACK!");
 			t.rollback();
-			return listChucVu;
+			return listChiTietPhieuDatPhong;
 		}
 	}
+	
 }

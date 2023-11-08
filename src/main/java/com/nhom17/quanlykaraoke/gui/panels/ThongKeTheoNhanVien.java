@@ -2,13 +2,13 @@ package com.nhom17.quanlykaraoke.gui.panels;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.NumberFormat;
 import java.util.Locale;
 
 import javax.swing.Box;
@@ -16,13 +16,12 @@ import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.axis.NumberTickUnit;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
@@ -30,6 +29,8 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JMonthChooser;
 import com.toedter.calendar.JYearChooser;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  * @author Trần Nguyên Vũ, Trần Ngọc Phát, Mai Nhật Hào, Trần Thanh Vy
@@ -40,6 +41,7 @@ public class ThongKeTheoNhanVien extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	private final JComboBox<String> boxFilterNgay = new JComboBox<String>();
 	private final JPanel panelFilters = new JPanel();
+	private JTextField txtSearch;
 
 	/**
 	 * 
@@ -125,32 +127,47 @@ public class ThongKeTheoNhanVien extends JPanel implements ActionListener {
 		yearChooser.setFont(new Font("Dialog", Font.PLAIN, 18));
 		filtersNam.add(yearChooser);
 
-		Component horizontalStrut_1_1 = Box.createHorizontalStrut(600);
+		Component horizontalStrut_1_1 = Box.createHorizontalStrut(120);
 		panelFilterTheoNgay.add(horizontalStrut_1_1);
+
+		txtSearch = new JTextField();
+		txtSearch.setFont(new Font("Dialog", Font.PLAIN, 20));
+		panelFilterTheoNgay.add(txtSearch);
+		txtSearch.setColumns(10);
 
 		JPanel panelContentTheoNgay = new JPanel();
 		panelCenterTheoNgay.add(panelContentTheoNgay, BorderLayout.CENTER);
-		panelContentTheoNgay.setLayout(new BorderLayout(0, 0));
 
 		JFreeChart barChart = ChartFactory.createBarChart("BIỂU ĐỒ THỐNG KÊ DOANH SỐ THEO NGÀY", "Tháng", "Doanh thu",
 				createDataset(), PlotOrientation.VERTICAL, false, false, false);
+		panelContentTheoNgay.setLayout(new MigLayout("", "[grow][100,grow]", "[400,grow][400,grow]"));
+
+		JPanel panel_3 = new JPanel();
+		panel_3.setBackground(Color.GREEN);
+		panelContentTheoNgay.add(panel_3, "cell 0 0,push ,grow");
+
+		JPanel panel = new JPanel();
+		panelContentTheoNgay.add(panel, "push, cell 1 0");
+		panel.setLayout(new BorderLayout(0, 0));
 
 		ChartPanel chartPanel = new ChartPanel(barChart);
+		panel.add(chartPanel);
+		FlowLayout flowLayout_3 = (FlowLayout) chartPanel.getLayout();
+		flowLayout_3.setVgap(0);
+		flowLayout_3.setHgap(0);
 
-		panelContentTheoNgay.add(chartPanel);
+		JPanel panel_1 = new JPanel();
+		panel_1.setBackground(Color.YELLOW);
+		panelContentTheoNgay.add(panel_1, "cell 0 1, push, grow");
+		panel_1.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+
+		JPanel panel_2 = new JPanel();
+		panel_2.setBackground(Color.CYAN);
+		panelContentTheoNgay.add(panel_2, "cell 1 1, push, grow");
 
 		// Action listeners
 		boxFilterNgay.addActionListener(this);
 
-		JFreeChart barChart = ChartFactory.createBarChart("BIỂU ĐỒ THỐNG KÊ DOANH SỐ THEO NGÀY", "Tháng", "Doanh thu",
-				createDataset(), PlotOrientation.VERTICAL, false, false, false);
-
-		NumberAxis yAxis = (NumberAxis) barChart.getCategoryPlot().getRangeAxis();
-
-		// Format y axis with increments of 1000000
-		yAxis.setNumberFormatOverride(NumberFormat.getNumberInstance());
-		yAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-		yAxis.setTickUnit(new NumberTickUnit(1000000));
 	}
 
 	private static CategoryDataset createDataset() {

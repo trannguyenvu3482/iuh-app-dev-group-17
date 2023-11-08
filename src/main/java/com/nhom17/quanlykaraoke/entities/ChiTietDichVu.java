@@ -11,8 +11,8 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "ChiTietDichVu")
-public class ChiTietDichVu implements Serializable{
-	
+public class ChiTietDichVu implements Serializable {
+
 	/**
 	 * 
 	 */
@@ -20,23 +20,33 @@ public class ChiTietDichVu implements Serializable{
 
 	@Id
 	@ManyToOne
-	@JoinColumn(name = "maPhieuDatPhong",columnDefinition = "char(7)")
+	@JoinColumn(name = "maPhieuDatPhong", columnDefinition = "char(7)")
 	private PhieuDatPhong phieuDatPhong;
-	
+
 	@Id
 	@ManyToOne
-	@JoinColumn(name = "maHangHoa",columnDefinition = "char(5)")
+	@JoinColumn(name = "maHangHoa", columnDefinition = "char(5)")
 	private HangHoa hangHoa;
+
+	@Id
+	@ManyToOne
+	@JoinColumn(name = "maPhong",columnDefinition = "char(4)")
+	private Phong phong;
 	
 	@Column(columnDefinition = "int")
 	private int soLuong;
+
+	public ChiTietDichVu() {
+		
+	}
 	
-	public ChiTietDichVu(PhieuDatPhong phieuDatPhong, HangHoa hangHoa, int soLuong) {
+	public ChiTietDichVu(PhieuDatPhong phieuDatPhong, HangHoa hangHoa, Phong phong, int soLuong) {
 		this.phieuDatPhong = phieuDatPhong;
 		this.hangHoa = hangHoa;
+		this.phong = phong;
 		this.soLuong = soLuong;
 	}
-
+	
 	public PhieuDatPhong getPhieuDatPhong() {
 		return phieuDatPhong;
 	}
@@ -53,6 +63,15 @@ public class ChiTietDichVu implements Serializable{
 		this.hangHoa = hangHoa;
 	}
 
+	
+	public Phong getPhong() {
+		return phong;
+	}
+
+	public void setPhong(Phong phong) {
+		this.phong = phong;
+	}
+
 	public int getSoLuong() {
 		return soLuong;
 	}
@@ -63,7 +82,8 @@ public class ChiTietDichVu implements Serializable{
 
 	@Override
 	public String toString() {
-		return "ChiTietDichVu [phieuDatPhong=" + phieuDatPhong + ", hangHoa=" + hangHoa + ", soLuong=" + soLuong + "]";
+		return "ChiTietDichVu [phieuDatPhong=" + phieuDatPhong + ", hangHoa=" + hangHoa + ", phong=" + phong
+				+ ", soLuong=" + soLuong + "]";
 	}
 	
 }

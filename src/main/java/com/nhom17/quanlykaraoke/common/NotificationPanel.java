@@ -26,6 +26,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
 import net.miginfocom.swing.MigLayout;
+
 public class NotificationPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private final JPanel panel = new JPanel();

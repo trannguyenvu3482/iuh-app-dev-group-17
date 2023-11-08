@@ -17,7 +17,7 @@ import org.kordamp.ikonli.swing.FontIcon;
  */
 public class MyIcon {
 	public static final int DEFAULT_SIZE = 24;
-	
+
 	public static Icon getIcon(Ikon icon, int iconSize, Color color) {
 		FontIcon fontIcon = FontIcon.of(icon);
 		fontIcon.setIconSize(iconSize);
