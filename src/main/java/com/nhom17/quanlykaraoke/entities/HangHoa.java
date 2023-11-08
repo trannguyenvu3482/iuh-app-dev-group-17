@@ -38,6 +38,10 @@ public class HangHoa {
 	@Column(columnDefinition = "bit")
 	private boolean trangThai;
 
+	public HangHoa() {
+		// TODO Auto-generated constructor stub
+	}
+	
 	public HangHoa(String maHangHoa, String tenHanghoa, LoaiHangHoa loaiHangHoa, int soLuongTon, double donGia,
 			boolean trangThai) {
 		this.maHangHoa = maHangHoa;

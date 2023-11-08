@@ -44,6 +44,10 @@ public class ChiTietPhieuDatPhong implements Serializable {
 	@Column(columnDefinition = "datetime")
 	private LocalDateTime thoiGianKetThuc;
 
+	public ChiTietPhieuDatPhong() {
+		// TODO Auto-generated constructor stub
+	}
+	
 	public ChiTietPhieuDatPhong(Phong phong, PhieuDatPhong phieuDatPhong, int thoiLuong, LocalDateTime thoiGianBatDau,
 			LocalDateTime thoiGianKetThuc) {
 		this.phong = phong;

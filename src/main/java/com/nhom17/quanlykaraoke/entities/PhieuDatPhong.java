@@ -38,6 +38,10 @@ public class PhieuDatPhong {
 	@JoinColumn(name = "maKhachHang", columnDefinition = "char(5)")
 	private KhachHang khachHang;
 
+	public PhieuDatPhong() {
+		// TODO Auto-generated constructor stub
+	}
+	
 	public PhieuDatPhong(String maPhieuDatPhong, NhanVien nhanVien, boolean trangThai, KhachHang khachHang) {
 		this.maPhieuDatPhong = maPhieuDatPhong;
 		this.nhanVien = nhanVien;

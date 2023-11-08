@@ -8,6 +8,7 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import com.nhom17.quanlykaraoke.entities.NhanVien;
+import com.nhom17.quanlykaraoke.entities.NhanVien;
 import com.nhom17.quanlykaraoke.utils.HibernateUtil;
 import com.nhom17.quanlykaraoke.utils.PasswordUtil;
 
@@ -99,4 +100,34 @@ public class NhanVienDAO {
 		}
 	}
 
+	public NhanVien updateNhanVien(NhanVien nhanVien) {
+		Session session = factory.getCurrentSession();
+		Transaction t = session.beginTransaction();
+
+		try {
+			NhanVien updatedNhanVien = session.merge(nhanVien);
+
+			t.commit();
+			return updatedNhanVien;
+
+		} catch (Exception e) {
+			t.rollback();
+			return null;
+		}
+	}
+	public List<NhanVien> getAllNhanViens() {
+		Session session = factory.getCurrentSession();
+		Transaction t = session.beginTransaction();
+		List<NhanVien> listNhanVien = null;
+		try {
+			String hql = "from NhanVien";
+			listNhanVien = session.createQuery(hql, NhanVien.class).getResultList();
+			t.commit();
+			return listNhanVien;
+		} catch (Exception e) {
+			System.out.println("ROLLBACK!");
+			t.rollback();
+			return listNhanVien;
+		}
+	}
 }

@@ -8,6 +8,7 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import com.nhom17.quanlykaraoke.entities.KhachHang;
+import com.nhom17.quanlykaraoke.entities.KhachHang;
 import com.nhom17.quanlykaraoke.utils.HibernateUtil;
 
 /**
@@ -36,6 +37,33 @@ public class KhachHangDAO {
 		} catch (Exception e) {
 			t.rollback();
 			return false;
+		}
+	}
+
+	private String getNextMaKH() {
+		String idPrefix = "KH";
+
+		int count = countKhachHang();
+
+		if (count < 1 || count > 999) {
+			return null;
+		}
+
+		return idPrefix + String.format("%03d", count);
+	}
+
+	private int countKhachHang() {
+		Session session = factory.getCurrentSession();
+
+		try {
+			String hql = "From KhachHang";
+			Query<KhachHang> query = session.createQuery(hql, KhachHang.class);
+			List<KhachHang> listKhachHang = query.getResultList();
+
+			return listKhachHang.size();
+
+		} catch (Exception e) {
+			return -1;
 		}
 	}
 
@@ -77,30 +105,4 @@ public class KhachHangDAO {
 		}
 	}
 
-	private String getNextMaKH() {
-		String idPrefix = "KH";
-
-		int count = countKhachHang();
-
-		if (count < 1 || count > 999) {
-			return null;
-		}
-
-		return idPrefix + String.format("%03d", count);
-	}
-
-	private int countKhachHang() {
-		Session session = factory.getCurrentSession();
-
-		try {
-			String hql = "From KhachHang";
-			Query<KhachHang> query = session.createQuery(hql, KhachHang.class);
-			List<KhachHang> listKhachHangs = query.getResultList();
-
-			return listKhachHangs.size();
-
-		} catch (Exception e) {
-			return -1;
-		}
-	}
 }

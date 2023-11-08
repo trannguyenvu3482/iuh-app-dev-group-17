@@ -36,13 +36,17 @@ public class ChiTietDichVu implements Serializable {
 	@Column(columnDefinition = "int")
 	private int soLuong;
 
+	public ChiTietDichVu() {
+		
+	}
+	
 	public ChiTietDichVu(PhieuDatPhong phieuDatPhong, HangHoa hangHoa, Phong phong, int soLuong) {
 		this.phieuDatPhong = phieuDatPhong;
 		this.hangHoa = hangHoa;
 		this.phong = phong;
 		this.soLuong = soLuong;
 	}
-
+	
 	public PhieuDatPhong getPhieuDatPhong() {
 		return phieuDatPhong;
 	}

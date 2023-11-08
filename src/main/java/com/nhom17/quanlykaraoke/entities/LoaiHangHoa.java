@@ -22,7 +22,11 @@ public class LoaiHangHoa {
 
 	@Column(columnDefinition = "nvarchar(30)")
 	private String tenLoaihangHoa;
-
+	
+	public LoaiHangHoa() {
+		// TODO Auto-generated constructor stub
+	}
+	
 	public LoaiHangHoa(String maLoaiHangHoa, String tenLoaihangHoa) {
 		this.maLoaiHangHoa = maLoaiHangHoa;
 		this.tenLoaihangHoa = tenLoaihangHoa;

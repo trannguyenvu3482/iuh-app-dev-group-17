@@ -5,7 +5,9 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
+import com.nhom17.quanlykaraoke.entities.Phong;
 import com.nhom17.quanlykaraoke.entities.Phong;
 import com.nhom17.quanlykaraoke.utils.HibernateUtil;
 
@@ -21,18 +23,47 @@ public class PhongDAO {
 		factory = HibernateUtil.getMySessionFactory();
 	}
 
-	public boolean addPhong(Phong phong) {
+	public boolean addPhong(Phong p) {
 		Session session = factory.getCurrentSession();
 		Transaction t = session.beginTransaction();
 
 		try {
-			session.persist(phong);
+			String maPhong = getNextMaPhong();
+			p.setMaPhong(maPhong);
+			session.persist(maPhong);
 			t.commit();
 			return true;
 
 		} catch (Exception e) {
 			t.rollback();
 			return false;
+		}
+	}
+
+	private String getNextMaPhong() {
+		String idPrefix = "P";
+
+		int count = countPhong();
+
+		if (count < 1 || count > 999) {
+			return null;
+		}
+
+		return idPrefix + String.format("%03d", count);
+	}
+
+	private int countPhong() {
+		Session session = factory.getCurrentSession();
+
+		try {
+			String hql = "From Phong";
+			Query<Phong> query = session.createQuery(hql, Phong.class);
+			List<Phong> listPhong = query.getResultList();
+
+			return listPhong.size();
+
+		} catch (Exception e) {
+			return -1;
 		}
 	}
 
@@ -53,6 +84,37 @@ public class PhongDAO {
 		}
 	}
 
+	public Phong updatePhong(Phong phong) {
+		Session session = factory.getCurrentSession();
+		Transaction t = session.beginTransaction();
+
+		try {
+			Phong updatedPhong = session.merge(phong);
+
+			t.commit();
+			return updatedPhong;
+
+		} catch (Exception e) {
+			t.rollback();
+			return null;
+		}
+	}
+	
+	public Phong getPhong(String maPhong) {
+		Session session = factory.getCurrentSession();
+		Transaction t = session.beginTransaction();
+
+		try {
+			Phong p = session.get(Phong.class, maPhong);
+
+			t.commit();
+			return p;
+
+		} catch (Exception e) {
+			t.rollback();
+			return null;
+		}
+	}
 //	public List<Phong> getPhongPage(int page) {
 //		Session session = factory.getCurrentSession();
 //		Transaction t = session.beginTransaction();

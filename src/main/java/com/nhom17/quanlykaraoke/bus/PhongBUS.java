@@ -24,7 +24,11 @@ public class PhongBUS {
 	public List<Phong> getAllPhongs() {
 		return pDAO.getAllPhongs();
 	}
-
+	
+	public Phong updatePhong(Phong p) {
+		return pDAO.updatePhong(p);
+	}
+	
 //	public List<Phong> getPhongPage(int page) {
 //		return pDAO.getPhongPage(page);
 //	}

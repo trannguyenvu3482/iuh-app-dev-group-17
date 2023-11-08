@@ -42,7 +42,6 @@ public class LoaiPhong implements Serializable {
 	 * @param phuPhi
 	 */
 	public LoaiPhong(String maLoaiPhong, String tenLoaiPhong, int kichThuoc, double phuPhi) {
-		super();
 		this.maLoaiPhong = maLoaiPhong;
 		this.tenLoaiPhong = tenLoaiPhong;
 		this.kichThuoc = kichThuoc;
