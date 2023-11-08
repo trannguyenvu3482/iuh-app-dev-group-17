@@ -3,11 +3,13 @@ package com.nhom17.quanlykaraoke.gui.panels;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,7 +25,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.JPasswordField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
@@ -32,16 +34,18 @@ import org.kordamp.ikonli.materialdesign2.MaterialDesignE;
 import com.nhom17.quanlykaraoke.common.MyIcon;
 import com.nhom17.quanlykaraoke.entities.NhanVien;
 
+import net.miginfocom.swing.MigLayout;
+
 /**
  * @author Trần Nguyên Vũ, Trần Ngọc Phát, Mai Nhật Hào, Trần Thanh Vy
  * @version 1.0
  * @created 06-Nov-2023 4:16:05 PM
  */
-public class XemThongTinCaNhanPanel extends JPanel {
+public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
+	private JPasswordField txtCurrentPassword;
+	private JPasswordField txtNewPassword;
+	private JPasswordField txtConfirmNewPassword;
 
 	/**
 	 * @param currentNhanVien
@@ -104,6 +108,7 @@ public class XemThongTinCaNhanPanel extends JPanel {
 		}
 
 		JLabel userAvatar = new JLabel("");
+		userAvatar.setHorizontalAlignment(SwingConstants.CENTER);
 		userAvatar.setPreferredSize(new Dimension(200, 200));
 		userAvatar.setAlignmentX(0.5f);
 		userAvatar.setIcon(avatar);
@@ -227,25 +232,38 @@ public class XemThongTinCaNhanPanel extends JPanel {
 		Box horizontalBox_1_1_1 = Box.createHorizontalBox();
 		panelRight.add(horizontalBox_1_1_1);
 
-		textField_1 = new JTextField();
-		textField_1.setFont(new Font("Dialog", Font.PLAIN, 20));
-		textField_1.setColumns(10);
-		horizontalBox_1_1_1.add(textField_1);
+		JPanel panelCurrentPassword = new JPanel();
+		panelCurrentPassword.setMaximumSize(new Dimension(32767, 40));
+		panelCurrentPassword.setBackground(Color.white);
+		panelCurrentPassword.setBounds(new Rectangle(0, 0, 0, 50));
+		horizontalBox_1_1_1.add(panelCurrentPassword);
+		panelCurrentPassword.setLayout(new MigLayout("", "[546px][34px]", "[:40px:40px,center]"));
+
+		txtCurrentPassword = new JPasswordField();
+		txtCurrentPassword.setMaximumSize(new Dimension(2147483647, 40));
+		txtCurrentPassword.setEchoChar('*');
+		txtCurrentPassword.setBorder(null);
+		panelCurrentPassword.add(txtCurrentPassword, "cell 0 0,push ,grow");
+		txtCurrentPassword.setFont(new Font("Dialog", Font.PLAIN, 20));
+		txtCurrentPassword.setColumns(10);
 
 		JButton btnShowCurrentPassword = new JButton("");
+		btnShowCurrentPassword.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnShowCurrentPassword.setBackground(null);
+		btnShowCurrentPassword.setOpaque(false);
+		btnShowCurrentPassword.setBorder(null);
+		btnShowCurrentPassword.setPreferredSize(new Dimension(34, 16));
+		panelCurrentPassword.add(btnShowCurrentPassword, "cell 1 0,alignx left,aligny center");
 		btnShowCurrentPassword.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnShowCurrentPassword.setBackground(Color.white);
+		btnShowCurrentPassword.setBackground(null);
 		btnShowCurrentPassword.setIcon(MyIcon.getIcon(MaterialDesignE.EYE_OFF, 28, null));
-		horizontalBox_1_1_1.add(btnShowCurrentPassword);
+		btnShowCurrentPassword.setRolloverIcon(MyIcon.getIcon(MaterialDesignE.EYE_OFF, 28, Color.red));
 
 		Component horizontalStrut_3 = Box.createHorizontalStrut(20);
 		horizontalBox_1_1_1.add(horizontalStrut_3);
-
-		Component verticalStrut = Box.createVerticalStrut(50);
-		panelRight.add(verticalStrut);
 
 		Box horizontalBox_2 = Box.createHorizontalBox();
 		panelRight.add(horizontalBox_2);
@@ -261,16 +279,32 @@ public class XemThongTinCaNhanPanel extends JPanel {
 		Box horizontalBox_1_1 = Box.createHorizontalBox();
 		panelRight.add(horizontalBox_1_1);
 
-		textField = new JTextField();
-		textField.setFont(new Font("Dialog", Font.PLAIN, 20));
-		textField.setColumns(10);
-		horizontalBox_1_1.add(textField);
+		JPanel panelNewPassword = new JPanel();
+		panelNewPassword.setMaximumSize(new Dimension(32767, 40));
+		panelNewPassword.setBounds(new Rectangle(0, 0, 0, 50));
+		panelNewPassword.setBackground(Color.WHITE);
+		horizontalBox_1_1.add(panelNewPassword);
+		panelNewPassword.setLayout(new MigLayout("", "[546px][34px]", "[40px]"));
+
+		txtNewPassword = new JPasswordField();
+		txtNewPassword.setEchoChar('*');
+		txtNewPassword.setFont(new Font("Dialog", Font.PLAIN, 20));
+		txtNewPassword.setColumns(10);
+		txtNewPassword.setBorder(null);
+		panelNewPassword.add(txtNewPassword, "cell 0 0, aligny center, push, grow");
+
+		JButton btnShowNewPassword = new JButton("");
+		btnShowNewPassword.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnShowNewPassword.setPreferredSize(new Dimension(34, 16));
+		btnShowNewPassword.setOpaque(false);
+		btnShowNewPassword.setBorder(null);
+		btnShowNewPassword.setIcon(MyIcon.getIcon(MaterialDesignE.EYE_OFF, 28, null));
+		btnShowNewPassword.setRolloverIcon(MyIcon.getIcon(MaterialDesignE.EYE_OFF, 28, Color.red));
+		btnShowNewPassword.setBackground((Color) null);
+		panelNewPassword.add(btnShowNewPassword, "cell 1 0,alignx left,aligny center");
 
 		Component horizontalStrut_3_1 = Box.createHorizontalStrut(20);
 		horizontalBox_1_1.add(horizontalStrut_3_1);
-
-		Component verticalStrut_2 = Box.createVerticalStrut(50);
-		panelRight.add(verticalStrut_2);
 
 		Box horizontalBox = Box.createHorizontalBox();
 		panelRight.add(horizontalBox);
@@ -284,18 +318,35 @@ public class XemThongTinCaNhanPanel extends JPanel {
 		horizontalBox.add(horizontalGlue_3);
 
 		Box horizontalBox_1_2 = Box.createHorizontalBox();
+		horizontalBox_1_2.setAlignmentY(Component.CENTER_ALIGNMENT);
 		panelRight.add(horizontalBox_1_2);
 
-		textField_2 = new JTextField();
-		textField_2.setFont(new Font("Dialog", Font.PLAIN, 20));
-		textField_2.setColumns(10);
-		horizontalBox_1_2.add(textField_2);
+		JPanel panelConfirmNewPassword = new JPanel();
+		panelConfirmNewPassword.setMaximumSize(new Dimension(32767, 40));
+		horizontalBox_1_2.add(panelConfirmNewPassword);
+		panelConfirmNewPassword.setBounds(new Rectangle(0, 0, 0, 50));
+		panelConfirmNewPassword.setBackground(Color.WHITE);
+		panelConfirmNewPassword.setLayout(new MigLayout("", "[546px][34px]", "[40px]"));
+
+		txtConfirmNewPassword = new JPasswordField();
+		txtConfirmNewPassword.setEchoChar('*');
+		txtConfirmNewPassword.setFont(new Font("Dialog", Font.PLAIN, 20));
+		txtConfirmNewPassword.setColumns(10);
+		txtConfirmNewPassword.setBorder(null);
+		panelConfirmNewPassword.add(txtConfirmNewPassword, "cell 0 0, aligny center, push, grow");
+
+		JButton btnShowConfirmNewPassword = new JButton("");
+		btnShowConfirmNewPassword.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnShowConfirmNewPassword.setPreferredSize(new Dimension(34, 16));
+		btnShowConfirmNewPassword.setOpaque(false);
+		btnShowConfirmNewPassword.setBorder(null);
+		btnShowConfirmNewPassword.setBackground((Color) null);
+		btnShowConfirmNewPassword.setIcon(MyIcon.getIcon(MaterialDesignE.EYE_OFF, 28, null));
+		btnShowConfirmNewPassword.setRolloverIcon(MyIcon.getIcon(MaterialDesignE.EYE_OFF, 28, Color.red));
+		panelConfirmNewPassword.add(btnShowConfirmNewPassword, "cell 1 0, alignx left,aligny center");
 
 		Component horizontalStrut_3_1_1 = Box.createHorizontalStrut(20);
 		horizontalBox_1_2.add(horizontalStrut_3_1_1);
-
-		Component verticalStrut_2_1 = Box.createVerticalStrut(40);
-		panelRight.add(verticalStrut_2_1);
 
 		Box horizontalBox_1 = Box.createHorizontalBox();
 		panelRight.add(horizontalBox_1);
@@ -304,12 +355,18 @@ public class XemThongTinCaNhanPanel extends JPanel {
 		btnNewButton.setFont(new Font("Dialog", Font.BOLD, 28));
 		horizontalBox_1.add(btnNewButton);
 
-		Component verticalStrut_2_1_1 = Box.createVerticalStrut(200);
+		Component verticalStrut_2_1_1 = Box.createVerticalStrut(100);
 		panelRight.add(verticalStrut_2_1_1);
 
 		JPanel panelBottom = new JPanel();
 		panelBottom.setBorder(new EmptyBorder(40, 0, 40, 0));
 		panelBottom.setBackground(Color.DARK_GRAY);
 		add(panelBottom, BorderLayout.SOUTH);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+
 	}
 }
