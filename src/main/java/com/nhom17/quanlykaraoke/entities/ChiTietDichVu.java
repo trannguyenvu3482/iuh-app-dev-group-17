@@ -25,28 +25,28 @@ public class ChiTietDichVu implements Serializable {
 
 	@Id
 	@ManyToOne
-	@JoinColumn(name = "maHangHoa", columnDefinition = "char(5)")
-	private HangHoa hangHoa;
+	@JoinColumn(name = "maPhong", columnDefinition = "char(4)")
+	private Phong phong;
 
 	@Id
 	@ManyToOne
-	@JoinColumn(name = "maPhong",columnDefinition = "char(4)")
-	private Phong phong;
-	
+	@JoinColumn(name = "maHangHoa", columnDefinition = "char(5)")
+	private HangHoa hangHoa;
+
 	@Column(columnDefinition = "int")
 	private int soLuong;
 
 	public ChiTietDichVu() {
-		
+
 	}
-	
+
 	public ChiTietDichVu(PhieuDatPhong phieuDatPhong, HangHoa hangHoa, Phong phong, int soLuong) {
 		this.phieuDatPhong = phieuDatPhong;
 		this.hangHoa = hangHoa;
 		this.phong = phong;
 		this.soLuong = soLuong;
 	}
-	
+
 	public PhieuDatPhong getPhieuDatPhong() {
 		return phieuDatPhong;
 	}
@@ -63,7 +63,6 @@ public class ChiTietDichVu implements Serializable {
 		this.hangHoa = hangHoa;
 	}
 
-	
 	public Phong getPhong() {
 		return phong;
 	}
@@ -85,5 +84,5 @@ public class ChiTietDichVu implements Serializable {
 		return "ChiTietDichVu [phieuDatPhong=" + phieuDatPhong + ", hangHoa=" + hangHoa + ", phong=" + phong
 				+ ", soLuong=" + soLuong + "]";
 	}
-	
+
 }

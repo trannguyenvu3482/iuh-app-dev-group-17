@@ -2,28 +2,17 @@ package com.nhom17.quanlykaraoke.gui.panels;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
-
-import org.kordamp.ikonli.materialdesign2.MaterialDesignP;
-
-import com.nhom17.quanlykaraoke.common.MyIcon;
 
 /**
  * @author Trần Nguyên Vũ, Trần Ngọc Phát, Mai Nhật Hào, Trần Thanh Vy
@@ -35,7 +24,6 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 
 	private DefaultTableModel modelNhanVien;
 	private JTable tblNhanVien = null;
-	private final JTextField txtSearch;
 
 	/**
 	 * 
@@ -45,36 +33,10 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 		setLayout(new BorderLayout(0, 0));
 
 		JPanel panelTop = new JPanel();
-		panelTop.setBorder(new EmptyBorder(20, 20, 0, 20));
+		panelTop.setBorder(new EmptyBorder(240, 0, 0, 0));
+		panelTop.setBackground(Color.BLUE);
 		add(panelTop, BorderLayout.NORTH);
 		panelTop.setLayout(new BoxLayout(panelTop, BoxLayout.X_AXIS));
-
-		JComboBox<String> boxGioiTinh = new JComboBox<String>();
-		boxGioiTinh.setFont(new Font("Dialog", Font.BOLD, 20));
-		boxGioiTinh.setModel(new DefaultComboBoxModel<String>(new String[] { "Giới tính", "Nam", "Nữ" }));
-		panelTop.add(boxGioiTinh);
-
-		Component horizontalStrut = Box.createHorizontalStrut(40);
-		panelTop.add(horizontalStrut);
-
-		JComboBox<String> boxHoatDong = new JComboBox<String>();
-		boxHoatDong.setFont(new Font("Dialog", Font.BOLD, 20));
-		boxHoatDong.setModel(
-				new DefaultComboBoxModel<String>(new String[] { "Hoạt động", "Còn hoạt động", "Đã nghỉ việc" }));
-		panelTop.add(boxHoatDong);
-
-		Component horizontalStrut_1 = Box.createHorizontalStrut(550);
-		panelTop.add(horizontalStrut_1);
-
-		txtSearch = new JTextField();
-		txtSearch.setFont(new Font("Dialog", Font.PLAIN, 20));
-		panelTop.add(txtSearch);
-		txtSearch.setColumns(10);
-
-		JPanel panelBottom = new JPanel();
-		panelBottom.setBorder(new EmptyBorder(0, 0, 80, 0));
-		panelBottom.setBackground(Color.DARK_GRAY);
-		add(panelBottom, BorderLayout.SOUTH);
 
 		JPanel panelCenter = new JPanel();
 		add(panelCenter, BorderLayout.CENTER);
@@ -88,21 +50,6 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 
 		JScrollPane scrollPaneNhanVien = new JScrollPane(tblNhanVien);
 		panelCenter.add(scrollPaneNhanVien, BorderLayout.CENTER);
-
-		JPanel panelControls = new JPanel();
-		panelCenter.add(panelControls, BorderLayout.SOUTH);
-		FlowLayout fl_panelControls = (FlowLayout) panelControls.getLayout();
-		fl_panelControls.setHgap(50);
-
-		JButton btnAdd = new JButton("");
-		btnAdd.setIcon(MyIcon.getIcon(MaterialDesignP.PLUS_THICK, 32, null));
-		panelControls.add(btnAdd);
-
-		JButton btnEdit = new JButton("New button");
-		panelControls.add(btnEdit);
-
-		// Action listeners
-		btnAdd.addActionListener(this);
 
 		refreshTable();
 	}

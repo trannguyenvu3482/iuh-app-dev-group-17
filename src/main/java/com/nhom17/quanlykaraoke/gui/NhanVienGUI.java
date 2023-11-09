@@ -49,12 +49,12 @@ import com.nhom17.quanlykaraoke.common.MainPanelButton;
 import com.nhom17.quanlykaraoke.common.MyFrame;
 import com.nhom17.quanlykaraoke.common.MyIcon;
 import com.nhom17.quanlykaraoke.common.NotificationPanel;
-import com.nhom17.quanlykaraoke.entities.NhanVien;
 import com.nhom17.quanlykaraoke.gui.panels.QuanLyDichVuPanel;
 import com.nhom17.quanlykaraoke.gui.panels.QuanLyPhieuDatPhongPanel;
 import com.nhom17.quanlykaraoke.gui.panels.ThongKePanel;
 import com.nhom17.quanlykaraoke.gui.panels.XemThongTinCaNhanPanel;
 import com.nhom17.quanlykaraoke.utils.ClockUtil;
+import com.nhom17.quanlykaraoke.utils.ConstantUtil;
 
 import net.miginfocom.layout.ComponentWrapper;
 import net.miginfocom.layout.LayoutCallback;
@@ -130,7 +130,6 @@ public class NhanVienGUI extends MyFrame implements ActionListener {
 
 	// VARIABLES
 	private NhanVienBUS nvBUS = new NhanVienBUS();
-	private NhanVien currentNhanVien = null;
 	private boolean isSidebarMinimized = false;
 	private final int screenWidth = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice()
 			.getDisplayMode().getWidth();
@@ -139,21 +138,21 @@ public class NhanVienGUI extends MyFrame implements ActionListener {
 
 	public NhanVienGUI(String maNV) {
 		// Init
-		this.currentNhanVien = nvBUS.getNhanVien(maNV);
+		ConstantUtil.currentNhanVien = nvBUS.getNhanVien(maNV);
 		Notifications.getInstance().setJFrame(this);
 		GlassPanePopup.install(this);
 
-		final JPanel xemThongTinCaNhanPanel = new XemThongTinCaNhanPanel(currentNhanVien);
+		final JPanel xemThongTinCaNhanPanel = new XemThongTinCaNhanPanel(ConstantUtil.currentNhanVien);
 		final MainPanelButton mainPanelButton_1 = new MainPanelButton(1280, 20, "Xem thông tin cá nhân",
 				MaterialDesignA.ACCOUNT, xemThongTinCaNhanPanel, panelContent);
-		userFullName.setText(currentNhanVien.getHoTen());
+		userFullName.setText(ConstantUtil.currentNhanVien.getHoTen());
 
 		getContentPane().setLayout(new BorderLayout(0, 0));
 
 		// Set avatar
 		ImageIcon avatar = null;
 		try {
-			BufferedImage img = ImageIO.read(new ByteArrayInputStream(currentNhanVien.getAnhDaiDien()));
+			BufferedImage img = ImageIO.read(new ByteArrayInputStream(ConstantUtil.currentNhanVien.getAnhDaiDien()));
 
 			int width = img.getWidth(null);
 			int height = img.getHeight(null);

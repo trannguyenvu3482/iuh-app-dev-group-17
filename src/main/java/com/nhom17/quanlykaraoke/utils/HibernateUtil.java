@@ -41,11 +41,11 @@ public class HibernateUtil {
 		config.setProperty("hibernate.connection.password", password);
 
 		// Eager loading
-		config.setProperty("hibernate.enable_lazy_load_no_trans", "false");
+		config.setProperty("hibernate.enable_lazy_load_no_trans", "true");
 
 		// Add annotated classes
-		config.addAnnotatedClass(ChiTietDichVu.class);
 		config.addAnnotatedClass(ChiTietPhieuDatPhong.class);
+		config.addAnnotatedClass(ChiTietDichVu.class);
 		config.addAnnotatedClass(ChucVu.class);
 		config.addAnnotatedClass(HangHoa.class);
 		config.addAnnotatedClass(KhachHang.class);

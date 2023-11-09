@@ -1,5 +1,6 @@
 package com.nhom17.quanlykaraoke.dao;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -7,8 +8,9 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
+import com.nhom17.quanlykaraoke.entities.ChiTietPhieuDatPhong;
 import com.nhom17.quanlykaraoke.entities.PhieuDatPhong;
-import com.nhom17.quanlykaraoke.entities.PhieuDatPhong;
+import com.nhom17.quanlykaraoke.entities.Phong;
 import com.nhom17.quanlykaraoke.utils.HibernateUtil;
 
 public class PhieuDatPhongDAO {
@@ -18,14 +20,24 @@ public class PhieuDatPhongDAO {
 		factory = HibernateUtil.getMySessionFactory();
 	}
 
-	public boolean addPhieuDatPhong(PhieuDatPhong pdp) {
+	public boolean addPhieuDatPhong(PhieuDatPhong pdp, Phong p) {
 		Session session = factory.getCurrentSession();
 		Transaction t = session.beginTransaction();
 
 		try {
+			// Handle add PhieuDatPhong
 			String maPDP = getNextMaPDP();
+
+			System.out.println("Ma PDP: " + maPDP);
+
 			pdp.setMaPhieuDatPhong(maPDP);
 			session.persist(pdp);
+
+			// Handle add ChiTietPhieuDatPhong
+			ChiTietPhieuDatPhong ctpdp = new ChiTietPhieuDatPhong(p, pdp, LocalDateTime.now(), null);
+			session.persist(ctpdp);
+
+			// Finish
 			t.commit();
 			return true;
 
@@ -40,11 +52,11 @@ public class PhieuDatPhongDAO {
 
 		int count = countPhieuDatPhong();
 
-		if (count < 1 || count > 9999) {
+		if (count < 0 || count > 9999) {
 			return null;
 		}
 
-		return idPrefix + String.format("%04d", count);
+		return idPrefix + String.format("%04d", count + 1);
 	}
 
 	private int countPhieuDatPhong() {
@@ -61,7 +73,7 @@ public class PhieuDatPhongDAO {
 			return -1;
 		}
 	}
-	
+
 	public List<PhieuDatPhong> getAllPhieuDatPhongs() {
 		Session session = factory.getCurrentSession();
 		Transaction t = session.beginTransaction();

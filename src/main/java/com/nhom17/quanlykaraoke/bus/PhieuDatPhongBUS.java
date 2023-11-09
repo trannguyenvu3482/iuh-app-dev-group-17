@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.nhom17.quanlykaraoke.dao.PhieuDatPhongDAO;
 import com.nhom17.quanlykaraoke.entities.PhieuDatPhong;
+import com.nhom17.quanlykaraoke.entities.Phong;
 
 public class PhieuDatPhongBUS {
 	private PhieuDatPhongDAO pdpDAO;
@@ -12,12 +13,12 @@ public class PhieuDatPhongBUS {
 		this.pdpDAO = new PhieuDatPhongDAO();
 	}
 
-	public boolean addPhieuDatPhong(PhieuDatPhong pdp) {
-		return pdpDAO.addPhieuDatPhong(pdp);
+	public boolean addPhieuDatPhong(PhieuDatPhong pdp, Phong p) {
+		return pdpDAO.addPhieuDatPhong(pdp, p);
 	}
 
 	public List<PhieuDatPhong> getAllPhieuDatPhongs() {
 		return pdpDAO.getAllPhieuDatPhongs();
 	}
-	
+
 }

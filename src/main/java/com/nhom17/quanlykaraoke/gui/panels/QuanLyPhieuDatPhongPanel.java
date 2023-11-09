@@ -49,6 +49,8 @@ import com.nhom17.quanlykaraoke.utils.ConstantUtil;
 
 import net.miginfocom.swing.MigLayout;
 import raven.toast.Notifications;
+import raven.toast.Notifications.Location;
+import raven.toast.Notifications.Type;
 
 /**
  * Màn hình quản lý phiếu đặt phòng
@@ -71,6 +73,7 @@ public class QuanLyPhieuDatPhongPanel extends JPanel implements ActionListener {
 	private final JButton btnRemove = new JButton("");
 	private final JButton btnCheckout = new JButton("");
 	private final JPanel roomsPanel = new JPanel();
+	private final JComboBox<String> boxFilter = new JComboBox<String>();
 	private final JPanel panel1 = new JPanel();
 	private final JPanel panel2 = new JPanel();
 	private final JPanel panel3 = new JPanel();
@@ -85,6 +88,9 @@ public class QuanLyPhieuDatPhongPanel extends JPanel implements ActionListener {
 	private int currentPage = 1;
 	private int maxPageSize = -1;
 	private List<Phong> listRooms = null;
+	private List<Phong> listEmptyRooms = null;
+	private List<Phong> listBookedRooms = null;
+
 	private List<Phong> listFilteredRooms = null;
 	private RoomPanel currentSelectedRoomPanel = null;
 	private final List<JPanel> roomUIPanels = List.of(panel1, panel2, panel3, panel4, panel5, panel6, panel7, panel8);
@@ -98,11 +104,18 @@ public class QuanLyPhieuDatPhongPanel extends JPanel implements ActionListener {
 		initUI();
 
 		// Initiate the rooms
-		this.listRooms = pBUS.getAllPhongs();
-		this.maxPageSize = (int) Math.ceil((double) listRooms.size() / 8);
+		refreshRoomList();
 
 		// Load first page
-		loadPageRoom(listRooms, currentPage);
+		this.currentPage = 1;
+		this.maxPageSize = (int) Math.ceil((double) listEmptyRooms.size() / ConstantUtil.MAXIMUM_PAGE_SIZE);
+		loadPageRoom(listEmptyRooms, currentPage);
+
+		// Handle control buttons
+		handleControlButtonsVisibility();
+
+		// Action listeners
+		boxFilter.addActionListener(this);
 	}
 
 	/**
@@ -213,10 +226,6 @@ public class QuanLyPhieuDatPhongPanel extends JPanel implements ActionListener {
 		// Select clicked
 		clickedPanel.select();
 		currentSelectedRoomPanel = clickedPanel;
-
-		// Show plus if room selected
-		btnAdd.setVisible(true);
-		btnRemove.setVisible(true);
 	}
 
 	/**
@@ -253,6 +262,26 @@ public class QuanLyPhieuDatPhongPanel extends JPanel implements ActionListener {
 			currentSelectedRoomPanel.createPDP();
 		} else if (o.equals(btnRemove)) {
 			currentSelectedRoomPanel.removePDP();
+		} else if (o.equals(boxFilter)) {
+			if (boxFilter.getSelectedIndex() == 0) {
+				if (listEmptyRooms != null && listEmptyRooms.size() > 0) {
+					this.currentPage = 1;
+					loadPageRoom(listEmptyRooms, currentPage);
+				} else {
+					Notifications.getInstance().show(Type.ERROR, Location.BOTTOM_RIGHT, "Không có phòng nào trống");
+					boxFilter.setSelectedIndex(1);
+				}
+			} else if (boxFilter.getSelectedIndex() == 1) {
+				if (listBookedRooms != null && listBookedRooms.size() > 0) {
+					this.currentPage = 1;
+					loadPageRoom(listBookedRooms, currentPage);
+					handleControlButtonsVisibility();
+				} else {
+					Notifications.getInstance().show(Type.ERROR, Location.BOTTOM_RIGHT, "Không có phòng nào được đặt");
+					boxFilter.setSelectedIndex(0);
+					handleControlButtonsVisibility();
+				}
+			}
 		}
 	}
 
@@ -268,9 +297,47 @@ public class QuanLyPhieuDatPhongPanel extends JPanel implements ActionListener {
 
 		handleFilterRooms(listFilteredRooms);
 		if (listFilteredRooms.size() > 0) {
+			this.currentPage = 1;
 			loadPageRoom(listFilteredRooms, currentPage);
 		} else {
-			loadRoomPanels(null);
+			this.currentPage = 1;
+			loadPageRoom(listBookedRooms, currentPage);
+		}
+	}
+
+	/**
+	 * 
+	 */
+	private void refreshRoomList() {
+		// TODO Auto-generated method stub
+		this.listRooms = pBUS.getAllPhongs();
+		this.listEmptyRooms = pBUS.getAllEmptyPhongs();
+
+		listRooms.forEach(room -> {
+			if (listEmptyRooms.contains(room)) {
+				listBookedRooms.add(room);
+			}
+		});
+	}
+
+	/**
+	 * 
+	 */
+	private void handleControlButtonsVisibility() {
+		if (boxFilter.getSelectedIndex() == 0) {
+			btnAdd.setVisible(true);
+
+			btnRemove.setVisible(false);
+			btnChangeRoom.setVisible(false);
+			btnCheckout.setVisible(false);
+			btnLichSuPDP.setVisible(false);
+		} else if (boxFilter.getSelectedIndex() == 1) {
+			btnAdd.setVisible(false);
+
+			btnRemove.setVisible(true);
+			btnChangeRoom.setVisible(true);
+			btnCheckout.setVisible(true);
+			btnLichSuPDP.setVisible(true);
 		}
 	}
 
@@ -292,11 +359,10 @@ public class QuanLyPhieuDatPhongPanel extends JPanel implements ActionListener {
 		lblFilter.setIcon(MyIcon.getIcon(MaterialDesignF.FILTER, 28, null));
 		panelTop.add(lblFilter, "cell 0 0,alignx trailing");
 
-		JComboBox<String> boxFilter = new JComboBox<String>();
 		boxFilter.setFont(new Font("Dialog", Font.BOLD, 20));
 
 		boxFilter.setModel(new DefaultComboBoxModel<String>(
-				new String[] { "Phòng đang được sử dụng", "Phòng chưa được sử dụng" }));
+				new String[] { "Phòng chưa được sử dụng", "Phòng đang được sử dụng" }));
 		boxFilter.setSelectedIndex(0);
 		panelTop.add(boxFilter, "cell 1 0,push ,alignx left,aligny center");
 

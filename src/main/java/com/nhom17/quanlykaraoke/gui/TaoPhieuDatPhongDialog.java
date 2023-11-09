@@ -9,6 +9,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
+import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -25,9 +26,13 @@ import javax.swing.text.MaskFormatter;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignA;
 
 import com.nhom17.quanlykaraoke.bus.KhachHangBUS;
+import com.nhom17.quanlykaraoke.bus.PhieuDatPhongBUS;
+import com.nhom17.quanlykaraoke.bus.PhongBUS;
 import com.nhom17.quanlykaraoke.common.MyIcon;
 import com.nhom17.quanlykaraoke.entities.KhachHang;
+import com.nhom17.quanlykaraoke.entities.PhieuDatPhong;
 import com.nhom17.quanlykaraoke.entities.Phong;
+import com.nhom17.quanlykaraoke.utils.ConstantUtil;
 
 import raven.toast.Notifications;
 import raven.toast.Notifications.Location;
@@ -51,6 +56,9 @@ public class TaoPhieuDatPhongDialog extends JDialog implements ActionListener {
 
 	// VARIABLES
 	private final KhachHangBUS khBUS = new KhachHangBUS();
+	private final PhieuDatPhongBUS pdpBUS = new PhieuDatPhongBUS();
+	private KhachHang khachHang = null;
+	private Phong phong = null;
 
 	/**
 	* 
@@ -60,6 +68,7 @@ public class TaoPhieuDatPhongDialog extends JDialog implements ActionListener {
 		initUI();
 
 		// Load data
+		this.phong = phong;
 		lblTenPhong.setText(lblTenPhong.getText().concat(phong.getMaPhong()));
 
 		// Action listeners
@@ -90,11 +99,11 @@ public class TaoPhieuDatPhongDialog extends JDialog implements ActionListener {
 		if (o.equals(btnHuy)) {
 			this.dispose();
 		} else if (o.equals(btnSearch)) {
-			KhachHang kh = khBUS.getKhachHangBySDT(txtSDT.getText().trim());
+			khachHang = khBUS.getKhachHangBySDT(txtSDT.getText().trim());
 
-			if (kh != null) {
-				txtHoTen.setText(kh.getHoTen());
-				txtCCCD.setText(kh.getCCCD());
+			if (khachHang != null) {
+				txtHoTen.setText(khachHang.getHoTen());
+				txtCCCD.setText(khachHang.getCCCD());
 				btnLapPhieu.setEnabled(true);
 
 				Notifications.getInstance().show(raven.toast.Notifications.Type.SUCCESS, Location.BOTTOM_RIGHT,
@@ -104,7 +113,25 @@ public class TaoPhieuDatPhongDialog extends JDialog implements ActionListener {
 						"Không tìm thấy khách hàng có số điện thoại trên!");
 			}
 		} else if (o.equals(btnLapPhieu)) {
+			handleLapPhieu();
+		}
+	}
 
+	/**
+	 * 
+	 */
+	private void handleLapPhieu() {
+		PhieuDatPhong pdp = new PhieuDatPhong("", ConstantUtil.currentNhanVien, false, khachHang);
+		if (pdpBUS.addPhieuDatPhong(pdp, phong)) {
+			Notifications.getInstance().show(raven.toast.Notifications.Type.SUCCESS, Location.BOTTOM_RIGHT,
+					"Đã thêm phiếu đặt phòng thành công");
+
+			List<Phong> pList = new PhongBUS().getAllEmptyPhongs();
+
+			dispose();
+		} else {
+			Notifications.getInstance().show(raven.toast.Notifications.Type.ERROR, Location.BOTTOM_RIGHT,
+					"Đã có lỗi khi thêm phiếu đặt phòng");
 		}
 	}
 

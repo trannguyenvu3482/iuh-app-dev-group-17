@@ -35,9 +35,6 @@ public class ChiTietPhieuDatPhong implements Serializable {
 	@JoinColumn(name = "maPhieuDatPhong", columnDefinition = "char(7)")
 	private PhieuDatPhong phieuDatPhong;
 
-	@Column(columnDefinition = "int")
-	private int thoiLuong;
-
 	@Column(columnDefinition = "datetime")
 	private LocalDateTime thoiGianBatDau;
 
@@ -47,12 +44,11 @@ public class ChiTietPhieuDatPhong implements Serializable {
 	public ChiTietPhieuDatPhong() {
 		// TODO Auto-generated constructor stub
 	}
-	
-	public ChiTietPhieuDatPhong(Phong phong, PhieuDatPhong phieuDatPhong, int thoiLuong, LocalDateTime thoiGianBatDau,
+
+	public ChiTietPhieuDatPhong(Phong phong, PhieuDatPhong phieuDatPhong, LocalDateTime thoiGianBatDau,
 			LocalDateTime thoiGianKetThuc) {
 		this.phong = phong;
 		this.phieuDatPhong = phieuDatPhong;
-		this.thoiLuong = thoiLuong;
 		this.thoiGianBatDau = thoiGianBatDau;
 		this.thoiGianKetThuc = thoiGianKetThuc;
 	}
@@ -73,14 +69,6 @@ public class ChiTietPhieuDatPhong implements Serializable {
 		this.phieuDatPhong = phieuDatPhong;
 	}
 
-	public int getThoiLuong() {
-		return thoiLuong;
-	}
-
-	public void setThoiLuong(int thoiLuong) {
-		this.thoiLuong = thoiLuong;
-	}
-
 	public LocalDateTime getThoiGianBatDau() {
 		return thoiGianBatDau;
 	}
@@ -99,8 +87,8 @@ public class ChiTietPhieuDatPhong implements Serializable {
 
 	@Override
 	public String toString() {
-		return "ChiTietPhieuDatPhong [phong=" + phong + ", phieuDatPhong=" + phieuDatPhong + ", thoiLuong=" + thoiLuong
-				+ ", thoiGianBatDau=" + thoiGianBatDau + ", thoiGianKetThuc=" + thoiGianKetThuc + "]";
+		return "ChiTietPhieuDatPhong [phong=" + phong + ", phieuDatPhong=" + phieuDatPhong + ", thoiGianBatDau="
+				+ thoiGianBatDau + ", thoiGianKetThuc=" + thoiGianKetThuc + "]";
 	}
 
 }

@@ -8,7 +8,6 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import com.nhom17.quanlykaraoke.entities.Phong;
-import com.nhom17.quanlykaraoke.entities.Phong;
 import com.nhom17.quanlykaraoke.utils.HibernateUtil;
 
 /**
@@ -84,6 +83,26 @@ public class PhongDAO {
 		}
 	}
 
+	public List<Phong> getAllEmptyPhongs() {
+		Session session = factory.getCurrentSession();
+		Transaction t = session.beginTransaction();
+		List<Phong> listPhong = null;
+		try {
+			Query<Phong> query = session.createNativeQuery(
+					"SELECT * from Phong p where p.maPhong not in (SELECT maPhong from ChiTietPhieuDatPhong ctpdp where thoiGianKetThuc is null)",
+					Phong.class);
+
+			listPhong = query.getResultList();
+
+			t.commit();
+			return listPhong;
+		} catch (Exception e) {
+			System.out.println("ROLLBACK!");
+			t.rollback();
+			return listPhong;
+		}
+	}
+
 	public Phong updatePhong(Phong phong) {
 		Session session = factory.getCurrentSession();
 		Transaction t = session.beginTransaction();
@@ -99,7 +118,7 @@ public class PhongDAO {
 			return null;
 		}
 	}
-	
+
 	public Phong getPhong(String maPhong) {
 		Session session = factory.getCurrentSession();
 		Transaction t = session.beginTransaction();
