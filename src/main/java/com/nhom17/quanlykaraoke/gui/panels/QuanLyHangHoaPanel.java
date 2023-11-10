@@ -9,32 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
 import java.util.Locale;
-<<<<<<< Updated upstream
-
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFormattedTextField;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.text.NumberFormatter;
-
-import org.kordamp.ikonli.materialdesign2.MaterialDesignB;
-import org.kordamp.ikonli.materialdesign2.MaterialDesignD;
-import org.kordamp.ikonli.materialdesign2.MaterialDesignF;
-import org.kordamp.ikonli.materialdesign2.MaterialDesignP;
-
-import com.nhom17.quanlykaraoke.common.MyIcon;
-=======
->>>>>>> Stashed changes
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -64,11 +38,7 @@ import com.nhom17.quanlykaraoke.common.MyIcon;
  * @version 1.0
  * @created 07-Nov-2023 1:15:21 PM
  */
-<<<<<<< Updated upstream
-public class QuanLyHangHoaPanel extends JPanel implements ActionListener{
-=======
 public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
->>>>>>> Stashed changes
 	private static final long serialVersionUID = 1L;
 
 	// COMPONENTS
