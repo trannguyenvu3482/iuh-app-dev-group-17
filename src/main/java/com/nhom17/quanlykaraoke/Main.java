@@ -5,8 +5,11 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.UIManager;
 
+import org.kordamp.ikonli.materialdesign2.MaterialDesignE;
+
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.FlatLaf;
+import com.nhom17.quanlykaraoke.common.MyIcon;
 import com.nhom17.quanlykaraoke.common.SplashScreen;
 import com.nhom17.quanlykaraoke.gui.DangNhapGUI;
 import com.nhom17.quanlykaraoke.gui.NhanVienGUI;
@@ -80,6 +83,8 @@ public class Main {
 		UIManager.put("Table.showHorizontalLines", true);
 		UIManager.put("Table.showVerticalLines", true);
 		UIManager.put("JTabbedPane.showTabSeparators", true);
+		UIManager.put("PasswordField.showRevealButton", true);
+		UIManager.put("PasswordField.revealIcon ", MyIcon.getIcon(MaterialDesignE.EYE, 12, null));
 	}
 
 	private static void showLoginScreen() {

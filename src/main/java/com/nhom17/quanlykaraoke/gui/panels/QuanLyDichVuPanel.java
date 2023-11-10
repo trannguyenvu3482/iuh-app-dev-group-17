@@ -10,11 +10,15 @@ import javax.swing.JPanel;
  * @created 07-Nov-2023 1:26:08 PM
  */
 public class QuanLyDichVuPanel extends JPanel {
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * 
 	 */
 	public QuanLyDichVuPanel() {
 		setSize(1200, 800);
 		setLayout(new BorderLayout(0, 0));
+
 	}
+
 }

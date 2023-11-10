@@ -8,7 +8,6 @@ package com.nhom17.quanlykaraoke.gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,7 +32,6 @@ import javax.swing.event.CaretListener;
 import javax.swing.text.MaskFormatter;
 
 import org.kordamp.ikonli.materialdesign2.MaterialDesignA;
-import org.kordamp.ikonli.materialdesign2.MaterialDesignE;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignL;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignP;
 
@@ -65,7 +63,6 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 	private JFormattedTextField txtMaNV = null;
 	private JPasswordField txtMatKhau;
 	private final JButton btnDangNhap;
-	private final JButton btnShow = new JButton("");
 	private final JPasswordField txtNewPassword;
 	private final JPasswordField txtConfirmNewPassword;
 	private final JFormattedTextField txtPhoneNo;
@@ -73,8 +70,6 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 	private final JButton btnQuenMatKhau = new JButton("Quên mật khẩu?");
 	private final JPanel panelLogin = new JPanel();
 	private final JPanel panelForgot = new JPanel();
-	private final JButton btnShow2 = new JButton("",
-			MyIcon.getIcon(MaterialDesignE.EYE_OFF, MyIcon.DEFAULT_SIZE, null));
 	private final JButton btnGetOTP = new JButton("Lấy mã OTP");
 	private final JButton btnReturn = new JButton("");
 	private final JButton btnResetPassword = new JButton("Tạo mật khẩu mới");
@@ -136,11 +131,6 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 		panelForgot.add(btnReturn);
 		btnReturn.setIcon(MyIcon.getIcon(MaterialDesignA.ARROW_LEFT_BOLD, MyIcon.DEFAULT_SIZE, null));
 
-		btnShow2.setPreferredSize(new Dimension(40, 30));
-		btnShow2.setBorder(BorderFactory.createEmptyBorder());
-		btnShow2.setBounds(474, 114, 50, 52);
-		panelForgot.add(btnShow2);
-
 		JLabel lblPhoneNoLabel = new JLabel("");
 		lblPhoneNoLabel.setIcon(MyIcon.getIcon(MaterialDesignP.PHONE, MyIcon.DEFAULT_SIZE, null));
 		lblPhoneNoLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -169,7 +159,7 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 		txtNewPassword.setFont(new Font(Font.DIALOG, Font.PLAIN, 20));
 		txtNewPassword.setColumns(10);
 		txtNewPassword.setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 0));
-		txtNewPassword.setBounds(4, 114, 470, 50);
+		txtNewPassword.setBounds(4, 114, 515, 50);
 		panelForgot.add(txtNewPassword);
 
 		txtConfirmNewPassword = new JPasswordField();
@@ -232,12 +222,6 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 		txtPhoneNo.setBounds(4, 330, 242, 50);
 		panelForgot.add(txtPhoneNo);
 
-		JButton btnShow_1_1 = new JButton("");
-		btnShow_1_1.setPreferredSize(new Dimension(40, 30));
-		btnShow_1_1.setBorder(BorderFactory.createEmptyBorder());
-		btnShow_1_1.setBounds(474, 116, 50, 50);
-		panelForgot.add(btnShow_1_1);
-
 		MaskFormatter txtOTPFormatter = new MaskFormatter("######");
 		txtOTP = new JFormattedTextField(txtOTPFormatter);
 
@@ -284,19 +268,12 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 		txtMaNV.setColumns(10);
 
 		txtMatKhau = new JPasswordField();
-		txtMatKhau.setBounds(0, 228, 472, 50);
+		txtMatKhau.setBounds(0, 228, 520, 50);
 		panelLogin.add(txtMatKhau);
 		txtMatKhau.setEchoChar('*');
 		txtMatKhau.setFont(new Font(Font.DIALOG, Font.PLAIN, 20));
 		txtMatKhau.setColumns(10);
 		txtMatKhau.setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 0));
-		btnShow.setBounds(470, 228, 50, 50);
-		panelLogin.add(btnShow);
-
-		btnShow.setPreferredSize(new Dimension(40, 30));
-		btnShow.setBorder(BorderFactory.createEmptyBorder());
-		btnShow.setIcon(MyIcon.getIcon(MaterialDesignE.EYE_OFF, MyIcon.DEFAULT_SIZE, null));
-		btnShow.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
 		JLabel lblMaNV = new JLabel("Mã nhân viên:");
 		lblMaNV.setBounds(0, 87, 160, 25);
@@ -333,8 +310,6 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 		btnQuenMatKhau.addActionListener(this);
 
 		btnDangNhap.addActionListener(this);
-		btnShow.addActionListener(this);
-		btnShow2.addActionListener(this);
 		btnGetOTP.addActionListener(this);
 		btnReturn.addActionListener(this);
 
@@ -364,10 +339,6 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 
 		if (o.equals(btnDangNhap)) {
 			handleLogin();
-		} else if (o.equals(btnShow)) {
-			togglePasswordVisibility(btnShow, txtMatKhau);
-		} else if (o.equals(btnShow2)) {
-			togglePasswordVisibility(btnShow2, txtNewPassword);
 		} else if (o.equals(btnQuenMatKhau)) {
 			setTitle("Quên mật khẩu");
 			panelLogin.setVisible(false);
@@ -461,21 +432,6 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 		}
 
 		return true;
-	}
-
-	private void togglePasswordVisibility(JButton btn, JPasswordField txt) {
-		boolean visible = isPasswordShownStates.get(txt);
-		visible = !visible;
-
-		isPasswordShownStates.put(txt, visible);
-
-		if (visible) {
-			btn.setIcon(MyIcon.getIcon(MaterialDesignE.EYE, MyIcon.DEFAULT_SIZE, null));
-			txt.setEchoChar((char) 0);
-		} else {
-			btn.setIcon(MyIcon.getIcon(MaterialDesignE.EYE_OFF, MyIcon.DEFAULT_SIZE, null));
-			txt.setEchoChar('*');
-		}
 	}
 
 	public String getLoggedInEmployeeID() {
