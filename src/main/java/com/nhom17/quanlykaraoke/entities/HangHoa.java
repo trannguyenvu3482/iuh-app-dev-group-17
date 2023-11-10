@@ -23,7 +23,7 @@ public class HangHoa {
 	private String maHangHoa;
 
 	@Column(columnDefinition = "nvarchar(30)")
-	private String tenHanghoa;
+	private String tenHangHoa;
 
 	@ManyToOne
 	@JoinColumn(name = "maLoaiHangHoa", columnDefinition = "char(6)")
@@ -42,10 +42,10 @@ public class HangHoa {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public HangHoa(String maHangHoa, String tenHanghoa, LoaiHangHoa loaiHangHoa, int soLuongTon, double donGia,
+	public HangHoa(String maHangHoa, String tenHangHoa, LoaiHangHoa loaiHangHoa, int soLuongTon, double donGia,
 			boolean trangThai) {
 		this.maHangHoa = maHangHoa;
-		this.tenHanghoa = tenHanghoa;
+		this.tenHangHoa = tenHangHoa;
 		this.loaiHangHoa = loaiHangHoa;
 		this.soLuongTon = soLuongTon;
 		this.donGia = donGia;
@@ -68,12 +68,12 @@ public class HangHoa {
 		this.loaiHangHoa = loaiHangHoa;
 	}
 
-	public String getTenHanghoa() {
-		return tenHanghoa;
+	public String getTenHangHoa() {
+		return tenHangHoa;
 	}
 
-	public void setTenHanghoa(String tenHanghoa) {
-		this.tenHanghoa = tenHanghoa;
+	public void setTenHangHoa(String tenHanghoa) {
+		this.tenHangHoa = tenHanghoa;
 	}
 
 	public int getSoLuongTon() {
@@ -119,7 +119,7 @@ public class HangHoa {
 
 	@Override
 	public String toString() {
-		return "HangHoa [maHangHoa=" + maHangHoa + ", tenHanghoa=" + tenHanghoa + ", loaiHangHoa=" + loaiHangHoa
+		return "HangHoa [maHangHoa=" + maHangHoa + ", tenHanghoa=" + tenHangHoa + ", loaiHangHoa=" + loaiHangHoa
 				+ ", soLuongTon=" + soLuongTon + ", donGia=" + donGia + ", trangThai=" + trangThai + "]";
 	}
 
