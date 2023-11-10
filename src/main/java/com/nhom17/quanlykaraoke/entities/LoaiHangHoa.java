@@ -21,7 +21,7 @@ public class LoaiHangHoa {
 	private String maLoaiHangHoa;
 
 	@Column(columnDefinition = "nvarchar(30)")
-	private String tenLoaihangHoa;
+	private String tenLoaiHangHoa;
 	
 	public LoaiHangHoa() {
 		// TODO Auto-generated constructor stub
@@ -29,7 +29,7 @@ public class LoaiHangHoa {
 	
 	public LoaiHangHoa(String maLoaiHangHoa, String tenLoaihangHoa) {
 		this.maLoaiHangHoa = maLoaiHangHoa;
-		this.tenLoaihangHoa = tenLoaihangHoa;
+		this.tenLoaiHangHoa = tenLoaihangHoa;
 	}
 
 	public String getMaLoaiHangHoa() {
@@ -40,12 +40,12 @@ public class LoaiHangHoa {
 		this.maLoaiHangHoa = maLoaiHangHoa;
 	}
 
-	public String getTenLoaihangHoa() {
-		return tenLoaihangHoa;
+	public String getTenLoaiHangHoa() {
+		return tenLoaiHangHoa;
 	}
 
 	public void setTenLoaihangHoa(String tenLoaihangHoa) {
-		this.tenLoaihangHoa = tenLoaihangHoa;
+		this.tenLoaiHangHoa = tenLoaihangHoa;
 	}
 
 	@Override
@@ -67,7 +67,7 @@ public class LoaiHangHoa {
 
 	@Override
 	public String toString() {
-		return "LoaiHangHoa [maLoaiHangHoa=" + maLoaiHangHoa + ", tenLoaihangHoa=" + tenLoaihangHoa + "]";
+		return "LoaiHangHoa [maLoaiHangHoa=" + maLoaiHangHoa + ", tenLoaihangHoa=" + tenLoaiHangHoa + "]";
 	}
 
 }

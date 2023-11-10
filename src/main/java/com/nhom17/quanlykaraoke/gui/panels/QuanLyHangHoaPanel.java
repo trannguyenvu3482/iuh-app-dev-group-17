@@ -8,6 +8,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
+import java.util.Arrays;
 import java.util.Locale;
 
 import javax.swing.Box;
@@ -31,7 +32,11 @@ import org.kordamp.ikonli.materialdesign2.MaterialDesignD;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignF;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignP;
 
+import com.nhom17.quanlykaraoke.bus.HangHoaBUS;
+import com.nhom17.quanlykaraoke.bus.LoaiHangHoaBUS;
 import com.nhom17.quanlykaraoke.common.MyIcon;
+import com.nhom17.quanlykaraoke.entities.HangHoa;
+import com.nhom17.quanlykaraoke.entities.LoaiHangHoa;
 
 /**
  * @author Trần Nguyên Vũ, Trần Ngọc Phát, Mai Nhật Hào, Trần Thanh Vy
@@ -45,7 +50,6 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 	private JTable tblDichVu;
 	private DefaultTableModel modelDichVu;
 	private final JTextField txtTenSanPham;
-	private final JTextField txtLoaiSanPham;
 	private final JFormattedTextField txtDonGia;
 	private final JTextField txtSoLuongTon;
 	private final JComboBox boxTrangThai;
@@ -54,7 +58,8 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 	private final JButton btnSua = new JButton("");
 	private final JButton btnNhapHang = new JButton("");
 	private final JButton btnNgungHoatDong = new JButton("");
-
+	private HangHoaBUS hangHoaBUS = new HangHoaBUS();
+	private LoaiHangHoaBUS loaiHangHoaBUS = new LoaiHangHoaBUS();
 	/**
 	 * 
 	 */
@@ -109,17 +114,20 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 		JLabel lblTnSnPhm_1 = new JLabel("Loại hàng hóa:");
 		lblTnSnPhm_1.setFont(new Font("Dialog", Font.BOLD, 20));
 		boxTwo.add(lblTnSnPhm_1);
-
+		
 		Component horizontalStrut_1 = Box.createHorizontalStrut(32);
 		boxTwo.add(horizontalStrut_1);
-
-		txtLoaiSanPham = new JTextField();
-		txtLoaiSanPham.setFont(new Font("Dialog", Font.PLAIN, 20));
-		txtLoaiSanPham.setColumns(10);
-		boxTwo.add(txtLoaiSanPham);
-
-		Component horizontalStrut_1_1_2_1_1 = Box.createHorizontalStrut(800);
-		boxTwo.add(horizontalStrut_1_1_2_1_1);
+		
+		JComboBox cbTenHH = new JComboBox();
+		cbTenHH.setFont(new Font("Dialog", Font.PLAIN, 20));
+		for(LoaiHangHoa lhh : loaiHangHoaBUS.getAllLoaiHangHoas()) {
+			cbTenHH.addItem(lhh.getTenLoaiHangHoa());
+		}
+		
+		boxTwo.add(cbTenHH);
+		
+		Component horizontalStrut_2 = Box.createHorizontalStrut(800);
+		boxTwo.add(horizontalStrut_2);
 
 		Component verticalStrut_1_1 = Box.createVerticalStrut(15);
 		panelTop.add(verticalStrut_1_1);
@@ -163,6 +171,8 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 		boxFour.add(lblTnSnPhm_1_1_1);
 
 		txtSoLuongTon = new JTextField();
+		txtSoLuongTon.setEnabled(false);
+		txtSoLuongTon.setEditable(false);
 		txtSoLuongTon.setFont(new Font("Dialog", Font.PLAIN, 20));
 		boxFour.add(txtSoLuongTon);
 
@@ -183,7 +193,7 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 		boxFive.add(horizontalStrut_1_1_1);
 
 		boxTrangThai = new JComboBox();
-		boxTrangThai.setEnabled(false);
+		boxTrangThai.setEditable(true);
 		boxTrangThai.setModel(new DefaultComboBoxModel(new String[] { "Còn hoạt động", "Ngưng hoạt động" }));
 		boxTrangThai.setFont(new Font("Dialog", Font.PLAIN, 20));
 		boxFive.add(boxTrangThai);
@@ -247,8 +257,13 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 
 		JComboBox<String> boxFilterLoaiHangHoa = new JComboBox<String>();
 		boxFilterLoaiHangHoa.setFont(new Font("Dialog", Font.BOLD, 20));
-		boxFilterLoaiHangHoa.setModel(new DefaultComboBoxModel<String>(
-				new String[] { "Loại hàng hóa", "Nước giải khát", "Đồ uống có cồn", "Thức ăn nhanh" }));
+		String[] dataLHH = {"Loại hàng hoá"};
+
+		for (LoaiHangHoa lhh : loaiHangHoaBUS.getAllLoaiHangHoas()) {
+		    dataLHH = Arrays.copyOf(dataLHH, dataLHH.length + 1);
+		    dataLHH[dataLHH.length - 1] = lhh.getTenLoaiHangHoa();
+		}
+		boxFilterLoaiHangHoa.setModel(new DefaultComboBoxModel<String>(dataLHH));
 		boxSix_1.add(boxFilterLoaiHangHoa);
 
 		Component horizontalStrut_1_2 = Box.createHorizontalStrut(40);
@@ -267,7 +282,7 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 		txtSearch.setFont(new Font("Dialog", Font.PLAIN, 20));
 		boxSix_1.add(txtSearch);
 		txtSearch.setColumns(10);
-		txtSearch.putClientProperty("JTextField.placeholderText", "Nhập vào mã hàng hóa cần tìm");
+		txtSearch.putClientProperty("JTextField.placeholderText", "Nhập vào tên hàng hóa cần tìm");
 
 		JScrollPane scrollPaneTable = new JScrollPane();
 		add(scrollPaneTable, BorderLayout.CENTER);
@@ -312,18 +327,16 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 	/**
 	 * 
 	 */
+	Locale lc = new Locale("vi", "VN");
+	NumberFormat nf = NumberFormat.getCurrencyInstance(lc);
 	private void refreshTable() {
 		modelDichVu.setRowCount(0);
-
-		Object[] testRow = { "HH001", "Nước suối", "Nước giải khát", "15000", 50, "Còn hoạt động" };
-		Object[] testRow2 = { "HH002", "Bia 333 chai", "Thức uống có cồn", "20000", 300, "Còn hoạt động" };
-		Object[] testRow3 = { "HH003", "Bia Tiger chai", "Thức uống có cồn", "20000", 40, "Còn hoạt động" };
-		Object[] testRow4 = { "HH004", "Khô mực", "Nước giải khát", "150000", 10, "Còn hoạt động" };
-
-		modelDichVu.addRow(testRow);
-		modelDichVu.addRow(testRow2);
-		modelDichVu.addRow(testRow3);
-		modelDichVu.addRow(testRow4);
+		for(HangHoa hh : hangHoaBUS.getAllHangHoas()) {
+			String[] row = {hh.getMaHangHoa(),hh.getTenHangHoa(),hh.getLoaiHangHoa().getTenLoaiHangHoa(),
+					nf.format(hh.getDonGia()),String.valueOf(hh.getSoLuongTon()),hh.isTrangThai()?"Hoạt động":"Không hoạt động"};
+			modelDichVu.addRow(row);
+		}
+		
 	}
 
 	@Override
