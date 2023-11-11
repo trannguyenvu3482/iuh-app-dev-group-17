@@ -20,4 +20,8 @@ public class LoaiHangHoaBUS {
 	public List<LoaiHangHoa> getAllLoaiHangHoas() {
 		return lhhDAO.getAllLoaiHangHoas();
 	}
+	
+	public LoaiHangHoa getLoaiHangHoaByname(String tenLHH){
+		return lhhDAO.getLoaiHangHoaByName(tenLHH);
+	}
 }

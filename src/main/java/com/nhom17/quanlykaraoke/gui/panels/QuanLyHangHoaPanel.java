@@ -52,14 +52,20 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 	private final JTextField txtTenSanPham;
 	private final JFormattedTextField txtDonGia;
 	private final JTextField txtSoLuongTon;
+	private final JComboBox cbTenHH = new JComboBox();
 	private final JComboBox boxTrangThai;
 	private final JTextField txtSearch;
 	private final JButton btnThem = new JButton("");
 	private final JButton btnSua = new JButton("");
 	private final JButton btnNhapHang = new JButton("");
 	private final JButton btnNgungHoatDong = new JButton("");
+	private final JButton btnClearFields = new JButton("");
 	private HangHoaBUS hangHoaBUS = new HangHoaBUS();
 	private LoaiHangHoaBUS loaiHangHoaBUS = new LoaiHangHoaBUS();
+	private NumberFormat format = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+	
+
+	private NumberFormatter formatter;
 	/**
 	 * 
 	 */
@@ -118,7 +124,6 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 		Component horizontalStrut_1 = Box.createHorizontalStrut(32);
 		boxTwo.add(horizontalStrut_1);
 		
-		JComboBox cbTenHH = new JComboBox();
 		cbTenHH.setFont(new Font("Dialog", Font.PLAIN, 20));
 		for(LoaiHangHoa lhh : loaiHangHoaBUS.getAllLoaiHangHoas()) {
 			cbTenHH.addItem(lhh.getTenLoaiHangHoa());
@@ -142,10 +147,9 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 		Component horizontalStrut_1_1 = Box.createHorizontalStrut(92);
 		boxThree.add(horizontalStrut_1_1);
 
-		NumberFormat format = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
 		format.setMaximumFractionDigits(0);
-
-		NumberFormatter formatter = new NumberFormatter(format);
+		formatter = new NumberFormatter(format);
+				
 		formatter.setMinimum(0);
 		formatter.setMaximum(100000000);
 		formatter.setAllowsInvalid(false);
@@ -171,9 +175,10 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 		boxFour.add(lblTnSnPhm_1_1_1);
 
 		txtSoLuongTon = new JTextField();
-		txtSoLuongTon.setEnabled(false);
 		txtSoLuongTon.setEditable(false);
+		txtSoLuongTon.setEnabled(false);
 		txtSoLuongTon.setFont(new Font("Dialog", Font.PLAIN, 20));
+		txtSoLuongTon.setText("0");
 		boxFour.add(txtSoLuongTon);
 
 		Component horizontalStrut_1_1_2_1_1_1_1 = Box.createHorizontalStrut(1000);
@@ -239,7 +244,6 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 		Component horizontalStrut_1_2_1_1_1_1 = Box.createHorizontalStrut(20);
 		boxSix.add(horizontalStrut_1_2_1_1_1_1);
 
-		JButton btnClearFields = new JButton("");
 		btnClearFields.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnClearFields.setIcon(MyIcon.getIcon(MaterialDesignB.BACKSPACE, 32, null));
 		btnClearFields.putClientProperty("JButton.buttonType", "square");
@@ -296,6 +300,7 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 		btnSua.addActionListener(this);
 		btnNhapHang.addActionListener(this);
 		btnNgungHoatDong.addActionListener(this);
+		btnClearFields.addActionListener(this);
 
 		// Load data to table
 		refreshTable();
@@ -338,14 +343,39 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 		}
 		
 	}
-
+	
+	private void clearFields() {
+		txtTenSanPham.setText("");
+		txtDonGia.setValue(0);;
+		txtSoLuongTon.setText("0");;
+		boxTrangThai.setSelectedItem("Ngưng hoạt động");
+		txtTenSanPham.grabFocus();
+	}
+	
+	private boolean trangThai(String tt) {
+		if(tt.equals("Còn hoạt động"))
+			return true;
+		else
+			return false;
+	}
+	
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		Object o = e.getSource();
 
 		if (o.equals(btnThem)) {
-
+			int a = (int)txtDonGia.getValue();
+			double b = (double) a;
+			LoaiHangHoa lhh = loaiHangHoaBUS.getLoaiHangHoaByname(cbTenHH.getSelectedItem().toString());
+			HangHoa hh = new HangHoa("",txtTenSanPham.getText(), lhh , 
+					Integer.parseInt(txtSoLuongTon.getText()),b, trangThai(boxTrangThai.getSelectedItem().toString()));
+			hangHoaBUS.addHangHoa(hh);
+			refreshTable();
+			clearFields();
+		}else if(o.equals(btnClearFields)){
+			clearFields();
 		}
 	}
 }

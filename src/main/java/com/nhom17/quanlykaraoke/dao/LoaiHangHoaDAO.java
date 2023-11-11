@@ -7,6 +7,8 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
+import com.nhom17.quanlykaraoke.entities.HangHoa;
+import com.nhom17.quanlykaraoke.entities.KhachHang;
 import com.nhom17.quanlykaraoke.entities.LoaiHangHoa;
 import com.nhom17.quanlykaraoke.entities.LoaiHangHoa;
 import com.nhom17.quanlykaraoke.utils.HibernateUtil;
@@ -90,6 +92,27 @@ public class LoaiHangHoaDAO {
 			System.out.println("ROLLBACK!");
 			t.rollback();
 			return listLoaiHangHoa;
+		}
+	}
+	
+	public LoaiHangHoa getLoaiHangHoaByName(String name) {
+		Session session = factory.getCurrentSession();
+		Transaction t = session.beginTransaction();
+
+		try {
+			Query<LoaiHangHoa> query = session
+					.createNativeQuery("select * FROM LoaiHangHoa WHERE tenLoaiHangHoa = N'" + name + "'", LoaiHangHoa.class);
+
+			System.out.println(query.getQueryString());
+			
+			LoaiHangHoa lhh = query.getResultList().get(0);
+
+			t.commit();
+			return lhh;
+
+		} catch (Exception e) {
+			t.rollback();
+			return null;
 		}
 	}
 }
