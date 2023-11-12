@@ -12,8 +12,8 @@ public class HangHoaBUS {
 		this.hhDAO = new HangHoaDAO();
 	}
 
-	public boolean addHangHoa(HangHoa kh) {
-		return hhDAO.addHangHoa(kh);
+	public boolean addHangHoa(HangHoa hh) {
+		return hhDAO.addHangHoa(hh);
 	}
 
 	public List<HangHoa> getAllHangHoas() {

@@ -24,6 +24,10 @@ public class HangHoaDAO {
 
 		try {
 			String maHH = getNextMaHH();
+			
+			System.out.println("Ma HH: " + maHH);
+			
+			
 			hh.setMaHangHoa(maHH);
 			session.persist(hh);
 			t.commit();
@@ -40,11 +44,11 @@ public class HangHoaDAO {
 
 		int count = countHangHoa();
 
-		if (count < 1 || count > 999) {
+		if (count < 0 || count > 999) {
 			return null;
 		}
 
-		return idPrefix + String.format("%03d", count);
+		return idPrefix + String.format("%03d", count + 1);
 	}
 
 	private int countHangHoa() {
@@ -94,19 +98,4 @@ public class HangHoaDAO {
 		}
 	}
 	
-	public HangHoa getHangHoa(String tenHH) {
-		Session session = factory.getCurrentSession();
-		Transaction t = session.beginTransaction();
-
-		try {
-			HangHoa hh = session.get(HangHoa.class, tenHH);
-
-			t.commit();
-			return hh;
-
-		} catch (Exception e) {
-			t.rollback();
-			return null;
-		}
-	}
 }
