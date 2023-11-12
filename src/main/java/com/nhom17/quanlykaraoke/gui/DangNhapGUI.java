@@ -92,7 +92,7 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 
 		setTitle("Đăng nhập");
 		setSize(1200, 600);
-		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(JDialog.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		setResizable(false);
 		setIconImage(new ImageIcon("src/main/resources/images/logo-icon.png").getImage());

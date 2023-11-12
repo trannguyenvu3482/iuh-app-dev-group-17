@@ -7,15 +7,21 @@ import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 
 import org.kordamp.ikonli.materialdesign2.MaterialDesignM;
 
+import com.nhom17.quanlykaraoke.bus.PhieuDatPhongBUS;
+import com.nhom17.quanlykaraoke.bus.PhongBUS;
 import com.nhom17.quanlykaraoke.common.MyIcon;
 import com.nhom17.quanlykaraoke.entities.Phong;
 import com.nhom17.quanlykaraoke.gui.TaoPhieuDatPhongDialog;
@@ -29,6 +35,11 @@ import com.nhom17.quanlykaraoke.utils.MoneyFormatUtil;
 public class RoomPanel extends JPanel implements MouseListener {
 	private static final long serialVersionUID = 1L;
 
+	// INTERFACE
+	public interface DialogClosedListener {
+		void onClosed();
+	}
+
 	// COMPONENTS
 	private final JLabel lblLogo = new JLabel("");
 	private final JLabel lblRoom = new JLabel("");
@@ -41,8 +52,11 @@ public class RoomPanel extends JPanel implements MouseListener {
 	private final JLabel lblStatus = new JLabel("Trạng thái: Trống");
 
 	// VARIABLES
+	private PhongBUS pBUS = new PhongBUS();
+	private PhieuDatPhongBUS pdpBUS = new PhieuDatPhongBUS();
 	private String roomName = "Phòng ";
 	private boolean isSelected = false;
+	private boolean isBooked = false;
 	private Phong p = null;
 
 	/**
@@ -54,6 +68,7 @@ public class RoomPanel extends JPanel implements MouseListener {
 		// Set variables
 		this.p = p;
 		this.roomName = roomName.concat(p.getMaPhong());
+		this.isBooked = pBUS.isRoomEmpty(p);
 
 		// Create the UI
 		initUI();
@@ -62,15 +77,37 @@ public class RoomPanel extends JPanel implements MouseListener {
 	/**
 	 * Create a PhieuDatPhong
 	 */
-	public void createPDP() {
-		new TaoPhieuDatPhongDialog(p).setVisible(true);
+	public boolean createPDP(DialogClosedListener listener) {
+		SwingUtilities.invokeLater(() -> {
+			TaoPhieuDatPhongDialog dialog = new TaoPhieuDatPhongDialog(p);
+
+			dialog.addWindowListener(new WindowAdapter() {
+				public void windowClosed(WindowEvent e) {
+					listener.onClosed();
+				}
+			});
+
+			dialog.setVisible(true);
+		});
+
+		return true;
 	}
 
 	/**
 	 * Remove a PhieuDatPhong
 	 */
-	public void removePDP() {
-		System.out.println("Hủy phiếu đặt phòng cho phòng: " + p.getMaPhong());
+	public boolean removePDP() {
+		int result = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn hủy phòng này", "Thông báo",
+				JOptionPane.YES_NO_OPTION);
+
+		if (result == JOptionPane.YES_OPTION) {
+			System.out.println("FINISH!");
+			if (pdpBUS.finishPhieuDatPhong(p.getMaPhong())) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
@@ -99,7 +136,7 @@ public class RoomPanel extends JPanel implements MouseListener {
 	private void initUI() {
 		setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-		if (p.isTrangThai()) {
+		if (isBooked) {
 			lblLogo.setIcon(MyIcon.getIcon(MaterialDesignM.MICROPHONE_VARIANT, 180, null));
 		} else {
 			lblLogo.setIcon(MyIcon.getIcon(MaterialDesignM.MICROPHONE_VARIANT_OFF, 180, null));
@@ -144,7 +181,7 @@ public class RoomPanel extends JPanel implements MouseListener {
 		lblNumber.setText("Số lượng: " + String.format("%d", p.getLoaiPhong().getKichThuoc()) + " người");
 		lblType.setText("Loại: " + p.getLoaiPhong().getTenLoaiPhong());
 		lblFee.setText("Phụ phí: " + MoneyFormatUtil.format(p.getLoaiPhong().getPhuPhi()));
-		lblStatus.setText("Trạng thái: " + (p.isTrangThai() == true ? "Đã đặt" : "Trống"));
+		lblStatus.setText("Trạng thái: " + (isBooked == true ? "Đã đặt" : "Trống"));
 	}
 
 	/**
