@@ -1,6 +1,9 @@
 package com.nhom17.quanlykaraoke.bus;
 
+import java.util.List;
+
 import com.nhom17.quanlykaraoke.dao.LoaiPhongDAO;
+import com.nhom17.quanlykaraoke.entities.HangHoa;
 import com.nhom17.quanlykaraoke.entities.LoaiPhong;
 
 /**
@@ -18,7 +21,11 @@ public class LoaiPhongBUS {
 		this.lpDAO = new LoaiPhongDAO();
 	}
 
-	public LoaiPhong getLoaiPhong(String maLP) {
-		return lpDAO.getLoaiPhong(maLP);
+	public List<LoaiPhong> getAllLoaiPhongs() {
+		return lpDAO.getAllLoaiPhongs();
+	}
+	
+	public LoaiPhong getLoaiPhong(String tenLP, int kt) {
+		return lpDAO.getLoaiPhong(tenLP, kt);
 	}
 }

@@ -88,4 +88,11 @@ public class Phong implements Serializable {
 	public void setLoaiPhong(LoaiPhong loaiPhong) {
 		this.loaiPhong = loaiPhong;
 	}
+
+	@Override
+	public String toString() {
+		return "Phong [maPhong=" + maPhong + ", loaiPhong=" + loaiPhong + ", trangThai=" + trangThai + "]";
+	}
+	
+	
 }

@@ -8,6 +8,7 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import com.nhom17.quanlykaraoke.entities.Phong;
+import com.nhom17.quanlykaraoke.entities.Phong;
 import com.nhom17.quanlykaraoke.utils.HibernateUtil;
 
 /**
@@ -27,9 +28,13 @@ public class PhongDAO {
 		Transaction t = session.beginTransaction();
 
 		try {
-			String maPhong = getNextMaPhong();
-			p.setMaPhong(maPhong);
-			session.persist(maPhong);
+			String maP = getNextMaPhong();
+			
+			System.out.println("Ma HH: " + maP);
+			
+			
+			p.setMaPhong(maP);
+			session.persist(p);
 			t.commit();
 			return true;
 
@@ -44,11 +49,11 @@ public class PhongDAO {
 
 		int count = countPhong();
 
-		if (count < 1 || count > 999) {
+		if (count < 0 || count > 999) {
 			return null;
 		}
 
-		return idPrefix + String.format("%03d", count);
+		return idPrefix + String.format("%03d", count+1);
 	}
 
 	private int countPhong() {

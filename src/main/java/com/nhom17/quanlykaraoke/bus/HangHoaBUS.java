@@ -19,4 +19,8 @@ public class HangHoaBUS {
 	public List<HangHoa> getAllHangHoas() {
 		return hhDAO.getAllHangHoas();
 	}
+	
+	public HangHoa updateHangHoa(HangHoa hh) {
+		return hhDAO.updateHangHoa(hh);
+	}
 }

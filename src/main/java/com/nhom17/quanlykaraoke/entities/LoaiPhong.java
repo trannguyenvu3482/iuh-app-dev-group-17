@@ -103,4 +103,12 @@ public class LoaiPhong implements Serializable {
 	public void setTenLoaiPhong(String tenLoaiPhong) {
 		this.tenLoaiPhong = tenLoaiPhong;
 	}
+
+	@Override
+	public String toString() {
+		return "LoaiPhong [maLoaiPhong=" + maLoaiPhong + ", tenLoaiPhong=" + tenLoaiPhong + ", kichThuoc=" + kichThuoc
+				+ ", phuPhi=" + phuPhi + "]";
+	}
+	
+	
 }

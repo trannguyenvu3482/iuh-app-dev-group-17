@@ -7,6 +7,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
+import com.nhom17.quanlykaraoke.entities.LoaiHangHoa;
 import com.nhom17.quanlykaraoke.entities.LoaiPhong;
 import com.nhom17.quanlykaraoke.entities.LoaiPhong;
 import com.nhom17.quanlykaraoke.entities.LoaiPhong;
@@ -46,11 +47,11 @@ public class LoaiPhongDAO {
 
 		int count = countLoaiPhong();
 
-		if (count < 1 || count > 999) {
+		if (count < 0 || count > 999) {
 			return null;
 		}
 
-		return idPrefix + String.format("%03d", count);
+		return idPrefix + String.format("%03d", count+1);
 	}
 
 	private int countLoaiPhong() {
@@ -68,22 +69,6 @@ public class LoaiPhongDAO {
 		}
 	}
 	
-	public LoaiPhong getLoaiPhong(String maLoaiPhong) {
-		Session session = factory.getCurrentSession();
-		Transaction t = session.beginTransaction();
-
-		try {
-			LoaiPhong lp = session.get(LoaiPhong.class, maLoaiPhong);
-
-			t.commit();
-			return lp;
-
-		} catch (Exception e) {
-			t.rollback();
-			return null;
-		}
-	}
-	
 	public List<LoaiPhong> getAllLoaiPhongs() {
 		Session session = factory.getCurrentSession();
 		Transaction t = session.beginTransaction();
@@ -97,6 +82,28 @@ public class LoaiPhongDAO {
 			System.out.println("ROLLBACK!");
 			t.rollback();
 			return listLoaiPhong;
+		}
+	}
+	
+	public LoaiPhong getLoaiPhong(String tenLP,int kt) {
+		Session session = factory.getCurrentSession();
+		Transaction t = session.beginTransaction();
+
+		try {
+			Query<LoaiPhong> query = session
+					.createNativeQuery("select * FROM LoaiPhong WHERE tenLoaiPhong = N'" + tenLP + "'" + 
+							" AND kichThuoc = " + kt, LoaiPhong.class);
+
+			System.out.println(query.getQueryString());
+			
+			LoaiPhong lp = query.getResultList().get(0);
+
+			t.commit();
+			return lp;
+
+		} catch (Exception e) {
+			t.rollback();
+			return null;
 		}
 	}
 }

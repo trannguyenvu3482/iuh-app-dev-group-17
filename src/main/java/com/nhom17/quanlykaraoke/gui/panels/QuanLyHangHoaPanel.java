@@ -7,7 +7,10 @@ import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Locale;
 
@@ -18,6 +21,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -25,6 +29,7 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.MaskFormatter;
 import javax.swing.text.NumberFormatter;
 
 import org.kordamp.ikonli.materialdesign2.MaterialDesignB;
@@ -58,7 +63,6 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 	private final JButton btnThem = new JButton("");
 	private final JButton btnSua = new JButton("");
 	private final JButton btnNhapHang = new JButton("");
-	private final JButton btnNgungHoatDong = new JButton("");
 	private final JButton btnClearFields = new JButton("");
 	private HangHoaBUS hangHoaBUS = new HangHoaBUS();
 	private LoaiHangHoaBUS loaiHangHoaBUS = new LoaiHangHoaBUS();
@@ -235,14 +239,6 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 
 		Component horizontalStrut_1_2_1_1_1 = Box.createHorizontalStrut(20);
 		boxSix.add(horizontalStrut_1_2_1_1_1);
-		btnNgungHoatDong.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
-		btnNgungHoatDong.setIcon(MyIcon.getIcon(MaterialDesignF.FOOD_OFF, 32, null));
-		btnNgungHoatDong.putClientProperty("JButton.buttonType", "square");
-		boxSix.add(btnNgungHoatDong);
-
-		Component horizontalStrut_1_2_1_1_1_1 = Box.createHorizontalStrut(20);
-		boxSix.add(horizontalStrut_1_2_1_1_1_1);
 
 		btnClearFields.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnClearFields.setIcon(MyIcon.getIcon(MaterialDesignB.BACKSPACE, 32, null));
@@ -299,11 +295,11 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 		btnThem.addActionListener(this);
 		btnSua.addActionListener(this);
 		btnNhapHang.addActionListener(this);
-		btnNgungHoatDong.addActionListener(this);
 		btnClearFields.addActionListener(this);
 
 		// Load data to table
 		refreshTable();
+		
 	}
 
 	private void createTable() {
@@ -327,6 +323,24 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 		tblDichVu.setAutoCreateRowSorter(true);
 		tblDichVu.getTableHeader().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		tblDichVu.setRowHeight(50);
+		
+		tblDichVu.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (tblDichVu.getSelectedRow() != -1) {
+					txtTenSanPham.setText((String) modelDichVu.getValueAt(tblDichVu.getSelectedRow(), 1));
+					cbTenHH.setSelectedItem((String) modelDichVu.getValueAt(tblDichVu.getSelectedRow(), 2));
+					try {
+						txtDonGia.setValue(nf.parse((String) modelDichVu.getValueAt(tblDichVu.getSelectedRow(), 3)));
+					} catch (ParseException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					txtSoLuongTon.setText((String) modelDichVu.getValueAt(tblDichVu.getSelectedRow(), 4));
+					boxTrangThai.setSelectedItem((String) modelDichVu.getValueAt(tblDichVu.getSelectedRow(), 5));
+				}
+			}
+		});
 	}
 
 	/**
@@ -338,7 +352,7 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 		modelDichVu.setRowCount(0);
 		for(HangHoa hh : hangHoaBUS.getAllHangHoas()) {
 			String[] row = {hh.getMaHangHoa(),hh.getTenHangHoa(),hh.getLoaiHangHoa().getTenLoaiHangHoa(),
-					nf.format(hh.getDonGia()),String.valueOf(hh.getSoLuongTon()),hh.isTrangThai()?"Hoạt động":"Không hoạt động"};
+					nf.format(hh.getDonGia()),String.valueOf(hh.getSoLuongTon()),hh.isTrangThai()?"Còn hoạt động":"Ngưng hoạt động"};
 			modelDichVu.addRow(row);
 		}
 		
@@ -376,6 +390,26 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 			clearFields();
 		}else if(o.equals(btnClearFields)){
 			clearFields();
+		}else if(o.equals(btnSua)) {
+			if(tblDichVu.getSelectedRow()!=-1 ) {
+//				int a = (int)txtDonGia.getValue();
+//				double b = (double) a;
+//				LoaiHangHoa lhh = loaiHangHoaBUS.getLoaiHangHoaByname(cbTenHH.getSelectedItem().toString());
+//				HangHoa hh = new HangHoa((String) modelDichVu.getValueAt(tblDichVu.getSelectedRow(), 0),txtTenSanPham.getText(), lhh , 
+//						Integer.parseInt(txtSoLuongTon.getText()),b, trangThai(boxTrangThai.getSelectedItem().toString()));
+//				System.out.println(hh);
+//				hangHoaBUS.updateHangHoa(hh);
+//				refreshTable();
+//				clearFields();
+			}else {
+				JOptionPane.showMessageDialog(this, "Vui lòng chọn hàng hoá muốn cập nhật");
+			}
+		}else if(o.equals(btnNhapHang)) {
+			if(tblDichVu.getSelectedRow()!=-1 ) {
+				
+			}else {
+				JOptionPane.showMessageDialog(this, "Vui lòng chọn hàng hoá muốn nhập hàng");
+			}
 		}
 	}
 }
