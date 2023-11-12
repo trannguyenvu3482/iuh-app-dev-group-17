@@ -17,4 +17,7 @@ public class NhanVienBUS {
 	public NhanVien getNhanVien(String maNV) {
 		return nvDAO.getNhanVien(maNV);
 	}
+	public NhanVien updateNhanVien(String maNV) {
+		return nvDAO.getNhanVien(maNV);
+	}
 }
