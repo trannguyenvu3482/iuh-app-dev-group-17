@@ -1,5 +1,5 @@
 /**
- * @author Trần Nguyên Vũ, Trần Ngọc Phát, Mai Nhật Hào, Trần Thanh Vy
+` * @author Trần Nguyên Vũ, Trần Ngọc Phát, Mai Nhật Hào, Trần Thanh Vy
  * @version 1.0
  * @created Nov 3, 2023 2:51:22 PM
  */
@@ -219,7 +219,9 @@ public class QuanLyPhieuDatPhongPanel extends JPanel implements ActionListener {
 	private void handleRoomClick(RoomPanel clickedPanel) {
 		// Deselect all
 		roomUIPanels.forEach(panel -> {
-			((RoomPanel) panel.getComponent(0)).deselect();
+			if (panel.getComponentCount() == 1) {
+				((RoomPanel) panel.getComponent(0)).deselect();
+			}
 		});
 
 		// Select clicked
@@ -264,11 +266,15 @@ public class QuanLyPhieuDatPhongPanel extends JPanel implements ActionListener {
 				boxFilter.setSelectedIndex(0);
 			});
 		} else if (o.equals(btnRemove)) {
-			currentSelectedRoomPanel.removePDP(() -> {
+			if (currentSelectedRoomPanel.removePDP()) {
 				// Refresh rooms
 				refreshRoomList();
 				boxFilter.setSelectedIndex(0);
-			});
+				Notifications.getInstance().show(Type.SUCCESS, Location.BOTTOM_RIGHT, "Đã hủy phòng thành công");
+			} else {
+				Notifications.getInstance().show(Type.ERROR, Location.BOTTOM_RIGHT, "Hủy phòng thất bại");
+			}
+
 		} else if (o.equals(boxFilter)) {
 			handleBoxFilter();
 		}

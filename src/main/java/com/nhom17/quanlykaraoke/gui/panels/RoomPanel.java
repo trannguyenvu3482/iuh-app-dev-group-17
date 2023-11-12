@@ -96,15 +96,18 @@ public class RoomPanel extends JPanel implements MouseListener {
 	/**
 	 * Remove a PhieuDatPhong
 	 */
-	public boolean removePDP(DialogClosedListener listener) {
+	public boolean removePDP() {
 		int result = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn hủy phòng này", "Thông báo",
 				JOptionPane.YES_NO_OPTION);
 
-		if (result == 1) {
-			pdpBUS.finishPhieuDatPhong();
+		if (result == JOptionPane.YES_OPTION) {
+			System.out.println("FINISH!");
+			if (pdpBUS.finishPhieuDatPhong(p.getMaPhong())) {
+				return true;
+			}
 		}
 
-		return result == 1;
+		return false;
 	}
 
 	/**

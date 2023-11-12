@@ -45,24 +45,22 @@ public class PhieuDatPhongDAO {
 		}
 	}
 
-	public boolean finishPhieuDatPhong(PhieuDatPhong pdp) {
+	public boolean finishPhieuDatPhong(String maPhong) {
 		Session session = factory.getCurrentSession();
 		Transaction t = session.beginTransaction();
 
 		try {
-
-			// Handle add ChiTietPhieuDatPhong
-			Query<ChiTietPhieuDatPhong> query = session
-					.createQuery(
-							"UPDATE ChiTietPhieuDatPhong SET thoiGianKetThuc = '" + LocalDateTime.now()
-									+ "' WHERE thoiGianKetThuc IS NULL AND maPhieuDatPhong = '"
-									+ pdp.getMaPhieuDatPhong() + "' ORDER BY thoiGianBatDau DESC",
-							ChiTietPhieuDatPhong.class);
-
-			int rowsChanged = query.executeUpdate();
-			System.out.println(rowsChanged);
-
+			System.out.println("maPhong: " + maPhong);
 			// Handle PhieuDatPhong
+			Query<ChiTietPhieuDatPhong> query3 = session
+					.createNativeQuery("SELECT * FROM ChiTietPhieuDatPhong c WHERE (c.maPhong = '" + maPhong
+							+ "') AND (c.thoiGianKetThuc IS NULL)", ChiTietPhieuDatPhong.class);
+
+			ChiTietPhieuDatPhong ctpdp = query3.getSingleResult();
+			ctpdp.setThoiGianKetThuc(LocalDateTime.now());
+			session.merge(ctpdp);
+
+			PhieuDatPhong pdp = ctpdp.getPhieuDatPhong();
 			pdp.setTrangThai(true);
 			session.merge(pdp);
 
@@ -72,6 +70,7 @@ public class PhieuDatPhongDAO {
 
 		} catch (Exception e) {
 			t.rollback();
+			e.printStackTrace();
 			return false;
 		}
 	}

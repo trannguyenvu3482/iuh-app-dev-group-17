@@ -21,8 +21,8 @@ public class PhieuDatPhongBUS {
 		return pdpDAO.getAllPhieuDatPhongs();
 	}
 
-	public boolean finishPhieuDatPhong(PhieuDatPhong pdp) {
-		return pdpDAO.finishPhieuDatPhong(pdp);
+	public boolean finishPhieuDatPhong(String maPhong) {
+		return pdpDAO.finishPhieuDatPhong(maPhong.trim());
 
 	}
 }
