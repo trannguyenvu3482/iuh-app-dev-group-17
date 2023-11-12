@@ -1,5 +1,6 @@
 package com.nhom17.quanlykaraoke.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -99,7 +100,27 @@ public class PhongDAO {
 		} catch (Exception e) {
 			System.out.println("ROLLBACK!");
 			t.rollback();
-			return listPhong;
+			return new ArrayList<Phong>();
+		}
+	}
+
+	public boolean isRoomEmpty(Phong p) {
+		Session session = factory.getCurrentSession();
+		Transaction t = session.beginTransaction();
+		List<Phong> listPhong = null;
+		try {
+			Query<Phong> query = session.createNativeQuery("SELECT * from Phong p where p.maPhong = '" + p.getMaPhong()
+					+ "' AND p.maPhong not in (SELECT maPhong from ChiTietPhieuDatPhong ctpdp where thoiGianKetThuc is null)",
+					Phong.class);
+
+			listPhong = query.getResultList();
+
+			t.commit();
+			return listPhong.contains(p);
+		} catch (Exception e) {
+			System.out.println("ROLLBACK!");
+			t.rollback();
+			return false;
 		}
 	}
 

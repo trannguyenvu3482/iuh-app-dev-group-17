@@ -9,7 +9,6 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
-import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -27,7 +26,6 @@ import org.kordamp.ikonli.materialdesign2.MaterialDesignA;
 
 import com.nhom17.quanlykaraoke.bus.KhachHangBUS;
 import com.nhom17.quanlykaraoke.bus.PhieuDatPhongBUS;
-import com.nhom17.quanlykaraoke.bus.PhongBUS;
 import com.nhom17.quanlykaraoke.common.MyIcon;
 import com.nhom17.quanlykaraoke.entities.KhachHang;
 import com.nhom17.quanlykaraoke.entities.PhieuDatPhong;
@@ -125,8 +123,6 @@ public class TaoPhieuDatPhongDialog extends JDialog implements ActionListener {
 		if (pdpBUS.addPhieuDatPhong(pdp, phong)) {
 			Notifications.getInstance().show(raven.toast.Notifications.Type.SUCCESS, Location.BOTTOM_RIGHT,
 					"Đã thêm phiếu đặt phòng thành công");
-
-			List<Phong> pList = new PhongBUS().getAllEmptyPhongs();
 
 			dispose();
 		} else {

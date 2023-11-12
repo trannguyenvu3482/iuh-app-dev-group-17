@@ -5,7 +5,6 @@
  */
 package com.nhom17.quanlykaraoke.gui.panels;
 
-import java.awt.AWTException;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -14,7 +13,6 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.Robot;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
@@ -23,6 +21,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -87,9 +86,9 @@ public class QuanLyPhieuDatPhongPanel extends JPanel implements ActionListener {
 	private final PhongBUS pBUS = new PhongBUS();
 	private int currentPage = 1;
 	private int maxPageSize = -1;
-	private List<Phong> listRooms = null;
-	private List<Phong> listEmptyRooms = null;
-	private List<Phong> listBookedRooms = null;
+	private List<Phong> listRooms = new ArrayList<Phong>();
+	private List<Phong> listEmptyRooms = new ArrayList<Phong>();
+	private List<Phong> listBookedRooms = new ArrayList<Phong>();
 
 	private List<Phong> listFilteredRooms = null;
 	private RoomPanel currentSelectedRoomPanel = null;
@@ -259,28 +258,46 @@ public class QuanLyPhieuDatPhongPanel extends JPanel implements ActionListener {
 			currentPage++;
 			loadPageRoom(listRooms, currentPage);
 		} else if (o.equals(btnAdd)) {
-			currentSelectedRoomPanel.createPDP();
+			currentSelectedRoomPanel.createPDP(() -> {
+				// Refresh rooms
+				refreshRoomList();
+				boxFilter.setSelectedIndex(0);
+			});
 		} else if (o.equals(btnRemove)) {
-			currentSelectedRoomPanel.removePDP();
+			currentSelectedRoomPanel.removePDP(() -> {
+				// Refresh rooms
+				refreshRoomList();
+				boxFilter.setSelectedIndex(0);
+			});
 		} else if (o.equals(boxFilter)) {
-			if (boxFilter.getSelectedIndex() == 0) {
-				if (listEmptyRooms != null && listEmptyRooms.size() > 0) {
-					this.currentPage = 1;
-					loadPageRoom(listEmptyRooms, currentPage);
-				} else {
-					Notifications.getInstance().show(Type.ERROR, Location.BOTTOM_RIGHT, "Không có phòng nào trống");
-					boxFilter.setSelectedIndex(1);
-				}
-			} else if (boxFilter.getSelectedIndex() == 1) {
-				if (listBookedRooms != null && listBookedRooms.size() > 0) {
-					this.currentPage = 1;
-					loadPageRoom(listBookedRooms, currentPage);
-					handleControlButtonsVisibility();
-				} else {
-					Notifications.getInstance().show(Type.ERROR, Location.BOTTOM_RIGHT, "Không có phòng nào được đặt");
-					boxFilter.setSelectedIndex(0);
-					handleControlButtonsVisibility();
-				}
+			handleBoxFilter();
+		}
+	}
+
+	/**
+	 * 
+	 */
+	private void handleBoxFilter() {
+		// TODO Auto-generated method stub
+		if (boxFilter.getSelectedIndex() == 0) {
+			if (listEmptyRooms != null && listEmptyRooms.size() > 0) {
+				this.currentPage = 1;
+				loadPageRoom(listEmptyRooms, currentPage);
+				handleControlButtonsVisibility();
+			} else {
+				Notifications.getInstance().show(Type.ERROR, Location.BOTTOM_RIGHT, "Không có phòng nào trống");
+				boxFilter.setSelectedIndex(1);
+				handleControlButtonsVisibility();
+			}
+		} else if (boxFilter.getSelectedIndex() == 1) {
+			if (listBookedRooms != null && listBookedRooms.size() > 0) {
+				this.currentPage = 1;
+				loadPageRoom(listBookedRooms, currentPage);
+				handleControlButtonsVisibility();
+			} else {
+				Notifications.getInstance().show(Type.ERROR, Location.BOTTOM_RIGHT, "Không có phòng nào được đặt");
+				boxFilter.setSelectedIndex(0);
+				handleControlButtonsVisibility();
 			}
 		}
 	}
@@ -313,11 +330,19 @@ public class QuanLyPhieuDatPhongPanel extends JPanel implements ActionListener {
 		this.listRooms = pBUS.getAllPhongs();
 		this.listEmptyRooms = pBUS.getAllEmptyPhongs();
 
+		// Handle empty rooms
+		listBookedRooms.clear();
 		listRooms.forEach(room -> {
-			if (listEmptyRooms.contains(room)) {
+			if (!listEmptyRooms.contains(room)) {
 				listBookedRooms.add(room);
 			}
 		});
+
+		System.out.println("Tổng số phòng: " + listRooms.size());
+		System.out.println("Số phòng trống: " + listEmptyRooms.size());
+		if (listBookedRooms != null) {
+			System.out.println("Số phòng được đặt: " + listBookedRooms.size());
+		}
 	}
 
 	/**
@@ -597,31 +622,5 @@ public class QuanLyPhieuDatPhongPanel extends JPanel implements ActionListener {
 
 		});
 
-		// Check if click outside of txtSearch
-		this.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (!txtSearchMaPhong.contains(e.getX(), e.getY()) && txtSearchMaPhong.isFocusOwner()) {
-					if (txtSearchMaPhong.getText().isEmpty()) {
-						txtSearchMaPhong.setForeground(Color.GRAY);
-						txtSearchMaPhong.setText("Nhập vào mã phòng cần tìm...");
-					}
-
-					Robot robot = null;
-					try {
-						robot = new Robot();
-					} catch (AWTException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					// Simulate TAB key press
-					robot.keyPress(KeyEvent.VK_TAB);
-					robot.keyRelease(KeyEvent.VK_TAB);
-				}
-			}
-		});
-
-		btnAdd.setVisible(false);
-		btnRemove.setVisible(false);
 	}
 }

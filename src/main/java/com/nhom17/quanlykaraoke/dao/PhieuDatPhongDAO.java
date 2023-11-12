@@ -28,14 +28,43 @@ public class PhieuDatPhongDAO {
 			// Handle add PhieuDatPhong
 			String maPDP = getNextMaPDP();
 
-			System.out.println("Ma PDP: " + maPDP);
-
 			pdp.setMaPhieuDatPhong(maPDP);
 			session.persist(pdp);
 
 			// Handle add ChiTietPhieuDatPhong
 			ChiTietPhieuDatPhong ctpdp = new ChiTietPhieuDatPhong(p, pdp, LocalDateTime.now(), null);
 			session.persist(ctpdp);
+
+			// Finish
+			t.commit();
+			return true;
+
+		} catch (Exception e) {
+			t.rollback();
+			return false;
+		}
+	}
+
+	public boolean finishPhieuDatPhong(PhieuDatPhong pdp) {
+		Session session = factory.getCurrentSession();
+		Transaction t = session.beginTransaction();
+
+		try {
+
+			// Handle add ChiTietPhieuDatPhong
+			Query<ChiTietPhieuDatPhong> query = session
+					.createQuery(
+							"UPDATE ChiTietPhieuDatPhong SET thoiGianKetThuc = '" + LocalDateTime.now()
+									+ "' WHERE thoiGianKetThuc IS NULL AND maPhieuDatPhong = '"
+									+ pdp.getMaPhieuDatPhong() + "' ORDER BY thoiGianBatDau DESC",
+							ChiTietPhieuDatPhong.class);
+
+			int rowsChanged = query.executeUpdate();
+			System.out.println(rowsChanged);
+
+			// Handle PhieuDatPhong
+			pdp.setTrangThai(true);
+			session.merge(pdp);
 
 			// Finish
 			t.commit();

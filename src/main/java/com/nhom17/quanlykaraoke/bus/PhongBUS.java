@@ -29,6 +29,10 @@ public class PhongBUS {
 		return pDAO.getAllEmptyPhongs();
 	}
 
+	public boolean isRoomEmpty(Phong p) {
+		return pDAO.isRoomEmpty(p);
+	}
+
 	public Phong updatePhong(Phong p) {
 		return pDAO.updatePhong(p);
 	}
