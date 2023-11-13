@@ -45,6 +45,34 @@ public class PhieuDatPhongDAO {
 		}
 	}
 
+	public boolean changeRoomForPhieuDatPhong(String currentMaPhong, String moveToMaPhong) {
+		Session session = factory.getCurrentSession();
+		Transaction t = session.beginTransaction();
+
+		try {
+			// Handle PhieuDatPhong
+			Query<ChiTietPhieuDatPhong> query3 = session.createNativeQuery("SELECT * FROM ChiTietPhieuDatPhong",
+					ChiTietPhieuDatPhong.class);
+
+			ChiTietPhieuDatPhong ctpdp = query3.getSingleResult();
+			ctpdp.setThoiGianKetThuc(LocalDateTime.now());
+			session.merge(ctpdp);
+
+			PhieuDatPhong pdp = ctpdp.getPhieuDatPhong();
+			pdp.setTrangThai(true);
+			session.merge(pdp);
+
+			// Finish
+			t.commit();
+			return true;
+
+		} catch (Exception e) {
+			t.rollback();
+			e.printStackTrace();
+			return false;
+		}
+	}
+
 	public boolean finishPhieuDatPhong(String maPhong) {
 		Session session = factory.getCurrentSession();
 		Transaction t = session.beginTransaction();

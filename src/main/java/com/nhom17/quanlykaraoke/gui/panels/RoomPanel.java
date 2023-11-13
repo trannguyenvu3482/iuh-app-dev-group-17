@@ -9,6 +9,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
@@ -20,12 +22,20 @@ import javax.swing.border.TitledBorder;
 
 import org.kordamp.ikonli.materialdesign2.MaterialDesignM;
 
+import com.nhom17.quanlykaraoke.bus.ChiTietPhieuDatPhongBUS;
 import com.nhom17.quanlykaraoke.bus.PhieuDatPhongBUS;
 import com.nhom17.quanlykaraoke.bus.PhongBUS;
 import com.nhom17.quanlykaraoke.common.MyIcon;
+import com.nhom17.quanlykaraoke.entities.ChiTietPhieuDatPhong;
 import com.nhom17.quanlykaraoke.entities.Phong;
-import com.nhom17.quanlykaraoke.gui.TaoPhieuDatPhongDialog;
+import com.nhom17.quanlykaraoke.gui.dialogs.ChuyenPhongDialog;
+import com.nhom17.quanlykaraoke.gui.dialogs.TaoPhieuDatPhongDialog;
+import com.nhom17.quanlykaraoke.gui.dialogs.ThanhToanDialog;
 import com.nhom17.quanlykaraoke.utils.MoneyFormatUtil;
+
+import raven.toast.Notifications;
+import raven.toast.Notifications.Location;
+import raven.toast.Notifications.Type;
 
 /**
  * @author Trần Nguyên Vũ, Trần Ngọc Phát, Mai Nhật Hào, Trần Thanh Vy
@@ -83,6 +93,7 @@ public class RoomPanel extends JPanel implements MouseListener {
 
 			dialog.addWindowListener(new WindowAdapter() {
 				public void windowClosed(WindowEvent e) {
+					System.out.println(e.getComponent());
 					listener.onClosed();
 				}
 			});
@@ -108,6 +119,47 @@ public class RoomPanel extends JPanel implements MouseListener {
 		}
 
 		return false;
+	}
+
+	public boolean changeRoom(DialogClosedListener listener) {
+		ChiTietPhieuDatPhong ctpdp = new ChiTietPhieuDatPhongBUS()
+				.getChiTietPhieuDatPhongByActiveMaPhong(p.getMaPhong());
+
+		if (ctpdp.getThoiGianBatDau().until(LocalDateTime.now(), ChronoUnit.MINUTES) > 15) {
+			SwingUtilities.invokeLater(() -> {
+				ChuyenPhongDialog dialog = new ChuyenPhongDialog(p);
+
+				dialog.addWindowListener(new WindowAdapter() {
+					public void windowClosed(WindowEvent e) {
+						listener.onClosed();
+					}
+				});
+
+				dialog.setVisible(true);
+			});
+
+			return true;
+		} else {
+			Notifications.getInstance().show(Type.ERROR, Location.BOTTOM_RIGHT,
+					"Chỉ có thể chuyển phòng sau 15 phút kể từ lúc bắt đầu");
+			return false;
+		}
+	}
+
+	public boolean checkout(DialogClosedListener listener) {
+		SwingUtilities.invokeLater(() -> {
+			ThanhToanDialog dialog = new ThanhToanDialog(p);
+
+			dialog.addWindowListener(new WindowAdapter() {
+				public void windowClosed(WindowEvent e) {
+					listener.onClosed();
+				}
+			});
+
+			dialog.setVisible(true);
+		});
+
+		return true;
 	}
 
 	/**

@@ -9,14 +9,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.text.NumberFormat;
 import java.text.ParseException;
-import java.util.Arrays;
 import java.util.Locale;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
@@ -30,19 +30,13 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.text.NumberFormatter;
 
 import org.kordamp.ikonli.materialdesign2.MaterialDesignB;
-import org.kordamp.ikonli.materialdesign2.MaterialDesignD;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignP;
 
 import com.nhom17.quanlykaraoke.bus.LoaiPhongBUS;
 import com.nhom17.quanlykaraoke.bus.PhongBUS;
 import com.nhom17.quanlykaraoke.common.MyIcon;
-import com.nhom17.quanlykaraoke.entities.HangHoa;
-import com.nhom17.quanlykaraoke.entities.LoaiHangHoa;
 import com.nhom17.quanlykaraoke.entities.LoaiPhong;
 import com.nhom17.quanlykaraoke.entities.Phong;
-
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
 
 /**
  * @author Trần Nguyên Vũ, Trần Ngọc Phát, Mai Nhật Hào, Trần Thanh Vy
@@ -52,9 +46,9 @@ import javax.swing.JButton;
 public class QuanLyPhongPanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	private final JTextField txtPhong;
-	private final JComboBox cbKichThuoc = new JComboBox();
-	private final JComboBox cbTenLP = new JComboBox();
-	private final JComboBox cbTrangThai = new JComboBox();
+	private final JComboBox<String> cbKichThuoc = new JComboBox<String>();
+	private final JComboBox<String> cbTenLP = new JComboBox<String>();
+	private final JComboBox<String> cbTrangThai = new JComboBox<String>();
 	private final JFormattedTextField txtPhuPhi;;
 	private final JTextField txtSearch;
 	private final JButton btnThem = new JButton("");
@@ -122,7 +116,7 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 
 		Component horizontalStrut_1 = Box.createHorizontalStrut(52);
 		boxTwo.add(horizontalStrut_1);
-		cbKichThuoc.setModel(new DefaultComboBoxModel(new String[] {"5", "10", "15", "20"}));
+		cbKichThuoc.setModel(new DefaultComboBoxModel<String>(new String[] { "5", "10", "15", "20" }));
 
 		cbKichThuoc.setFont(new Font("Dialog", Font.PLAIN, 20));
 
@@ -143,8 +137,8 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 
 		Component horizontalStrut_1_1_2_1_1_12 = Box.createHorizontalStrut(18);
 		boxThree.add(horizontalStrut_1_1_2_1_1_12);
-		cbTenLP.setModel(
-				new DefaultComboBoxModel(new String[] { "Phòng thường", "Phòng tiệc", "Phòng VIP", "Phòng tiệc VIP" }));
+		cbTenLP.setModel(new DefaultComboBoxModel<String>(
+				new String[] { "Phòng thường", "Phòng tiệc", "Phòng VIP", "Phòng tiệc VIP" }));
 
 		cbTenLP.setFont(new Font("Dialog", Font.PLAIN, 20));
 
@@ -198,7 +192,7 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 		boxFive.add(horizontalStrut_1_1_1);
 
 		cbTrangThai.setEditable(true);
-		cbTrangThai.setModel(new DefaultComboBoxModel(new String[] { "Còn hoạt động", "Ngưng hoạt động" }));
+		cbTrangThai.setModel(new DefaultComboBoxModel<String>(new String[] { "Còn hoạt động", "Ngưng hoạt động" }));
 		cbTrangThai.setFont(new Font("Dialog", Font.PLAIN, 20));
 		boxFive.add(cbTrangThai);
 
@@ -282,7 +276,7 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 	}
 
 	public void createTable() {
-		final String[] colNames = { "Mã phòng", "Kích thước", "Tên Loại Phòng", "Phụ phí","Trạng thái" };
+		final String[] colNames = { "Mã phòng", "Kích thước", "Tên Loại Phòng", "Phụ phí", "Trạng thái" };
 		modelPhong = new DefaultTableModel(colNames, 0) {
 			private static final long serialVersionUID = 1L;
 
@@ -301,12 +295,12 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 		tblPhong.setAutoCreateRowSorter(true);
 		tblPhong.getTableHeader().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		tblPhong.setRowHeight(50);
-		
+
 		tblPhong.addMouseListener(new MouseAdapter() {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(tblPhong.getSelectedRow()!=-1) {
+				if (tblPhong.getSelectedRow() != -1) {
 					txtPhong.setText(modelPhong.getValueAt(tblPhong.getSelectedRow(), 0).toString());
 					cbKichThuoc.setSelectedItem(modelPhong.getValueAt(tblPhong.getSelectedRow(), 1).toString());
 					cbTenLP.setSelectedItem(modelPhong.getValueAt(tblPhong.getSelectedRow(), 2).toString());
@@ -319,50 +313,53 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 					cbTrangThai.setSelectedItem(modelPhong.getValueAt(tblPhong.getSelectedRow(), 4).toString());
 				}
 			}
-			
+
 		});
 	}
-	
+
 	Locale lc = new Locale("vi", "VN");
 	NumberFormat nf = NumberFormat.getCurrencyInstance(lc);
+
 	private void refreshTable() {
 		modelPhong.setRowCount(0);
-		for(Phong p : pBUS.getAllPhongs()) {
-			Object[] data = {p.getMaPhong(),p.getLoaiPhong().getKichThuoc(),p.getLoaiPhong().getTenLoaiPhong(),
-					nf.format(p.getLoaiPhong().getPhuPhi()),p.isTrangThai()?"Còn hoạt động":"Ngưng hoạt động"};
+		for (Phong p : pBUS.getAllPhongs()) {
+			Object[] data = { p.getMaPhong(), p.getLoaiPhong().getKichThuoc(), p.getLoaiPhong().getTenLoaiPhong(),
+					nf.format(p.getLoaiPhong().getPhuPhi()), p.isTrangThai() ? "Còn hoạt động" : "Ngưng hoạt động" };
 			modelPhong.addRow(data);
 		}
-		
+
 	}
-	
+
 	private void clearFields() {
 		txtPhong.setText("");
-		cbKichThuoc.setSelectedItem("5");;
+		cbKichThuoc.setSelectedItem("5");
+
 		cbTenLP.setSelectedItem("Phòng thường");
 		txtPhuPhi.setText("");
 		cbTrangThai.setSelectedItem("Ngưng hoạt động");
 		txtPhong.grabFocus();
 	}
-	
+
 	private boolean trangThai(String tt) {
-		if(tt.equals("Còn hoạt động"))
+		if (tt.equals("Còn hoạt động"))
 			return true;
 		else
 			return false;
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
 		if (o.equals(btnThem)) {
-			LoaiPhong lp = lpBUS.getLoaiPhong(cbTenLP.getSelectedItem().toString(), Integer.parseInt(cbKichThuoc.getSelectedItem().toString()));
+			LoaiPhong lp = lpBUS.getLoaiPhong(cbTenLP.getSelectedItem().toString(),
+					Integer.parseInt(cbKichThuoc.getSelectedItem().toString()));
 			System.out.println(lp);
 			Phong p = new Phong("", lp, trangThai(cbTrangThai.getSelectedItem().toString()));
 			System.out.println(p);
 			pBUS.addPhong(p);
 			refreshTable();
 			clearFields();
-		}else if(o.equals(btnClearFields)){
+		} else if (o.equals(btnClearFields)) {
 			clearFields();
 		}
 	}

@@ -277,6 +277,20 @@ public class QuanLyPhieuDatPhongPanel extends JPanel implements ActionListener {
 
 		} else if (o.equals(boxFilter)) {
 			handleBoxFilter();
+		} else if (o.equals(btnChangeRoom)) {
+			currentSelectedRoomPanel.changeRoom(() -> {
+				// Refresh rooms
+				refreshRoomList();
+				boxFilter.setSelectedIndex(0);
+			});
+		} else if (o.equals(btnCheckout)) {
+			currentSelectedRoomPanel.checkout(() -> {
+				// Refresh rooms
+				refreshRoomList();
+				boxFilter.setSelectedIndex(0);
+			});
+		} else if (o.equals(btnLichSuPDP)) {
+
 		}
 	}
 
@@ -589,6 +603,7 @@ public class QuanLyPhieuDatPhongPanel extends JPanel implements ActionListener {
 		btnRemove.addActionListener(this);
 		btnCheckout.addActionListener(this);
 		btnLeft.addActionListener(this);
+		btnChangeRoom.addActionListener(this);
 		btnLichSuPDP.addActionListener(this);
 
 		// txtSearch handler
