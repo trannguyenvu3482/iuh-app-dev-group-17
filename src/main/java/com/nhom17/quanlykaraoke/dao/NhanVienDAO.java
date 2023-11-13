@@ -8,7 +8,6 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import com.nhom17.quanlykaraoke.entities.NhanVien;
-import com.nhom17.quanlykaraoke.entities.NhanVien;
 import com.nhom17.quanlykaraoke.utils.HibernateUtil;
 import com.nhom17.quanlykaraoke.utils.PasswordUtil;
 
@@ -115,6 +114,7 @@ public class NhanVienDAO {
 			return null;
 		}
 	}
+
 	public List<NhanVien> getAllNhanViens() {
 		Session session = factory.getCurrentSession();
 		Transaction t = session.beginTransaction();
