@@ -45,6 +45,7 @@ import com.nhom17.quanlykaraoke.bus.PhongBUS;
 import com.nhom17.quanlykaraoke.common.MyIcon;
 import com.nhom17.quanlykaraoke.common.PhieuDatPhongPage;
 import com.nhom17.quanlykaraoke.entities.Phong;
+import com.nhom17.quanlykaraoke.gui.dialogs.LichSuPhieuDatPhongDialog;
 import com.nhom17.quanlykaraoke.utils.ConstantUtil;
 
 import net.miginfocom.swing.MigLayout;
@@ -293,7 +294,9 @@ public class QuanLyPhieuDatPhongPanel extends JPanel implements ActionListener {
 				boxFilter.setSelectedIndex(0);
 			});
 		} else if (o.equals(btnLichSuPDP)) {
+			LichSuPhieuDatPhongDialog dialog = new LichSuPhieuDatPhongDialog();
 
+			dialog.setVisible(true);
 		}
 	}
 

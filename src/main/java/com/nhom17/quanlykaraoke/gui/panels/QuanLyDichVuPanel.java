@@ -242,14 +242,14 @@ public class QuanLyDichVuPanel extends JPanel implements ActionListener {
 
 		if (o.equals(btnLeft)) {
 			currentPage--;
-			loadPageRoom(listRooms, currentPage);
+			loadPageRoom(listEmptyRooms, currentPage);
 		} else if (o.equals(btnRight)) {
 			currentPage++;
-			loadPageRoom(listRooms, currentPage);
+			loadPageRoom(listEmptyRooms, currentPage);
 		} else if (o.equals(btnAdd)) {
-			currentSelectedRoomPanel.createPDP(() -> {
-				// Refresh rooms
-				refreshRoomList();
+			currentSelectedRoomPanel.addDichVu(() -> {
+				currentPage++;
+				loadPageRoom(listEmptyRooms, currentPage);
 			});
 		}
 	}

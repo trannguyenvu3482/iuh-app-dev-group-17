@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListSelectionModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -31,7 +32,10 @@ import org.kordamp.ikonli.materialdesign2.MaterialDesignC;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignN;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignP;
 
+import com.nhom17.quanlykaraoke.bus.HangHoaBUS;
 import com.nhom17.quanlykaraoke.common.MyIcon;
+import com.nhom17.quanlykaraoke.entities.Phong;
+import com.nhom17.quanlykaraoke.utils.MoneyFormatUtil;
 
 /**
  * @author Trần Nguyên Vũ, Trần Ngọc Phát, Mai Nhật Hào, Trần Thanh Vy
@@ -47,13 +51,19 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 	private DefaultTableModel modelLeft;
 	private DefaultTableModel modelRight;
 	private JTextField txtSearch;
+	private JButton btnThem = new JButton("");
+	private JButton btnXoa = new JButton("");
+	private JButton btnXacNhan = new JButton("Xác nhận");
+	private JButton btnHuy = new JButton("Hủy");
+	private JButton btnCapNhatSoLuong = new JButton("");
 
 	// VARIABLES
+	private HangHoaBUS hhBUS = new HangHoaBUS();
 
 	/**
 	 * 
 	 */
-	public QuanLyDichVuDialog() {
+	public QuanLyDichVuDialog(Phong p) {
 		setSize(1200, 800);
 		setTitle("Quản lý dịch vụ");
 		setResizable(false);
@@ -101,6 +111,7 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 		panel_4.setLayout(new BoxLayout(panel_4, BoxLayout.X_AXIS));
 
 		txtSearch = new JTextField();
+		txtSearch.putClientProperty("JTextField.placeholderText", "Nhập vào tên hàng hóa cần tìm");
 		txtSearch.setFont(new Font("Dialog", Font.PLAIN, 18));
 		panel_4.add(txtSearch);
 		txtSearch.setColumns(10);
@@ -108,27 +119,25 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 		Component horizontalStrut = Box.createHorizontalStrut(100);
 		panel_4.add(horizontalStrut);
 
-		JComboBox comboBox = new JComboBox();
+		JComboBox<String> comboBox = new JComboBox<String>();
+		comboBox.putClientProperty("JTextField.placeholderText", "Chọn loại hàng hóa");
 		comboBox.setFont(new Font("Dialog", Font.BOLD, 18));
-		comboBox.setModel(new DefaultComboBoxModel(new String[] { "Loại hàng hóa", "Đồ uống có cồn", "Thức ăn" }));
+		comboBox.setModel(
+				new DefaultComboBoxModel<String>(new String[] { "Loại hàng hóa", "Đồ uống có cồn", "Thức ăn" }));
 		panel_4.add(comboBox);
 
 		JScrollPane scrollPaneLeft = new JScrollPane();
 		panel.add(scrollPaneLeft);
 
-		tblLeft = new JTable();
+		createLeftTable();
 		scrollPaneLeft.setViewportView(tblLeft);
 
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(Color.GRAY);
 		panel.add(panel_1, BorderLayout.SOUTH);
 
-		JButton btnThem = new JButton("");
 		btnThem.setIcon(MyIcon.getIcon(MaterialDesignP.PLUS_THICK, 32, null));
-		btnThem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+
 		panel_1.add(btnThem);
 		btnThem.setFont(new Font("Dialog", Font.BOLD, 20));
 
@@ -139,7 +148,8 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 		panelLeft.add(panelLeftBottom, BorderLayout.SOUTH);
 		panelLeftBottom.setLayout(new BoxLayout(panelLeftBottom, BoxLayout.X_AXIS));
 
-		JButton btnHuy = new JButton("Hủy");
+		s.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnHuy.setBackground(Color.GREEN);
 		btnHuy.setFont(new Font("Dialog", Font.BOLD, 20));
 		panelLeftBottom.add(btnHuy);
 
@@ -178,7 +188,7 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 		JScrollPane scrollPaneRight = new JScrollPane();
 		panel_2.add(scrollPaneRight);
 
-		tblRight = new JTable();
+		createRightTable();
 		scrollPaneRight.setViewportView(tblRight);
 
 		JPanel panel_3 = new JPanel();
@@ -187,12 +197,10 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 		flowLayout.setHgap(10);
 		panel_2.add(panel_3, BorderLayout.SOUTH);
 
-		JButton btnXoa = new JButton("");
 		btnXoa.setIcon(MyIcon.getIcon(MaterialDesignC.CLOSE_THICK, 32, null));
 		btnXoa.setFont(new Font("Dialog", Font.BOLD, 20));
 		panel_3.add(btnXoa);
 
-		JButton btnCapNhatSoLuong = new JButton("");
 		btnCapNhatSoLuong.setFont(new Font("Dialog", Font.BOLD, 20));
 		btnCapNhatSoLuong.setIcon(MyIcon.getIcon(MaterialDesignN.NUMERIC, 32, null));
 		panel_3.add(btnCapNhatSoLuong);
@@ -207,24 +215,46 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 		Component horizontalGlue = Box.createHorizontalGlue();
 		panelRightBottom.add(horizontalGlue);
 
-		JButton btnXacNhan = new JButton("Xác nhận");
+		btnXacNhan.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnXacNhan.setBackground(Color.RED);
 		btnXacNhan.setForeground(Color.WHITE);
 		btnXacNhan.setFont(new Font("Dialog", Font.BOLD, 20));
 		panelRightBottom.add(btnXacNhan);
+
+		// Refresh tables
+		refreshLeftTable();
+
+		// Action listeners
+		btnThem.addActionListener(this);
+		btnXoa.addActionListener(this);
+		btnCapNhatSoLuong.addActionListener(this);
+		btnHuy.addActionListener(this);
+		btnXacNhan.addActionListener(this);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
+		Object o = e.getSource();
 
+		if (o.equals(btnThem)) {
+
+		} else if (o.equals(btnXoa)) {
+
+		} else if (o.equals(btnCapNhatSoLuong)) {
+
+		} else if (o.equals(btnHuy)) {
+
+		} else if (o.equals(btnXacNhan)) {
+
+		}
 	}
 
 	/**
 	 * 
 	 */
 	private void createLeftTable() {
-		final String[] colNames = { "Mã HH", "Tên", "Loại", "Đơn giá", "Số lượng tồn kho", "Đơn vị" };
+		final String[] colNames = { "Mã HH", "Tên", "Loại", "Đơn giá", "Số lượng tồn", "Đơn vị" };
 		modelLeft = new DefaultTableModel(colNames, 0) {
 			private static final long serialVersionUID = 1L;
 
@@ -235,11 +265,10 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 		};
 
 		tblLeft = new JTable(modelLeft);
-		tblLeft.setRowSelectionAllowed(false);
+		tblLeft.setSelectionMode(DefaultListSelectionModel.SINGLE_SELECTION);
 		tblLeft.setColumnSelectionAllowed(false);
-		tblLeft.setCellSelectionEnabled(false);
-		tblLeft.setFont(new Font("Dialog", Font.PLAIN, 18));
-		tblLeft.getTableHeader().setFont(new Font("Dialog", Font.BOLD, 20));
+		tblLeft.setFont(new Font("Dialog", Font.PLAIN, 14));
+		tblLeft.getTableHeader().setFont(new Font("Dialog", Font.BOLD, 16));
 		tblLeft.getTableHeader().setReorderingAllowed(false);
 		tblLeft.getTableHeader().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		tblLeft.setRowHeight(40);
@@ -253,5 +282,60 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 		tblLeft.getColumnModel().getColumn(5).setPreferredWidth(40);
 		tblLeft.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 
+		// Load data
+		refreshLeftTable();
+	}
+
+	/**
+	 * 
+	 */
+	private void refreshLeftTable() {
+		// TODO Auto-generated method stub
+		modelLeft.setRowCount(0);
+
+		hhBUS.getAllHangHoas().forEach((hh) -> {
+
+			Object[] rowData = { hh.getMaHangHoa(), hh.getTenHangHoa(), hh.getLoaiHangHoa().getTenLoaiHangHoa(),
+					MoneyFormatUtil.format(hh.getDonGia()), hh.getSoLuongTon(), hh.getLoaiHangHoa().getDonViTinh() };
+			modelLeft.addRow(rowData);
+		});
+
+	}
+
+	private void createRightTable() {
+		final String[] colNames = { "STT", "Tên", "Đơn giá", "Số lượng", "Thành tiền" };
+		modelRight = new DefaultTableModel(colNames, 0) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+
+		tblRight = new JTable(modelRight);
+		tblRight.setRowSelectionAllowed(false);
+		tblRight.setColumnSelectionAllowed(false);
+		tblRight.setCellSelectionEnabled(false);
+		tblRight.setFont(new Font("Dialog", Font.PLAIN, 14));
+		tblRight.getTableHeader().setFont(new Font("Dialog", Font.BOLD, 16));
+		tblRight.getTableHeader().setReorderingAllowed(false);
+		tblRight.getTableHeader().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		tblRight.setRowHeight(40);
+
+		// Col width
+		tblLeft.getColumnModel().getColumn(0).setPreferredWidth(8);
+		tblLeft.getColumnModel().getColumn(1).setPreferredWidth(20);
+		tblLeft.getColumnModel().getColumn(2).setPreferredWidth(25);
+		tblLeft.getColumnModel().getColumn(3).setPreferredWidth(30);
+		tblLeft.getColumnModel().getColumn(4).setPreferredWidth(35);
+		tblLeft.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+	}
+
+	private void refreshRightTable() {
+		// TODO Auto-generated method stub
+		modelLeft.setRowCount(0);
+
+		// Logic
 	}
 }

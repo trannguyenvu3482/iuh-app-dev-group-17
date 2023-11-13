@@ -29,6 +29,7 @@ import com.nhom17.quanlykaraoke.common.MyIcon;
 import com.nhom17.quanlykaraoke.entities.ChiTietPhieuDatPhong;
 import com.nhom17.quanlykaraoke.entities.Phong;
 import com.nhom17.quanlykaraoke.gui.dialogs.ChuyenPhongDialog;
+import com.nhom17.quanlykaraoke.gui.dialogs.QuanLyDichVuDialog;
 import com.nhom17.quanlykaraoke.gui.dialogs.TaoPhieuDatPhongDialog;
 import com.nhom17.quanlykaraoke.gui.dialogs.ThanhToanDialog;
 import com.nhom17.quanlykaraoke.utils.MoneyFormatUtil;
@@ -132,13 +133,12 @@ public class RoomPanel extends JPanel implements MouseListener {
 		return false;
 	}
 
-	public boolean openDichVuPanel(DialogClosedListener listener) {
+	public boolean changeRoom(DialogClosedListener listener) {
 		SwingUtilities.invokeLater(() -> {
-			TaoPhieuDatPhongDialog dialog = new TaoPhieuDatPhongDialog(p);
+			ChuyenPhongDialog dialog = new ChuyenPhongDialog(p);
 
 			dialog.addWindowListener(new WindowAdapter() {
 				public void windowClosed(WindowEvent e) {
-					System.out.println(e.getComponent());
 					listener.onClosed();
 				}
 			});
@@ -149,9 +149,9 @@ public class RoomPanel extends JPanel implements MouseListener {
 		return true;
 	}
 
-	public boolean changeRoom(DialogClosedListener listener) {
+	public boolean addDichVu(DialogClosedListener listener) {
 		SwingUtilities.invokeLater(() -> {
-			ChuyenPhongDialog dialog = new ChuyenPhongDialog(p);
+			QuanLyDichVuDialog dialog = new QuanLyDichVuDialog(p);
 
 			dialog.addWindowListener(new WindowAdapter() {
 				public void windowClosed(WindowEvent e) {
