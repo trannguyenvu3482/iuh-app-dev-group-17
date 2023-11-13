@@ -2,7 +2,9 @@ package com.nhom17.quanlykaraoke.utils;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -27,5 +29,15 @@ public class DateTimeFormatUtil {
 		long minutes = TimeUnit.MILLISECONDS.toMinutes(millis - TimeUnit.HOURS.toMillis(hour));
 
 		return String.format("%d giờ %d phút", hour, minutes);
+	}
+
+	public static Date formatLocalDateTimeToDate(LocalDateTime date) {
+		return Date.from(date.atZone(ZoneId.systemDefault()).toInstant());
+	}
+
+	public static Date formatStringToDate(String dateString) {
+		LocalDateTime date = LocalDateTime.parse(dateString);
+
+		return Date.from(date.atZone(ZoneId.systemDefault()).toInstant());
 	}
 }

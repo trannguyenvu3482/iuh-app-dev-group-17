@@ -112,10 +112,21 @@ public class RoomPanel extends JPanel implements MouseListener {
 				JOptionPane.YES_NO_OPTION);
 
 		if (result == JOptionPane.YES_OPTION) {
-			System.out.println("FINISH!");
-			if (pdpBUS.finishPhieuDatPhong(p.getMaPhong())) {
-				return true;
+			ChiTietPhieuDatPhong ctpdp = new ChiTietPhieuDatPhongBUS()
+					.getChiTietPhieuDatPhongByActiveMaPhong(p.getMaPhong());
+
+			if (ctpdp.getThoiGianBatDau().until(LocalDateTime.now(), ChronoUnit.MINUTES) > 15) {
+				System.out.println("FINISH!");
+				if (pdpBUS.finishPhieuDatPhong(p.getMaPhong())) {
+					return true;
+				}
+
+			} else {
+				Notifications.getInstance().show(Type.ERROR, Location.BOTTOM_RIGHT,
+						"Chỉ có thể chuyển phòng sau 15 phút kể từ lúc bắt đầu");
+				return false;
 			}
+
 		}
 
 		return false;
@@ -139,28 +150,19 @@ public class RoomPanel extends JPanel implements MouseListener {
 	}
 
 	public boolean changeRoom(DialogClosedListener listener) {
-		ChiTietPhieuDatPhong ctpdp = new ChiTietPhieuDatPhongBUS()
-				.getChiTietPhieuDatPhongByActiveMaPhong(p.getMaPhong());
+		SwingUtilities.invokeLater(() -> {
+			ChuyenPhongDialog dialog = new ChuyenPhongDialog(p);
 
-		if (ctpdp.getThoiGianBatDau().until(LocalDateTime.now(), ChronoUnit.MINUTES) > 15) {
-			SwingUtilities.invokeLater(() -> {
-				ChuyenPhongDialog dialog = new ChuyenPhongDialog(p);
-
-				dialog.addWindowListener(new WindowAdapter() {
-					public void windowClosed(WindowEvent e) {
-						listener.onClosed();
-					}
-				});
-
-				dialog.setVisible(true);
+			dialog.addWindowListener(new WindowAdapter() {
+				public void windowClosed(WindowEvent e) {
+					listener.onClosed();
+				}
 			});
 
-			return true;
-		} else {
-			Notifications.getInstance().show(Type.ERROR, Location.BOTTOM_RIGHT,
-					"Chỉ có thể chuyển phòng sau 15 phút kể từ lúc bắt đầu");
-			return false;
-		}
+			dialog.setVisible(true);
+		});
+
+		return true;
 	}
 
 	public boolean checkout(DialogClosedListener listener) {
