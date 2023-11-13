@@ -41,11 +41,11 @@ public class NhanVienDAO {
 
 		int count = countNhanVien();
 
-		if (count < 1 || count > 999) {
+		if (count < 0 || count > 999) {
 			return null;
 		}
 
-		return idPrefix + String.format("%03d", count);
+		return idPrefix + String.format("%03d", count+1);
 	}
 
 	private int countNhanVien() {

@@ -11,6 +11,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
@@ -30,13 +31,16 @@ import javax.swing.table.DefaultTableModel;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignA;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignB;
 
+import com.nhom17.quanlykaraoke.bus.ChucVuBUS;
 import com.nhom17.quanlykaraoke.bus.NhanVienBUS;
 import com.nhom17.quanlykaraoke.common.MyIcon;
 import com.nhom17.quanlykaraoke.dao.NhanVienDAO;
 import com.nhom17.quanlykaraoke.entities.LoaiPhong;
 import com.nhom17.quanlykaraoke.entities.NhanVien;
 import com.nhom17.quanlykaraoke.entities.Phong;
+import com.nhom17.quanlykaraoke.utils.ConstantUtil;
 import com.nhom17.quanlykaraoke.utils.DateTimeFormatUtil;
+import com.nhom17.quanlykaraoke.utils.PasswordUtil;
 import com.toedter.calendar.JDateChooser;
 
 import java.util.Date;
@@ -74,7 +78,7 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 	private JButton btnThem = new JButton("");
 	private JButton btnClearfields = new JButton("");
 	private JDateChooser txtSearchTo = new JDateChooser();
-
+	private ChucVuBUS cvBUS = new ChucVuBUS();
 
 	/**
 	 * 
@@ -265,10 +269,6 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 		Component horizontalStrut_1_1_2 = Box.createHorizontalStrut(200);
 		boxSix_1.add(horizontalStrut_1_1_2);
 
-
-		// Set avatar
-		// Set avatar
-
 		Component horizontalGlue_1_1 = Box.createHorizontalGlue();
 		boxAvatar.add(horizontalGlue_1_1);
 		
@@ -328,7 +328,7 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 					txtCCCD.setText(nv.getCCCD());
 					cbTrangThai.setSelectedItem(modelNhanVien.getValueAt(tblNhanVien.getSelectedRow(), 5).toString());
 					txtNgaySinh.setDate(DateTimeFormatUtil.formatStringToDate(LocalDate.parse(modelNhanVien.getValueAt(tblNhanVien.getSelectedRow(), 3).toString(), DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
-					
+					avt.setIcon(ConstantUtil.byteArrayToImageIcon(nv.getAnhDaiDien()));
 				}
 			}
 
@@ -381,7 +381,14 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 		if(o.equals(btnClearfields)) {
 			clearFields();
 		}else if(o.equals(btnThem)) {
-			
+			NhanVien nv = new NhanVien(txtTenNV.getText(), cbGioiTinh.getSelectedIndex(), PasswordUtil.encrypt("1"),
+					txtNgaySinh.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
+					cvBUS.getChucVuByName(cbChucVu.getSelectedItem().toString()) ,
+					txtSDT.getText(), txtCCCD.getText(), 
+					cbGioiTinh.getSelectedIndex()==0?ConstantUtil.getDefaultMaleAvatar():ConstantUtil.getDefaultFemaleAvatar());
+			nvBUS.addNhanVien(nv);
+			refreshTable();
+			clearFields();
 		}
 
 	}

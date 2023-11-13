@@ -5,6 +5,8 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
+
 import com.nhom17.quanlykaraoke.entities.ChucVu;
 import com.nhom17.quanlykaraoke.utils.HibernateUtil;
 
@@ -44,6 +46,23 @@ public class ChucVuDAO {
 			System.out.println("ROLLBACK!");
 			t.rollback();
 			return listChucVu;
+		}
+	}
+	
+	public ChucVu getChucVuByName(String name) {
+		Session session = factory.getCurrentSession();
+		Transaction t = session.beginTransaction();
+
+		try {
+			Query<ChucVu> query = session
+					.createNativeQuery("select * FROM ChucVu WHERE tenChucVu = N'" + name + "'", ChucVu.class);			
+			ChucVu cv = query.getResultList().get(0);
+			t.commit();
+			return cv;
+
+		} catch (Exception e) {
+			t.rollback();
+			return null;
 		}
 	}
 }

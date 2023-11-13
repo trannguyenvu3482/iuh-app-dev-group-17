@@ -14,4 +14,7 @@ public class ChucVuBUS {
 		return cvDAO.getChucVu(maCV);
 	}
 	
+	public ChucVu getChucVuByName(String name) {
+		return cvDAO.getChucVuByName(name);
+	}
 }

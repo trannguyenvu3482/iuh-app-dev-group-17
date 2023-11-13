@@ -36,7 +36,7 @@ public class ConstantUtil {
 	public static final ImageIcon byteArrayToImageIcon(byte[] data) {
 		BufferedImage img = null;
 		try {
-			img = ImageIO.read(new ByteArrayInputStream(ConstantUtil.currentNhanVien.getAnhDaiDien()));
+			img = ImageIO.read(new ByteArrayInputStream(data));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
