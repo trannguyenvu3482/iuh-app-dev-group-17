@@ -1,49 +1,36 @@
 package com.nhom17.quanlykaraoke.gui.panels;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.geom.Ellipse2D;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
-import javax.imageio.ImageIO;
 import javax.swing.Box;
-import javax.swing.BoxLayout;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
-import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.IconifyAction;
 import javax.swing.table.DefaultTableModel;
 
 import org.kordamp.ikonli.materialdesign2.MaterialDesignA;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignB;
-import org.kordamp.ikonli.materialdesign2.MaterialDesignH;
-import org.kordamp.ikonli.materialdesign2.MaterialDesignP;
-
-import javax.swing.JTextField;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.ImageIcon;
 
 import com.nhom17.quanlykaraoke.bus.NhanVienBUS;
-import com.nhom17.quanlykaraoke.bus.PhongBUS;
 import com.nhom17.quanlykaraoke.common.MyIcon;
 import com.nhom17.quanlykaraoke.dao.NhanVienDAO;
 import com.nhom17.quanlykaraoke.entities.LoaiPhong;
@@ -57,6 +44,9 @@ import java.util.Locale;
 import java.awt.Dimension;
 import javax.swing.JButton;
 
+import com.toedter.calendar.JDateChooser;
+
+
 /**
  * @author Trần Nguyên Vũ, Trần Ngọc Phát, Mai Nhật Hào, Trần Thanh Vy
  * @version 1.0
@@ -64,6 +54,7 @@ import javax.swing.JButton;
  */
 public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
+
 
 	private final NhanVienBUS nvBUS = new NhanVienBUS();
 	private final JComboBox<String> boxFilterKichThuoc = new JComboBox<String>();
@@ -77,11 +68,13 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 	private JComboBox cbTrangThai = new JComboBox();
 	private JComboBox cbGioiTinh = new JComboBox();
 	private JTextField txtSearchNV = new JTextField();
+	private JLabel avt = new JLabel("");
 	private JDateChooser txtSearchFrom = new JDateChooser();
 	private JButton btnSua = new JButton("");
 	private JButton btnThem = new JButton("");
 	private JButton btnClearfields = new JButton("");
 	private JDateChooser txtSearchTo = new JDateChooser();
+
 
 	/**
 	 * 
@@ -96,6 +89,7 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 		panelTop.setBackground(new Color(192, 192, 192));
 		add(panelTop);
 		panelTop.setLayout(null);
+
 
 		txtTenNV.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		txtTenNV.setBounds(143, 29, 414, 40);
@@ -141,6 +135,7 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 		lbTrangThai.setBounds(10, 182, 103, 40);
 		panelTop.add(lbTrangThai);
 
+
 		cbTrangThai.setModel(new DefaultComboBoxModel(new String[] { "Đang làm", "Đã nghỉ" }));
 		cbTrangThai.setToolTipText("");
 		cbTrangThai.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -179,8 +174,10 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
+
 		btnThem.setBounds(775, 29, 60, 60);
 		panelTop.add(btnThem);
+
 
 		btnSua.setIcon(MyIcon.getIcon(MaterialDesignA.ACCOUNT_EDIT, 32, null));
 		btnSua.addActionListener(new ActionListener() {
@@ -245,12 +242,16 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 		txtSearchNV.setBounds(872, 29, 277, 40);
 		panelTop.add(txtSearchNV);
 
+
 		Box boxSix_1 = Box.createHorizontalBox();
 		panelTop.add(boxSix_1);
+		
+		Box boxAvatar = Box.createHorizontalBox();
+		boxAvatar.setLocation(565, 29);
+		boxAvatar.setSize(200, 200);
+		boxAvatar.setAlignmentY(Component.CENTER_ALIGNMENT);
+		panelTop.add(boxAvatar);
 
-		JLabel lblBLc = new JLabel("Bộ lọc: ");
-		lblBLc.setFont(new Font("Dialog", Font.BOLD, 20));
-		boxSix_1.add(lblBLc);
 
 		boxFilterKichThuoc.setFont(new Font("Dialog", Font.BOLD, 20));
 		String[] dataLHH = { "Kích thước", "5", "10", "15", "20" };
@@ -266,6 +267,14 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 
 
 		// Set avatar
+		// Set avatar
+
+		Component horizontalGlue_1_1 = Box.createHorizontalGlue();
+		boxAvatar.add(horizontalGlue_1_1);
+		
+
+		boxAvatar.add(avt);
+
 
 		// Table setup
 		createTable();
@@ -287,7 +296,7 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 	 * 
 	 */
 	private void createTable() {
-		final String[] colNames = { "Mã NV", "Họ và tên", "Giới tính", "Ngày sinh", "Chức vụ", "CCCD", "Trạng thái" };
+		final String[] colNames = { "Mã NV", "Họ và tên", "Giới tính", "Ngày sinh", "Chức vụ", "Hoạt động" };
 		modelNhanVien = new DefaultTableModel(colNames, 0) {
 			private static final long serialVersionUID = 1L;
 
@@ -297,6 +306,7 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 			}
 		};
 		tblNhanVien = new JTable(modelNhanVien);
+
 		tblNhanVien.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tblNhanVien.setFont(new Font("Dialog", Font.PLAIN, 18));
 		tblNhanVien.getTableHeader().setFont(new Font("Dialog", Font.BOLD, 18));
@@ -315,18 +325,22 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 					txtTenNV.setText(modelNhanVien.getValueAt(tblNhanVien.getSelectedRow(), 1).toString());
 					cbGioiTinh.setSelectedIndex(numGT(modelNhanVien.getValueAt(tblNhanVien.getSelectedRow(), 2).toString()));
 					cbChucVu.setSelectedItem(modelNhanVien.getValueAt(tblNhanVien.getSelectedRow(), 4).toString());
-					txtCCCD.setText(modelNhanVien.getValueAt(tblNhanVien.getSelectedRow(), 5).toString());
-					cbTrangThai.setSelectedItem(modelNhanVien.getValueAt(tblNhanVien.getSelectedRow(), 6).toString());
-//					txtNgaySinh.setDate(DateTimeFormatUtil.(modelNhanVien.getValueAt(tblNhanVien.getSelectedRow(), 3).toString()));
+					txtCCCD.setText(nv.getCCCD());
+					cbTrangThai.setSelectedItem(modelNhanVien.getValueAt(tblNhanVien.getSelectedRow(), 5).toString());
+					txtNgaySinh.setDate(DateTimeFormatUtil.formatStringToDate(LocalDate.parse(modelNhanVien.getValueAt(tblNhanVien.getSelectedRow(), 3).toString(), DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
+					
 				}
 			}
 
 		});
+
+
 	}
 
 	/**
 	 * 
 	 */
+
 	public String gioiTinh(int gt) {
 		if (gt == 1) {
 			return "Nữ";
@@ -344,13 +358,12 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 	private void refreshTable() {
 		modelNhanVien.setRowCount(0);
 		for (NhanVien nv : nvBUS.getAllNhanViens()) {
-			Object[] data = { nv.getMaNhanVien(), nv.getHoTen(), gioiTinh(nv.getGioiTinh()), nv.getNgaySinh(),
-					nv.getChucVu().getTenChucVu(), nv.getCCCD(), nv.isTrangThai() ? "Đang làm" : "Đã nghỉ" };
+			Object[] data = { nv.getMaNhanVien(), nv.getHoTen(), gioiTinh(nv.getGioiTinh()), DateTimeFormatter.ofPattern("dd/MM/yyyy").format(nv.getNgaySinh()),
+					nv.getChucVu().getTenChucVu(), nv.isTrangThai() ? "Đang làm" : "Đã nghỉ" };
 			modelNhanVien.addRow(data);
 		}
 
 	}
-	
 	public void clearFields() {
 		txtTenNV.setText("");
 		txtCCCD.setText("");
@@ -361,22 +374,19 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 		txtNgaySinh.setDate(null);
 		txtTenNV.grabFocus();
 	}
-	
-	private boolean trangThai(String tt) {
-		if (tt.equals("Còn hoạt động"))
-			return true;
-		else
-			return false;
-	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
 		if(o.equals(btnClearfields)) {
 			clearFields();
+		}else if(o.equals(btnThem)) {
+			
 		}
 
 	}
 
 	
+
 
 }
