@@ -9,6 +9,8 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 
 import javax.imageio.ImageIO;
@@ -56,6 +58,16 @@ public class ConstantUtil {
 		return new ImageIcon(bi.getScaledInstance(200, 200, Image.SCALE_SMOOTH));
 	}
 
+	public static final byte[] getDefaultMaleAvatar() {
+		try {
+			return Files.readAllBytes(Paths.get("src/main/resources/images/male-avatar.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	public static final ImageIcon getDefaultMaleAvatarIcon() {
 		BufferedImage img = null;
 		try {
@@ -81,7 +93,17 @@ public class ConstantUtil {
 		return new ImageIcon(bi.getScaledInstance(200, 200, Image.SCALE_SMOOTH));
 	}
 
-	public static final ImageIcon getDefaultFemaleAvatar() {
+	public static final byte[] getDefaultFemaleAvatar() {
+		try {
+			return Files.readAllBytes(Paths.get("src/main/resources/images/female-avatar.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static final ImageIcon getDefaultFemaleAvatarIcon() {
 		BufferedImage img = null;
 		try {
 			img = ImageIO.read(new File("src/main/resources/images/female-avatar.png"));
