@@ -58,7 +58,7 @@ public class ChiTietPhieuDatPhongDAO {
 		try {
 			// Handle PhieuDatPhong
 			Query<ChiTietPhieuDatPhong> query = session.createNativeQuery(
-					"SELECT * FROM ChiTietPhieuDatPhong where maPhieuDatPhong = " + maPhieuDatPhong + "'",
+					"SELECT * FROM ChiTietPhieuDatPhong where maPhieuDatPhong = '" + maPhieuDatPhong + "'",
 					ChiTietPhieuDatPhong.class);
 
 			listChiTietPhieuDatPhong = query.getResultList();

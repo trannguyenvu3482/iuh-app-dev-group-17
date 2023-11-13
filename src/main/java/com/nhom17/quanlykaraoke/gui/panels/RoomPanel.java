@@ -121,6 +121,23 @@ public class RoomPanel extends JPanel implements MouseListener {
 		return false;
 	}
 
+	public boolean openDichVuPanel(DialogClosedListener listener) {
+		SwingUtilities.invokeLater(() -> {
+			TaoPhieuDatPhongDialog dialog = new TaoPhieuDatPhongDialog(p);
+
+			dialog.addWindowListener(new WindowAdapter() {
+				public void windowClosed(WindowEvent e) {
+					System.out.println(e.getComponent());
+					listener.onClosed();
+				}
+			});
+
+			dialog.setVisible(true);
+		});
+
+		return true;
+	}
+
 	public boolean changeRoom(DialogClosedListener listener) {
 		ChiTietPhieuDatPhong ctpdp = new ChiTietPhieuDatPhongBUS()
 				.getChiTietPhieuDatPhongByActiveMaPhong(p.getMaPhong());

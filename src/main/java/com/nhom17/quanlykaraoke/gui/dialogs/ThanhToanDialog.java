@@ -20,12 +20,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import com.nhom17.quanlykaraoke.dao.ChiTietPhieuDatPhongDAO;
 import com.nhom17.quanlykaraoke.entities.ChiTietPhieuDatPhong;
+import com.nhom17.quanlykaraoke.entities.KhachHang;
 import com.nhom17.quanlykaraoke.entities.Phong;
 import com.nhom17.quanlykaraoke.utils.ConstantUtil;
 import com.nhom17.quanlykaraoke.utils.DateTimeFormatUtil;
@@ -40,12 +40,26 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 	private static final long serialVersionUID = 1L;
 
 	// COMPONENTS
+	private final JLabel lblTenNhanVien = new JLabel("Tên nhân viên: ");
+	private final JLabel lblTenKhachHang = new JLabel("Tên khách hàng: ");
+	private final JLabel lblSDTNhanVien = new JLabel("SDT nhân viên: ");
+	private final JLabel lblSDTKhachHang = new JLabel("SDT khách hàng: ");
+	private final JLabel lblTienPhong = new JLabel("Tiền phòng: ");
+	private final JLabel lblTongTien = new JLabel("Tổng: ");
+	private final JLabel lblGioNhanPhong = new JLabel("Giờ nhận phòng: ");
+	private final JLabel lblGioTraPhong = new JLabel("Giờ trả phòng: ");
+	private final JLabel lblThueVAT = new JLabel("Thuế VAT: 10%");
 	private JTable tbl;
 	private DefaultTableModel model;
 
 	// VARIABLES
 	private Phong p;
+	private KhachHang kh;
 	private final ChiTietPhieuDatPhongDAO ctpdpDAO = new ChiTietPhieuDatPhongDAO();
+	private double tienPhong = 0;
+	private double tienDichVu = 0;
+	private double tongTien = 0;
+	private LocalDateTime thoiGianBatDau = LocalDateTime.now();
 
 	/**
 	 * 
@@ -67,14 +81,12 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 		Box hBox1 = Box.createHorizontalBox();
 		panelTop.add(hBox1);
 
-		JLabel lblTenNhanVien = new JLabel("Tên nhân viên: Trần Nguyên Vũ");
 		lblTenNhanVien.setFont(new Font("Dialog", Font.BOLD, 20));
 		hBox1.add(lblTenNhanVien);
 
 		Component horizontalGlue = Box.createHorizontalGlue();
 		hBox1.add(horizontalGlue);
 
-		JLabel lblTenKhachHang = new JLabel("Tên khách hàng: Trần Ngọc Phát");
 		lblTenKhachHang.setFont(new Font("Dialog", Font.BOLD, 20));
 		hBox1.add(lblTenKhachHang);
 
@@ -84,14 +96,12 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 		Box hBox2 = Box.createHorizontalBox();
 		panelTop.add(hBox2);
 
-		JLabel lblSDTNhanVien = new JLabel("SDT nhân viên: 0903252508");
 		lblSDTNhanVien.setFont(new Font("Dialog", Font.BOLD, 20));
 		hBox2.add(lblSDTNhanVien);
 
 		Component horizontalGlue_1 = Box.createHorizontalGlue();
 		hBox2.add(horizontalGlue_1);
 
-		JLabel lblSDTKhachHang = new JLabel("SDT khách hàng: 0919231475");
 		lblSDTKhachHang.setFont(new Font("Dialog", Font.BOLD, 20));
 		hBox2.add(lblSDTKhachHang);
 
@@ -141,7 +151,6 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 		Component horizontalGlue_3 = Box.createHorizontalGlue();
 		hBox3.add(horizontalGlue_3);
 
-		JLabel lblGioNhanPhong = new JLabel("Giờ nhận phòng: 21:30:00 - 16/10/2023");
 		lblGioNhanPhong.setFont(new Font("Dialog", Font.BOLD, 20));
 		hBox3.add(lblGioNhanPhong);
 
@@ -151,14 +160,12 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 		Box hBox4 = Box.createHorizontalBox();
 		panelInfo.add(hBox4);
 
-		JLabel lblTienPhong = new JLabel("Tiền phòng: 90.000VND");
 		lblTienPhong.setFont(new Font("Dialog", Font.BOLD, 20));
 		hBox4.add(lblTienPhong);
 
 		Component horizontalGlue_3_1 = Box.createHorizontalGlue();
 		hBox4.add(horizontalGlue_3_1);
 
-		JLabel lblGioTraPhong = new JLabel("Giờ trả phòng: 22:30:00 - 16/10/2023");
 		lblGioTraPhong.setFont(new Font("Dialog", Font.BOLD, 20));
 		hBox4.add(lblGioTraPhong);
 
@@ -168,7 +175,6 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 		Box hBox5 = Box.createHorizontalBox();
 		panelInfo.add(hBox5);
 
-		JLabel lblThueVAT = new JLabel("Thuế VAT: 10%");
 		lblThueVAT.setFont(new Font("Dialog", Font.BOLD, 20));
 		hBox5.add(lblThueVAT);
 
@@ -185,7 +191,6 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 		Box hBox6 = Box.createHorizontalBox();
 		panelInfo.add(hBox6);
 
-		JLabel lblTongTien = new JLabel("Tổng: 1.199.000VND");
 		lblTongTien.setFont(new Font("Dialog", Font.BOLD, 20));
 		hBox6.add(lblTongTien);
 
@@ -201,6 +206,16 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 		// Load data to table
 		refreshTable();
 
+		// Load info data
+		lblTenNhanVien.setText(lblTenNhanVien.getText().concat(ConstantUtil.currentNhanVien.getHoTen()));
+		lblSDTNhanVien.setText(lblSDTNhanVien.getText().concat(ConstantUtil.currentNhanVien.getSoDienThoai()));
+		lblTenKhachHang.setText(lblTenKhachHang.getText().concat(kh.getHoTen()));
+		lblSDTKhachHang.setText(lblSDTKhachHang.getText().concat(kh.getSoDienThoai()));
+
+		lblTienPhong.setText(lblTienPhong.getText().concat(MoneyFormatUtil.format(tienPhong)));
+		lblTongTien.setText(lblTongTien.getText().concat(MoneyFormatUtil.format(tongTien * 1.1)));
+		lblGioNhanPhong.setText(lblGioNhanPhong.getText().concat(DateTimeFormatUtil.formatFullDate(thoiGianBatDau)));
+		lblGioTraPhong.setText(lblGioTraPhong.getText().concat(DateTimeFormatUtil.formatFullDate(LocalDateTime.now())));
 	}
 
 	@Override
@@ -219,13 +234,14 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 			public boolean isCellEditable(int row, int column) {
 				return false;
 			}
-
 		};
 
 		tbl = new JTable(model);
-		tbl.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		tbl.setFont(new Font("Dialog", Font.PLAIN, 16));
-		tbl.getTableHeader().setFont(new Font("Dialog", Font.BOLD, 18));
+		tbl.setRowSelectionAllowed(false);
+		tbl.setColumnSelectionAllowed(false);
+		tbl.setCellSelectionEnabled(false);
+		tbl.setFont(new Font("Dialog", Font.PLAIN, 18));
+		tbl.getTableHeader().setFont(new Font("Dialog", Font.BOLD, 20));
 		tbl.getTableHeader().setReorderingAllowed(false);
 		tbl.setAutoCreateRowSorter(true);
 		tbl.getTableHeader().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -240,6 +256,7 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 		tbl.getColumnModel().getColumn(5).setPreferredWidth(100);
 		tbl.getColumnModel().getColumn(6).setPreferredWidth(100);
 		tbl.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+
 	};
 
 	private void refreshTable() {
@@ -249,20 +266,33 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 		String maPDP = ctpdpDAO.getChiTietPhieuDatPhongByActiveMaPhong(p.getMaPhong()).getPhieuDatPhong()
 				.getMaPhieuDatPhong();
 
+		kh = ctpdpDAO.getChiTietPhieuDatPhongByActiveMaPhong(p.getMaPhong()).getPhieuDatPhong().getKhachHang();
+
+		System.out.println("Ma PDP" + maPDP);
+
 		List<ChiTietPhieuDatPhong> listCTPDP = ctpdpDAO.getAllChiTietPhieuDatPhongByMaPhieuDatPhong(maPDP);
 
 		int stt = 1;
 
 		for (ChiTietPhieuDatPhong ctpdp : listCTPDP) {
-			String thanhTien = MoneyFormatUtil
-					.format(ChronoUnit.HOURS.between(ctpdp.getThoiGianBatDau(), LocalDateTime.now())
-							* ConstantUtil.getStandardHourPrice(LocalDateTime.now()));
+			double phuPhi = ctpdp.getPhong().getLoaiPhong().getPhuPhi();
+			double thanhTien = ChronoUnit.HOURS.between(ctpdp.getThoiGianBatDau(), LocalDateTime.now())
+					* ConstantUtil.getStandardHourPrice(LocalDateTime.now()) + phuPhi;
+
 			Object[] rowData = { stt, "Phòng " + ctpdp.getPhong().getMaPhong(),
-					DateTimeFormatUtil.formatTimeBetween(ctpdp.getThoiGianBatDau(), LocalDateTime.now()), "", "", "",
-					thanhTien };
+					DateTimeFormatUtil.formatTimeBetween(ctpdp.getThoiGianBatDau(), LocalDateTime.now()), "", "",
+					MoneyFormatUtil.format(phuPhi), MoneyFormatUtil.format(thanhTien) };
 
 			model.addRow(rowData);
 			stt++;
+
+			// Handle sum values
+			tienPhong += thanhTien;
+			tongTien += thanhTien;
+
+			if (ctpdp.getThoiGianBatDau().isBefore(thoiGianBatDau)) {
+				thoiGianBatDau = ctpdp.getThoiGianBatDau();
+			}
 		}
 
 		// Load food

@@ -32,6 +32,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 
 import org.kordamp.ikonli.materialdesign2.MaterialDesignC;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignF;
@@ -94,6 +95,7 @@ public class QuanLyPhieuDatPhongPanel extends JPanel implements ActionListener {
 	private RoomPanel currentSelectedRoomPanel = null;
 	private final List<JPanel> roomUIPanels = List.of(panel1, panel2, panel3, panel4, panel5, panel6, panel7, panel8);
 	private String searchString = "";
+	private Timer timer;
 
 	/**
 	 * Instantiates a new quan ly phieu dat phong panel.
@@ -115,6 +117,7 @@ public class QuanLyPhieuDatPhongPanel extends JPanel implements ActionListener {
 
 		// Action listeners
 		boxFilter.addActionListener(this);
+
 	}
 
 	/**
@@ -386,6 +389,20 @@ public class QuanLyPhieuDatPhongPanel extends JPanel implements ActionListener {
 		}
 	}
 
+	private void performSearch() {
+		SwingUtilities.invokeLater(() -> {
+			// TODO Auto-generated method stub
+			searchString = txtSearchMaPhong.getText().trim();
+			if (searchString.equals("")) {
+				handleFilterRooms(listBookedRooms);
+				return;
+			} else {
+				listFilteredRooms = listBookedRooms;
+				handleSearch();
+			}
+		});
+	}
+
 	/**
 	 * Initiate the UI
 	 * 
@@ -628,17 +645,17 @@ public class QuanLyPhieuDatPhongPanel extends JPanel implements ActionListener {
 
 		txtSearchMaPhong.addKeyListener(new KeyAdapter() {
 			@Override
-			public void keyTyped(KeyEvent e) {
-				SwingUtilities.invokeLater(() -> {
-					searchString = txtSearchMaPhong.getText().trim();
-					if (searchString.equals("")) {
-						handleFilterRooms(listRooms);
-						return;
-					} else {
-						listFilteredRooms = listRooms;
-						handleSearch();
-					}
+			public void keyReleased(KeyEvent e) {
+				if (timer != null) {
+					timer.stop();
+				}
+
+				timer = new Timer(1000, event -> {
+					performSearch();
 				});
+
+				timer.setRepeats(false);
+				timer.start();
 			}
 
 		});

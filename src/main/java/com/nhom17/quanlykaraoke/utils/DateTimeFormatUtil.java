@@ -3,7 +3,6 @@ package com.nhom17.quanlykaraoke.utils;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -14,16 +13,19 @@ import java.util.concurrent.TimeUnit;
  */
 public class DateTimeFormatUtil {
 	public static String formatFullDate(LocalDateTime time) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL);
-		formatter = formatter.withLocale(new Locale("vi", "VN"));
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("H:m:s - d/M/yyyy ", new Locale("vi", "VN"));
 		return time.format(formatter);
 	}
 
 	public static String formatTimeBetween(LocalDateTime startTime, LocalDateTime endTime) {
+		System.out.println("Start time: " + startTime.toString());
+		System.out.println("End time: " + endTime.toString());
+
 		long millis = Duration.between(startTime, endTime).toMillis();
 
-		return String.format("%d giờ %d phút", TimeUnit.MILLISECONDS.toHours(millis),
-				TimeUnit.MILLISECONDS.toMinutes(millis)
-						- TimeUnit.MINUTES.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)));
+		long hour = TimeUnit.MILLISECONDS.toHours(millis);
+		long minutes = TimeUnit.MILLISECONDS.toMinutes(millis - TimeUnit.HOURS.toMillis(hour));
+
+		return String.format("%d giờ %d phút", hour, minutes);
 	}
 }
