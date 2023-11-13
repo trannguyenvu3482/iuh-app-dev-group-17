@@ -49,7 +49,10 @@ import com.nhom17.quanlykaraoke.dao.NhanVienDAO;
 import com.nhom17.quanlykaraoke.entities.LoaiPhong;
 import com.nhom17.quanlykaraoke.entities.NhanVien;
 import com.nhom17.quanlykaraoke.entities.Phong;
+import com.nhom17.quanlykaraoke.utils.DateTimeFormatUtil;
 import com.toedter.calendar.JDateChooser;
+
+import java.util.Date;
 import java.util.Locale;
 import java.awt.Dimension;
 import javax.swing.JButton;
@@ -63,15 +66,22 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 	private static final long serialVersionUID = 1L;
 
 	private final NhanVienBUS nvBUS = new NhanVienBUS();
-	private final JTextField txtSearch;
 	private final JComboBox<String> boxFilterKichThuoc = new JComboBox<String>();
 	private DefaultTableModel modelNhanVien;
 	private JTable tblNhanVien;
-	private JTextField textField;
-	private JTextField textField_3;
-	private JTextField textField_1;
-	private JTextField textField_2;
-
+	private JTextField txtTenNV = new JTextField();;
+	private JTextField txtCCCD = new JTextField();;
+	private JTextField txtSDT = new JTextField();;
+	private JDateChooser txtNgaySinh = new JDateChooser();
+	private JComboBox cbChucVu = new JComboBox();
+	private JComboBox cbTrangThai = new JComboBox();
+	private JComboBox cbGioiTinh = new JComboBox();
+	private JTextField txtSearchNV = new JTextField();
+	private JDateChooser txtSearchFrom = new JDateChooser();
+	private JButton btnSua = new JButton("");
+	private JButton btnThem = new JButton("");
+	private JButton btnClearfields = new JButton("");
+	private JDateChooser txtSearchTo = new JDateChooser();
 
 	/**
 	 * 
@@ -87,175 +97,160 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 		add(panelTop);
 		panelTop.setLayout(null);
 
-		textField = new JTextField();
-		textField.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		textField.setBounds(171, 29, 386, 40);
-		panelTop.add(textField);
-		textField.setColumns(10);
+		txtTenNV.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		txtTenNV.setBounds(143, 29, 414, 40);
+		panelTop.add(txtTenNV);
+		txtTenNV.setColumns(10);
 
-		JLabel lblNewLabel = new JLabel("Tên nhân viên");
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNewLabel.setBounds(34, 29, 212, 40);
-		panelTop.add(lblNewLabel);
+		JLabel lblTenNV = new JLabel("Tên nhân viên");
+		lblTenNV.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblTenNV.setBounds(10, 28, 153, 40);
+		panelTop.add(lblTenNV);
 
 		JLabel lblCccd = new JLabel("CCCD");
 		lblCccd.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblCccd.setBounds(34, 80, 69, 40);
+		lblCccd.setBounds(10, 80, 69, 40);
 		panelTop.add(lblCccd);
 
-		JLabel lblCccd_1 = new JLabel("SDT");
-		lblCccd_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblCccd_1.setBounds(310, 80, 44, 40);
-		panelTop.add(lblCccd_1);
+		JLabel lbSDT = new JLabel("SDT");
+		lbSDT.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lbSDT.setBounds(327, 80, 44, 40);
+		panelTop.add(lbSDT);
 
-		JLabel lblGiiTnh = new JLabel("Giới tính");
-		lblGiiTnh.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblGiiTnh.setBounds(34, 131, 81, 40);
-		panelTop.add(lblGiiTnh);
+		JLabel lbGioiTinh = new JLabel("Giới tính");
+		lbGioiTinh.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lbGioiTinh.setBounds(10, 131, 81, 40);
+		panelTop.add(lbGioiTinh);
 
 		JLabel lblNgySinh = new JLabel("Ngày sinh");
 		lblNgySinh.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblNgySinh.setBounds(297, 131, 90, 40);
 		panelTop.add(lblNgySinh);
 
-		JDateChooser fromDateChooser = new JDateChooser();
-		fromDateChooser.getCalendarButton().setPreferredSize(new Dimension(26, 19));
-		fromDateChooser.getCalendarButton().setFont(new Font("Dialog", Font.BOLD, 20));
-		fromDateChooser.setPreferredSize(new Dimension(150, 48));
-		fromDateChooser.setLocale(new Locale("vi", "VN"));
-		fromDateChooser.setFont(new Font("Dialog", Font.PLAIN, 20));
-		fromDateChooser.setDateFormatString("d/M/y");
-		fromDateChooser.setBounds(397, 131, 158, 40);
-		panelTop.add(fromDateChooser);
+		txtNgaySinh.getCalendarButton().setPreferredSize(new Dimension(26, 19));
+		txtNgaySinh.getCalendarButton().setFont(new Font("Dialog", Font.BOLD, 20));
+		txtNgaySinh.setPreferredSize(new Dimension(150, 48));
+		txtNgaySinh.setLocale(new Locale("vi", "VN"));
+		txtNgaySinh.setFont(new Font("Dialog", Font.PLAIN, 20));
+		txtNgaySinh.setDateFormatString("d/M/y");
+		txtNgaySinh.setBounds(397, 131, 158, 40);
+		panelTop.add(txtNgaySinh);
 
-		JLabel lblTrngThi = new JLabel("Trạng thái");
-		lblTrngThi.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblTrngThi.setBounds(34, 182, 103, 40);
-		panelTop.add(lblTrngThi);
+		JLabel lbTrangThai = new JLabel("Trạng thái");
+		lbTrangThai.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lbTrangThai.setBounds(10, 182, 103, 40);
+		panelTop.add(lbTrangThai);
 
-		JComboBox comboBox_1 = new JComboBox();
-		comboBox_1.setModel(new DefaultComboBoxModel(new String[] { "Đang làm", "Đã nghỉ" }));
-		comboBox_1.setToolTipText("");
-		comboBox_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		comboBox_1.setBounds(143, 180, 144, 40);
-		panelTop.add(comboBox_1);
+		cbTrangThai.setModel(new DefaultComboBoxModel(new String[] { "Đang làm", "Đã nghỉ" }));
+		cbTrangThai.setToolTipText("");
+		cbTrangThai.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		cbTrangThai.setBounds(143, 180, 144, 40);
+		panelTop.add(cbTrangThai);
 
-		JComboBox comboBox_1_1 = new JComboBox();
-		comboBox_1_1.setModel(new DefaultComboBoxModel(new String[] { "Nam", "Nữ" }));
-		comboBox_1_1.setToolTipText("");
-		comboBox_1_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		comboBox_1_1.setBounds(143, 132, 144, 40);
-		panelTop.add(comboBox_1_1);
+		cbGioiTinh.setModel(new DefaultComboBoxModel(new String[] { "Nam", "Nữ" }));
+		cbGioiTinh.setToolTipText("");
+		cbGioiTinh.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		cbGioiTinh.setBounds(143, 132, 144, 40);
+		panelTop.add(cbGioiTinh);
 
-		textField_3 = new JTextField();
-		textField_3.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		textField_3.setColumns(10);
-		textField_3.setBounds(92, 80, 208, 40);
-		panelTop.add(textField_3);
+		txtCCCD.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		txtCCCD.setColumns(10);
+		txtCCCD.setBounds(143, 80, 174, 40);
+		panelTop.add(txtCCCD);
 
-		textField_1 = new JTextField();
-		textField_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		textField_1.setColumns(10);
-		textField_1.setBounds(364, 80, 193, 40);
-		panelTop.add(textField_1);
+		txtSDT.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		txtSDT.setColumns(10);
+		txtSDT.setBounds(381, 80, 176, 40);
+		panelTop.add(txtSDT);
 
-		JLabel lblChcV = new JLabel("Chức vụ");
-		lblChcV.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblChcV.setBounds(297, 182, 103, 40);
-		panelTop.add(lblChcV);
+		JLabel lbChucVu = new JLabel("Chức vụ");
+		lbChucVu.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lbChucVu.setBounds(297, 182, 103, 40);
+		panelTop.add(lbChucVu);
 
-		JComboBox comboBox_1_2 = new JComboBox();
-		comboBox_1_2.setModel(new DefaultComboBoxModel(new String[] { "Nhân viên", "Quản lý" }));
-		comboBox_1_2.setToolTipText("");
-		comboBox_1_2.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		comboBox_1_2.setBounds(397, 180, 158, 40);
-		panelTop.add(comboBox_1_2);
+		cbChucVu.setModel(new DefaultComboBoxModel(new String[] { "Nhân viên", "Quản lý" }));
+		cbChucVu.setToolTipText("");
+		cbChucVu.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		cbChucVu.setBounds(397, 180, 158, 40);
+		panelTop.add(cbChucVu);
 
-		JButton btnNewButton = new JButton("");
-		btnNewButton.setIcon(MyIcon.getIcon(MaterialDesignA.ACCOUNT_PLUS, 32, null));
-		btnNewButton.addActionListener(new ActionListener() {
+		btnThem.setIcon(MyIcon.getIcon(MaterialDesignA.ACCOUNT_PLUS, 32, null));
+		btnThem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnNewButton.setBounds(775, 29, 60, 60);
-		panelTop.add(btnNewButton);
-		
+		btnThem.setBounds(775, 29, 60, 60);
+		panelTop.add(btnThem);
 
-		JButton btnNewButton_1 = new JButton("");
-		btnNewButton_1.setIcon(MyIcon.getIcon(MaterialDesignA.ACCOUNT_EDIT, 32, null));
-		btnNewButton_1.addActionListener(new ActionListener() {
+		btnSua.setIcon(MyIcon.getIcon(MaterialDesignA.ACCOUNT_EDIT, 32, null));
+		btnSua.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnNewButton_1.setBounds(775, 100, 60, 60);
-		panelTop.add(btnNewButton_1);
+		btnSua.setBounds(775, 100, 60, 60);
+		panelTop.add(btnSua);
 
-		JButton btnNewButton_2 = new JButton("");
-		btnNewButton_2.setIcon(MyIcon.getIcon(MaterialDesignB.BROOM, 32, null));
-		btnNewButton_2.addActionListener(new ActionListener() {
+		btnClearfields.setIcon(MyIcon.getIcon(MaterialDesignB.BROOM, 32, null));
+		btnClearfields.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnNewButton_2.setBounds(775, 169, 60, 60);
-		panelTop.add(btnNewButton_2);
+		btnClearfields.setBounds(775, 169, 60, 60);
+		panelTop.add(btnClearfields);
 
-		JLabel lblNgySinhT = new JLabel("Ngày sinh từ");
-		lblNgySinhT.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNgySinhT.setBounds(872, 131, 129, 40);
-		panelTop.add(lblNgySinhT);
+		JLabel lbSearchForm = new JLabel("Ngày sinh từ");
+		lbSearchForm.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lbSearchForm.setBounds(872, 131, 129, 40);
+		panelTop.add(lbSearchForm);
 
-		JDateChooser fromDateChooser_1 = new JDateChooser();
-		fromDateChooser_1.getCalendarButton().setPreferredSize(new Dimension(26, 19));
-		fromDateChooser_1.getCalendarButton().setFont(new Font("Dialog", Font.BOLD, 20));
-		fromDateChooser_1.setPreferredSize(new Dimension(150, 48));
-		fromDateChooser_1.setLocale(new Locale("vi", "VN"));
-		fromDateChooser_1.setFont(new Font("Dialog", Font.PLAIN, 20));
-		fromDateChooser_1.setDateFormatString("d/M/y");
-		fromDateChooser_1.setBounds(1004, 131, 145, 40);
-		panelTop.add(fromDateChooser_1);
+		txtSearchFrom.getCalendarButton().setPreferredSize(new Dimension(26, 19));
+		txtSearchFrom.getCalendarButton().setFont(new Font("Dialog", Font.BOLD, 20));
+		txtSearchFrom.setPreferredSize(new Dimension(150, 48));
+		txtSearchFrom.setLocale(new Locale("vi", "VN"));
+		txtSearchFrom.setFont(new Font("Dialog", Font.PLAIN, 20));
+		txtSearchFrom.setDateFormatString("d/M/y");
+		txtSearchFrom.setBounds(1004, 131, 145, 40);
+		panelTop.add(txtSearchFrom);
 
-		JLabel lblnNgySinh = new JLabel("Đến ngày sinh");
-		lblnNgySinh.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblnNgySinh.setBounds(872, 182, 129, 40);
-		panelTop.add(lblnNgySinh);
+		JLabel lbSearchTo = new JLabel("Đến ngày sinh");
+		lbSearchTo.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lbSearchTo.setBounds(872, 182, 129, 40);
+		panelTop.add(lbSearchTo);
 
-		JDateChooser fromDateChooser_1_1 = new JDateChooser();
-		fromDateChooser_1_1.getCalendarButton().setPreferredSize(new Dimension(26, 19));
-		fromDateChooser_1_1.getCalendarButton().setFont(new Font("Dialog", Font.BOLD, 20));
-		fromDateChooser_1_1.setPreferredSize(new Dimension(150, 48));
-		fromDateChooser_1_1.setLocale(new Locale("vi", "VN"));
-		fromDateChooser_1_1.setFont(new Font("Dialog", Font.PLAIN, 20));
-		fromDateChooser_1_1.setDateFormatString("d/M/y");
-		fromDateChooser_1_1.setBounds(1004, 182, 145, 40);
-		panelTop.add(fromDateChooser_1_1);
+		txtSearchTo.getCalendarButton().setPreferredSize(new Dimension(26, 19));
+		txtSearchTo.getCalendarButton().setFont(new Font("Dialog", Font.BOLD, 20));
+		txtSearchTo.setPreferredSize(new Dimension(150, 48));
+		txtSearchTo.setLocale(new Locale("vi", "VN"));
+		txtSearchTo.setFont(new Font("Dialog", Font.PLAIN, 20));
+		txtSearchTo.setDateFormatString("d/M/y");
+		txtSearchTo.setBounds(1004, 182, 145, 40);
+		panelTop.add(txtSearchTo);
 
-		JComboBox comboBox_1_2_1 = new JComboBox();
-		comboBox_1_2_1.setModel(new DefaultComboBoxModel(new String[] { "Giới tính", "Nam", "Nữ" }));
-		comboBox_1_2_1.setToolTipText("");
-		comboBox_1_2_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		comboBox_1_2_1.setBounds(872, 80, 129, 40);
-		panelTop.add(comboBox_1_2_1);
+		JComboBox cbFilterGioiTinh = new JComboBox();
+		cbFilterGioiTinh.setModel(new DefaultComboBoxModel(new String[] { "Giới tính", "Nam", "Nữ" }));
+		cbFilterGioiTinh.setToolTipText("");
+		cbFilterGioiTinh.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		cbFilterGioiTinh.setBounds(872, 80, 129, 40);
+		panelTop.add(cbFilterGioiTinh);
 
-		JComboBox comboBox_1_2_1_1 = new JComboBox();
-		comboBox_1_2_1_1.setModel(new DefaultComboBoxModel(new String[] { "Chức vụ", "Nhân viên", "Quản lý" }));
-		comboBox_1_2_1_1.setToolTipText("");
-		comboBox_1_2_1_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		comboBox_1_2_1_1.setBounds(1020, 80, 129, 40);
-		panelTop.add(comboBox_1_2_1_1);
+		JComboBox cbFilterChucVu = new JComboBox();
+		cbFilterChucVu.setModel(new DefaultComboBoxModel(new String[] { "Chức vụ", "Nhân viên", "Quản lý" }));
+		cbFilterChucVu.setToolTipText("");
+		cbFilterChucVu.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		cbFilterChucVu.setBounds(1020, 80, 129, 40);
+		panelTop.add(cbFilterChucVu);
 
-		textField_2 = new JTextField();
-		textField_2.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		textField_2.setColumns(10);
-		textField_2.setBounds(872, 29, 277, 40);
-		panelTop.add(textField_2);
-		
+		txtSearchNV.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		txtSearchNV.setColumns(10);
+		txtSearchNV.setBounds(872, 29, 277, 40);
+		panelTop.add(txtSearchNV);
+
 		Box boxSix_1 = Box.createHorizontalBox();
 		panelTop.add(boxSix_1);
 
 		JLabel lblBLc = new JLabel("Bộ lọc: ");
 		lblBLc.setFont(new Font("Dialog", Font.BOLD, 20));
 		boxSix_1.add(lblBLc);
-
 
 		boxFilterKichThuoc.setFont(new Font("Dialog", Font.BOLD, 20));
 		String[] dataLHH = { "Kích thước", "5", "10", "15", "20" };
@@ -265,23 +260,12 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 
 		Component horizontalStrut_1_2 = Box.createHorizontalStrut(40);
 		boxSix_1.add(horizontalStrut_1_2);
-	
 
 		Component horizontalStrut_1_1_2 = Box.createHorizontalStrut(200);
 		boxSix_1.add(horizontalStrut_1_1_2);
 
-		txtSearch = new JTextField();
-		txtSearch.setFont(new Font("Dialog", Font.PLAIN, 20));
-		boxSix_1.add(txtSearch);
-		txtSearch.setColumns(10);
-		txtSearch.putClientProperty("JTextField.placeholderText", "Nhập vào tên nhân viên cần tìm");
-		
-		boxFilterKichThuoc.addActionListener(this);
-		
-		// Set avatar
-		
-		
 
+		// Set avatar
 
 		// Table setup
 		createTable();
@@ -293,6 +277,9 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 		scrollPaneNhanVien.setBounds(0, 251, 1200, 624);
 		add(scrollPaneNhanVien);
 
+		btnThem.addActionListener(this);
+		btnSua.addActionListener(this);
+		btnClearfields.addActionListener(this);
 		refreshTable();
 	}
 
@@ -317,46 +304,62 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 		tblNhanVien.setAutoCreateRowSorter(true);
 		tblNhanVien.getTableHeader().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		tblNhanVien.setRowHeight(50);
-		
-		
+
 		tblNhanVien.addMouseListener(new MouseAdapter() {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (tblNhanVien.getSelectedRow() != -1) {
-					
+					NhanVien nv = nvBUS.getNhanVien(modelNhanVien.getValueAt(tblNhanVien.getSelectedRow(), 0).toString());
+					txtSDT.setText(nv.getSoDienThoai());
+					txtTenNV.setText(modelNhanVien.getValueAt(tblNhanVien.getSelectedRow(), 1).toString());
+					cbGioiTinh.setSelectedIndex(numGT(modelNhanVien.getValueAt(tblNhanVien.getSelectedRow(), 2).toString()));
+					cbChucVu.setSelectedItem(modelNhanVien.getValueAt(tblNhanVien.getSelectedRow(), 4).toString());
+					txtCCCD.setText(modelNhanVien.getValueAt(tblNhanVien.getSelectedRow(), 5).toString());
+					cbTrangThai.setSelectedItem(modelNhanVien.getValueAt(tblNhanVien.getSelectedRow(), 6).toString());
+//					txtNgaySinh.setDate(DateTimeFormatUtil.(modelNhanVien.getValueAt(tblNhanVien.getSelectedRow(), 3).toString()));
 				}
 			}
 
 		});
 	}
 
-
 	/**
 	 * 
 	 */
 	public String gioiTinh(int gt) {
-		if (gt==1) {
+		if (gt == 1) {
 			return "Nữ";
 		} else {
 			return "Nam";
 		}
 	}
+	public int numGT(String gt) {
+		if(gt.equals("Nam"))
+			return 0;
+		else
+			return 1;
+	}
+
 	private void refreshTable() {
 		modelNhanVien.setRowCount(0);
 		for (NhanVien nv : nvBUS.getAllNhanViens()) {
-			Object[] data = { nv.getMaNhanVien(), nv.getHoTen(), gioiTinh(nv.getGioiTinh()),  
-					nv.getNgaySinh(), nv.getChucVu().getTenChucVu(), nv.getCCCD(),
-					 nv.isTrangThai() ? "Đang làm" : "Đã nghỉ" };
+			Object[] data = { nv.getMaNhanVien(), nv.getHoTen(), gioiTinh(nv.getGioiTinh()), nv.getNgaySinh(),
+					nv.getChucVu().getTenChucVu(), nv.getCCCD(), nv.isTrangThai() ? "Đang làm" : "Đã nghỉ" };
 			modelNhanVien.addRow(data);
 		}
- 
+
 	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-
+	
+	public void clearFields() {
+		txtTenNV.setText("");
+		txtCCCD.setText("");
+		txtSDT.setText("");
+		cbChucVu.setSelectedIndex(0);
+		cbGioiTinh.setSelectedIndex(0);
+		cbTrangThai.setSelectedIndex(0);
+		txtNgaySinh.setDate(null);
+		txtTenNV.grabFocus();
 	}
 	
 	private boolean trangThai(String tt) {
@@ -365,6 +368,15 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 		else
 			return false;
 	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		Object o = e.getSource();
+		if(o.equals(btnClearfields)) {
+			clearFields();
+		}
 
+	}
+
+	
 
 }
