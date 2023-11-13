@@ -20,7 +20,12 @@ public class HangHoaBUS {
 		return hhDAO.getAllHangHoas();
 	}
 	
-	public HangHoa updateHangHoa(HangHoa hh) {
+	public boolean updateHangHoa(HangHoa hh) {
 		return hhDAO.updateHangHoa(hh);
+	}
+	
+
+	public boolean updateSoLuongTon(HangHoa hh,int sl) {
+		return hhDAO.updateSoLuongTon(hh,sl);
 	}
 }

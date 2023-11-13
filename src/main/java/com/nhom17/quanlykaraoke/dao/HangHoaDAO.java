@@ -24,10 +24,7 @@ public class HangHoaDAO {
 
 		try {
 			String maHH = getNextMaHH();
-			
-			System.out.println("Ma HH: " + maHH);
-			
-			
+
 			hh.setMaHangHoa(maHH);
 			session.persist(hh);
 			t.commit();
@@ -82,20 +79,43 @@ public class HangHoaDAO {
 		}
 	}
 
-	public HangHoa updateHangHoa(HangHoa hangHoa) {
+	public boolean updateHangHoa(HangHoa hangHoa) {
 		Session session = factory.getCurrentSession();
 		Transaction t = session.beginTransaction();
 
+		
 		try {
-			HangHoa updatedKhachHang = session.merge(hangHoa);
-
+			int tt = hangHoa.isTrangThai()?1:0;
+			Query<HangHoa> qr = session.createNativeQuery("update HangHoa set tenHangHoa = N'" + hangHoa.getTenHangHoa() +
+					"' ,maLoaiHangHoa = '" + hangHoa.getLoaiHangHoa().getMaLoaiHangHoa() + 
+					"' ,donGia = " + hangHoa.getDonGia() + " ,soLuongTon = " + hangHoa.getSoLuongTon() + 
+					" ,trangThai = " + tt + " where maHangHoa = '" + hangHoa.getMaHangHoa()+"'",HangHoa.class);
+			int hh = qr.executeUpdate();
 			t.commit();
-			return updatedKhachHang;
+			return true;
 
 		} catch (Exception e) {
 			t.rollback();
-			return null;
+			return false;
 		}
 	}
-	
+	public boolean updateSoLuongTon(HangHoa hangHoa, int sl) {
+		Session session = factory.getCurrentSession();
+		Transaction t = session.beginTransaction();
+
+		
+		try {
+			int tt = hangHoa.isTrangThai()?1:0;
+			int slt = hangHoa.getSoLuongTon() + sl;
+			Query<HangHoa> qr = session.createNativeQuery("update HangHoa set soLuongTon = " + slt + 
+				" where maHangHoa = '" + hangHoa.getMaHangHoa()+"'",HangHoa.class);
+			int hh = qr.executeUpdate();
+			t.commit();
+			return true;
+
+		} catch (Exception e) {
+			t.rollback();
+			return false;
+		}
+	}
 }

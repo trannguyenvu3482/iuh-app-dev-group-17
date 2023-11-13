@@ -3,6 +3,7 @@ package com.nhom17.quanlykaraoke.bus;
 import java.util.List;
 
 import com.nhom17.quanlykaraoke.dao.PhongDAO;
+import com.nhom17.quanlykaraoke.entities.LoaiPhong;
 import com.nhom17.quanlykaraoke.entities.Phong;
 
 /**
@@ -33,11 +34,15 @@ public class PhongBUS {
 		return pDAO.isRoomEmpty(p);
 	}
 
-	public Phong updatePhong(Phong p) {
+	public boolean updatePhong(Phong p) {
 		return pDAO.updatePhong(p);
 	}
 
 //	public List<Phong> getPhongPage(int page) {
 //		return pDAO.getPhongPage(page);
 //	}
+	
+	public List<Phong> filterPhongByKichThuoc(int kt) {
+		return pDAO.filterPhongByKichThuoc(kt);
+	}
 }

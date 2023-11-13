@@ -8,6 +8,8 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
+import com.nhom17.quanlykaraoke.entities.HangHoa;
+import com.nhom17.quanlykaraoke.entities.LoaiPhong;
 import com.nhom17.quanlykaraoke.entities.Phong;
 import com.nhom17.quanlykaraoke.entities.Phong;
 import com.nhom17.quanlykaraoke.utils.HibernateUtil;
@@ -129,19 +131,23 @@ public class PhongDAO {
 		}
 	}
 
-	public Phong updatePhong(Phong phong) {
+	public boolean updatePhong(Phong phong) {
 		Session session = factory.getCurrentSession();
 		Transaction t = session.beginTransaction();
 
+		
 		try {
-			Phong updatedPhong = session.merge(phong);
+			int tt = phong.isTrangThai()?1:0;
+			Query<Phong> qr = session.createNativeQuery("update Phong set maLoaiPhong = '" + phong.getLoaiPhong().getMaLoaiPhong() +
+					"',trangThai = " + tt + " where maPhong = '" + phong.getMaPhong()+"'",Phong.class);
+			int p = qr.executeUpdate();
 
 			t.commit();
-			return updatedPhong;
+			return true;
 
 		} catch (Exception e) {
 			t.rollback();
-			return null;
+			return false;
 		}
 	}
 
@@ -183,4 +189,21 @@ public class PhongDAO {
 //			return listPhong;
 //		}
 //	}
+	
+	public List<Phong> filterPhongByKichThuoc(int kt) {
+		Session session = factory.getCurrentSession();
+		Transaction t = session.beginTransaction();
+		
+		try {
+			Query<Phong> qr = session.createNativeQuery("select maPhong, p.maLoaiPhong, trangThai from Phong p "
+					+ "inner join LoaiPhong lp on p.maLoaiPhong = lp.maLoaiPhong where kichThuoc = " + kt,Phong.class);
+			List<Phong> p = qr.getResultList();
+			t.commit();
+			return p;
+
+		} catch (Exception e) {
+			t.rollback();
+			return null;
+		}
+	}
 }

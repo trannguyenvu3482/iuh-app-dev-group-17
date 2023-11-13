@@ -20,6 +20,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -35,6 +36,8 @@ import org.kordamp.ikonli.materialdesign2.MaterialDesignP;
 import com.nhom17.quanlykaraoke.bus.LoaiPhongBUS;
 import com.nhom17.quanlykaraoke.bus.PhongBUS;
 import com.nhom17.quanlykaraoke.common.MyIcon;
+import com.nhom17.quanlykaraoke.entities.HangHoa;
+import com.nhom17.quanlykaraoke.entities.LoaiHangHoa;
 import com.nhom17.quanlykaraoke.entities.LoaiPhong;
 import com.nhom17.quanlykaraoke.entities.Phong;
 
@@ -54,6 +57,9 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 	private final JButton btnThem = new JButton("");
 	private final JButton btnSua = new JButton("");
 	private final JButton btnClearFields = new JButton("");
+	private final JComboBox<String> boxFilterTrangThai = new JComboBox<String>();
+	private final JComboBox<String> boxFilterKichThuoc = new JComboBox<String>();
+	private final JComboBox<String> boxFilterTenLoaiPhong = new JComboBox<String>();
 	private final LoaiPhongBUS lpBUS = new LoaiPhongBUS();
 	private final PhongBUS pBUS = new PhongBUS();
 	private NumberFormat format = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
@@ -101,7 +107,7 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 
 		txtPhong.setColumns(10);
 
-		Component horizontalStrut_1_1_2_1 = Box.createHorizontalStrut(800);
+		Component horizontalStrut_1_1_2_1 = Box.createHorizontalStrut(600);
 		boxOne.add(horizontalStrut_1_1_2_1);
 
 		Component verticalStrut_1 = Box.createVerticalStrut(15);
@@ -122,7 +128,7 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 
 		boxTwo.add(cbKichThuoc);
 
-		Component horizontalStrut_2 = Box.createHorizontalStrut(800);
+		Component horizontalStrut_2 = Box.createHorizontalStrut(600);
 		boxTwo.add(horizontalStrut_2);
 
 		Component verticalStrut_1_1 = Box.createVerticalStrut(15);
@@ -144,7 +150,7 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 
 		boxThree.add(cbTenLP);
 
-		Component horizontalStrut_1_1_2_1_1_11 = Box.createHorizontalStrut(800);
+		Component horizontalStrut_1_1_2_1_1_11 = Box.createHorizontalStrut(600);
 		boxThree.add(horizontalStrut_1_1_2_1_1_11);
 
 		Component verticalStrut_1_1_1 = Box.createVerticalStrut(15);
@@ -175,7 +181,7 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 		txtPhuPhi.setValue(0);
 
 		boxFour.add(txtPhuPhi);
-		Component horizontalStrut_1_1_2_1_1_1_1 = Box.createHorizontalStrut(800);
+		Component horizontalStrut_1_1_2_1_1_1_1 = Box.createHorizontalStrut(600);
 		boxFour.add(horizontalStrut_1_1_2_1_1_1_1);
 
 		Component verticalStrut_1_1_1_1 = Box.createVerticalStrut(15);
@@ -236,7 +242,7 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 		lblBLc.setFont(new Font("Dialog", Font.BOLD, 20));
 		boxSix_1.add(lblBLc);
 
-		JComboBox<String> boxFilterKichThuoc = new JComboBox<String>();
+
 		boxFilterKichThuoc.setFont(new Font("Dialog", Font.BOLD, 20));
 		String[] dataLHH = { "Kích thước", "5", "10", "15", "20" };
 
@@ -245,14 +251,20 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 
 		Component horizontalStrut_1_2 = Box.createHorizontalStrut(40);
 		boxSix_1.add(horizontalStrut_1_2);
+		
 
-		JComboBox<String> boxFilterTrangThai = new JComboBox<String>();
+		boxFilterTenLoaiPhong.setModel(new DefaultComboBoxModel(new String[] {"Tên loại phòng", "Phòng thường", "Phòng tiệc", "Phòng VIP", "Phòng tiệc VIP"}));
+		boxFilterTenLoaiPhong.setFont(new Font("Dialog", Font.BOLD, 20));
+		boxSix_1.add(boxFilterTenLoaiPhong);
+		
+		Component horizontalStrut_1_2_2 = Box.createHorizontalStrut(40);
+		boxSix_1.add(horizontalStrut_1_2_2);
 		boxFilterTrangThai.setFont(new Font("Dialog", Font.BOLD, 20));
 		boxFilterTrangThai.setModel(
 				new DefaultComboBoxModel<String>(new String[] { "Trạng thái", "Còn hoạt động", "Ngưng hoạt động" }));
 		boxSix_1.add(boxFilterTrangThai);
 
-		Component horizontalStrut_1_1_2 = Box.createHorizontalStrut(300);
+		Component horizontalStrut_1_1_2 = Box.createHorizontalStrut(200);
 		boxSix_1.add(horizontalStrut_1_1_2);
 
 		txtSearch = new JTextField();
@@ -273,6 +285,13 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 		btnThem.addActionListener(this);
 		btnSua.addActionListener(this);
 		btnClearFields.addActionListener(this);
+		
+		cbKichThuoc.addActionListener(this);
+		cbTenLP.addActionListener(this);
+		
+		boxFilterKichThuoc.addActionListener(this);
+		boxFilterTenLoaiPhong.addActionListener(this);
+		boxFilterTrangThai.addActionListener(this);
 	}
 
 	public void createTable() {
@@ -292,7 +311,7 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 		tblPhong.setFont(new Font("Dialog", Font.PLAIN, 18));
 		tblPhong.getTableHeader().setFont(new Font("Dialog", Font.BOLD, 18));
 		tblPhong.getTableHeader().setReorderingAllowed(false);
-		tblPhong.setAutoCreateRowSorter(true);
+		tblPhong.setAutoCreateRowSorter(false);
 		tblPhong.getTableHeader().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		tblPhong.setRowHeight(50);
 
@@ -333,11 +352,11 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 	private void clearFields() {
 		txtPhong.setText("");
 		cbKichThuoc.setSelectedItem("5");
-
 		cbTenLP.setSelectedItem("Phòng thường");
 		txtPhuPhi.setText("");
 		cbTrangThai.setSelectedItem("Ngưng hoạt động");
 		txtPhong.grabFocus();
+		tblPhong.clearSelection();
 	}
 
 	private boolean trangThai(String tt) {
@@ -361,6 +380,29 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 			clearFields();
 		} else if (o.equals(btnClearFields)) {
 			clearFields();
+		} else if(o.equals(btnSua)) {
+			if (tblPhong.getSelectedRow() != -1) {
+				LoaiPhong lp = lpBUS.getLoaiPhong(cbTenLP.getSelectedItem().toString(),
+						Integer.parseInt(cbKichThuoc.getSelectedItem().toString()));
+				System.out.println(lp);
+				Phong p = new Phong(txtPhong.getText(), lp, trangThai(cbTrangThai.getSelectedItem().toString()));
+				System.out.println(p);
+				pBUS.updatePhong(p);
+				refreshTable();
+				clearFields();
+				
+			} else {
+				JOptionPane.showMessageDialog(this, "Vui lòng chọn phòng muốn cập nhật");
+			}
+		}else if(o.equals(cbKichThuoc)) {
+			LoaiPhong lp = lpBUS.getLoaiPhong(cbTenLP.getSelectedItem().toString(), Integer.parseInt(cbKichThuoc.getSelectedItem().toString()));
+			txtPhuPhi.setValue(lp.getPhuPhi());
+			
+		}else if(o.equals(cbTenLP)) {
+			LoaiPhong lp = lpBUS.getLoaiPhong(cbTenLP.getSelectedItem().toString(), Integer.parseInt(cbKichThuoc.getSelectedItem().toString()));
+			txtPhuPhi.setValue(lp.getPhuPhi());
+		}else if(o.equals(boxFilterKichThuoc)) {
+			
 		}
 	}
 }

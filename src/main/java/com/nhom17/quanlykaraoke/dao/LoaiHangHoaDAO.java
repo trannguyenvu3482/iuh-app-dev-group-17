@@ -101,12 +101,8 @@ public class LoaiHangHoaDAO {
 
 		try {
 			Query<LoaiHangHoa> query = session
-					.createNativeQuery("select * FROM LoaiHangHoa WHERE tenLoaiHangHoa = N'" + name + "'", LoaiHangHoa.class);
-
-			System.out.println(query.getQueryString());
-			
+					.createNativeQuery("select * FROM LoaiHangHoa WHERE tenLoaiHangHoa = N'" + name + "'", LoaiHangHoa.class);			
 			LoaiHangHoa lhh = query.getResultList().get(0);
-
 			t.commit();
 			return lhh;
 
