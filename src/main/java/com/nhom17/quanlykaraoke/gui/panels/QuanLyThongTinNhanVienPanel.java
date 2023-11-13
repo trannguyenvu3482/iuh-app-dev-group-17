@@ -3,16 +3,20 @@ package com.nhom17.quanlykaraoke.gui.panels;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.text.ParseException;
 
 import javax.imageio.ImageIO;
 import javax.swing.Box;
@@ -23,6 +27,7 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.IconifyAction;
 import javax.swing.table.DefaultTableModel;
 
 import org.kordamp.ikonli.materialdesign2.MaterialDesignA;
@@ -32,12 +37,18 @@ import org.kordamp.ikonli.materialdesign2.MaterialDesignP;
 
 import javax.swing.JTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 
+import com.nhom17.quanlykaraoke.bus.NhanVienBUS;
+import com.nhom17.quanlykaraoke.bus.PhongBUS;
 import com.nhom17.quanlykaraoke.common.MyIcon;
+import com.nhom17.quanlykaraoke.dao.NhanVienDAO;
+import com.nhom17.quanlykaraoke.entities.LoaiPhong;
 import com.nhom17.quanlykaraoke.entities.NhanVien;
+import com.nhom17.quanlykaraoke.entities.Phong;
 import com.toedter.calendar.JDateChooser;
 import java.util.Locale;
 import java.awt.Dimension;
@@ -51,12 +62,16 @@ import javax.swing.JButton;
 public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
 
+	private final NhanVienBUS nvBUS = new NhanVienBUS();
+	private final JTextField txtSearch;
+	private final JComboBox<String> boxFilterKichThuoc = new JComboBox<String>();
 	private DefaultTableModel modelNhanVien;
 	private JTable tblNhanVien;
 	private JTextField textField;
 	private JTextField textField_3;
 	private JTextField textField_1;
 	private JTextField textField_2;
+
 
 	/**
 	 * 
@@ -74,7 +89,7 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 
 		textField = new JTextField();
 		textField.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		textField.setBounds(171, 29, 384, 40);
+		textField.setBounds(171, 29, 386, 40);
 		panelTop.add(textField);
 		textField.setColumns(10);
 
@@ -122,14 +137,14 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 		comboBox_1.setModel(new DefaultComboBoxModel(new String[] { "Đang làm", "Đã nghỉ" }));
 		comboBox_1.setToolTipText("");
 		comboBox_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		comboBox_1.setBounds(143, 180, 117, 40);
+		comboBox_1.setBounds(143, 180, 144, 40);
 		panelTop.add(comboBox_1);
 
 		JComboBox comboBox_1_1 = new JComboBox();
 		comboBox_1_1.setModel(new DefaultComboBoxModel(new String[] { "Nam", "Nữ" }));
 		comboBox_1_1.setToolTipText("");
 		comboBox_1_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		comboBox_1_1.setBounds(143, 132, 117, 40);
+		comboBox_1_1.setBounds(143, 132, 144, 40);
 		panelTop.add(comboBox_1_1);
 
 		textField_3 = new JTextField();
@@ -164,6 +179,7 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 		});
 		btnNewButton.setBounds(775, 29, 60, 60);
 		panelTop.add(btnNewButton);
+		
 
 		JButton btnNewButton_1 = new JButton("");
 		btnNewButton_1.setIcon(MyIcon.getIcon(MaterialDesignA.ACCOUNT_EDIT, 32, null));
@@ -233,17 +249,39 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 		textField_2.setBounds(872, 29, 277, 40);
 		panelTop.add(textField_2);
 		
-		Box boxAvatar = Box.createHorizontalBox();
-		boxAvatar.setLocation(565, 29);
-		boxAvatar.setSize(200, 200);
-		boxAvatar.setAlignmentY(Component.CENTER_ALIGNMENT);
-		panelTop.add(boxAvatar);
+		Box boxSix_1 = Box.createHorizontalBox();
+		panelTop.add(boxSix_1);
+
+		JLabel lblBLc = new JLabel("Bộ lọc: ");
+		lblBLc.setFont(new Font("Dialog", Font.BOLD, 20));
+		boxSix_1.add(lblBLc);
+
+
+		boxFilterKichThuoc.setFont(new Font("Dialog", Font.BOLD, 20));
+		String[] dataLHH = { "Kích thước", "5", "10", "15", "20" };
+
+		boxFilterKichThuoc.setModel(new DefaultComboBoxModel<String>(dataLHH));
+		boxSix_1.add(boxFilterKichThuoc);
+
+		Component horizontalStrut_1_2 = Box.createHorizontalStrut(40);
+		boxSix_1.add(horizontalStrut_1_2);
+	
+
+		Component horizontalStrut_1_1_2 = Box.createHorizontalStrut(200);
+		boxSix_1.add(horizontalStrut_1_1_2);
+
+		txtSearch = new JTextField();
+		txtSearch.setFont(new Font("Dialog", Font.PLAIN, 20));
+		boxSix_1.add(txtSearch);
+		txtSearch.setColumns(10);
+		txtSearch.putClientProperty("JTextField.placeholderText", "Nhập vào tên nhân viên cần tìm");
+		
+		boxFilterKichThuoc.addActionListener(this);
 		
 		// Set avatar
 		
+		
 
-		Component horizontalGlue_1_1 = Box.createHorizontalGlue();
-		boxAvatar.add(horizontalGlue_1_1);
 
 		// Table setup
 		createTable();
@@ -262,7 +300,7 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 	 * 
 	 */
 	private void createTable() {
-		final String[] colNames = { "Mã NV", "Họ và tên", "Chức vụ", "Giới tính", "SĐT", "Hoạt động" };
+		final String[] colNames = { "Mã NV", "Họ và tên", "Giới tính", "Ngày sinh", "Chức vụ", "CCCD", "Trạng thái" };
 		modelNhanVien = new DefaultTableModel(colNames, 0) {
 			private static final long serialVersionUID = 1L;
 
@@ -272,23 +310,47 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 			}
 		};
 		tblNhanVien = new JTable(modelNhanVien);
+		tblNhanVien.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tblNhanVien.setFont(new Font("Dialog", Font.PLAIN, 18));
+		tblNhanVien.getTableHeader().setFont(new Font("Dialog", Font.BOLD, 18));
+		tblNhanVien.getTableHeader().setReorderingAllowed(false);
+		tblNhanVien.setAutoCreateRowSorter(true);
+		tblNhanVien.getTableHeader().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		tblNhanVien.setRowHeight(50);
+		
+		
+		tblNhanVien.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (tblNhanVien.getSelectedRow() != -1) {
+					
+				}
+			}
+
+		});
 	}
+
 
 	/**
 	 * 
 	 */
+	public String gioiTinh(int gt) {
+		if (gt==1) {
+			return "Nữ";
+		} else {
+			return "Nam";
+		}
+	}
 	private void refreshTable() {
 		modelNhanVien.setRowCount(0);
-
-		Object[] testRow = { "NV001", "Võ Hoàng Phúc", "Quản lý", "Giới tính", "0903252508", "Hoạt động" };
-		Object[] testRow2 = { "NV002", "Võ Hoàng Phúc", "Quản lý", "Giới tính", "0903252508", "Hoạt động" };
-		Object[] testRow3 = { "NV003", "Võ Hoàng Phúc", "Quản lý", "Giới tính", "0903252508", "Hoạt động" };
-		Object[] testRow4 = { "NV004", "Võ Hoàng Phúc", "Quản lý", "Giới tính", "0903252508", "Hoạt động" };
-
-		modelNhanVien.addRow(testRow);
-		modelNhanVien.addRow(testRow2);
-		modelNhanVien.addRow(testRow3);
-		modelNhanVien.addRow(testRow4);
+		for (NhanVien nv : nvBUS.getAllNhanViens()) {
+			Object[] data = { nv.getMaNhanVien(), nv.getHoTen(), gioiTinh(nv.getGioiTinh()),  
+					nv.getNgaySinh(), nv.getChucVu().getTenChucVu(), nv.getCCCD(),
+					 nv.isTrangThai() ? "Đang làm" : "Đã nghỉ" };
+			modelNhanVien.addRow(data);
+		}
+ 
 	}
 
 	@Override
@@ -296,4 +358,13 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 		// TODO Auto-generated method stub
 
 	}
+	
+	private boolean trangThai(String tt) {
+		if (tt.equals("Còn hoạt động"))
+			return true;
+		else
+			return false;
+	}
+
+
 }

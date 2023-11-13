@@ -1,5 +1,7 @@
 package com.nhom17.quanlykaraoke.bus;
 
+import java.util.List;
+
 import com.nhom17.quanlykaraoke.dao.NhanVienDAO;
 import com.nhom17.quanlykaraoke.entities.NhanVien;
 
@@ -17,7 +19,10 @@ public class NhanVienBUS {
 	public NhanVien getNhanVien(String maNV) {
 		return nvDAO.getNhanVien(maNV);
 	}
-	public NhanVien updateNhanVien(String maNV) {
-		return nvDAO.getNhanVien(maNV);
+
+	public List<NhanVien> getAllNhanViens() {
+		// TODO Auto-generated method stub
+		return nvDAO.getAllNhanViens();
 	}
+
 }
