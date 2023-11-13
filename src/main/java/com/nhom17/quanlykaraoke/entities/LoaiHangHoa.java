@@ -22,14 +22,23 @@ public class LoaiHangHoa {
 
 	@Column(columnDefinition = "nvarchar(30)")
 	private String tenLoaiHangHoa;
-	
+
+	@Column(columnDefinition = "nvarchar(10)")
+	private String donViTinh;
+
 	public LoaiHangHoa() {
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	public LoaiHangHoa(String maLoaiHangHoa, String tenLoaihangHoa) {
 		this.maLoaiHangHoa = maLoaiHangHoa;
 		this.tenLoaiHangHoa = tenLoaihangHoa;
+	}
+
+	public LoaiHangHoa(String maLoaiHangHoa, String tenLoaihangHoa, String donViTinh) {
+		this.maLoaiHangHoa = maLoaiHangHoa;
+		this.tenLoaiHangHoa = tenLoaihangHoa;
+		this.donViTinh = donViTinh;
 	}
 
 	public String getMaLoaiHangHoa() {
@@ -46,6 +55,20 @@ public class LoaiHangHoa {
 
 	public void setTenLoaihangHoa(String tenLoaihangHoa) {
 		this.tenLoaiHangHoa = tenLoaihangHoa;
+	}
+
+	/**
+	 * @return the donViTinh
+	 */
+	public String getDonViTinh() {
+		return donViTinh;
+	}
+
+	/**
+	 * @param donViTinh the donViTinh to set
+	 */
+	public void setDonViTinh(String donViTinh) {
+		this.donViTinh = donViTinh;
 	}
 
 	@Override
