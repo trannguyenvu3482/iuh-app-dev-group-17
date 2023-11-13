@@ -1,11 +1,15 @@
 package com.nhom17.quanlykaraoke.gui.dialogs;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -20,7 +24,12 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import com.nhom17.quanlykaraoke.dao.ChiTietPhieuDatPhongDAO;
+import com.nhom17.quanlykaraoke.entities.ChiTietPhieuDatPhong;
 import com.nhom17.quanlykaraoke.entities.Phong;
+import com.nhom17.quanlykaraoke.utils.ConstantUtil;
+import com.nhom17.quanlykaraoke.utils.DateTimeFormatUtil;
+import com.nhom17.quanlykaraoke.utils.MoneyFormatUtil;
 
 /**
  * @author Trần Nguyên Vũ, Trần Ngọc Phát, Mai Nhật Hào, Trần Thanh Vy
@@ -36,6 +45,7 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 
 	// VARIABLES
 	private Phong p;
+	private final ChiTietPhieuDatPhongDAO ctpdpDAO = new ChiTietPhieuDatPhongDAO();
 
 	/**
 	 * 
@@ -50,7 +60,7 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 		this.p = p;
 
 		JPanel panelTop = new JPanel();
-		panelTop.setBorder(new EmptyBorder(10, 30, 0, 30));
+		panelTop.setBorder(new EmptyBorder(10, 30, 10, 30));
 		getContentPane().add(panelTop, BorderLayout.NORTH);
 		panelTop.setLayout(new BoxLayout(panelTop, BoxLayout.Y_AXIS));
 
@@ -91,6 +101,8 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 		panelBottom.setLayout(new BoxLayout(panelBottom, BoxLayout.X_AXIS));
 
 		JButton btnQuayLai = new JButton("Quay lại");
+		btnQuayLai.setForeground(Color.WHITE);
+		btnQuayLai.setBackground(Color.DARK_GRAY);
 		btnQuayLai.setFont(new Font("Dialog", Font.BOLD, 20));
 		panelBottom.add(btnQuayLai);
 
@@ -105,6 +117,8 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 		panelBottom.add(horizontalStrut);
 
 		JButton btnXacNhan = new JButton("Xác nhận");
+		btnXacNhan.setForeground(Color.WHITE);
+		btnXacNhan.setBackground(Color.RED);
 		btnXacNhan.setFont(new Font("Dialog", Font.BOLD, 20));
 		panelBottom.add(btnXacNhan);
 
@@ -113,9 +127,70 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 		panelCenter.setLayout(new BorderLayout(0, 0));
 
 		JPanel panelInfo = new JPanel();
-		panelInfo.setBorder(new EmptyBorder(0, 30, 0, 30));
+		panelInfo.setBorder(new EmptyBorder(10, 30, 40, 30));
 		panelCenter.add(panelInfo, BorderLayout.SOUTH);
-		panelInfo.setLayout(new BoxLayout(panelInfo, BoxLayout.X_AXIS));
+		panelInfo.setLayout(new BoxLayout(panelInfo, BoxLayout.Y_AXIS));
+
+		Box hBox3 = Box.createHorizontalBox();
+		panelInfo.add(hBox3);
+
+		JLabel lblTienDichVu = new JLabel("Tiền dịch vụ: 1.000.000VND");
+		lblTienDichVu.setFont(new Font("Dialog", Font.BOLD, 20));
+		hBox3.add(lblTienDichVu);
+
+		Component horizontalGlue_3 = Box.createHorizontalGlue();
+		hBox3.add(horizontalGlue_3);
+
+		JLabel lblGioNhanPhong = new JLabel("Giờ nhận phòng: 21:30:00 - 16/10/2023");
+		lblGioNhanPhong.setFont(new Font("Dialog", Font.BOLD, 20));
+		hBox3.add(lblGioNhanPhong);
+
+		Component verticalStrut_1 = Box.createVerticalStrut(5);
+		panelInfo.add(verticalStrut_1);
+
+		Box hBox4 = Box.createHorizontalBox();
+		panelInfo.add(hBox4);
+
+		JLabel lblTienPhong = new JLabel("Tiền phòng: 90.000VND");
+		lblTienPhong.setFont(new Font("Dialog", Font.BOLD, 20));
+		hBox4.add(lblTienPhong);
+
+		Component horizontalGlue_3_1 = Box.createHorizontalGlue();
+		hBox4.add(horizontalGlue_3_1);
+
+		JLabel lblGioTraPhong = new JLabel("Giờ trả phòng: 22:30:00 - 16/10/2023");
+		lblGioTraPhong.setFont(new Font("Dialog", Font.BOLD, 20));
+		hBox4.add(lblGioTraPhong);
+
+		Component verticalStrut_1_1 = Box.createVerticalStrut(5);
+		panelInfo.add(verticalStrut_1_1);
+
+		Box hBox5 = Box.createHorizontalBox();
+		panelInfo.add(hBox5);
+
+		JLabel lblThueVAT = new JLabel("Thuế VAT: 10%");
+		lblThueVAT.setFont(new Font("Dialog", Font.BOLD, 20));
+		hBox5.add(lblThueVAT);
+
+		Component horizontalGlue_3_1_1 = Box.createHorizontalGlue();
+		hBox5.add(horizontalGlue_3_1_1);
+
+		JLabel lblTongThoiLuong = new JLabel("Tổng thời lượng: 60 phút");
+		lblTongThoiLuong.setFont(new Font("Dialog", Font.BOLD, 20));
+		hBox5.add(lblTongThoiLuong);
+
+		Component verticalStrut_1_1_1 = Box.createVerticalStrut(5);
+		panelInfo.add(verticalStrut_1_1_1);
+
+		Box hBox6 = Box.createHorizontalBox();
+		panelInfo.add(hBox6);
+
+		JLabel lblTongTien = new JLabel("Tổng: 1.199.000VND");
+		lblTongTien.setFont(new Font("Dialog", Font.BOLD, 20));
+		hBox6.add(lblTongTien);
+
+		Component horizontalGlue_3_1_1_1 = Box.createHorizontalGlue();
+		hBox6.add(horizontalGlue_3_1_1_1);
 
 		JScrollPane scrollPaneTable = new JScrollPane();
 		panelCenter.add(scrollPaneTable, BorderLayout.CENTER);
@@ -170,9 +245,27 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 	private void refreshTable() {
 		model.setRowCount(0);
 
-		Object[] rowData = { "1", "Bia 333", "5", "10.000 đ", "Lon", "", "50000 đ" };
+		// Load booked rooms
+		String maPDP = ctpdpDAO.getChiTietPhieuDatPhongByActiveMaPhong(p.getMaPhong()).getPhieuDatPhong()
+				.getMaPhieuDatPhong();
 
-		model.addRow(rowData);
+		List<ChiTietPhieuDatPhong> listCTPDP = ctpdpDAO.getAllChiTietPhieuDatPhongByMaPhieuDatPhong(maPDP);
+
+		int stt = 1;
+
+		for (ChiTietPhieuDatPhong ctpdp : listCTPDP) {
+			String thanhTien = MoneyFormatUtil
+					.format(ChronoUnit.HOURS.between(ctpdp.getThoiGianBatDau(), LocalDateTime.now())
+							* ConstantUtil.getStandardHourPrice(LocalDateTime.now()));
+			Object[] rowData = { stt, "Phòng " + ctpdp.getPhong().getMaPhong(),
+					DateTimeFormatUtil.formatTimeBetween(ctpdp.getThoiGianBatDau(), LocalDateTime.now()), "", "", "",
+					thanhTien };
+
+			model.addRow(rowData);
+			stt++;
+		}
+
+		// Load food
 
 	}
 }

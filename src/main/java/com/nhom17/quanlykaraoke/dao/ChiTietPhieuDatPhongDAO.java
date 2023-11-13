@@ -51,6 +51,28 @@ public class ChiTietPhieuDatPhongDAO {
 		}
 	}
 
+	public List<ChiTietPhieuDatPhong> getAllChiTietPhieuDatPhongByMaPhieuDatPhong(String maPhieuDatPhong) {
+		Session session = factory.getCurrentSession();
+		Transaction t = session.beginTransaction();
+		List<ChiTietPhieuDatPhong> listChiTietPhieuDatPhong = null;
+		try {
+			// Handle PhieuDatPhong
+			Query<ChiTietPhieuDatPhong> query = session.createNativeQuery(
+					"SELECT * FROM ChiTietPhieuDatPhong where maPhieuDatPhong = " + maPhieuDatPhong + "'",
+					ChiTietPhieuDatPhong.class);
+
+			listChiTietPhieuDatPhong = query.getResultList();
+
+			// Finish
+			t.commit();
+			return listChiTietPhieuDatPhong;
+
+		} catch (Exception e) {
+			t.rollback();
+			return listChiTietPhieuDatPhong;
+		}
+	}
+
 	public List<ChiTietPhieuDatPhong> getAllChiTietPhieuDatPhongs() {
 		Session session = factory.getCurrentSession();
 		Transaction t = session.beginTransaction();
