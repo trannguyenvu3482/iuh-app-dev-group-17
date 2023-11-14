@@ -11,6 +11,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
@@ -20,6 +21,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -373,6 +375,7 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 		cbTrangThai.setSelectedIndex(0);
 		txtNgaySinh.setDate(null);
 		txtTenNV.grabFocus();
+		tblNhanVien.clearSelection();
 	}
 
 	@Override
@@ -381,14 +384,30 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 		if(o.equals(btnClearfields)) {
 			clearFields();
 		}else if(o.equals(btnThem)) {
-			NhanVien nv = new NhanVien(txtTenNV.getText(), cbGioiTinh.getSelectedIndex(), PasswordUtil.encrypt("1"),
-					txtNgaySinh.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
-					cvBUS.getChucVuByName(cbChucVu.getSelectedItem().toString()) ,
-					txtSDT.getText(), txtCCCD.getText(), 
-					cbGioiTinh.getSelectedIndex()==0?ConstantUtil.getDefaultMaleAvatar():ConstantUtil.getDefaultFemaleAvatar());
-			nvBUS.addNhanVien(nv);
-			refreshTable();
-			clearFields();
+			String rgTen = "^\\p{Lu}\\p{Ll}+(\\s+\\p{Lu}\\p{Ll}+)+$";
+			LocalDate ns = txtNgaySinh.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			LocalDate today = LocalDate.now();
+//			int y = p.getYears();
+			if(!txtTenNV.getText().matches(rgTen)) {
+				JOptionPane.showMessageDialog(this, "Họ vè tên phải có ít nhất 2 từ\nMỗi từ phái viết hoa chữ cái đầu");
+			}else if(!txtCCCD.getText().matches("\\d{12}")) {
+				JOptionPane.showMessageDialog(this, "Căn cước công dân gồm 12 số");
+			}else if(!txtSDT.getText().matches("0\\d{9}")) {
+				JOptionPane.showMessageDialog(this, "Số điện thoại gồm 10 số và bắt đầu bằng số 0");
+//			}else if() {
+//				JOptionPane.showMessageDialog(this, "Ngày sinh phải có định dạng dd/MM/yyyy\nPhải đủ 18 tuổi");
+			}
+			else {
+				NhanVien nv = new NhanVien(txtTenNV.getText(), cbGioiTinh.getSelectedIndex(), PasswordUtil.encrypt("1"),
+						txtNgaySinh.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
+						cvBUS.getChucVuByName(cbChucVu.getSelectedItem().toString()) ,
+						txtSDT.getText(), txtCCCD.getText(), 
+						cbGioiTinh.getSelectedIndex()==0?ConstantUtil.getDefaultMaleAvatar():ConstantUtil.getDefaultFemaleAvatar());
+				nvBUS.addNhanVien(nv);
+				refreshTable();
+				clearFields();
+				JOptionPane.showMessageDialog(this, "Thêm thành công!");
+			}
 		}
 
 	}

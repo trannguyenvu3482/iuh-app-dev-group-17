@@ -148,7 +148,7 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 		panelLeft.add(panelLeftBottom, BorderLayout.SOUTH);
 		panelLeftBottom.setLayout(new BoxLayout(panelLeftBottom, BoxLayout.X_AXIS));
 
-		s.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnHuy.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnHuy.setBackground(Color.GREEN);
 		btnHuy.setFont(new Font("Dialog", Font.BOLD, 20));
 		panelLeftBottom.add(btnHuy);
