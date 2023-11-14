@@ -3,10 +3,17 @@ package com.nhom17.quanlykaraoke.gui.dialogs;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Cursor;
+import java.awt.Desktop;
 import java.awt.Font;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -23,16 +30,25 @@ import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfTemplate;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.nhom17.quanlykaraoke.bus.ChiTietDichVuBUS;
 import com.nhom17.quanlykaraoke.bus.ChiTietPhieuDatPhongBUS;
 import com.nhom17.quanlykaraoke.bus.PhieuDatPhongBUS;
 import com.nhom17.quanlykaraoke.entities.ChiTietDichVu;
 import com.nhom17.quanlykaraoke.entities.ChiTietPhieuDatPhong;
 import com.nhom17.quanlykaraoke.entities.KhachHang;
+import com.nhom17.quanlykaraoke.entities.PhieuDatPhong;
 import com.nhom17.quanlykaraoke.entities.Phong;
 import com.nhom17.quanlykaraoke.utils.ConstantUtil;
 import com.nhom17.quanlykaraoke.utils.DateTimeFormatUtil;
 import com.nhom17.quanlykaraoke.utils.MoneyFormatUtil;
+
+import raven.toast.Notifications;
 
 /**
  * @author Trần Nguyên Vũ, Trần Ngọc Phát, Mai Nhật Hào, Trần Thanh Vy
@@ -56,10 +72,12 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 	private JTable tbl;
 	private DefaultTableModel model;
 	private JButton btnXacNhan = new JButton("Xác nhận");
+	private JCheckBox chkXuatHoaDon = new JCheckBox("Xuất hóa đơn?");
 
 	// VARIABLES
 	private Phong p;
 	private KhachHang kh;
+	private PhieuDatPhong pdp;
 	private final ChiTietPhieuDatPhongBUS ctpdpBUS = new ChiTietPhieuDatPhongBUS();
 	private final ChiTietDichVuBUS ctdvBUS = new ChiTietDichVuBUS();
 	private final PhieuDatPhongBUS pdpBUS = new PhieuDatPhongBUS();
@@ -126,7 +144,6 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 		Component horizontalGlue_2 = Box.createHorizontalGlue();
 		panelBottom.add(horizontalGlue_2);
 
-		JCheckBox chkXuatHoaDon = new JCheckBox("Xuất hóa đơn?");
 		chkXuatHoaDon.setFont(new Font("Dialog", Font.BOLD, 20));
 		panelBottom.add(chkXuatHoaDon);
 
@@ -232,10 +249,49 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 		Object o = e.getSource();
 
 		if (o.equals(btnXacNhan)) {
-			pdpBUS.finishPhieuDatPhong(p.getMaPhong());
+			// TODO: REMOVE THIS WHEN DONE
+//			pdpBUS.finishPhieuDatPhong(p.getMaPhong());
+
+			if (chkXuatHoaDon.isSelected()) {
+				try {
+					exportPDF();
+
+					Notifications.getInstance().show(Notifications.Type.SUCCESS, Notifications.Location.BOTTOM_RIGHT,
+							"Xuất hóa đơn thành công");
+				} catch (IOException | DocumentException ex) {
+					throw new RuntimeException(ex);
+				}
+			}
+
 			dispose();
 		}
 
+	}
+
+	public void exportPDF() throws IOException, DocumentException {
+		Container content = this.getContentPane();
+		int height = content.getHeight();
+		int width = content.getHeight();
+		BufferedImage img = new BufferedImage(content.getWidth(), content.getHeight(), BufferedImage.TYPE_INT_RGB);
+		Graphics2D g2d = img.createGraphics();
+		content.printAll(g2d);
+		g2d.dispose();
+
+		String path = "src/main/resources/pdf/HoaDon" + pdp.getMaPhieuDatPhong() + ".pdf";
+		Document d = new Document();
+		PdfWriter writer = PdfWriter.getInstance(d, new FileOutputStream(path));
+		d.open();
+
+		PdfContentByte contentByte = writer.getDirectContent();
+		Image image = Image.getInstance(contentByte, ConstantUtil.scaleImage(400, height, img), 1);
+
+		PdfTemplate template = contentByte.createTemplate(width, height);
+		image.setAbsolutePosition(0, 0);
+		template.addImage(image);
+		contentByte.addTemplate(template, 0, 100);
+		d.close();
+
+		Desktop.getDesktop().open(new File(path));
 	}
 
 	private void createTable() {
@@ -277,14 +333,12 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 		model.setRowCount(0);
 
 		// Load booked rooms
-		String maPDP = ctpdpBUS.getChiTietPhieuDatPhongByActiveMaPhong(p.getMaPhong()).getPhieuDatPhong()
-				.getMaPhieuDatPhong();
+		pdp = ctpdpBUS.getChiTietPhieuDatPhongByActiveMaPhong(p.getMaPhong()).getPhieuDatPhong();
 
 		kh = ctpdpBUS.getChiTietPhieuDatPhongByActiveMaPhong(p.getMaPhong()).getPhieuDatPhong().getKhachHang();
 
-		System.out.println("Ma PDP" + maPDP);
-
-		List<ChiTietPhieuDatPhong> listCTPDP = ctpdpBUS.getAllChiTietPhieuDatPhongByMaPhieuDatPhong(maPDP);
+		List<ChiTietPhieuDatPhong> listCTPDP = ctpdpBUS
+				.getAllChiTietPhieuDatPhongByMaPhieuDatPhong(pdp.getMaPhieuDatPhong());
 
 		int stt = 1;
 

@@ -334,7 +334,7 @@ public class QuanLyPhieuDatPhongPanel extends JPanel implements ActionListener {
 	 * @author trannguyenvu3482
 	 */
 	private void handleSearch() {
-		listFilteredRooms = listFilteredRooms.stream().filter(room -> {
+		listFilteredRooms = listRooms.stream().filter(room -> {
 			return room.getMaPhong().contains(searchString);
 		}).collect(Collectors.toList());
 
@@ -396,6 +396,9 @@ public class QuanLyPhieuDatPhongPanel extends JPanel implements ActionListener {
 		SwingUtilities.invokeLater(() -> {
 			// TODO Auto-generated method stub
 			searchString = txtSearchMaPhong.getText().trim();
+
+			System.out.println("SearchString: " + searchString);
+
 			if (searchString.equals("")) {
 				handleFilterRooms(listBookedRooms);
 				return;
@@ -649,12 +652,15 @@ public class QuanLyPhieuDatPhongPanel extends JPanel implements ActionListener {
 		txtSearchMaPhong.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
+
 				if (timer != null) {
 					timer.stop();
 				}
 
 				timer = new Timer(1000, event -> {
+					setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 					performSearch();
+					setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 				});
 
 				timer.setRepeats(false);

@@ -109,7 +109,7 @@ public class SplashScreenDialog extends JDialog {
 
 		lblLogo.setIcon(icon);
 		lblLogo.setFont(new Font("Dialog", Font.BOLD, 27));
-		lblLogo.setBounds(325, 100, 600, 400);
+		lblLogo.setBounds(310, 100, 600, 400);
 		mainPanel.add(lblLogo);
 
 		loadingBar.setBounds(0, 706, 1290, 14);
@@ -126,6 +126,18 @@ public class SplashScreenDialog extends JDialog {
 		lblStatus.setFont(new Font("Dialog", Font.BOLD, 20));
 		lblStatus.setBounds(920, 675, 340, 26);
 		mainPanel.add(lblStatus);
+
+		JLabel lblTtttt = new JLabel("Phần mềm quản lý karaoke Nnice v1.00");
+		lblTtttt.setForeground(Color.WHITE);
+		lblTtttt.setFont(new Font("Dialog", Font.BOLD, 36));
+		lblTtttt.setBounds(290, 520, 706, 50);
+		mainPanel.add(lblTtttt);
+
+		JLabel lblNhm = new JLabel("© Nhóm 17 - Trần Nguyên Vũ, Trần Ngọc Phát, Mai Nhật Hào, Trần Thanh Vy");
+		lblNhm.setForeground(Color.LIGHT_GRAY);
+		lblNhm.setFont(new Font("Dialog", Font.BOLD, 14));
+		lblNhm.setBounds(374, 570, 528, 20);
+		mainPanel.add(lblNhm);
 
 	}
 }

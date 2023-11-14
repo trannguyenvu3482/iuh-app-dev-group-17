@@ -7,7 +7,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
-import com.nhom17.quanlykaraoke.entities.HangHoa;
 import com.nhom17.quanlykaraoke.entities.NhanVien;
 import com.nhom17.quanlykaraoke.utils.HibernateUtil;
 import com.nhom17.quanlykaraoke.utils.PasswordUtil;
@@ -46,7 +45,7 @@ public class NhanVienDAO {
 			return null;
 		}
 
-		return idPrefix + String.format("%03d", count+1);
+		return idPrefix + String.format("%03d", count + 1);
 	}
 
 	private int countNhanVien() {
@@ -104,14 +103,13 @@ public class NhanVienDAO {
 		Session session = factory.getCurrentSession();
 		Transaction t = session.beginTransaction();
 
-		
 		try {
-			int tt = nhanVien.isTrangThai()?1:0;
-			Query<NhanVien> qr = session.createNativeQuery("update NhanVien set hoTen = N'" + nhanVien.getHoTen() +
-					"' ,gioiTinh = " + nhanVien.getGioiTinh()+ 
-					" ,ngaySinh = '" + nhanVien.getNgaySinh() + "',maChucVu = '" + nhanVien.getChucVu().getMaChucVu()+ 
-					"', soDienThoai = '" + nhanVien.getSoDienThoai() + "', CCCD = '" + nhanVien.getCCCD() +
-					"' ,trangThai = " + tt + " where maNhanVien = '" + nhanVien.getMaNhanVien()+"'",NhanVien.class);
+			int tt = nhanVien.isTrangThai() ? 1 : 0;
+			Query<NhanVien> qr = session.createNativeQuery("update NhanVien set hoTen = N'" + nhanVien.getHoTen()
+					+ "' ,gioiTinh = " + nhanVien.getGioiTinh() + " ,ngaySinh = '" + nhanVien.getNgaySinh()
+					+ "',maChucVu = '" + nhanVien.getChucVu().getMaChucVu() + "', soDienThoai = '"
+					+ nhanVien.getSoDienThoai() + "', CCCD = '" + nhanVien.getCCCD() + "' ,trangThai = " + tt
+					+ " where maNhanVien = '" + nhanVien.getMaNhanVien() + "'", NhanVien.class);
 			int hh = qr.executeUpdate();
 			t.commit();
 			return true;

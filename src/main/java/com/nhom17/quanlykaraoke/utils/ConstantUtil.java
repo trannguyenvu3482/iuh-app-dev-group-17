@@ -33,6 +33,22 @@ public class ConstantUtil {
 		}
 	}
 
+	public static BufferedImage scaleImage(int WIDTH, int HEIGHT, BufferedImage img) {
+		BufferedImage bi = null;
+		try {
+			ImageIcon ii = new ImageIcon(img);
+			bi = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+			Graphics2D g2d = (Graphics2D) bi.createGraphics();
+			g2d.addRenderingHints(
+					new RenderingHints(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY));
+			g2d.drawImage(ii.getImage(), 0, 0, WIDTH, HEIGHT, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		return bi;
+	}
+
 	public static final ImageIcon byteArrayToImageIcon(byte[] data) {
 		BufferedImage img = null;
 		try {

@@ -25,3 +25,6 @@
 # Environment Variables
 .env
 *.env
+
+# Config files
+.idea
