@@ -1,6 +1,7 @@
 package com.nhom17.quanlykaraoke.entities;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -35,6 +36,24 @@ public class ChiTietDichVu implements Serializable {
 
 	@Column(columnDefinition = "int")
 	private int soLuong;
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(hangHoa, phieuDatPhong, phong);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ChiTietDichVu other = (ChiTietDichVu) obj;
+		return Objects.equals(hangHoa, other.hangHoa) && Objects.equals(phieuDatPhong, other.phieuDatPhong)
+				&& Objects.equals(phong, other.phong);
+	}
 
 	public ChiTietDichVu() {
 

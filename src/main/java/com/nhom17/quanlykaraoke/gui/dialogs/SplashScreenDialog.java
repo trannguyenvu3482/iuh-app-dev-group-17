@@ -1,4 +1,4 @@
-package com.nhom17.quanlykaraoke.common;
+package com.nhom17.quanlykaraoke.gui.dialogs;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -22,13 +22,13 @@ import javax.swing.SwingConstants;
  * @version 1.0
  * @created 25-Oct-2023 14:51:00
  */
-public class SplashScreen extends JDialog {
+public class SplashScreenDialog extends JDialog {
 	private static final long serialVersionUID = 1L;
 	private final JProgressBar loadingBar = new JProgressBar();
 	private final JLabel lblPercent = new JLabel("0%");
 	private final JLabel lblStatus = new JLabel("");
 
-	public SplashScreen() {
+	public SplashScreenDialog() {
 		initUI();
 		startLoadingBar();
 	}

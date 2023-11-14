@@ -23,7 +23,10 @@ import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import com.nhom17.quanlykaraoke.dao.ChiTietPhieuDatPhongDAO;
+import com.nhom17.quanlykaraoke.bus.ChiTietDichVuBUS;
+import com.nhom17.quanlykaraoke.bus.ChiTietPhieuDatPhongBUS;
+import com.nhom17.quanlykaraoke.bus.PhieuDatPhongBUS;
+import com.nhom17.quanlykaraoke.entities.ChiTietDichVu;
 import com.nhom17.quanlykaraoke.entities.ChiTietPhieuDatPhong;
 import com.nhom17.quanlykaraoke.entities.KhachHang;
 import com.nhom17.quanlykaraoke.entities.Phong;
@@ -49,13 +52,17 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 	private final JLabel lblGioNhanPhong = new JLabel("Giờ nhận phòng: ");
 	private final JLabel lblGioTraPhong = new JLabel("Giờ trả phòng: ");
 	private final JLabel lblThueVAT = new JLabel("Thuế VAT: 10%");
+	JLabel lblTienDichVu = new JLabel("Tiền dịch vụ: ");
 	private JTable tbl;
 	private DefaultTableModel model;
+	private JButton btnXacNhan = new JButton("Xác nhận");
 
 	// VARIABLES
 	private Phong p;
 	private KhachHang kh;
-	private final ChiTietPhieuDatPhongDAO ctpdpDAO = new ChiTietPhieuDatPhongDAO();
+	private final ChiTietPhieuDatPhongBUS ctpdpBUS = new ChiTietPhieuDatPhongBUS();
+	private final ChiTietDichVuBUS ctdvBUS = new ChiTietDichVuBUS();
+	private final PhieuDatPhongBUS pdpBUS = new PhieuDatPhongBUS();
 	private double tienPhong = 0;
 	private double tienDichVu = 0;
 	private double tongTien = 0;
@@ -126,7 +133,6 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 		Component horizontalStrut = Box.createHorizontalStrut(20);
 		panelBottom.add(horizontalStrut);
 
-		JButton btnXacNhan = new JButton("Xác nhận");
 		btnXacNhan.setForeground(Color.WHITE);
 		btnXacNhan.setBackground(Color.RED);
 		btnXacNhan.setFont(new Font("Dialog", Font.BOLD, 20));
@@ -144,7 +150,6 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 		Box hBox3 = Box.createHorizontalBox();
 		panelInfo.add(hBox3);
 
-		JLabel lblTienDichVu = new JLabel("Tiền dịch vụ: 1.000.000VND");
 		lblTienDichVu.setFont(new Font("Dialog", Font.BOLD, 20));
 		hBox3.add(lblTienDichVu);
 
@@ -216,11 +221,20 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 		lblTongTien.setText(lblTongTien.getText().concat(MoneyFormatUtil.format(tongTien * 1.1)));
 		lblGioNhanPhong.setText(lblGioNhanPhong.getText().concat(DateTimeFormatUtil.formatFullDate(thoiGianBatDau)));
 		lblGioTraPhong.setText(lblGioTraPhong.getText().concat(DateTimeFormatUtil.formatFullDate(LocalDateTime.now())));
+		lblTienDichVu.setText(lblTienDichVu.getText().concat(MoneyFormatUtil.format(tienDichVu)));
+		// Action listeners
+		btnXacNhan.addActionListener(this);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
+		Object o = e.getSource();
+
+		if (o.equals(btnXacNhan)) {
+			pdpBUS.finishPhieuDatPhong(p.getMaPhong());
+			dispose();
+		}
 
 	}
 
@@ -263,14 +277,14 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 		model.setRowCount(0);
 
 		// Load booked rooms
-		String maPDP = ctpdpDAO.getChiTietPhieuDatPhongByActiveMaPhong(p.getMaPhong()).getPhieuDatPhong()
+		String maPDP = ctpdpBUS.getChiTietPhieuDatPhongByActiveMaPhong(p.getMaPhong()).getPhieuDatPhong()
 				.getMaPhieuDatPhong();
 
-		kh = ctpdpDAO.getChiTietPhieuDatPhongByActiveMaPhong(p.getMaPhong()).getPhieuDatPhong().getKhachHang();
+		kh = ctpdpBUS.getChiTietPhieuDatPhongByActiveMaPhong(p.getMaPhong()).getPhieuDatPhong().getKhachHang();
 
 		System.out.println("Ma PDP" + maPDP);
 
-		List<ChiTietPhieuDatPhong> listCTPDP = ctpdpDAO.getAllChiTietPhieuDatPhongByMaPhieuDatPhong(maPDP);
+		List<ChiTietPhieuDatPhong> listCTPDP = ctpdpBUS.getAllChiTietPhieuDatPhongByMaPhieuDatPhong(maPDP);
 
 		int stt = 1;
 
@@ -296,6 +310,24 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 		}
 
 		// Load food
+		for (ChiTietPhieuDatPhong ctpdp : listCTPDP) {
+			List<ChiTietDichVu> listCTDV = ctdvBUS.getChiTietDichVuByMaPDPAndMaPhong(
+					ctpdp.getPhieuDatPhong().getMaPhieuDatPhong(), ctpdp.getPhong().getMaPhong());
 
+			for (ChiTietDichVu c : listCTDV) {
+				double thanhTien = c.getHangHoa().getDonGia() * c.getSoLuong();
+
+				Object[] rowData = { stt, c.getHangHoa().getTenHangHoa(), c.getSoLuong(),
+						MoneyFormatUtil.format(c.getHangHoa().getDonGia()),
+						c.getHangHoa().getLoaiHangHoa().getDonViTinh(), "", "", MoneyFormatUtil.format(thanhTien) };
+
+				model.addRow(rowData);
+				stt++;
+
+				// Handle sum values
+				tienDichVu += thanhTien;
+				tongTien += thanhTien;
+			}
+		}
 	}
 }

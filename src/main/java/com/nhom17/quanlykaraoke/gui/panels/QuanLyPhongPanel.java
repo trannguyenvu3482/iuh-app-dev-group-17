@@ -36,8 +36,6 @@ import org.kordamp.ikonli.materialdesign2.MaterialDesignP;
 import com.nhom17.quanlykaraoke.bus.LoaiPhongBUS;
 import com.nhom17.quanlykaraoke.bus.PhongBUS;
 import com.nhom17.quanlykaraoke.common.MyIcon;
-import com.nhom17.quanlykaraoke.entities.HangHoa;
-import com.nhom17.quanlykaraoke.entities.LoaiHangHoa;
 import com.nhom17.quanlykaraoke.entities.LoaiPhong;
 import com.nhom17.quanlykaraoke.entities.Phong;
 
@@ -72,7 +70,7 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 		setLayout(new BorderLayout(0, 0));
 
 		JPanel panelTop = new JPanel();
-		panelTop.setBackground(Color.PINK);
+		panelTop.setBackground(Color.LIGHT_GRAY);
 		panelTop.setBorder(new EmptyBorder(10, 24, 20, 24));
 		add(panelTop, BorderLayout.NORTH);
 		panelTop.setLayout(new BoxLayout(panelTop, BoxLayout.Y_AXIS));
@@ -242,7 +240,6 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 		lblBLc.setFont(new Font("Dialog", Font.BOLD, 20));
 		boxSix_1.add(lblBLc);
 
-
 		boxFilterKichThuoc.setFont(new Font("Dialog", Font.BOLD, 20));
 		String[] dataLHH = { "Kích thước", "5", "10", "15", "20" };
 
@@ -251,12 +248,12 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 
 		Component horizontalStrut_1_2 = Box.createHorizontalStrut(40);
 		boxSix_1.add(horizontalStrut_1_2);
-		
 
-		boxFilterTenLoaiPhong.setModel(new DefaultComboBoxModel(new String[] {"Tên loại phòng", "Phòng thường", "Phòng tiệc", "Phòng VIP", "Phòng tiệc VIP"}));
+		boxFilterTenLoaiPhong.setModel(new DefaultComboBoxModel(
+				new String[] { "Tên loại phòng", "Phòng thường", "Phòng tiệc", "Phòng VIP", "Phòng tiệc VIP" }));
 		boxFilterTenLoaiPhong.setFont(new Font("Dialog", Font.BOLD, 20));
 		boxSix_1.add(boxFilterTenLoaiPhong);
-		
+
 		Component horizontalStrut_1_2_2 = Box.createHorizontalStrut(40);
 		boxSix_1.add(horizontalStrut_1_2_2);
 		boxFilterTrangThai.setFont(new Font("Dialog", Font.BOLD, 20));
@@ -285,10 +282,10 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 		btnThem.addActionListener(this);
 		btnSua.addActionListener(this);
 		btnClearFields.addActionListener(this);
-		
+
 		cbKichThuoc.addActionListener(this);
 		cbTenLP.addActionListener(this);
-		
+
 		boxFilterKichThuoc.addActionListener(this);
 		boxFilterTenLoaiPhong.addActionListener(this);
 		boxFilterTrangThai.addActionListener(this);
@@ -380,7 +377,7 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 			clearFields();
 		} else if (o.equals(btnClearFields)) {
 			clearFields();
-		} else if(o.equals(btnSua)) {
+		} else if (o.equals(btnSua)) {
 			if (tblPhong.getSelectedRow() != -1) {
 				LoaiPhong lp = lpBUS.getLoaiPhong(cbTenLP.getSelectedItem().toString(),
 						Integer.parseInt(cbKichThuoc.getSelectedItem().toString()));
@@ -390,19 +387,21 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 				pBUS.updatePhong(p);
 				refreshTable();
 				clearFields();
-				
+
 			} else {
 				JOptionPane.showMessageDialog(this, "Vui lòng chọn phòng muốn cập nhật");
 			}
-		}else if(o.equals(cbKichThuoc)) {
-			LoaiPhong lp = lpBUS.getLoaiPhong(cbTenLP.getSelectedItem().toString(), Integer.parseInt(cbKichThuoc.getSelectedItem().toString()));
+		} else if (o.equals(cbKichThuoc)) {
+			LoaiPhong lp = lpBUS.getLoaiPhong(cbTenLP.getSelectedItem().toString(),
+					Integer.parseInt(cbKichThuoc.getSelectedItem().toString()));
 			txtPhuPhi.setValue(lp.getPhuPhi());
-			
-		}else if(o.equals(cbTenLP)) {
-			LoaiPhong lp = lpBUS.getLoaiPhong(cbTenLP.getSelectedItem().toString(), Integer.parseInt(cbKichThuoc.getSelectedItem().toString()));
+
+		} else if (o.equals(cbTenLP)) {
+			LoaiPhong lp = lpBUS.getLoaiPhong(cbTenLP.getSelectedItem().toString(),
+					Integer.parseInt(cbKichThuoc.getSelectedItem().toString()));
 			txtPhuPhi.setValue(lp.getPhuPhi());
-		}else if(o.equals(boxFilterKichThuoc)) {
-			
+		} else if (o.equals(boxFilterKichThuoc)) {
+
 		}
 	}
 }

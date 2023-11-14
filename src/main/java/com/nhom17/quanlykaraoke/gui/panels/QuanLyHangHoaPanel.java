@@ -29,14 +29,10 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.text.MaskFormatter;
 import javax.swing.text.NumberFormatter;
 
 import org.kordamp.ikonli.materialdesign2.MaterialDesignA;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignB;
-import org.kordamp.ikonli.materialdesign2.MaterialDesignD;
-import org.kordamp.ikonli.materialdesign2.MaterialDesignF;
-import org.kordamp.ikonli.materialdesign2.MaterialDesignH;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignP;
 
 import com.nhom17.quanlykaraoke.bus.HangHoaBUS;
@@ -81,7 +77,7 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 		setLayout(new BorderLayout(0, 0));
 
 		JPanel panelTop = new JPanel();
-		panelTop.setBackground(Color.PINK);
+		panelTop.setBackground(Color.LIGHT_GRAY);
 		panelTop.setBorder(new EmptyBorder(10, 24, 20, 24));
 		add(panelTop, BorderLayout.NORTH);
 		panelTop.setLayout(new BoxLayout(panelTop, BoxLayout.Y_AXIS));
@@ -393,9 +389,9 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 		Object o = e.getSource();
 
 		if (o.equals(btnThem)) {
-			if(txtTenSanPham.getText().trim().length()!=0) {
+			if (txtTenSanPham.getText().trim().length() != 0) {
 				double b = 0;
-				if(txtDonGia.getValue() instanceof Long) {
+				if (txtDonGia.getValue() instanceof Long) {
 					Long a = (Long) txtDonGia.getValue();
 					b = (double) a;
 				} else {
@@ -408,18 +404,18 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 				hangHoaBUS.addHangHoa(hh);
 				refreshTable();
 				clearFields();
-			}else {
+			} else {
 				JOptionPane.showMessageDialog(this, "Tên sản phầm không được để trống!");
 			}
 		} else if (o.equals(btnClearFields)) {
 			clearFields();
 		} else if (o.equals(btnSua)) {
 			if (tblDichVu.getSelectedRow() != -1) {
-			
-				if(txtTenSanPham.getText().trim().length()!=0) {
-					if(txtTenSanPham.getText().trim().length()!=0) {
+
+				if (txtTenSanPham.getText().trim().length() != 0) {
+					if (txtTenSanPham.getText().trim().length() != 0) {
 						double b = 0;
-						if(txtDonGia.getValue() instanceof Long) {
+						if (txtDonGia.getValue() instanceof Long) {
 							Long a = (Long) txtDonGia.getValue();
 							b = (double) a;
 						} else {
@@ -433,10 +429,10 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 						hangHoaBUS.updateHangHoa(hh);
 						refreshTable();
 						clearFields();
-					}else {
+					} else {
 						JOptionPane.showMessageDialog(this, "Tên sản phầm không được để trống!");
 					}
-				}else {
+				} else {
 					JOptionPane.showMessageDialog(this, "Tên sản phầm không được để trống!");
 				}
 			} else {
@@ -457,33 +453,32 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 					refreshTable();
 					clearFields();
 				} else {
-					JOptionPane.showMessageDialog(this,
-							"Sai định dạng. Vui lòng nhập lại!");
+					JOptionPane.showMessageDialog(this, "Sai định dạng. Vui lòng nhập lại!");
 				}
 			} else {
 				JOptionPane.showMessageDialog(this, "Vui lòng chọn hàng hoá muốn nhập hàng");
 			}
-		}else if(o.equals(btnGiamHang)) {
+		} else if (o.equals(btnGiamHang)) {
 			if (tblDichVu.getSelectedRow() != -1) {
 				String sl = JOptionPane.showInputDialog(this, "Nhập số lượng muốn giảm hàng: ");
 				String rg = "^[0-9]{1,}$";
 				if (sl.matches(rg)) {
-					if (Integer.parseInt(modelDichVu.getValueAt(tblDichVu.getSelectedRow(), 4).toString())>=Integer.parseInt(sl)) {
+					if (Integer.parseInt(modelDichVu.getValueAt(tblDichVu.getSelectedRow(), 4).toString()) >= Integer
+							.parseInt(sl)) {
 						long a = (long) txtDonGia.getValue();
 						double b = (double) a;
 						LoaiHangHoa lhh = loaiHangHoaBUS.getLoaiHangHoaByname(cbTenHH.getSelectedItem().toString());
 						HangHoa hh = new HangHoa((String) modelDichVu.getValueAt(tblDichVu.getSelectedRow(), 0),
 								txtTenSanPham.getText(), lhh, Integer.parseInt(txtSoLuongTon.getText()), b,
 								trangThai(boxTrangThai.getSelectedItem().toString()));
-						hangHoaBUS.updateSoLuongTon(hh, Integer.parseInt(sl)*(-1));
+						hangHoaBUS.updateSoLuongTon(hh, Integer.parseInt(sl) * (-1));
 						refreshTable();
 						clearFields();
 					} else {
 						JOptionPane.showMessageDialog(this, "Số lượng phải nhỏ hơn số lượng tồn");
 					}
 				} else {
-					JOptionPane.showMessageDialog(this,
-							"Sai định dạng. Vui lòng nhập lại!");
+					JOptionPane.showMessageDialog(this, "Sai định dạng. Vui lòng nhập lại!");
 				}
 			} else {
 				JOptionPane.showMessageDialog(this, "Vui lòng chọn hàng hoá muốn nhập hàng");

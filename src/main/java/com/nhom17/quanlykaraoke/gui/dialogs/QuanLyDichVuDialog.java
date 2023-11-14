@@ -77,7 +77,9 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 
 	private ChiTietPhieuDatPhongBUS ctpdpBUS = new ChiTietPhieuDatPhongBUS();
 	private int stt = 1;
+	private List<ChiTietDichVu> listCTDVCurrent = new ArrayList<ChiTietDichVu>();
 	private List<ChiTietDichVu> listCTDVPending = new ArrayList<ChiTietDichVu>();
+	private List<ChiTietDichVu> listCTDVDelete = new ArrayList<ChiTietDichVu>();
 
 	/**
 	 * 
@@ -242,7 +244,6 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 		panelRightBottom.add(btnXacNhan);
 
 		// Refresh tables
-		refreshLeftTable();
 
 		// Action listeners
 		btnThem.addActionListener(this);
@@ -263,26 +264,119 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 						JOptionPane.QUESTION_MESSAGE);
 
 				int row = tblLeft.getSelectedRow();
-				ChiTietDichVu c = new ChiTietDichVu(pdp, hhBUS.getHangHoa(modelLeft.getValueAt(row, 0).toString()), p,
-						Integer.valueOf(result));
-				listCTDVPending.add(c);
+				if (Integer.valueOf(result) > Integer.valueOf(modelLeft.getValueAt(row, 4).toString())) {
+					Notifications.getInstance().show(raven.toast.Notifications.Type.ERROR, Location.BOTTOM_RIGHT,
+							"Số lượng không hợp lệ");
+				} else {
+					ChiTietDichVu c = new ChiTietDichVu(pdp, hhBUS.getHangHoa(modelLeft.getValueAt(row, 0).toString()),
+							p, Integer.valueOf(result));
 
-				Object[] rowData = { stt, c.getHangHoa().getTenHangHoa(), c.getHangHoa().getDonGia(), c.getSoLuong(),
-						MoneyFormatUtil.format(c.getHangHoa().getDonGia() * c.getSoLuong()) };
+					listCTDVPending.add(c);
 
-				modelRight.addRow(rowData);
+					Object[] rowData = { stt, c.getHangHoa().getTenHangHoa(), c.getHangHoa().getDonGia(),
+							c.getSoLuong(), MoneyFormatUtil.format(c.getHangHoa().getDonGia() * c.getSoLuong()) };
+
+					modelLeft.setValueAt(
+							Integer.valueOf(modelLeft.getValueAt(row, 4).toString()) - Integer.valueOf(result),
+							tblLeft.getSelectedRow(), 4);
+
+					modelRight.addRow(rowData);
+
+					this.stt++;
+
+				}
+
 			} else {
 				Notifications.getInstance().show(raven.toast.Notifications.Type.ERROR, Location.BOTTOM_RIGHT,
 						"Bạn phải chọn một loại hàng hóa cần thêm");
 			}
 		} else if (o.equals(btnXoa)) {
+			if (tblRight.getSelectedRow() != -1) {
+				int row = tblRight.getSelectedRow();
+				int result = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xóa dịch vụ này", "Thông báo",
+						JOptionPane.YES_NO_OPTION);
 
+				if (result == JOptionPane.YES_OPTION) {
+
+					ChiTietDichVu c;
+
+					c = listCTDVCurrent.stream().filter(
+							ctdv -> modelRight.getValueAt(row, 1).toString().equals(ctdv.getHangHoa().getTenHangHoa()))
+							.findAny().orElse(null);
+
+					if (c == null) {
+						c = listCTDVPending.stream().filter(ctdv -> modelRight.getValueAt(row, 1).toString()
+								.equals(ctdv.getHangHoa().getTenHangHoa())).findAny().orElse(null);
+
+						listCTDVPending.remove(c);
+					} else {
+						listCTDVCurrent.remove(c);
+						listCTDVDelete.add(c);
+					}
+
+					modelRight.removeRow(row);
+				}
+
+			} else {
+				Notifications.getInstance().show(raven.toast.Notifications.Type.ERROR, Location.BOTTOM_RIGHT,
+						"Bạn phải chọn một dịch vụ cần hủy");
+			}
 		} else if (o.equals(btnCapNhatSoLuong)) {
+			if (tblRight.getSelectedRow() != -1) {
+				int row = tblRight.getSelectedRow();
+				String result = JOptionPane.showInputDialog(null, "Nhập vào số lượng mới", "Thông báo",
+						JOptionPane.QUESTION_MESSAGE);
 
+				if (Integer.valueOf(result) > Integer.valueOf(modelLeft.getValueAt(row, 4).toString())) {
+					Notifications.getInstance().show(raven.toast.Notifications.Type.ERROR, Location.BOTTOM_RIGHT,
+							"Số lượng không hợp lệ");
+				} else {
+					ChiTietDichVu c;
+
+					c = listCTDVCurrent.stream().filter(
+							ctdv -> modelRight.getValueAt(row, 1).toString().equals(ctdv.getHangHoa().getTenHangHoa()))
+							.findAny().orElse(null);
+
+					if (c == null) {
+						c = listCTDVPending.stream().filter(ctdv -> modelRight.getValueAt(row, 1).toString()
+								.equals(ctdv.getHangHoa().getTenHangHoa())).findAny().orElse(null);
+
+						for (ChiTietDichVu ctdv : listCTDVPending) {
+							if (ctdv.equals(c)) {
+								ctdv.setSoLuong(Integer.valueOf(result));
+							}
+						}
+					} else {
+						for (ChiTietDichVu ctdv : listCTDVCurrent) {
+							if (ctdv.equals(c)) {
+								ctdv.setSoLuong(Integer.valueOf(result));
+							}
+						}
+					}
+
+					modelRight.removeRow(row);
+
+				}
+
+			} else {
+				Notifications.getInstance().show(raven.toast.Notifications.Type.ERROR, Location.BOTTOM_RIGHT,
+						"Bạn phải chọn một dịch vụ cần hủy");
+			}
 		} else if (o.equals(btnHuy)) {
-
+			dispose();
 		} else if (o.equals(btnXacNhan)) {
+			listCTDVPending.forEach((ctdv) -> {
+				ctdvBUS.addChiTietDichVu(ctdv);
+			});
 
+			listCTDVDelete.forEach((ctdv) -> {
+				ctdvBUS.deleteChiTietDichVu(ctdv);
+			});
+
+			Notifications.getInstance().show(raven.toast.Notifications.Type.SUCCESS, Location.BOTTOM_RIGHT,
+					"Thêm dịch vụ thành công");
+
+			dispose();
 		}
 	}
 
@@ -320,7 +414,6 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 
 		// Load data
 		refreshLeftTable();
-		refreshRightTable();
 	}
 
 	/**
@@ -351,9 +444,6 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 		};
 
 		tblRight = new JTable(modelRight);
-		tblRight.setRowSelectionAllowed(false);
-		tblRight.setColumnSelectionAllowed(false);
-		tblRight.setCellSelectionEnabled(false);
 		tblRight.setFont(new Font("Dialog", Font.PLAIN, 14));
 		tblRight.getTableHeader().setFont(new Font("Dialog", Font.BOLD, 16));
 		tblRight.getTableHeader().setReorderingAllowed(false);
@@ -361,25 +451,26 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 		tblRight.setRowHeight(40);
 
 		// Col width
-		tblLeft.getColumnModel().getColumn(0).setPreferredWidth(8);
-		tblLeft.getColumnModel().getColumn(1).setPreferredWidth(20);
-		tblLeft.getColumnModel().getColumn(2).setPreferredWidth(25);
-		tblLeft.getColumnModel().getColumn(3).setPreferredWidth(30);
-		tblLeft.getColumnModel().getColumn(4).setPreferredWidth(35);
-		tblLeft.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+		tblRight.getColumnModel().getColumn(0).setPreferredWidth(8);
+		tblRight.getColumnModel().getColumn(1).setPreferredWidth(20);
+		tblRight.getColumnModel().getColumn(2).setPreferredWidth(25);
+		tblRight.getColumnModel().getColumn(3).setPreferredWidth(30);
+		tblRight.getColumnModel().getColumn(4).setPreferredWidth(35);
+		tblRight.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+
+		refreshRightTable();
 	}
 
 	private void refreshRightTable() {
 		// TODO Auto-generated method stub
-		modelLeft.setRowCount(0);
+		modelRight.setRowCount(0);
 
 		// Logic
 		pdp = ctpdpBUS.getChiTietPhieuDatPhongByActiveMaPhong(p.getMaPhong()).getPhieuDatPhong();
 
-		List<ChiTietDichVu> listCTDV = ctdvBUS.getChiTietDichVuByMaPDPAndMaPhong(pdp.getMaPhieuDatPhong(),
-				p.getMaPhong());
+		listCTDVCurrent = ctdvBUS.getChiTietDichVuByMaPDPAndMaPhong(pdp.getMaPhieuDatPhong(), p.getMaPhong());
 
-		for (ChiTietDichVu c : listCTDV) {
+		for (ChiTietDichVu c : listCTDVCurrent) {
 			Object[] rowData = { stt, c.getHangHoa().getTenHangHoa(), c.getHangHoa().getDonGia(), c.getSoLuong(),
 					MoneyFormatUtil.format(c.getHangHoa().getDonGia() * c.getSoLuong()) };
 

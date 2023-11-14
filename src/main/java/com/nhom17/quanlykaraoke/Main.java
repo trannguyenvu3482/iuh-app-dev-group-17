@@ -10,10 +10,10 @@ import org.kordamp.ikonli.materialdesign2.MaterialDesignE;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.FlatLaf;
 import com.nhom17.quanlykaraoke.common.MyIcon;
-import com.nhom17.quanlykaraoke.common.SplashScreen;
 import com.nhom17.quanlykaraoke.gui.DangNhapGUI;
 import com.nhom17.quanlykaraoke.gui.NhanVienGUI;
 import com.nhom17.quanlykaraoke.gui.QuanLyGUI;
+import com.nhom17.quanlykaraoke.gui.dialogs.SplashScreenDialog;
 import com.nhom17.quanlykaraoke.utils.HibernateUtil;
 
 /**
@@ -32,7 +32,7 @@ public class Main {
 		setupFlatLaf();
 
 		// Show splash screen
-		SplashScreen splashGUI = new SplashScreen();
+		SplashScreenDialog splashGUI = new SplashScreenDialog();
 		splashGUI.setVisible(true);
 
 		// Add window listener to detect when splash screen close
