@@ -7,6 +7,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
+import com.nhom17.quanlykaraoke.entities.HangHoa;
 import com.nhom17.quanlykaraoke.entities.NhanVien;
 import com.nhom17.quanlykaraoke.utils.HibernateUtil;
 import com.nhom17.quanlykaraoke.utils.PasswordUtil;
@@ -99,19 +100,25 @@ public class NhanVienDAO {
 		}
 	}
 
-	public NhanVien updateNhanVien(NhanVien nhanVien) {
+	public boolean updateNhanVien(NhanVien nhanVien) {
 		Session session = factory.getCurrentSession();
 		Transaction t = session.beginTransaction();
 
+		
 		try {
-			NhanVien updatedNhanVien = session.merge(nhanVien);
-
+			int tt = nhanVien.isTrangThai()?1:0;
+			Query<NhanVien> qr = session.createNativeQuery("update NhanVien set hoTen = N'" + nhanVien.getHoTen() +
+					"' ,gioiTinh = " + nhanVien.getGioiTinh()+ 
+					" ,ngaySinh = '" + nhanVien.getNgaySinh() + "',maChucVu = '" + nhanVien.getChucVu().getMaChucVu()+ 
+					"', soDienThoai = '" + nhanVien.getSoDienThoai() + "', CCCD = '" + nhanVien.getCCCD() +
+					"' ,trangThai = " + tt + " where maNhanVien = '" + nhanVien.getMaNhanVien()+"'",NhanVien.class);
+			int hh = qr.executeUpdate();
 			t.commit();
-			return updatedNhanVien;
+			return true;
 
 		} catch (Exception e) {
 			t.rollback();
-			return null;
+			return false;
 		}
 	}
 

@@ -93,6 +93,24 @@ public class NhanVien implements Serializable {
 
 		this.trangThai = true;
 	}
+	
+	public NhanVien(String maNhanVien,String hoTen, int gioiTinh, String matKhau, LocalDate ngaySinh, ChucVu chucVu, String soDienThoai,
+			String cCCD, byte[] anhDaiDien,boolean trangThai) {
+		this.maNhanVien = maNhanVien;
+		this.hoTen = hoTen;
+		this.gioiTinh = gioiTinh;
+		this.matKhau = matKhau;
+		this.ngaySinh = ngaySinh;
+		this.chucVu = chucVu;
+		this.soDienThoai = soDienThoai;
+		this.CCCD = cCCD;
+
+		setAnhDaiDien(anhDaiDien);
+
+		this.trangThai = trangThai;
+	}
+
+	
 
 	@Override
 	public int hashCode() {

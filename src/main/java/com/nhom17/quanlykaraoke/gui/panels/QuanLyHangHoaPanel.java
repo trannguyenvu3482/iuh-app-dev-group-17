@@ -32,9 +32,11 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.text.MaskFormatter;
 import javax.swing.text.NumberFormatter;
 
+import org.kordamp.ikonli.materialdesign2.MaterialDesignA;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignB;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignD;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignF;
+import org.kordamp.ikonli.materialdesign2.MaterialDesignH;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignP;
 
 import com.nhom17.quanlykaraoke.bus.HangHoaBUS;
@@ -234,7 +236,7 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 		boxSix.add(horizontalStrut_1_2_1_1);
 		btnNhapHang.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-		btnNhapHang.setIcon(MyIcon.getIcon(MaterialDesignD.DOLLY, 32, null));
+		btnNhapHang.setIcon(MyIcon.getIcon(MaterialDesignA.ARROW_UP_BOLD, 32, null));
 		btnNhapHang.putClientProperty("JButton.buttonType", "square");
 		boxSix.add(btnNhapHang);
 
@@ -242,7 +244,7 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 		boxSix.add(horizontalStrut_1_2_1_1_1_1);
 
 		btnGiamHang.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnGiamHang.setIcon(MyIcon.getIcon(MaterialDesignB.BEAKER_MINUS, 32, null));
+		btnGiamHang.setIcon(MyIcon.getIcon(MaterialDesignA.ARROW_DOWN_BOLD, 32, null));
 		btnGiamHang.putClientProperty("JButton.buttonType", "square");
 		boxSix.add(btnGiamHang);
 
@@ -415,21 +417,25 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 			if (tblDichVu.getSelectedRow() != -1) {
 			
 				if(txtTenSanPham.getText().trim().length()!=0) {
-					double b = 0;
-					if(txtDonGia.getValue() instanceof Long) {
-						Long a = (Long) txtDonGia.getValue();
-						b = (double) a;
-					} else {
-						int a = (int) txtDonGia.getValue();
-						b = (double) a;
+					if(txtTenSanPham.getText().trim().length()!=0) {
+						double b = 0;
+						if(txtDonGia.getValue() instanceof Long) {
+							Long a = (Long) txtDonGia.getValue();
+							b = (double) a;
+						} else {
+							int a = (int) txtDonGia.getValue();
+							b = (double) a;
+						}
+						LoaiHangHoa lhh = loaiHangHoaBUS.getLoaiHangHoaByname(cbTenHH.getSelectedItem().toString());
+						HangHoa hh = new HangHoa((String) modelDichVu.getValueAt(tblDichVu.getSelectedRow(), 0),
+								txtTenSanPham.getText(), lhh, Integer.parseInt(txtSoLuongTon.getText()), b,
+								trangThai(boxTrangThai.getSelectedItem().toString()));
+						hangHoaBUS.updateHangHoa(hh);
+						refreshTable();
+						clearFields();
+					}else {
+						JOptionPane.showMessageDialog(this, "Tên sản phầm không được để trống!");
 					}
-					LoaiHangHoa lhh = loaiHangHoaBUS.getLoaiHangHoaByname(cbTenHH.getSelectedItem().toString());
-					HangHoa hh = new HangHoa((String) modelDichVu.getValueAt(tblDichVu.getSelectedRow(), 0),
-							txtTenSanPham.getText(), lhh, Integer.parseInt(txtSoLuongTon.getText()), b,
-							trangThai(boxTrangThai.getSelectedItem().toString()));
-					hangHoaBUS.updateHangHoa(hh);
-					refreshTable();
-					clearFields();
 				}else {
 					JOptionPane.showMessageDialog(this, "Tên sản phầm không được để trống!");
 				}

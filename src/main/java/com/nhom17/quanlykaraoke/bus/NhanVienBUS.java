@@ -24,5 +24,8 @@ public class NhanVienBUS {
 		// TODO Auto-generated method stub
 		return nvDAO.getAllNhanViens();
 	}
-
+	
+	public boolean updateNhanVien(NhanVien nv) {
+		return nvDAO.updateNhanVien(nv);
+	}
 }
