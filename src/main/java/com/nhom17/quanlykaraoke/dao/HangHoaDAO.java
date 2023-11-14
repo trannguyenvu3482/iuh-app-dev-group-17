@@ -8,7 +8,6 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import com.nhom17.quanlykaraoke.entities.HangHoa;
-import com.nhom17.quanlykaraoke.entities.HangHoa;
 import com.nhom17.quanlykaraoke.utils.HibernateUtil;
 
 public class HangHoaDAO {
@@ -33,6 +32,21 @@ public class HangHoaDAO {
 		} catch (Exception e) {
 			t.rollback();
 			return false;
+		}
+	}
+
+	public HangHoa getHangHoa(String maHH) {
+		Session session = factory.getCurrentSession();
+		Transaction t = session.beginTransaction();
+
+		try {
+			HangHoa h = session.get(HangHoa.class, maHH);
+			t.commit();
+			return h;
+
+		} catch (Exception e) {
+			t.rollback();
+			return null;
 		}
 	}
 
@@ -83,13 +97,12 @@ public class HangHoaDAO {
 		Session session = factory.getCurrentSession();
 		Transaction t = session.beginTransaction();
 
-		
 		try {
-			int tt = hangHoa.isTrangThai()?1:0;
-			Query<HangHoa> qr = session.createNativeQuery("update HangHoa set tenHangHoa = N'" + hangHoa.getTenHangHoa() +
-					"' ,maLoaiHangHoa = '" + hangHoa.getLoaiHangHoa().getMaLoaiHangHoa() + 
-					"' ,donGia = " + hangHoa.getDonGia() + " ,soLuongTon = " + hangHoa.getSoLuongTon() + 
-					" ,trangThai = " + tt + " where maHangHoa = '" + hangHoa.getMaHangHoa()+"'",HangHoa.class);
+			int tt = hangHoa.isTrangThai() ? 1 : 0;
+			Query<HangHoa> qr = session.createNativeQuery("update HangHoa set tenHangHoa = N'" + hangHoa.getTenHangHoa()
+					+ "' ,maLoaiHangHoa = '" + hangHoa.getLoaiHangHoa().getMaLoaiHangHoa() + "' ,donGia = "
+					+ hangHoa.getDonGia() + " ,soLuongTon = " + hangHoa.getSoLuongTon() + " ,trangThai = " + tt
+					+ " where maHangHoa = '" + hangHoa.getMaHangHoa() + "'", HangHoa.class);
 			int hh = qr.executeUpdate();
 			t.commit();
 			return true;
@@ -99,16 +112,17 @@ public class HangHoaDAO {
 			return false;
 		}
 	}
+
 	public boolean updateSoLuongTon(HangHoa hangHoa, int sl) {
 		Session session = factory.getCurrentSession();
 		Transaction t = session.beginTransaction();
 
-		
 		try {
-			int tt = hangHoa.isTrangThai()?1:0;
+			int tt = hangHoa.isTrangThai() ? 1 : 0;
 			int slt = hangHoa.getSoLuongTon() + sl;
-			Query<HangHoa> qr = session.createNativeQuery("update HangHoa set soLuongTon = " + slt + 
-				" where maHangHoa = '" + hangHoa.getMaHangHoa()+"'",HangHoa.class);
+			Query<HangHoa> qr = session.createNativeQuery(
+					"update HangHoa set soLuongTon = " + slt + " where maHangHoa = '" + hangHoa.getMaHangHoa() + "'",
+					HangHoa.class);
 			int hh = qr.executeUpdate();
 			t.commit();
 			return true;

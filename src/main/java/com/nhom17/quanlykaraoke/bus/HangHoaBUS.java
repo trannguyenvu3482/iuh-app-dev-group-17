@@ -19,13 +19,16 @@ public class HangHoaBUS {
 	public List<HangHoa> getAllHangHoas() {
 		return hhDAO.getAllHangHoas();
 	}
-	
+
+	public HangHoa getHangHoa(String maHH) {
+		return hhDAO.getHangHoa(maHH);
+	}
+
 	public boolean updateHangHoa(HangHoa hh) {
 		return hhDAO.updateHangHoa(hh);
 	}
-	
 
-	public boolean updateSoLuongTon(HangHoa hh,int sl) {
-		return hhDAO.updateSoLuongTon(hh,sl);
+	public boolean updateSoLuongTon(HangHoa hh, int sl) {
+		return hhDAO.updateSoLuongTon(hh, sl);
 	}
 }

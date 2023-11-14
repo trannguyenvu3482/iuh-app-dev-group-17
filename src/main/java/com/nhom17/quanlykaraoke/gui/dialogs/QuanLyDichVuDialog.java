@@ -8,6 +8,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -17,6 +19,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -32,10 +35,18 @@ import org.kordamp.ikonli.materialdesign2.MaterialDesignC;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignN;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignP;
 
+import com.nhom17.quanlykaraoke.bus.ChiTietDichVuBUS;
+import com.nhom17.quanlykaraoke.bus.ChiTietPhieuDatPhongBUS;
 import com.nhom17.quanlykaraoke.bus.HangHoaBUS;
+import com.nhom17.quanlykaraoke.bus.LoaiHangHoaBUS;
 import com.nhom17.quanlykaraoke.common.MyIcon;
+import com.nhom17.quanlykaraoke.entities.ChiTietDichVu;
+import com.nhom17.quanlykaraoke.entities.PhieuDatPhong;
 import com.nhom17.quanlykaraoke.entities.Phong;
 import com.nhom17.quanlykaraoke.utils.MoneyFormatUtil;
+
+import raven.toast.Notifications;
+import raven.toast.Notifications.Location;
 
 /**
  * @author Trần Nguyên Vũ, Trần Ngọc Phát, Mai Nhật Hào, Trần Thanh Vy
@@ -58,12 +69,21 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 	private JButton btnCapNhatSoLuong = new JButton("");
 
 	// VARIABLES
+	private Phong p;
+	private PhieuDatPhong pdp;
 	private HangHoaBUS hhBUS = new HangHoaBUS();
+	private ChiTietDichVuBUS ctdvBUS = new ChiTietDichVuBUS();
+	private LoaiHangHoaBUS lhhBUS = new LoaiHangHoaBUS();
+
+	private ChiTietPhieuDatPhongBUS ctpdpBUS = new ChiTietPhieuDatPhongBUS();
+	private int stt = 1;
+	private List<ChiTietDichVu> listCTDVPending = new ArrayList<ChiTietDichVu>();
 
 	/**
 	 * 
 	 */
 	public QuanLyDichVuDialog(Phong p) {
+		this.p = p;
 		setSize(1200, 800);
 		setTitle("Quản lý dịch vụ");
 		setResizable(false);
@@ -238,7 +258,23 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 		Object o = e.getSource();
 
 		if (o.equals(btnThem)) {
+			if (tblLeft.getSelectedRow() != -1) {
+				String result = JOptionPane.showInputDialog(null, "Nhập vào số lượng cần thêm", "Thông báo",
+						JOptionPane.QUESTION_MESSAGE);
 
+				int row = tblLeft.getSelectedRow();
+				ChiTietDichVu c = new ChiTietDichVu(pdp, hhBUS.getHangHoa(modelLeft.getValueAt(row, 0).toString()), p,
+						Integer.valueOf(result));
+				listCTDVPending.add(c);
+
+				Object[] rowData = { stt, c.getHangHoa().getTenHangHoa(), c.getHangHoa().getDonGia(), c.getSoLuong(),
+						MoneyFormatUtil.format(c.getHangHoa().getDonGia() * c.getSoLuong()) };
+
+				modelRight.addRow(rowData);
+			} else {
+				Notifications.getInstance().show(raven.toast.Notifications.Type.ERROR, Location.BOTTOM_RIGHT,
+						"Bạn phải chọn một loại hàng hóa cần thêm");
+			}
 		} else if (o.equals(btnXoa)) {
 
 		} else if (o.equals(btnCapNhatSoLuong)) {
@@ -284,6 +320,7 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 
 		// Load data
 		refreshLeftTable();
+		refreshRightTable();
 	}
 
 	/**
@@ -337,5 +374,19 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 		modelLeft.setRowCount(0);
 
 		// Logic
+		pdp = ctpdpBUS.getChiTietPhieuDatPhongByActiveMaPhong(p.getMaPhong()).getPhieuDatPhong();
+
+		List<ChiTietDichVu> listCTDV = ctdvBUS.getChiTietDichVuByMaPDPAndMaPhong(pdp.getMaPhieuDatPhong(),
+				p.getMaPhong());
+
+		for (ChiTietDichVu c : listCTDV) {
+			Object[] rowData = { stt, c.getHangHoa().getTenHangHoa(), c.getHangHoa().getDonGia(), c.getSoLuong(),
+					MoneyFormatUtil.format(c.getHangHoa().getDonGia() * c.getSoLuong()) };
+
+			modelRight.addRow(rowData);
+
+			this.stt++;
+		}
+
 	}
 }
