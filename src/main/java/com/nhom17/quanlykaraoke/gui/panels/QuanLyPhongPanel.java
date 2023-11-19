@@ -7,10 +7,14 @@ import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import javax.swing.Box;
@@ -26,8 +30,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.RowFilter;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import javax.swing.text.NumberFormatter;
 
 import org.kordamp.ikonli.materialdesign2.MaterialDesignB;
@@ -64,6 +71,9 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 	private NumberFormatter formatter;
 	private JTable tblPhong;
 	private DefaultTableModel modelPhong;
+	private TableRowSorter<TableModel> rowSorter;
+
+	private List<RowFilter<Object, Object>> filters = new ArrayList<RowFilter<Object, Object>>(4);
 
 	public QuanLyPhongPanel() {
 		setSize(1200, 800);
@@ -249,7 +259,7 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 		Component horizontalStrut_1_2 = Box.createHorizontalStrut(40);
 		boxSix_1.add(horizontalStrut_1_2);
 
-		boxFilterTenLoaiPhong.setModel(new DefaultComboBoxModel(
+		boxFilterTenLoaiPhong.setModel(new DefaultComboBoxModel<String>(
 				new String[] { "Tên loại phòng", "Phòng thường", "Phòng tiệc", "Phòng VIP", "Phòng tiệc VIP" }));
 		boxFilterTenLoaiPhong.setFont(new Font("Dialog", Font.BOLD, 20));
 		boxSix_1.add(boxFilterTenLoaiPhong);
@@ -268,7 +278,7 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 		txtSearch.setFont(new Font("Dialog", Font.PLAIN, 20));
 		boxSix_1.add(txtSearch);
 		txtSearch.setColumns(10);
-		txtSearch.putClientProperty("JTextField.placeholderText", "Nhập vào tên hàng hóa cần tìm");
+		txtSearch.putClientProperty("JTextField.placeholderText", "Nhập vào mã phòng cần tìm");
 
 		JScrollPane scrollPaneTable = new JScrollPane();
 		add(scrollPaneTable, BorderLayout.CENTER);
@@ -289,6 +299,22 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 		boxFilterKichThuoc.addActionListener(this);
 		boxFilterTenLoaiPhong.addActionListener(this);
 		boxFilterTrangThai.addActionListener(this);
+
+		// Handle search
+		txtSearch.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// Handle search with filters
+				String text = txtSearch.getText();
+				if (text.equals("")) {
+					filters.set(3, RowFilter.regexFilter(".*", 0));
+					rowSorter.setRowFilter(RowFilter.andFilter(filters));
+				} else {
+					filters.set(3, RowFilter.regexFilter("(?i)" + text, 0));
+					rowSorter.setRowFilter(RowFilter.andFilter(filters));
+				}
+			}
+		});
 	}
 
 	public void createTable() {
@@ -311,6 +337,16 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 		tblPhong.setAutoCreateRowSorter(false);
 		tblPhong.getTableHeader().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		tblPhong.setRowHeight(50);
+
+		// Handle filter
+		rowSorter = new TableRowSorter<TableModel>(modelPhong);
+		tblPhong.setRowSorter(rowSorter);
+
+		// Add filters
+		filters.add(RowFilter.regexFilter(".*", 1));
+		filters.add(RowFilter.regexFilter(".*", 2));
+		filters.add(RowFilter.regexFilter(".*", 4));
+		filters.add(RowFilter.regexFilter(".*", 0));
 
 		tblPhong.addMouseListener(new MouseAdapter() {
 
@@ -401,7 +437,33 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 					Integer.parseInt(cbKichThuoc.getSelectedItem().toString()));
 			txtPhuPhi.setValue(lp.getPhuPhi());
 		} else if (o.equals(boxFilterKichThuoc)) {
-
+			System.out.println("SELECTED: " + boxFilterKichThuoc.getSelectedIndex());
+			if (boxFilterKichThuoc.getSelectedIndex() != 0) {
+				// Handle table filter
+				filters.set(0, RowFilter.regexFilter("^" + boxFilterKichThuoc.getSelectedItem() + "$", 1));
+				rowSorter.setRowFilter(RowFilter.andFilter(filters));
+			} else {
+				filters.set(0, RowFilter.regexFilter(".*", 1));
+				rowSorter.setRowFilter(RowFilter.andFilter(filters));
+			}
+		} else if (o.equals(boxFilterTenLoaiPhong)) {
+			if (boxFilterTenLoaiPhong.getSelectedIndex() != 0) {
+				// Handle table filter
+				filters.set(1, RowFilter.regexFilter("^" + boxFilterTenLoaiPhong.getSelectedItem() + "$", 2));
+				rowSorter.setRowFilter(RowFilter.andFilter(filters));
+			} else {
+				filters.set(1, RowFilter.regexFilter(".*", 2));
+				rowSorter.setRowFilter(RowFilter.andFilter(filters));
+			}
+		} else if (o.equals(boxFilterTrangThai)) {
+			if (boxFilterTrangThai.getSelectedIndex() != 0) {
+				// Handle table filter
+				filters.set(2, RowFilter.regexFilter("^" + boxFilterTrangThai.getSelectedItem() + "$", 4));
+				rowSorter.setRowFilter(RowFilter.andFilter(filters));
+			} else {
+				filters.set(2, RowFilter.regexFilter(".*", 4));
+				rowSorter.setRowFilter(RowFilter.andFilter(filters));
+			}
 		}
 	}
 }
