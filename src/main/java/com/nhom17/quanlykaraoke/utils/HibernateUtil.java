@@ -27,7 +27,7 @@ public class HibernateUtil {
 	public static void provideSessionFactory() {
 		// Load configuration from hibernate.cfg.xml
 		Configuration config = new Configuration();
-		config.configure("hibernate.cfg.xml");
+		config.configure();
 
 		// Get env vars
 		Dotenv dotenv = Dotenv.configure().directory(".").load();
