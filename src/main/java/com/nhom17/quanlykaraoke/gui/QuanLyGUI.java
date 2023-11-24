@@ -10,7 +10,6 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
-import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -37,7 +36,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import org.kordamp.ikonli.materialdesign2.MaterialDesignA;
-import org.kordamp.ikonli.materialdesign2.MaterialDesignB;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignC;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignE;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignH;
@@ -48,7 +46,6 @@ import com.nhom17.quanlykaraoke.bus.NhanVienBUS;
 import com.nhom17.quanlykaraoke.common.MainPanelButton;
 import com.nhom17.quanlykaraoke.common.MyFrame;
 import com.nhom17.quanlykaraoke.common.MyIcon;
-import com.nhom17.quanlykaraoke.common.NotificationPanel;
 import com.nhom17.quanlykaraoke.entities.NhanVien;
 import com.nhom17.quanlykaraoke.gui.panels.QuanLyHangHoaPanel;
 import com.nhom17.quanlykaraoke.gui.panels.QuanLyPhongPanel;
@@ -57,12 +54,7 @@ import com.nhom17.quanlykaraoke.gui.panels.ThongKePanel;
 import com.nhom17.quanlykaraoke.gui.panels.XemThongTinCaNhanPanel;
 import com.nhom17.quanlykaraoke.utils.ClockUtil;
 
-import net.miginfocom.layout.ComponentWrapper;
-import net.miginfocom.layout.LayoutCallback;
 import net.miginfocom.swing.MigLayout;
-import raven.glasspanepopup.DefaultLayoutCallBack;
-import raven.glasspanepopup.DefaultOption;
-import raven.glasspanepopup.GlassPanePopup;
 import raven.toast.Notifications;
 
 /**
@@ -126,7 +118,6 @@ public class QuanLyGUI extends MyFrame implements ActionListener {
 	private final JPanel rightPanel = new JPanel();
 	private final JPanel panelTop = new JPanel();
 	private final JLabel lblName = new JLabel("Date");
-	private final JButton btnNotifications = new JButton("");
 	private final Component verticalGlue = Box.createVerticalGlue();
 	private final JPanel panelAppInfo = new JPanel();
 	private final JLabel lblNewLabel = new JLabel("New label");
@@ -145,7 +136,6 @@ public class QuanLyGUI extends MyFrame implements ActionListener {
 		// Init
 		this.currentNhanVien = nvBUS.getNhanVien(maNV);
 		Notifications.getInstance().setJFrame(this);
-		GlassPanePopup.install(this);
 
 		getContentPane().setLayout(new BorderLayout(0, 0));
 
@@ -311,7 +301,6 @@ public class QuanLyGUI extends MyFrame implements ActionListener {
 		btnInfo.addActionListener(this);
 		btnHelp.addActionListener(this);
 		btnBack.addActionListener(this);
-		btnNotifications.addActionListener(this);
 
 		// Handle logout
 		btnDangXuat.addMouseListener(new MouseAdapter() {
@@ -339,12 +328,6 @@ public class QuanLyGUI extends MyFrame implements ActionListener {
 
 		panelTop.add(lblName, "push, cell 0 0, alignx left");
 
-		btnNotifications.setFont(new Font("Dialog", Font.BOLD, 20));
-		btnNotifications.setIcon(MyIcon.getIcon(MaterialDesignB.BELL_CIRCLE, 40, Color.WHITE));
-		btnNotifications.setBackground(null);
-		btnNotifications.setOpaque(false);
-		btnNotifications.setBorder(null);
-		panelTop.add(btnNotifications, "push, cell 1 0, alignx right");
 		panelContent.setBackground(Color.ORANGE);
 		rightPanel.add(panelContent, BorderLayout.CENTER);
 		panelContent.setLayout(new CardLayout(0, 0));
@@ -432,40 +415,6 @@ public class QuanLyGUI extends MyFrame implements ActionListener {
 		} else if (o.equals(btnInfo)) {
 			CardLayout layout = (CardLayout) panelContent.getLayout();
 			layout.show(panelContent, panelAppInfo.getName());
-		} else if (o.equals(btnNotifications)) {
-			GlassPanePopup.showPopup(new NotificationPanel(), new DefaultOption() {
-				@Override
-				public float opacity() {
-					// TODO Auto-generated method stub
-					return (float) 0.2;
-				}
-
-				@Override
-				public LayoutCallback getLayoutCallBack(Component parent) {
-					return new DefaultLayoutCallBack(parent) {
-						@Override
-						public void correctBounds(ComponentWrapper comp) {
-							if (parent.isVisible()) {
-								Point pl = parent.getLocationOnScreen();
-								Point bl = btnNotifications.getLocationOnScreen();
-								int x = bl.x - pl.x;
-								int y = bl.y - pl.y;
-								y += (1f - getAnimate()) * 10f;
-								comp.setBounds(x - comp.getWidth() + btnNotifications.getWidth(),
-										y + btnNotifications.getHeight(), comp.getWidth(), comp.getHeight());
-							} else {
-								super.correctBounds(comp);
-							}
-						}
-					};
-				}
-
-				@Override
-				public String getLayout(Component parent, float animate) {
-					// TODO Auto-generated method stub
-					return null;
-				}
-			});
 		}
 	}
 

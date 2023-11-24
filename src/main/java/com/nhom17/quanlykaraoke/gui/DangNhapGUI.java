@@ -14,6 +14,7 @@ import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -95,7 +96,8 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 		setDefaultCloseOperation(JDialog.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		setResizable(false);
-		setIconImage(new ImageIcon("src/main/resources/images/logo-icon.png").getImage());
+		setIconImage(new ImageIcon(ImageIO.read(getClass().getClassLoader().getResourceAsStream("images/logo.png")))
+				.getImage());
 
 		dangNhapBUS = new DangNhapBUS();
 
@@ -110,7 +112,8 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 		leftPanel.setLayout(null);
 
 		JLabel logoLabel = new JLabel("");
-		logoLabel.setIcon(new ImageIcon("src/main/resources/images/logo.png"));
+		logoLabel.setIcon(
+				new ImageIcon(ImageIO.read(getClass().getClassLoader().getResourceAsStream("images/logo.png"))));
 		logoLabel.setBounds(0, 0, 550, 568);
 		leftPanel.add(logoLabel);
 		logoLabel.setHorizontalAlignment(SwingConstants.CENTER);

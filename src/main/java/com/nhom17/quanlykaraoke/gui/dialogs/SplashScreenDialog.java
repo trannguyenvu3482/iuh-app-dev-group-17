@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
-import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -99,7 +98,8 @@ public class SplashScreenDialog extends JDialog {
 
 		ImageIcon icon = null;
 		try {
-			Image image = ImageIO.read(new File("src/main/resources/images/logo.png"));
+			Image image = ImageIO
+					.read(SplashScreenDialog.class.getClassLoader().getResourceAsStream("images/logo.png"));
 			Image scaledImage = image.getScaledInstance(700, 700, Image.SCALE_SMOOTH);
 			icon = new ImageIcon(scaledImage);
 		} catch (IOException e) {
