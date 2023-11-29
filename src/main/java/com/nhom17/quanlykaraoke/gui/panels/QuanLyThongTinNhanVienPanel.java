@@ -442,6 +442,16 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 		}
 
 	}
+	private void refreshTableByDOB(List<NhanVien> ls) {
+		modelNhanVien.setRowCount(0);
+		for (NhanVien nv : ls) {
+			Object[] data = { nv.getMaNhanVien(), nv.getHoTen(), gioiTinh(nv.getGioiTinh()),
+					DateTimeFormatter.ofPattern("dd/MM/yyyy").format(nv.getNgaySinh()), nv.getChucVu().getTenChucVu(),
+					nv.isTrangThai() ? "Đang làm" : "Đã nghỉ" };
+			modelNhanVien.addRow(data);
+		}
+
+	}
 
 	public void clearFields() {
 		txtTenNV.setText("");
@@ -539,51 +549,33 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 				rowSorter.setRowFilter(RowFilter.andFilter(filters));
 			}
 		}else if(o.equals(btnLocNgaySinh)) {
-			LocalDate dateFrom = txtSearchFrom.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-			LocalDate dateTo = txtSearchTo.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-			List<NhanVien> lsNV = new ArrayList<NhanVien>();
-			if(dateFrom!=null&&dateTo!=null) {
-				for(NhanVien nv : nvBUS.getAllNhanViens()) {
-					if(dateFrom.isBefore(nv.getNgaySinh())&&dateTo.isAfter(nv.getNgaySinh()))
-						lsNV.add(nv);
-					
-				}
-				modelNhanVien.setRowCount(0);
-				for (NhanVien nv : lsNV) {
-					Object[] data = { nv.getMaNhanVien(), nv.getHoTen(), gioiTinh(nv.getGioiTinh()),
-							DateTimeFormatter.ofPattern("dd/MM/yyyy").format(nv.getNgaySinh()), nv.getChucVu().getTenChucVu(),
-							nv.isTrangThai() ? "Đang làm" : "Đã nghỉ" };
-					modelNhanVien.addRow(data);
-				}
-			}else if(dateFrom!=null) {
-				for(NhanVien nv : nvBUS.getAllNhanViens()) {
-					if(dateFrom.isBefore(nv.getNgaySinh()))
-						lsNV.add(nv);
-					
-				}
-				modelNhanVien.setRowCount(0);
-				for (NhanVien nv : lsNV) {
-					Object[] data = { nv.getMaNhanVien(), nv.getHoTen(), gioiTinh(nv.getGioiTinh()),
-							DateTimeFormatter.ofPattern("dd/MM/yyyy").format(nv.getNgaySinh()), nv.getChucVu().getTenChucVu(),
-							nv.isTrangThai() ? "Đang làm" : "Đã nghỉ" };
-					modelNhanVien.addRow(data);
-				}
-			}else if(dateTo!=null) {
-				for(NhanVien nv : nvBUS.getAllNhanViens()) {
-					if(dateTo.isAfter(nv.getNgaySinh()))
-						lsNV.add(nv);
-					
-				}
-				modelNhanVien.setRowCount(0);
-				for (NhanVien nv : lsNV) {
-					Object[] data = { nv.getMaNhanVien(), nv.getHoTen(), gioiTinh(nv.getGioiTinh()),
-							DateTimeFormatter.ofPattern("dd/MM/yyyy").format(nv.getNgaySinh()), nv.getChucVu().getTenChucVu(),
-							nv.isTrangThai() ? "Đang làm" : "Đã nghỉ" };
-					modelNhanVien.addRow(data);
-				}
-			}else {
-				refreshTable();
-			}
+//			LocalDate dateFrom = txtSearchFrom.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+//			LocalDate dateTo = txtSearchTo.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+//			List<NhanVien> lsNV = new ArrayList<NhanVien>();
+//			if(dateFrom!=null&&dateTo!=null) {
+//				for(NhanVien nv : nvBUS.getAllNhanViens()) {
+//					if(dateFrom.isBefore(nv.getNgaySinh())&&dateTo.isAfter(nv.getNgaySinh()))
+//						lsNV.add(nv);
+//					
+//				}
+//				refreshTableByDOB(lsNV);
+//			}else if(dateFrom!=null) {
+//				for(NhanVien nv : nvBUS.getAllNhanViens()) {
+//					if(dateFrom.isBefore(nv.getNgaySinh()))
+//						lsNV.add(nv);
+//					
+//				}
+//				refreshTableByDOB(lsNV);
+//			}else if(dateTo!=null) {
+//				for(NhanVien nv : nvBUS.getAllNhanViens()) {
+//					if(dateTo.isAfter(nv.getNgaySinh()))
+//						lsNV.add(nv);
+//					
+//				}
+//				refreshTableByDOB(lsNV);
+//			}else {
+//				refreshTable();
+//			}
 		}
 	}
 }
