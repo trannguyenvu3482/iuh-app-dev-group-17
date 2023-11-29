@@ -148,9 +148,19 @@
 			<version>1.0</version>
 		</dependency>
 
+		<!-- LOCAL -->
+		<!--<dependency>
+			<groupId>swing-toast-notifications</groupId>
+			<artifactId>swing-toast-notifications</artifactId>
+			<version>1.0</version>
+		</dependency>-->
+		
+		<!-- PUBLIC -->
 		<dependency>
 			<groupId>swing-toast-notifications</groupId>
 			<artifactId>swing-toast-notifications</artifactId>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/libs/swing-toast-notifications-1.0.1.jar</systemPath>
 			<version>1.0</version>
 		</dependency>
 
