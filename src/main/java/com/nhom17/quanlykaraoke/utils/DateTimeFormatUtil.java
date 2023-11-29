@@ -36,8 +36,14 @@ public class DateTimeFormatUtil {
 		return Date.from(date.atZone(ZoneId.systemDefault()).toInstant());
 	}
 
-	public static Date formatStringToDate(LocalDate date) {
+	public static Date formatLocalDateToDate(LocalDate date) {
 		
 		return Date.from(date.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+	}
+
+	public static LocalDate formatDateToLocalDate(Date dateToConvert) {
+		return dateToConvert.toInstant()
+				.atZone(ZoneId.systemDefault())
+				.toLocalDate();
 	}
 }

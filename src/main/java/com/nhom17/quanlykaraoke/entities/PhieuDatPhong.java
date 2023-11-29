@@ -38,10 +38,13 @@ public class PhieuDatPhong {
 	@JoinColumn(name = "maKhachHang", columnDefinition = "char(5)")
 	private KhachHang khachHang;
 
+	@Column(columnDefinition = "money")
+	private double tongTien;
+
 	public PhieuDatPhong() {
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	public PhieuDatPhong(String maPhieuDatPhong, NhanVien nhanVien, boolean trangThai, KhachHang khachHang) {
 		this.maPhieuDatPhong = maPhieuDatPhong;
 		this.nhanVien = nhanVien;
@@ -121,6 +124,14 @@ public class PhieuDatPhong {
 	public String toString() {
 		return "PhieuDatPhong [maPhieuDatPhong=" + maPhieuDatPhong + ", nhanVien=" + nhanVien + ", trangThai="
 				+ trangThai + ", khachHang=" + khachHang + "]";
+	}
+
+	public double getTongTien() {
+		return tongTien;
+	}
+
+	public void setTongTien(double tongTien) {
+		this.tongTien = tongTien;
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.nhom17.quanlykaraoke.dao;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -45,6 +46,78 @@ public class PhieuDatPhongDAO {
 		}
 	}
 
+	public List<PhieuDatPhong> getAllPhieuDatPhongFromDate(LocalDate fromDate, LocalDate toDate) {
+		Session session = factory.getCurrentSession();
+		Transaction t = session.beginTransaction();
+
+		try {
+			// Handle PhieuDatPhong inner join ChiTietPhieuDatPhong then query for
+			// thoiGianBatDau and thoiGianKetThuc
+			String sql = "SELECT * FROM PhieuDatPhong p "
+					+ "INNER JOIN ChiTietPhieuDatPhong c ON p.maPhieuDatPhong = c.maPhieuDatPhong "
+					+ "WHERE (c.thoiGianBatDau BETWEEN :fromDate AND :toDate) OR (c.thoiGianKetThuc BETWEEN :fromDate AND :toDate)";
+			Query<PhieuDatPhong> query = session.createNativeQuery(sql, PhieuDatPhong.class);
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("toDate", toDate);
+			List<PhieuDatPhong> listPhieuDatPhong = query.getResultList();
+
+			// Finish
+			t.commit();
+			return listPhieuDatPhong;
+
+		} catch (Exception e) {
+			t.rollback();
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	// Get all PhieuDatPhong by month
+	public List<PhieuDatPhong> getAllPhieuDatPhongByMonth(int month) {
+		Session session = factory.getCurrentSession();
+		Transaction t = session.beginTransaction();
+
+		try {
+			// Handle PhieuDatPhong inner join ChiTietPhieuDatPhong then query for
+			// thoiGianBatDau and thoiGianKetThuc
+			String sql = "SELECT p.* " + "FROM PhieuDatPhong p "
+					+ "INNER JOIN ChiTietPhieuDatPhong c ON p.maPhieuDatPhong = c.maPhieuDatPhong "
+					+ "WHERE MONTH(c.thoiGianBatDau) = :month OR MONTH(c.thoiGianKetThuc) = :month";
+			Query<PhieuDatPhong> query = session.createNativeQuery(sql, PhieuDatPhong.class);
+			query.setParameter("month", month);
+			List<PhieuDatPhong> listPhieuDatPhong = query.getResultList();
+
+			// Finish
+			t.commit();
+			return listPhieuDatPhong;
+
+		} catch (Exception e) {
+			t.rollback();
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	// Get tongTien of PhieuDatPhong
+//	public double getTongTienOfPhieuDatPhong(String maPhieuDatPhong) {
+//		Session session = factory.getCurrentSession();
+//		Transaction t = session.beginTransaction();
+//
+//		try {
+//			// Get all chiTietPhieuDatPhong by maPhieuDatPhong
+//
+//
+//			// Finish
+//			t.commit();
+//			return tongTien;
+//
+//		} catch (Exception e) {
+//			t.rollback();
+//			e.printStackTrace();
+//			return 0;
+//		}
+//	}
+
 	public boolean changeRoomForPhieuDatPhong(String currentMaPhong, String moveToMaPhong) {
 		Session session = factory.getCurrentSession();
 		Transaction t = session.beginTransaction();
@@ -73,7 +146,7 @@ public class PhieuDatPhongDAO {
 		}
 	}
 
-	public boolean finishPhieuDatPhong(String maPhong) {
+	public boolean finishPhieuDatPhong(String maPhong, double tongTien) {
 		Session session = factory.getCurrentSession();
 		Transaction t = session.beginTransaction();
 
@@ -86,6 +159,7 @@ public class PhieuDatPhongDAO {
 
 			ChiTietPhieuDatPhong ctpdp = query3.getSingleResult();
 			ctpdp.setThoiGianKetThuc(LocalDateTime.now());
+			ctpdp.getPhieuDatPhong().setTongTien(tongTien);
 			session.merge(ctpdp);
 
 			PhieuDatPhong pdp = ctpdp.getPhieuDatPhong();

@@ -98,6 +98,10 @@ public class ChiTietDichVu implements Serializable {
 		this.soLuong = soLuong;
 	}
 
+	public double getThanhTienDichVu() {
+		return hangHoa.getDonGia() * soLuong;
+	}
+
 	@Override
 	public String toString() {
 		return "ChiTietDichVu [phieuDatPhong=" + phieuDatPhong + ", hangHoa=" + hangHoa + ", phong=" + phong

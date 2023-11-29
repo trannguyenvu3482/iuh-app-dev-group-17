@@ -3,6 +3,8 @@ package com.nhom17.quanlykaraoke.entities;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import com.nhom17.quanlykaraoke.utils.ConstantUtil;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -21,7 +23,7 @@ import jakarta.persistence.Table;
 public class ChiTietPhieuDatPhong implements Serializable {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -83,6 +85,22 @@ public class ChiTietPhieuDatPhong implements Serializable {
 
 	public void setThoiGianKetThuc(LocalDateTime thoiGianKetThuc) {
 		this.thoiGianKetThuc = thoiGianKetThuc;
+	}
+
+	public double getTienPhongAndPhuPhi() {
+		if (thoiGianBatDau.getHour() < ConstantUtil.NIGHTTIME_BEGIN_HOUR) {
+			double tienPhong = thoiGianBatDau.until(thoiGianKetThuc, java.time.temporal.ChronoUnit.HOURS)
+					* ConstantUtil.DAYTIME_HOUR_PRICE;
+			double tienPhuPhi = phong.getLoaiPhong().getPhuPhi();
+
+			return tienPhong + tienPhuPhi;
+		} else {
+			double tienPhong = thoiGianBatDau.until(thoiGianKetThuc, java.time.temporal.ChronoUnit.HOURS)
+					* ConstantUtil.NIGHTTIME_HOUR_PRICE;
+			double tienPhuPhi = phong.getLoaiPhong().getPhuPhi();
+
+			return tienPhong + tienPhuPhi;
+		}
 	}
 
 	@Override

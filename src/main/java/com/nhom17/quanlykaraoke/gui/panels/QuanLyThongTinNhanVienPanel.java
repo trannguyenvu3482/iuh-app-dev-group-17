@@ -402,7 +402,7 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 					cbChucVu.setSelectedItem(modelNhanVien.getValueAt(tblNhanVien.getSelectedRow(), 4).toString());
 					txtCCCD.setText(nv.getCCCD());
 					cbTrangThai.setSelectedItem(modelNhanVien.getValueAt(tblNhanVien.getSelectedRow(), 5).toString());
-					txtNgaySinh.setDate(DateTimeFormatUtil.formatStringToDate(
+					txtNgaySinh.setDate(DateTimeFormatUtil.formatLocalDateToDate(
 							LocalDate.parse(modelNhanVien.getValueAt(tblNhanVien.getSelectedRow(), 3).toString(),
 									DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
 					avt.setIcon(ConstantUtil.byteArrayToImageIcon(nv.getAnhDaiDien()));
