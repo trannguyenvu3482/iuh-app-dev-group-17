@@ -53,7 +53,7 @@ public class PhieuDatPhongDAO {
 		try {
 			// Handle PhieuDatPhong inner join ChiTietPhieuDatPhong then query for
 			// thoiGianBatDau and thoiGianKetThuc
-			String sql = "SELECT * FROM PhieuDatPhong p "
+			String sql = "SELECT p.* FROM PhieuDatPhong p "
 					+ "INNER JOIN ChiTietPhieuDatPhong c ON p.maPhieuDatPhong = c.maPhieuDatPhong "
 					+ "WHERE (c.thoiGianBatDau BETWEEN :fromDate AND :toDate) OR (c.thoiGianKetThuc BETWEEN :fromDate AND :toDate)";
 			Query<PhieuDatPhong> query = session.createNativeQuery(sql, PhieuDatPhong.class);

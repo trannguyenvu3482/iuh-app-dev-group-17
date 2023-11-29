@@ -12,6 +12,8 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.NumberFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -328,7 +330,10 @@ public class ThongKePanel extends JPanel implements ActionListener {
 		// Action listeners
 		boxFilterNgay.addActionListener(this);
 
-		loadDefaultData();
+		// Load default data (Load from 1/1/2021 to current date)
+		Date fromDate = DateTimeFormatUtil.formatLocalDateToDate(LocalDate.of(2021, 1, 1));
+		Date toDate = DateTimeFormatUtil.formatLocalDateToDate(LocalDate.now());
+		handleThongKeByDate(fromDate, toDate);
 
 		// Handle JCalendar components events
 		fromDateChooser.addPropertyChangeListener(evt -> {
@@ -390,12 +395,6 @@ public class ThongKePanel extends JPanel implements ActionListener {
 		lblDoanhThuTrungBinh.setText(lblDoanhThuTrungBinh.getText().concat(MoneyFormatUtil.format(doanhThuTrungBinh)));
 	}
 
-	private void loadDefaultData() {
-		// TODO Auto-generated method stub
-		// Load data
-
-		// Load chart data
-	}
 
 	private static CategoryDataset createDataset() {
 		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
