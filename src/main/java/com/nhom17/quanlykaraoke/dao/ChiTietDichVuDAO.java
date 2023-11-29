@@ -50,6 +50,28 @@ public class ChiTietDichVuDAO {
 		}
 	}
 
+	public double getTongTienDichVuByMaPDP(String maPDP) {
+		Session session = factory.getCurrentSession();
+		Transaction t = session.beginTransaction();
+		List<ChiTietDichVu> listChiTietDichVu = null;
+		double tongTienDichVu = 0;
+		try {
+			String sql = "SELECT * FROM ChiTietDichVu WHERE maPhieuDatPhong = '" + maPDP + "'";
+			listChiTietDichVu = session.createNativeQuery(sql, ChiTietDichVu.class).getResultList();
+
+			for (ChiTietDichVu chiTietDichVu : listChiTietDichVu) {
+				tongTienDichVu += chiTietDichVu.getThanhTienDichVu();
+			}
+
+			t.commit();
+			return tongTienDichVu;
+		} catch (Exception e) {
+			System.out.println("ROLLBACK!");
+			t.rollback();
+			return tongTienDichVu;
+		}
+	}
+
 	public List<ChiTietDichVu> getAllChiTietDichVus() {
 		Session session = factory.getCurrentSession();
 		Transaction t = session.beginTransaction();

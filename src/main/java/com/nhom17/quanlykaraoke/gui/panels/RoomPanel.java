@@ -118,7 +118,7 @@ public class RoomPanel extends JPanel implements MouseListener {
 
 			if (ctpdp.getThoiGianBatDau().until(LocalDateTime.now(), ChronoUnit.MINUTES) > 15) {
 				System.out.println("FINISH!");
-				if (pdpBUS.finishPhieuDatPhong(p.getMaPhong())) {
+				if (pdpBUS.finishPhieuDatPhong(p.getMaPhong(), 0)) {
 					return true;
 				}
 

@@ -22,7 +22,12 @@ public class ConstantUtil {
 	public static final Color MAIN_COLOR = new Color(20, 20, 20);
 	public static final int MAXIMUM_PAGE_SIZE = 8;
 	public static NhanVien currentNhanVien = null;
+	public static final int DAYTIME_BEGIN_HOUR = 0;
+	public static final int DAYTIME_END_HOUR = 18;
 	public static final double DAYTIME_HOUR_PRICE = 45000;
+
+	public static final int NIGHTTIME_BEGIN_HOUR = 18;
+	public static final int NIGHTTIME_END_HOUR = 23;
 	public static final double NIGHTTIME_HOUR_PRICE = 60000;
 
 	public static final double getStandardHourPrice(LocalDateTime time) {

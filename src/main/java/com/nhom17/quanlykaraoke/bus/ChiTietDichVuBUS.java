@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.nhom17.quanlykaraoke.dao.ChiTietDichVuDAO;
 import com.nhom17.quanlykaraoke.entities.ChiTietDichVu;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 public class ChiTietDichVuBUS {
 	private ChiTietDichVuDAO ctdvDAO;
@@ -26,6 +28,10 @@ public class ChiTietDichVuBUS {
 
 	public ChiTietDichVu updateChiTietDichVu(ChiTietDichVu ctdv) {
 		return ctdvDAO.updateChiTietDichVu(ctdv);
+	}
+
+	public double getTongTienDichVuByMaPDP(String maPDP) {
+		return ctdvDAO.getTongTienDichVuByMaPDP(maPDP);
 	}
 
 	public boolean deleteChiTietDichVu(ChiTietDichVu chiTietDichVu) {

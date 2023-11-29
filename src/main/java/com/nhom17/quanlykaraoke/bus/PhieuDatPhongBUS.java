@@ -1,5 +1,6 @@
 package com.nhom17.quanlykaraoke.bus;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -9,6 +10,9 @@ import com.nhom17.quanlykaraoke.dao.PhongDAO;
 import com.nhom17.quanlykaraoke.entities.ChiTietPhieuDatPhong;
 import com.nhom17.quanlykaraoke.entities.PhieuDatPhong;
 import com.nhom17.quanlykaraoke.entities.Phong;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 public class PhieuDatPhongBUS {
 	private PhieuDatPhongDAO pdpDAO;
@@ -29,9 +33,17 @@ public class PhieuDatPhongBUS {
 		return pdpDAO.getAllPhieuDatPhongs();
 	}
 
-	public boolean finishPhieuDatPhong(String maPhong) {
-		return pdpDAO.finishPhieuDatPhong(maPhong.trim());
+	public boolean finishPhieuDatPhong(String maPhong, double tongTien) {
+		return pdpDAO.finishPhieuDatPhong(maPhong.trim(), tongTien);
 
+	}
+
+	public List<PhieuDatPhong> getAllPhieuDatPhongFromDate(LocalDate fromDate, LocalDate toDate) {
+		return pdpDAO.getAllPhieuDatPhongFromDate(fromDate, toDate);
+	}
+
+	public List<PhieuDatPhong> getAllPhieuDatPhongByMonth(int month) {
+		return pdpDAO.getAllPhieuDatPhongByMonth(month);
 	}
 
 	public boolean changeRoomForPhieuDatPhong(String currentMaPhong, String moveToMaPhong) {
@@ -40,7 +52,7 @@ public class PhieuDatPhongBUS {
 
 		if (ctpdpDAO.addChiTietPhieuDatPhong(
 				new ChiTietPhieuDatPhong(p, ctpdp.getPhieuDatPhong(), LocalDateTime.now(), null))) {
-			return pdpDAO.finishPhieuDatPhong(currentMaPhong);
+			return pdpDAO.finishPhieuDatPhong(currentMaPhong, 0);
 		}
 
 		return false;
