@@ -57,9 +57,9 @@ public class ChiTietPhieuDatPhongDAO {
 		List<ChiTietPhieuDatPhong> listChiTietPhieuDatPhong = null;
 		try {
 			// Handle PhieuDatPhong
-			Query<ChiTietPhieuDatPhong> query = session.createNativeQuery(
-					"SELECT * FROM ChiTietPhieuDatPhong where maPhieuDatPhong = '" + maPhieuDatPhong + "'",
-					ChiTietPhieuDatPhong.class);
+			Query<ChiTietPhieuDatPhong> query = session
+					.createNativeQuery("SELECT * FROM ChiTietPhieuDatPhong where maPhieuDatPhong = '" + maPhieuDatPhong
+							+ "' AND thoiGianKetThuc IS NOT NULL", ChiTietPhieuDatPhong.class);
 
 			listChiTietPhieuDatPhong = query.getResultList();
 

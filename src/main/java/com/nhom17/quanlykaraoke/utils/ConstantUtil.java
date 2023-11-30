@@ -31,7 +31,7 @@ public class ConstantUtil {
 	public static final double NIGHTTIME_HOUR_PRICE = 60000;
 
 	public static final double getStandardHourPrice(LocalDateTime time) {
-		if (time.getHour() < 12) {
+		if (time.getHour() < NIGHTTIME_BEGIN_HOUR) {
 			return DAYTIME_HOUR_PRICE;
 		} else {
 			return NIGHTTIME_HOUR_PRICE;
@@ -147,5 +147,5 @@ public class ConstantUtil {
 		// Display circular image
 		return new ImageIcon(bi.getScaledInstance(200, 200, Image.SCALE_SMOOTH));
 	}
-	
+
 }

@@ -2,6 +2,7 @@ package com.nhom17.quanlykaraoke.entities;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 import com.nhom17.quanlykaraoke.utils.ConstantUtil;
 
@@ -89,13 +90,13 @@ public class ChiTietPhieuDatPhong implements Serializable {
 
 	public double getTienPhongAndPhuPhi() {
 		if (thoiGianBatDau.getHour() < ConstantUtil.NIGHTTIME_BEGIN_HOUR) {
-			double tienPhong = thoiGianBatDau.until(thoiGianKetThuc, java.time.temporal.ChronoUnit.HOURS)
+			double tienPhong = ChronoUnit.HOURS.between(thoiGianBatDau, thoiGianKetThuc)
 					* ConstantUtil.DAYTIME_HOUR_PRICE;
 			double tienPhuPhi = phong.getLoaiPhong().getPhuPhi();
 
 			return tienPhong + tienPhuPhi;
 		} else {
-			double tienPhong = thoiGianBatDau.until(thoiGianKetThuc, java.time.temporal.ChronoUnit.HOURS)
+			double tienPhong = ChronoUnit.HOURS.between(thoiGianBatDau, thoiGianKetThuc)
 					* ConstantUtil.NIGHTTIME_HOUR_PRICE;
 			double tienPhuPhi = phong.getLoaiPhong().getPhuPhi();
 

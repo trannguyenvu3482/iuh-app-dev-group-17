@@ -51,6 +51,7 @@ import com.nhom17.quanlykaraoke.gui.panels.QuanLyHangHoaPanel;
 import com.nhom17.quanlykaraoke.gui.panels.QuanLyPhongPanel;
 import com.nhom17.quanlykaraoke.gui.panels.QuanLyThongTinNhanVienPanel;
 import com.nhom17.quanlykaraoke.gui.panels.ThongKePanel;
+import com.nhom17.quanlykaraoke.gui.panels.ThongTinPhanMemPanel;
 import com.nhom17.quanlykaraoke.gui.panels.XemThongTinCaNhanPanel;
 import com.nhom17.quanlykaraoke.utils.ClockUtil;
 
@@ -119,8 +120,7 @@ public class QuanLyGUI extends MyFrame implements ActionListener {
 	private final JPanel panelTop = new JPanel();
 	private final JLabel lblName = new JLabel("Date");
 	private final Component verticalGlue = Box.createVerticalGlue();
-	private final JPanel panelAppInfo = new JPanel();
-	private final JLabel lblNewLabel = new JLabel("New label");
+	private final JPanel panelAppInfo = new ThongTinPhanMemPanel();
 	private final Component verticalStrut = Box.createVerticalStrut(20);
 
 	// VARIABLES
@@ -349,8 +349,6 @@ public class QuanLyGUI extends MyFrame implements ActionListener {
 
 		panelAppInfo.setName("panelAppInfo");
 		panelContent.add(panelAppInfo, "panelAppInfo");
-
-		panelAppInfo.add(lblNewLabel);
 
 		btnSend.setFont(new Font("Tahoma", Font.PLAIN, 42));
 		btnSend.addActionListener(this);

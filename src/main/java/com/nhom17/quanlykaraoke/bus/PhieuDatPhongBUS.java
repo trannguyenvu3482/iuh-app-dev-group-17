@@ -1,6 +1,5 @@
 package com.nhom17.quanlykaraoke.bus;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -10,9 +9,6 @@ import com.nhom17.quanlykaraoke.dao.PhongDAO;
 import com.nhom17.quanlykaraoke.entities.ChiTietPhieuDatPhong;
 import com.nhom17.quanlykaraoke.entities.PhieuDatPhong;
 import com.nhom17.quanlykaraoke.entities.Phong;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 
 public class PhieuDatPhongBUS {
 	private PhieuDatPhongDAO pdpDAO;
@@ -38,7 +34,7 @@ public class PhieuDatPhongBUS {
 
 	}
 
-	public List<PhieuDatPhong> getAllPhieuDatPhongFromDate(LocalDate fromDate, LocalDate toDate) {
+	public List<PhieuDatPhong> getAllPhieuDatPhongFromDate(LocalDateTime fromDate, LocalDateTime toDate) {
 		return pdpDAO.getAllPhieuDatPhongFromDate(fromDate, toDate);
 	}
 

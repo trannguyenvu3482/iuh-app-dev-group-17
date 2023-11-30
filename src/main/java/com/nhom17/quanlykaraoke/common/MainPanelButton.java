@@ -21,8 +21,8 @@ public class MainPanelButton extends JPanel implements MouseListener {
 	private JLabel buttonTitle;
 	private JLabel buttonIcon;
 	private Component horizontalStrut_1;
-	private JPanel activatePanel = new JPanel();
-	private JPanel panelContent = new JPanel();
+	private JPanel activatePanel;
+	private JPanel panelContent;
 
 	public MainPanelButton(int width, int height, String title, Ikon icon, JPanel activatePanel, JPanel panelContent) {
 		this.activatePanel = activatePanel;
@@ -58,9 +58,6 @@ public class MainPanelButton extends JPanel implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		System.out.println("CLICKED");
-		System.out.println("Show panel: " + activatePanel.getName());
-
 		CardLayout layout = (CardLayout) panelContent.getLayout();
 		layout.show(panelContent, activatePanel.getName());
 	}

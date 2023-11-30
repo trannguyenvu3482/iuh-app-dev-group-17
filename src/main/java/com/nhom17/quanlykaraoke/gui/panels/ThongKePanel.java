@@ -9,11 +9,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.text.NumberFormat;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -30,13 +27,6 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 
-import com.nhom17.quanlykaraoke.bus.ChiTietDichVuBUS;
-import com.nhom17.quanlykaraoke.bus.ChiTietPhieuDatPhongBUS;
-import com.nhom17.quanlykaraoke.entities.ChiTietDichVu;
-import com.nhom17.quanlykaraoke.entities.ChiTietPhieuDatPhong;
-import com.nhom17.quanlykaraoke.entities.Phong;
-import com.nhom17.quanlykaraoke.utils.DateTimeFormatUtil;
-import com.nhom17.quanlykaraoke.utils.MoneyFormatUtil;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -48,13 +38,23 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignA;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignB;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignC;
+import org.kordamp.ikonli.materialdesign2.MaterialDesignR;
 
+import com.nhom17.quanlykaraoke.bus.ChiTietDichVuBUS;
+import com.nhom17.quanlykaraoke.bus.ChiTietPhieuDatPhongBUS;
 import com.nhom17.quanlykaraoke.common.MyIcon;
 import com.nhom17.quanlykaraoke.dao.PhieuDatPhongDAO;
+import com.nhom17.quanlykaraoke.entities.ChiTietPhieuDatPhong;
 import com.nhom17.quanlykaraoke.entities.PhieuDatPhong;
+import com.nhom17.quanlykaraoke.utils.DateTimeFormatUtil;
+import com.nhom17.quanlykaraoke.utils.MoneyFormatUtil;
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JMonthChooser;
 import com.toedter.calendar.JYearChooser;
+
+import raven.toast.Notifications;
+import raven.toast.Notifications.Location;
+import raven.toast.Notifications.Type;
 
 /**
  * @author Trần Nguyên Vũ, Trần Ngọc Phát, Mai Nhật Hào, Trần Thanh Vy
@@ -71,16 +71,18 @@ public class ThongKePanel extends JPanel implements ActionListener {
 	private final ChiTietPhieuDatPhongBUS ctpdpBUS = new ChiTietPhieuDatPhongBUS();
 
 	private final ChiTietDichVuBUS ctdvBUS = new ChiTietDichVuBUS();
-	private final JLabel lblDoanhThuTrungBinh = new JLabel("Doanh thu trung bình: ");
-	private final JLabel lblTongDoanhThu = new JLabel("Tổng doanh thu: ");
-	private final JLabel lblTongHoaDon = new JLabel("Tổng số hóa đơn: ");
-	private final JLabel lblDoanhThuPhongThuong = new JLabel("Doanh thu phòng thường: ");
-	private final JLabel lblDoanhThuPhongVIP = new JLabel("Doanh thu phòng VIP: ");
-	private final JLabel lblTongTienPhong = new JLabel("Tổng tiền phòng: ");
-	private final JLabel lblTongTienDichVu = new JLabel("Tổng tiền dịch vụ: ");
+	private final JLabel lblDoanhThuTrungBinh = new JLabel("");
+	private final JLabel lblTongDoanhThu = new JLabel("");
+	private final JLabel lblTongHoaDon = new JLabel("");
+	private final JLabel lblDoanhThuPhongThuong = new JLabel("");
+	private final JLabel lblDoanhThuPhongVIP = new JLabel("");
+	private final JLabel lblTongTienPhong = new JLabel("");
+	private final JLabel lblTongTienDichVu = new JLabel("");
 
-	JDateChooser fromDateChooser = new JDateChooser();
-	JDateChooser toDateChooser = new JDateChooser();
+	private final JDateChooser fromDateChooser = new JDateChooser();
+	private final JDateChooser toDateChooser = new JDateChooser();
+
+	private final JMonthChooser monthChooser = new JMonthChooser();
 
 	// VARIABLES
 	private double doanhThuTrungBinh = 0;
@@ -90,7 +92,6 @@ public class ThongKePanel extends JPanel implements ActionListener {
 	private double tongTienDichVu = 0;
 	private double doanhThuPhongThuong = 0;
 	private double doanhThuPhongVIP = 0;
-
 
 	/**
 	 *
@@ -136,10 +137,10 @@ public class ThongKePanel extends JPanel implements ActionListener {
 		filtersNgay.setName("filtersNgay");
 		panelFilters.add(filtersNgay, "filtersNgay");
 
-
 		fromDateChooser.setMaxSelectableDate(new Date());
 		fromDateChooser.getCalendarButton().setPreferredSize(new Dimension(26, 19));
 		fromDateChooser.getCalendarButton().setFont(new Font("Dialog", Font.BOLD, 20));
+		fromDateChooser.getDateEditor().setEnabled(false);
 		filtersNgay.add(fromDateChooser);
 		fromDateChooser.setLocale(new Locale("vi", "VN"));
 		fromDateChooser.setPreferredSize(new Dimension(150, 48));
@@ -152,6 +153,7 @@ public class ThongKePanel extends JPanel implements ActionListener {
 		toDateChooser.setMaxSelectableDate(new Date());
 		toDateChooser.getCalendarButton().setPreferredSize(new Dimension(26, 19));
 		toDateChooser.setLocale(new Locale("vi", "VN"));
+		toDateChooser.getDateEditor().setEnabled(false);
 		filtersNgay.add(toDateChooser);
 		toDateChooser.setPreferredSize(new Dimension(150, 48));
 		toDateChooser.setFont(new Font("Dialog", Font.PLAIN, 18));
@@ -165,7 +167,6 @@ public class ThongKePanel extends JPanel implements ActionListener {
 		panelFilters.add(filtersThang, "filtersThang");
 		filtersThang.setName("filtersThang");
 
-		JMonthChooser monthChooser = new JMonthChooser();
 		monthChooser.setLocale(new Locale("vi", "VN"));
 		monthChooser.setPreferredSize(new Dimension(200, 46));
 		monthChooser.setFont(new Font("Dialog", Font.PLAIN, 18));
@@ -186,10 +187,17 @@ public class ThongKePanel extends JPanel implements ActionListener {
 		yearChooser.setFont(new Font("Dialog", Font.PLAIN, 18));
 		filtersNam.add(yearChooser);
 
-		JButton btnReset = new JButton("Reset");
+		JButton btnReset = new JButton("");
+		btnReset.putClientProperty("JButton.buttonType", "square");
+		btnReset.setIcon(MyIcon.getIcon(MaterialDesignR.REFRESH, 32, null));
+		btnReset.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				resetAllStatistics();
+			}
+		});
 		panelFilterTheoNgay.add(btnReset);
 
-		Component horizontalStrut_1_1 = Box.createHorizontalStrut(500);
+		Component horizontalStrut_1_1 = Box.createHorizontalStrut(800);
 		panelFilterTheoNgay.add(horizontalStrut_1_1);
 
 		JPanel panelContentTheoNgay = new JPanel();
@@ -347,25 +355,124 @@ public class ThongKePanel extends JPanel implements ActionListener {
 
 					// Handle filter
 					// Check if from date and to date are valid
-					if (toDateChooser.getDate() != null && fromDateChooser.getDate().before(toDateChooser.getDate())) {
+					if (toDateChooser.getDate() != null && (fromDateChooser.getDate().before(toDateChooser.getDate())
+							|| fromDateChooser.getDate().equals(toDateChooser.getDate()))) {
 						// Filter
 						handleThongKeByDate(fromDateChooser.getDate(), toDateChooser.getDate());
+						Notifications.getInstance().show(Type.SUCCESS, Location.BOTTOM_RIGHT, "Thống kê từ "
+								+ fromDateChooser.getDate().toString() + " đến " + toDateChooser.getDate().toString());
+					} else {
+						Notifications.getInstance().show(Type.ERROR, Location.BOTTOM_RIGHT, "Ngày không hợp lệ");
 					}
+				}
+			}
+		});
+
+		toDateChooser.addPropertyChangeListener(evt -> {
+			if (evt.getPropertyName().equals("date")) {
+				// Handle date change
+				Date date = fromDateChooser.getDate();
+
+				if (date != null) {
+					// Set min date for toDateChooser
+					toDateChooser.setMinSelectableDate(date);
+
+					// Handle filter
+					// Check if from date and to date are valid
+					if (fromDateChooser.getDate() != null && (fromDateChooser.getDate().before(toDateChooser.getDate())
+							|| fromDateChooser.getDate().equals(toDateChooser.getDate()))) {
+						// Filter
+						handleThongKeByDate(fromDateChooser.getDate(), toDateChooser.getDate());
+						Notifications.getInstance().show(Type.SUCCESS, Location.BOTTOM_RIGHT, "Thống kê từ "
+								+ fromDateChooser.getDate().toString() + " đến " + toDateChooser.getDate().toString());
+					} else {
+						Notifications.getInstance().show(Type.ERROR, Location.BOTTOM_RIGHT, "Ngày không hợp lệ");
+						resetInputs();
+					}
+				}
+			}
+		});
+
+		monthChooser.addPropertyChangeListener(evt -> {
+			if (evt.getPropertyName().equals("month")) {
+				// Handle date change
+				int month = monthChooser.getMonth() + 1;
+
+				// Handle filter
+				// Check if from date and to date are valid
+				if (month > 0) {
+					// Filter
+					handleThongKeByMonth(month);
+					Notifications.getInstance().show(Type.SUCCESS, Location.BOTTOM_RIGHT,
+							"Thống kê theo tháng " + month);
+				} else {
+					Notifications.getInstance().show(Type.ERROR, Location.BOTTOM_RIGHT, "Tháng không hợp lệ");
+					resetInputs();
+				}
+			}
+		});
+
+		yearChooser.addPropertyChangeListener(evt -> {
+			if (evt.getPropertyName().equals("year")) {
+				// Handle date change
+				int year = yearChooser.getYear();
+
+				// Handle filter
+				// Check if from date and to date are valid
+				if (year > 0) {
+					// Filter
+					handleThongKeByYear(year);
+					Notifications.getInstance().show(Type.SUCCESS, Location.BOTTOM_RIGHT, "Thống kê theo năm " + year);
+				} else {
+					Notifications.getInstance().show(Type.ERROR, Location.BOTTOM_RIGHT, "Năm không hợp lệ");
+					resetInputs();
 				}
 			}
 		});
 	}
 
-	private void handleThongKeByDate(Date fromDate, Date toDate) {
-		List<PhieuDatPhong> listPDP = pdpDAO.getAllPhieuDatPhongFromDate(DateTimeFormatUtil.formatDateToLocalDate(fromDate), DateTimeFormatUtil.formatDateToLocalDate(toDate));
+	/**
+	 * 
+	 */
+	private void resetAllStatistics() {
+		doanhThuTrungBinh = 0;
+		tongDoanhThu = 0;
+		tongHoaDon = 0;
+		tongTienPhong = 0;
+		tongTienDichVu = 0;
+		doanhThuPhongThuong = 0;
+		doanhThuPhongVIP = 0;
 
-		// Handle data
+		lblTongHoaDon.setText("Tổng số hóa đơn: 0");
+		lblDoanhThuPhongThuong.setText("Doanh thu phòng thường: 0");
+		lblDoanhThuPhongVIP.setText("Doanh thu phòng VIP: 0");
+		lblTongTienPhong.setText("Tổng tiền phòng: 0");
+		lblTongTienDichVu.setText("Tổng tiền dịch vụ: 0");
+		lblTongDoanhThu.setText("Tổng doanh thu: 0");
+		lblDoanhThuTrungBinh.setText("Doanh thu trung bình: 0");
+
+	}
+
+	/**
+	 * 
+	 */
+	private void resetInputs() {
+		fromDateChooser.setDate(null);
+		toDateChooser.setDate(null);
+		monthChooser.setMonth(0);
+	}
+
+	private void handleCalculateData(List<PhieuDatPhong> listPDP) {
 		listPDP.forEach(pdp -> {
 			// Handle count
 			tongHoaDon++;
 
 			// Handle doanh thu phòng
-			List<ChiTietPhieuDatPhong> listCTPDP = ctpdpBUS.getAllChiTietPhieuDatPhongByMaPhieuDatPhong(pdp.getMaPhieuDatPhong());
+			List<ChiTietPhieuDatPhong> listCTPDP = ctpdpBUS
+					.getAllChiTietPhieuDatPhongByMaPhieuDatPhong(pdp.getMaPhieuDatPhong());
+
+			System.out.println("Số chi tiết PĐP cho PĐP " + pdp.getMaPhieuDatPhong() + ":" + listCTPDP.size());
+
 			listCTPDP.forEach(ctpdp -> {
 				tongTienPhong += ctpdp.getTienPhongAndPhuPhi();
 
@@ -384,17 +491,60 @@ public class ThongKePanel extends JPanel implements ActionListener {
 			tongDoanhThu = tongTienPhong + tongTienDichVu;
 			doanhThuTrungBinh = tongDoanhThu / tongHoaDon;
 		});
-
-		// Handle set labels
-		lblTongHoaDon.setText(lblTongHoaDon.getText().concat(String.valueOf(tongHoaDon)));
-		lblDoanhThuPhongThuong.setText(lblDoanhThuPhongThuong.getText().concat(MoneyFormatUtil.format(doanhThuPhongThuong)));
-		lblDoanhThuPhongVIP.setText(lblDoanhThuPhongVIP.getText().concat(MoneyFormatUtil.format(doanhThuPhongVIP)));
-		lblTongTienPhong.setText(lblTongTienPhong.getText().concat(MoneyFormatUtil.format(tongTienPhong)));
-		lblTongTienDichVu.setText(lblTongTienDichVu.getText().concat(MoneyFormatUtil.format(tongTienDichVu)));
-		lblTongDoanhThu.setText(lblTongDoanhThu.getText().concat(MoneyFormatUtil.format(tongDoanhThu)));
-		lblDoanhThuTrungBinh.setText(lblDoanhThuTrungBinh.getText().concat(MoneyFormatUtil.format(doanhThuTrungBinh)));
 	}
 
+	private void handleSetLabel() {
+		lblTongHoaDon.setText("Tổng số hóa đơn: " + (String.valueOf(tongHoaDon)));
+		lblDoanhThuPhongThuong.setText("Doanh thu phòng thường: " + (MoneyFormatUtil.format(doanhThuPhongThuong)));
+		lblDoanhThuPhongVIP.setText("Doanh thu phòng VIP: " + (MoneyFormatUtil.format(doanhThuPhongVIP)));
+		lblTongTienPhong.setText("Tổng tiền phòng: " + (MoneyFormatUtil.format(tongTienPhong)));
+		lblTongTienDichVu.setText("Tổng tiền dịch vụ: " + (MoneyFormatUtil.format(tongTienDichVu)));
+		lblTongDoanhThu.setText("Tổng doanh thu: " + (MoneyFormatUtil.format(tongDoanhThu)));
+		lblDoanhThuTrungBinh.setText("Doanh thu trung bình: " + (MoneyFormatUtil.format(doanhThuTrungBinh)));
+	}
+
+	private void handleThongKeByDate(Date fromDate, Date toDate) {
+		// Reset all fields
+		resetAllStatistics();
+
+		List<PhieuDatPhong> listPDP = pdpDAO.getAllPhieuDatPhongFromDate(
+				DateTimeFormatUtil.formatDateToLocalDate(fromDate).atStartOfDay(),
+				DateTimeFormatUtil.formatDateToLocalDate(toDate).atStartOfDay());
+
+		System.out.println("Số PĐP" + ": " + listPDP.size());
+
+		// Handle data
+		handleCalculateData(listPDP);
+
+		// Handle set labels
+		handleSetLabel();
+	}
+
+	private void handleThongKeByMonth(int month) {
+		// Reset all fields
+		resetAllStatistics();
+
+		List<PhieuDatPhong> listPDP = pdpDAO.getAllPhieuDatPhongByMonth(month);
+
+		// Calculate data
+		handleCalculateData(listPDP);
+
+		// Set label
+		handleSetLabel();
+	}
+
+	private void handleThongKeByYear(int year) {
+		// Reset all fields
+		resetAllStatistics();
+
+		List<PhieuDatPhong> listPDP = pdpDAO.getAllPhieuDatPhongByYear(year);
+
+		// Calculate data
+		handleCalculateData(listPDP);
+
+		// Set label
+		handleSetLabel();
+	}
 
 	private static CategoryDataset createDataset() {
 		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
