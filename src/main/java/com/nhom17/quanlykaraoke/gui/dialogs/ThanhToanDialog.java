@@ -92,6 +92,7 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 	 * 
 	 */
 	public ThanhToanDialog(Phong p) {
+		getContentPane().setBackground(new Color(216, 209, 165));
 		setSize(1200, 800);
 		setTitle("Thanh toán phiếu đặt phòng");
 		setResizable(false);
@@ -101,18 +102,21 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 		this.p = p;
 
 		JPanel panelTop = new JPanel();
+		panelTop.setBackground(new Color(216, 209, 165));
 		panelTop.setBorder(new EmptyBorder(10, 30, 10, 30));
 		getContentPane().add(panelTop, BorderLayout.NORTH);
 		panelTop.setLayout(new BoxLayout(panelTop, BoxLayout.Y_AXIS));
 
 		Box hBox1 = Box.createHorizontalBox();
 		panelTop.add(hBox1);
+		lblTenNhanVien.setForeground(new Color(50, 102, 133));
 
 		lblTenNhanVien.setFont(new Font("Dialog", Font.BOLD, 20));
 		hBox1.add(lblTenNhanVien);
 
 		Component horizontalGlue = Box.createHorizontalGlue();
 		hBox1.add(horizontalGlue);
+		lblTenKhachHang.setForeground(new Color(50, 102, 133));
 
 		lblTenKhachHang.setFont(new Font("Dialog", Font.BOLD, 20));
 		hBox1.add(lblTenKhachHang);
@@ -122,17 +126,20 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 
 		Box hBox2 = Box.createHorizontalBox();
 		panelTop.add(hBox2);
+		lblSDTNhanVien.setForeground(new Color(50, 102, 133));
 
 		lblSDTNhanVien.setFont(new Font("Dialog", Font.BOLD, 20));
 		hBox2.add(lblSDTNhanVien);
 
 		Component horizontalGlue_1 = Box.createHorizontalGlue();
 		hBox2.add(horizontalGlue_1);
+		lblSDTKhachHang.setForeground(new Color(50, 102, 133));
 
 		lblSDTKhachHang.setFont(new Font("Dialog", Font.BOLD, 20));
 		hBox2.add(lblSDTKhachHang);
 
 		JPanel panelBottom = new JPanel();
+		panelBottom.setBackground(new Color(216, 209, 165));
 		panelBottom.setBorder(new EmptyBorder(0, 30, 20, 30));
 		getContentPane().add(panelBottom, BorderLayout.SOUTH);
 		panelBottom.setLayout(new BoxLayout(panelBottom, BoxLayout.X_AXIS));
@@ -145,8 +152,10 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 
 		Component horizontalGlue_2 = Box.createHorizontalGlue();
 		panelBottom.add(horizontalGlue_2);
+		chkXuatHoaDon.setForeground(new Color(50, 102, 133));
+		chkXuatHoaDon.setBackground(new Color(216, 209, 165));
 
-		chkXuatHoaDon.setFont(new Font("Dialog", Font.BOLD, 20));
+		chkXuatHoaDon.setFont(new Font("Dialog", Font.BOLD | Font.ITALIC, 20));
 		panelBottom.add(chkXuatHoaDon);
 
 		Component horizontalStrut = Box.createHorizontalStrut(20);
@@ -158,22 +167,26 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 		panelBottom.add(btnXacNhan);
 
 		JPanel panelCenter = new JPanel();
+		panelCenter.setBackground(new Color(216, 209, 165));
 		getContentPane().add(panelCenter, BorderLayout.CENTER);
 		panelCenter.setLayout(new BorderLayout(0, 0));
 
 		JPanel panelInfo = new JPanel();
+		panelInfo.setBackground(new Color(216, 209, 165));
 		panelInfo.setBorder(new EmptyBorder(10, 30, 40, 30));
 		panelCenter.add(panelInfo, BorderLayout.SOUTH);
 		panelInfo.setLayout(new BoxLayout(panelInfo, BoxLayout.Y_AXIS));
 
 		Box hBox3 = Box.createHorizontalBox();
 		panelInfo.add(hBox3);
+		lblTienDichVu.setForeground(new Color(50, 102, 133));
 
 		lblTienDichVu.setFont(new Font("Dialog", Font.BOLD, 20));
 		hBox3.add(lblTienDichVu);
 
 		Component horizontalGlue_3 = Box.createHorizontalGlue();
 		hBox3.add(horizontalGlue_3);
+		lblGioNhanPhong.setForeground(new Color(50, 102, 133));
 
 		lblGioNhanPhong.setFont(new Font("Dialog", Font.BOLD, 20));
 		hBox3.add(lblGioNhanPhong);
@@ -183,12 +196,14 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 
 		Box hBox4 = Box.createHorizontalBox();
 		panelInfo.add(hBox4);
+		lblTienPhong.setForeground(new Color(50, 102, 133));
 
 		lblTienPhong.setFont(new Font("Dialog", Font.BOLD, 20));
 		hBox4.add(lblTienPhong);
 
 		Component horizontalGlue_3_1 = Box.createHorizontalGlue();
 		hBox4.add(horizontalGlue_3_1);
+		lblGioTraPhong.setForeground(new Color(50, 102, 133));
 
 		lblGioTraPhong.setFont(new Font("Dialog", Font.BOLD, 20));
 		hBox4.add(lblGioTraPhong);
@@ -198,6 +213,7 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 
 		Box hBox5 = Box.createHorizontalBox();
 		panelInfo.add(hBox5);
+		lblThueVAT.setForeground(new Color(50, 102, 133));
 
 		lblThueVAT.setFont(new Font("Dialog", Font.BOLD, 20));
 		hBox5.add(lblThueVAT);
@@ -206,6 +222,7 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 		hBox5.add(horizontalGlue_3_1_1);
 
 		JLabel lblTongThoiLuong = new JLabel("Tổng thời lượng: 60 phút");
+		lblTongThoiLuong.setForeground(new Color(50, 102, 133));
 		lblTongThoiLuong.setFont(new Font("Dialog", Font.BOLD, 20));
 		hBox5.add(lblTongThoiLuong);
 
@@ -214,6 +231,7 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 
 		Box hBox6 = Box.createHorizontalBox();
 		panelInfo.add(hBox6);
+		lblTongTien.setForeground(new Color(50, 102, 133));
 
 		lblTongTien.setFont(new Font("Dialog", Font.BOLD, 20));
 		hBox6.add(lblTongTien);
@@ -308,6 +326,8 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 		};
 
 		tbl = new JTable(model);
+		tbl.setBackground(new Color(243, 241, 228));
+		tbl.setForeground(new Color(0, 0, 0));
 		tbl.setRowSelectionAllowed(false);
 		tbl.setColumnSelectionAllowed(false);
 		tbl.setCellSelectionEnabled(false);
