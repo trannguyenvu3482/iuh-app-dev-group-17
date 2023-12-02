@@ -80,7 +80,7 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 		setLayout(new BorderLayout(0, 0));
 
 		JPanel panelTop = new JPanel();
-		panelTop.setBackground(Color.LIGHT_GRAY);
+		panelTop.setBackground(new Color(216, 209, 165));
 		panelTop.setBorder(new EmptyBorder(10, 24, 20, 24));
 		add(panelTop, BorderLayout.NORTH);
 		panelTop.setLayout(new BoxLayout(panelTop, BoxLayout.Y_AXIS));
@@ -88,6 +88,7 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 		panelTop.add(boxOne_1);
 
 		JLabel lblTnSnPhm_2 = new JLabel("Thông tin Phòng:");
+		lblTnSnPhm_2.setForeground(new Color(50, 102, 133));
 		lblTnSnPhm_2.setFont(new Font("Dialog", Font.BOLD, 24));
 		boxOne_1.add(lblTnSnPhm_2);
 
@@ -101,6 +102,7 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 		panelTop.add(boxOne);
 
 		JLabel lbTenPhong = new JLabel("Tên Phòng:");
+		lbTenPhong.setForeground(new Color(50, 102, 133));
 		lbTenPhong.setFont(new Font("Dialog", Font.BOLD, 20));
 		boxOne.add(lbTenPhong);
 
@@ -108,6 +110,7 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 		boxOne.add(horizontalStrut);
 
 		txtPhong = new JTextField();
+		txtPhong.setForeground(new Color(50, 102, 133));
 		txtPhong.setEditable(false);
 		txtPhong.setEnabled(false);
 		boxOne.add(txtPhong);
@@ -125,11 +128,13 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 		panelTop.add(boxTwo);
 
 		JLabel lbKichThuoc = new JLabel("Kích thước:");
+		lbKichThuoc.setForeground(new Color(50, 102, 133));
 		lbKichThuoc.setFont(new Font("Dialog", Font.BOLD, 20));
 		boxTwo.add(lbKichThuoc);
 
 		Component horizontalStrut_1 = Box.createHorizontalStrut(52);
 		boxTwo.add(horizontalStrut_1);
+		cbKichThuoc.setForeground(new Color(50, 102, 133));
 		cbKichThuoc.setModel(new DefaultComboBoxModel<String>(new String[] { "5", "10", "15", "20" }));
 
 		cbKichThuoc.setFont(new Font("Dialog", Font.PLAIN, 20));
@@ -146,11 +151,13 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 		panelTop.add(boxThree);
 
 		JLabel lbTenLP = new JLabel("Tên loại phòng:");
+		lbTenLP.setForeground(new Color(50, 102, 133));
 		lbTenLP.setFont(new Font("Dialog", Font.BOLD, 20));
 		boxThree.add(lbTenLP);
 
 		Component horizontalStrut_1_1_2_1_1_12 = Box.createHorizontalStrut(18);
 		boxThree.add(horizontalStrut_1_1_2_1_1_12);
+		cbTenLP.setForeground(new Color(50, 102, 133));
 		cbTenLP.setModel(new DefaultComboBoxModel<String>(
 				new String[] { "Phòng thường", "Phòng tiệc", "Phòng VIP", "Phòng tiệc VIP" }));
 
@@ -168,6 +175,7 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 		panelTop.add(boxFour);
 
 		JLabel lbPhuPhi = new JLabel("Phụ phí:");
+		lbPhuPhi.setForeground(new Color(50, 102, 133));
 		lbPhuPhi.setFont(new Font("Dialog", Font.BOLD, 20));
 		boxFour.add(lbPhuPhi);
 
@@ -182,6 +190,7 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 		formatter.setAllowsInvalid(false);
 		formatter.setOverwriteMode(true);
 		txtPhuPhi = new JFormattedTextField(formatter);
+		txtPhuPhi.setForeground(new Color(50, 102, 133));
 		txtPhuPhi.setEnabled(false);
 		txtPhuPhi.setEditable(false);
 		txtPhuPhi.setFont(new Font("Dialog", Font.PLAIN, 20));
@@ -199,14 +208,16 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 		panelTop.add(boxFive);
 
 		JLabel lblTnSnPhm_1_1_1_1 = new JLabel("Trạng thái:");
+		lblTnSnPhm_1_1_1_1.setForeground(new Color(50, 102, 133));
 		lblTnSnPhm_1_1_1_1.setFont(new Font("Dialog", Font.BOLD, 20));
 		boxFive.add(lblTnSnPhm_1_1_1_1);
 
 		Component horizontalStrut_1_1_1 = Box.createHorizontalStrut(63);
 		boxFive.add(horizontalStrut_1_1_1);
+		cbTrangThai.setForeground(new Color(50, 102, 133));
 
 		cbTrangThai.setEditable(true);
-		cbTrangThai.setModel(new DefaultComboBoxModel<String>(new String[] { "Còn hoạt động", "Ngưng hoạt động" }));
+		cbTrangThai.setModel(new DefaultComboBoxModel(new String[] {"Còn hoạt động", "Ngưng hoạt động"}));
 		cbTrangThai.setFont(new Font("Dialog", Font.PLAIN, 20));
 		boxFive.add(cbTrangThai);
 
@@ -218,6 +229,7 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 
 		Box boxSix = Box.createHorizontalBox();
 		panelTop.add(boxSix);
+		btnThem.setForeground(new Color(50, 102, 133));
 		btnThem.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 		btnThem.setIcon(MyIcon.getIcon(MaterialDesignP.PLUS_THICK, 32, null));
@@ -226,6 +238,7 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 
 		Component horizontalStrut_1_2_1 = Box.createHorizontalStrut(20);
 		boxSix.add(horizontalStrut_1_2_1);
+		btnSua.setForeground(new Color(50, 102, 133));
 		btnSua.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 		btnSua.setIcon(MyIcon.getIcon(MaterialDesignP.PENCIL, 32, null));
@@ -234,6 +247,7 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 
 		Component horizontalStrut_1_2_1_1_1 = Box.createHorizontalStrut(20);
 		boxSix.add(horizontalStrut_1_2_1_1_1);
+		btnClearFields.setForeground(new Color(50, 102, 133));
 
 		btnClearFields.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnClearFields.setIcon(MyIcon.getIcon(MaterialDesignB.BACKSPACE, 32, null));
@@ -247,8 +261,10 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 		panelTop.add(boxSix_1);
 
 		JLabel lblBLc = new JLabel("Bộ lọc: ");
+		lblBLc.setForeground(new Color(50, 102, 133));
 		lblBLc.setFont(new Font("Dialog", Font.BOLD, 20));
 		boxSix_1.add(lblBLc);
+		boxFilterKichThuoc.setForeground(new Color(50, 102, 133));
 
 		boxFilterKichThuoc.setFont(new Font("Dialog", Font.BOLD, 20));
 		String[] dataLHH = { "Kích thước", "5", "10", "15", "20" };
@@ -258,6 +274,7 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 
 		Component horizontalStrut_1_2 = Box.createHorizontalStrut(40);
 		boxSix_1.add(horizontalStrut_1_2);
+		boxFilterTenLoaiPhong.setForeground(new Color(50, 102, 133));
 
 		boxFilterTenLoaiPhong.setModel(new DefaultComboBoxModel<String>(
 				new String[] { "Tên loại phòng", "Phòng thường", "Phòng tiệc", "Phòng VIP", "Phòng tiệc VIP" }));
@@ -266,6 +283,7 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 
 		Component horizontalStrut_1_2_2 = Box.createHorizontalStrut(40);
 		boxSix_1.add(horizontalStrut_1_2_2);
+		boxFilterTrangThai.setForeground(new Color(50, 102, 133));
 		boxFilterTrangThai.setFont(new Font("Dialog", Font.BOLD, 20));
 		boxFilterTrangThai.setModel(
 				new DefaultComboBoxModel<String>(new String[] { "Trạng thái", "Còn hoạt động", "Ngưng hoạt động" }));
@@ -275,6 +293,7 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 		boxSix_1.add(horizontalStrut_1_1_2);
 
 		txtSearch = new JTextField();
+		txtSearch.setForeground(new Color(50, 102, 133));
 		txtSearch.setFont(new Font("Dialog", Font.PLAIN, 20));
 		boxSix_1.add(txtSearch);
 		txtSearch.setColumns(10);
@@ -330,6 +349,7 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 		};
 
 		tblPhong = new JTable(modelPhong);
+		tblPhong.setForeground(new Color(50, 102, 133));
 		tblPhong.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tblPhong.setFont(new Font("Dialog", Font.PLAIN, 18));
 		tblPhong.getTableHeader().setFont(new Font("Dialog", Font.BOLD, 18));

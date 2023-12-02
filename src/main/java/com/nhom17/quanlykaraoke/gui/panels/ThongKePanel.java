@@ -114,9 +114,11 @@ public class ThongKePanel extends JPanel implements ActionListener {
 		panelCenterTheoNgay.setLayout(new BorderLayout(0, 0));
 
 		JPanel panelFilterTheoNgay = new JPanel();
+		panelFilterTheoNgay.setBackground(new Color(216, 209, 165));
 		panelFilterTheoNgay.setBorder(new EmptyBorder(10, 20, 10, 20));
 		panelCenterTheoNgay.add(panelFilterTheoNgay, BorderLayout.NORTH);
 		panelFilterTheoNgay.setLayout(new BoxLayout(panelFilterTheoNgay, BoxLayout.X_AXIS));
+		boxFilterNgay.setForeground(new Color(50, 102, 133));
 
 		boxFilterNgay.setFont(new Font("Dialog", Font.BOLD, 20));
 		boxFilterNgay
@@ -226,7 +228,7 @@ public class ThongKePanel extends JPanel implements ActionListener {
 
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		panel_1.setBackground(Color.WHITE);
+		panel_1.setBackground(new Color(216, 209, 165));
 		panel.add(panel_1);
 		panel_1.setLayout(new BoxLayout(panel_1, BoxLayout.Y_AXIS));
 
@@ -237,6 +239,7 @@ public class ThongKePanel extends JPanel implements ActionListener {
 
 		Component horizontalStrut_3_1_1_1 = Box.createHorizontalStrut(20);
 		horizontalBox_3.add(horizontalStrut_3_1_1_1);
+		lblTongDoanhThu.setForeground(new Color(50, 102, 133));
 
 		lblTongDoanhThu.setHorizontalAlignment(SwingConstants.LEFT);
 		horizontalBox_3.add(lblTongDoanhThu);
@@ -248,6 +251,7 @@ public class ThongKePanel extends JPanel implements ActionListener {
 
 		Component horizontalStrut_3_1_1_1_1 = Box.createHorizontalStrut(20);
 		horizontalBox_2.add(horizontalStrut_3_1_1_1_1);
+		lblTongHoaDon.setForeground(new Color(50, 102, 133));
 
 		horizontalBox_2.add(lblTongHoaDon);
 		lblTongHoaDon.setFont(new Font("Dialog", Font.BOLD, 20));
@@ -258,6 +262,7 @@ public class ThongKePanel extends JPanel implements ActionListener {
 
 		Component horizontalStrut_3_1_1_1_1_1 = Box.createHorizontalStrut(20);
 		horizontalBox_1.add(horizontalStrut_3_1_1_1_1_1);
+		lblDoanhThuTrungBinh.setForeground(new Color(50, 102, 133));
 
 		horizontalBox_1.add(lblDoanhThuTrungBinh);
 		lblDoanhThuTrungBinh.setFont(new Font("Dialog", Font.BOLD, 20));
@@ -270,7 +275,7 @@ public class ThongKePanel extends JPanel implements ActionListener {
 		horizontalBox.add(horizontalStrut_2);
 
 		JLabel lblDonViDoanhThu = new JLabel("(Doanh thu/hóa đơn)");
-		lblDonViDoanhThu.setForeground(Color.LIGHT_GRAY);
+		lblDonViDoanhThu.setForeground(new Color(50, 102, 133));
 		horizontalBox.add(lblDonViDoanhThu);
 		lblDonViDoanhThu.setFont(new Font("Dialog", Font.ITALIC, 16));
 
@@ -279,7 +284,7 @@ public class ThongKePanel extends JPanel implements ActionListener {
 
 		JPanel panel_2 = new JPanel();
 		panel_2.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		panel_2.setBackground(Color.WHITE);
+		panel_2.setBackground(new Color(216, 209, 165));
 		panel.add(panel_2);
 		panel_2.setLayout(new BoxLayout(panel_2, BoxLayout.Y_AXIS));
 
@@ -290,6 +295,7 @@ public class ThongKePanel extends JPanel implements ActionListener {
 
 		Component horizontalStrut_3 = Box.createHorizontalStrut(20);
 		horizontalBox_3_1.add(horizontalStrut_3);
+		lblDoanhThuPhongThuong.setForeground(new Color(50, 102, 133));
 
 		lblDoanhThuPhongThuong.setHorizontalAlignment(SwingConstants.LEFT);
 		lblDoanhThuPhongThuong.setFont(new Font("Dialog", Font.BOLD, 20));
@@ -301,6 +307,7 @@ public class ThongKePanel extends JPanel implements ActionListener {
 
 		Component horizontalStrut_3_1 = Box.createHorizontalStrut(20);
 		horizontalBox_2_1.add(horizontalStrut_3_1);
+		lblDoanhThuPhongVIP.setForeground(new Color(50, 102, 133));
 
 		lblDoanhThuPhongVIP.setFont(new Font("Dialog", Font.BOLD, 20));
 		horizontalBox_2_1.add(lblDoanhThuPhongVIP);
@@ -311,6 +318,7 @@ public class ThongKePanel extends JPanel implements ActionListener {
 
 		Component horizontalStrut_3_1_1 = Box.createHorizontalStrut(20);
 		horizontalBox_1_1.add(horizontalStrut_3_1_1);
+		lblTongTienPhong.setForeground(new Color(50, 102, 133));
 
 		lblTongTienPhong.setFont(new Font("Dialog", Font.BOLD, 20));
 		horizontalBox_1_1.add(lblTongTienPhong);
@@ -324,6 +332,7 @@ public class ThongKePanel extends JPanel implements ActionListener {
 
 		Component horizontalStrut_3_1_1_2 = Box.createHorizontalStrut(20);
 		horizontalBox_4.add(horizontalStrut_3_1_1_2);
+		lblTongTienDichVu.setForeground(new Color(50, 102, 133));
 
 		lblTongTienDichVu.setFont(new Font("Dialog", Font.BOLD, 20));
 		horizontalBox_4.add(lblTongTienDichVu);

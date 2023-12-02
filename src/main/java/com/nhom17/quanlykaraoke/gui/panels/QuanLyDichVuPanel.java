@@ -329,7 +329,7 @@ public class QuanLyDichVuPanel extends JPanel implements ActionListener {
 		setLayout(new BorderLayout(0, 0));
 
 		JPanel panelTop = new JPanel();
-		panelTop.setBackground(Color.GRAY);
+		panelTop.setBackground(new Color(216, 209, 165));
 		add(panelTop, BorderLayout.NORTH);
 		panelTop.setLayout(new MigLayout("center", "[][][]", "[]"));
 
@@ -343,7 +343,7 @@ public class QuanLyDichVuPanel extends JPanel implements ActionListener {
 		txtSearchMaPhong.setText("Nhập vào mã phòng cần tìm...");
 		txtSearchMaPhong.setColumns(20);
 		JPanel panelCenter = new JPanel();
-		panelCenter.setBackground(Color.GRAY);
+		panelCenter.setBackground(new Color(216, 209, 165));
 		add(panelCenter, BorderLayout.CENTER);
 		GridBagLayout gbl_panelCenter = new GridBagLayout();
 		gbl_panelCenter.columnWidths = new int[] { 60, 250, 60 };
@@ -365,7 +365,7 @@ public class QuanLyDichVuPanel extends JPanel implements ActionListener {
 		gbc_btnLeft.gridy = 0;
 		panelCenter.add(btnLeft, gbc_btnLeft);
 
-		roomsPanel.setBackground(Color.GRAY);
+		roomsPanel.setBackground(new Color(216, 209, 165));
 		GridBagConstraints gbc_roomsPanel = new GridBagConstraints();
 		gbc_roomsPanel.fill = GridBagConstraints.BOTH;
 		gbc_roomsPanel.insets = new Insets(50, 0, 20, 0);
@@ -478,8 +478,8 @@ public class QuanLyDichVuPanel extends JPanel implements ActionListener {
 		gbc_panelControls.gridy = 1;
 		gbc_panelControls.gridx = 1;
 		panelCenter.add(panelControls, gbc_panelControls);
-		btnAdd.setForeground(Color.WHITE);
-		btnAdd.setBackground(Color.RED);
+		btnAdd.setForeground(new Color(0, 0, 0));
+		btnAdd.setBackground(new Color(255, 255, 255));
 		btnAdd.setFont(new Font("Dialog", Font.BOLD, 20));
 		btnAdd.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
@@ -492,16 +492,19 @@ public class QuanLyDichVuPanel extends JPanel implements ActionListener {
 		add(panelBottom, BorderLayout.SOUTH);
 
 		JLabel lblChuaDat = new JLabel("Phòng chưa có người đặt: 15");
+		lblChuaDat.setForeground(new Color(50, 102, 133));
 		lblChuaDat.setIcon(MyIcon.getIcon(MaterialDesignM.MICROPHONE_VARIANT, 28, null));
 		lblChuaDat.setFont(new Font("Dialog", Font.BOLD, 24));
 		panelBottom.add(lblChuaDat);
 
 		JLabel lblDaDat = new JLabel("Phòng đã có người đặt: 8");
+		lblDaDat.setForeground(new Color(50, 102, 133));
 		lblDaDat.setIcon(MyIcon.getIcon(MaterialDesignM.MICROPHONE_VARIANT_OFF, 28, null));
 		lblDaDat.setFont(new Font("Dialog", Font.BOLD, 24));
 		panelBottom.add(lblDaDat);
 
 		JLabel lblPhongKhongHD = new JLabel("Phòng không hoạt động: 0");
+		lblPhongKhongHD.setForeground(new Color(50, 102, 133));
 		lblPhongKhongHD.setIcon(MyIcon.getIcon(MaterialDesignC.CANCEL, 28, null));
 		lblPhongKhongHD.setFont(new Font("Dialog", Font.BOLD, 24));
 		panelBottom.add(lblPhongKhongHD);

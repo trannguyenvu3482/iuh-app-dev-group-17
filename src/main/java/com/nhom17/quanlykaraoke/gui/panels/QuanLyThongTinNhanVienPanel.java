@@ -109,96 +109,114 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 		setLayout(null);
 
 		JPanel panelTop = new JPanel();
+		panelTop.setForeground(new Color(0, 0, 0));
 		panelTop.setBounds(0, 0, 1440, 252);
 		panelTop.setBorder(new EmptyBorder(240, 0, 0, 0));
-		panelTop.setBackground(new Color(192, 192, 192));
+		panelTop.setBackground(new Color(216, 209, 165));
 		add(panelTop);
 		panelTop.setLayout(null);
+		txtTenNV.setForeground(new Color(50, 102, 133));
 
 
 		txtTenNV.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		txtTenNV.setBounds(143, 29, 414, 40);
+		txtTenNV.setBounds(109, 29, 448, 40);
 		panelTop.add(txtTenNV);
 		txtTenNV.setColumns(10);
 
-		JLabel lblTenNV = new JLabel("Tên nhân viên");
-		lblTenNV.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		JLabel lblTenNV = new JLabel("Tên NV:");
+		lblTenNV.setForeground(new Color(50, 102, 133));
+		lblTenNV.setFont(new Font("Leelawadee UI", Font.BOLD, 19));
 		lblTenNV.setBounds(10, 28, 153, 40);
 		panelTop.add(lblTenNV);
 
-		JLabel lblCccd = new JLabel("CCCD");
-		lblCccd.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblCccd.setBounds(10, 80, 69, 40);
+		JLabel lblCccd = new JLabel("CCCD:");
+		lblCccd.setForeground(new Color(50, 102, 133));
+		lblCccd.setFont(new Font("Leelawadee UI", Font.BOLD, 19));
+		lblCccd.setBounds(297, 80, 69, 40);
 		panelTop.add(lblCccd);
 
-		JLabel lbSDT = new JLabel("SDT");
-		lbSDT.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lbSDT.setBounds(327, 80, 44, 40);
+		JLabel lbSDT = new JLabel("SDT:");
+		lbSDT.setForeground(new Color(50, 102, 133));
+		lbSDT.setFont(new Font("Leelawadee UI", Font.BOLD, 19));
+		lbSDT.setBounds(10, 80, 44, 40);
 		panelTop.add(lbSDT);
 
-		JLabel lbGioiTinh = new JLabel("Giới tính");
-		lbGioiTinh.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lbGioiTinh.setBounds(10, 131, 81, 40);
+		JLabel lbGioiTinh = new JLabel("Giới tính:");
+		lbGioiTinh.setForeground(new Color(50, 102, 133));
+		lbGioiTinh.setFont(new Font("Leelawadee UI", Font.BOLD, 19));
+		lbGioiTinh.setBounds(10, 131, 90, 40);
 		panelTop.add(lbGioiTinh);
 
-		JLabel lblNgySinh = new JLabel("Ngày sinh");
-		lblNgySinh.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNgySinh.setBounds(297, 131, 90, 40);
+		JLabel lblNgySinh = new JLabel("Ngày sinh:");
+		lblNgySinh.setForeground(new Color(50, 102, 133));
+		lblNgySinh.setFont(new Font("Leelawadee UI", Font.BOLD, 19));
+		lblNgySinh.setBounds(297, 131, 103, 40);
 		panelTop.add(lblNgySinh);
 
 		txtNgaySinh.getCalendarButton().setPreferredSize(new Dimension(26, 19));
 		txtNgaySinh.getCalendarButton().setFont(new Font("Dialog", Font.BOLD, 20));
+		txtNgaySinh.getCalendarButton().setForeground(new Color(50, 102, 133));
+		txtNgaySinh.setForeground(new Color(50, 102, 133));
 		txtNgaySinh.setPreferredSize(new Dimension(150, 48));
 		txtNgaySinh.setLocale(new Locale("vi", "VN"));
 		txtNgaySinh.setFont(new Font("Dialog", Font.PLAIN, 20));
 		txtNgaySinh.setDateFormatString("d/M/y");
-		txtNgaySinh.setBounds(397, 131, 158, 40);
+		txtNgaySinh.setBounds(397, 131, 160, 40);
 		panelTop.add(txtNgaySinh);
 
-		JLabel lbTrangThai = new JLabel("Trạng thái");
-		lbTrangThai.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		JLabel lbTrangThai = new JLabel("Trạng thái:");
+		lbTrangThai.setForeground(new Color(50, 102, 133));
+		lbTrangThai.setFont(new Font("Leelawadee UI", Font.BOLD, 19));
 		lbTrangThai.setBounds(10, 182, 103, 40);
 		panelTop.add(lbTrangThai);
+		cbTrangThai.setForeground(new Color(50, 102, 133));
 
 
 		cbTrangThai.setModel(new DefaultComboBoxModel(new String[] { "Đã nghỉ", "Đang làm" }));
 		cbTrangThai.setToolTipText("");
 		cbTrangThai.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		cbTrangThai.setBounds(143, 180, 144, 40);
+		cbTrangThai.setBounds(109, 180, 178, 40);
 		panelTop.add(cbTrangThai);
+		cbGioiTinh.setForeground(new Color(50, 102, 133));
 
 		cbGioiTinh.setModel(new DefaultComboBoxModel(new String[] { "Nam", "Nữ" }));
 		cbGioiTinh.setToolTipText("");
 		cbGioiTinh.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		cbGioiTinh.setBounds(143, 132, 144, 40);
+		cbGioiTinh.setBounds(109, 132, 178, 40);
 		panelTop.add(cbGioiTinh);
+		txtCCCD.setForeground(new Color(50, 102, 133));
 
 		txtCCCD.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		txtCCCD.setColumns(10);
-		txtCCCD.setBounds(143, 80, 174, 40);
+		txtCCCD.setBounds(397, 80, 160, 40);
 		panelTop.add(txtCCCD);
+		txtSDT.setForeground(new Color(50, 102, 133));
 
 		txtSDT.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		txtSDT.setColumns(10);
-		txtSDT.setBounds(381, 80, 176, 40);
+		txtSDT.setBounds(109, 81, 178, 40);
 		panelTop.add(txtSDT);
 
-		JLabel lbChucVu = new JLabel("Chức vụ");
-		lbChucVu.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		JLabel lbChucVu = new JLabel("Chức vụ:");
+		lbChucVu.setForeground(new Color(50, 102, 133));
+		lbChucVu.setFont(new Font("Leelawadee UI", Font.BOLD, 19));
 		lbChucVu.setBounds(297, 182, 103, 40);
 		panelTop.add(lbChucVu);
+		cbChucVu.setForeground(new Color(50, 102, 133));
 
 		cbChucVu.setModel(new DefaultComboBoxModel(new String[] { "Nhân viên", "Quản lý" }));
 		cbChucVu.setToolTipText("");
 		cbChucVu.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		cbChucVu.setBounds(397, 180, 158, 40);
+		cbChucVu.setBounds(397, 180, 160, 40);
 		panelTop.add(cbChucVu);
+		btnThem.setForeground(new Color(50, 102, 133));
 
 		btnThem.setIcon(MyIcon.getIcon(MaterialDesignA.ACCOUNT_PLUS, 32, null));
 		
 
 		btnThem.setBounds(775, 29, 60, 60);
 		panelTop.add(btnThem);
+		btnSua.setForeground(new Color(50, 102, 133));
 
 
 		btnSua.setIcon(MyIcon.getIcon(MaterialDesignA.ACCOUNT_EDIT, 32, null));
@@ -208,6 +226,7 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 		});
 		btnSua.setBounds(775, 100, 60, 60);
 		panelTop.add(btnSua);
+		btnClearfields.setForeground(new Color(50, 102, 133));
 
 		btnClearfields.setIcon(MyIcon.getIcon(MaterialDesignB.BROOM, 32, null));
 		btnClearfields.addActionListener(new ActionListener() {
@@ -218,50 +237,59 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 		panelTop.add(btnClearfields);
 
 		JLabel lbSearchForm = new JLabel("Từ:");
-		lbSearchForm.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lbSearchForm.setBounds(872, 131, 44, 40);
+		lbSearchForm.setForeground(new Color(50, 102, 133));
+		lbSearchForm.setFont(new Font("Leelawadee UI", Font.BOLD, 19));
+		lbSearchForm.setBounds(845, 131, 44, 40);
 		panelTop.add(lbSearchForm);
 
 		txtSearchFrom.getCalendarButton().setPreferredSize(new Dimension(26, 19));
 		txtSearchFrom.getCalendarButton().setFont(new Font("Dialog", Font.BOLD, 20));
+		txtSearchFrom.getCalendarButton().setForeground(new Color(50, 102, 133));
+		txtSearchFrom.setForeground(new Color(50, 102, 133));
 		txtSearchFrom.setPreferredSize(new Dimension(150, 48));
 		txtSearchFrom.setLocale(new Locale("vi", "VN"));
 		txtSearchFrom.setFont(new Font("Dialog", Font.PLAIN, 20));
 		txtSearchFrom.setDateFormatString("d/M/y");
-		txtSearchFrom.setBounds(924, 131, 165, 40);
+		txtSearchFrom.setBounds(897, 131, 165, 40);
 		panelTop.add(txtSearchFrom);
 
 		JLabel lbSearchTo = new JLabel("Đến:");
-		lbSearchTo.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lbSearchTo.setBounds(872, 182, 54, 40);
+		lbSearchTo.setForeground(new Color(50, 102, 133));
+		lbSearchTo.setFont(new Font("Leelawadee UI", Font.BOLD, 19));
+		lbSearchTo.setBounds(845, 182, 54, 40);
 		panelTop.add(lbSearchTo);
 
 		txtSearchTo.getCalendarButton().setPreferredSize(new Dimension(26, 19));
 		txtSearchTo.getCalendarButton().setFont(new Font("Dialog", Font.BOLD, 20));
+		txtSearchTo.getCalendarButton().setForeground(new Color(50, 102, 133));
+		txtSearchTo.setForeground(new Color(50, 102, 133));
 		txtSearchTo.setPreferredSize(new Dimension(150, 48));
 		txtSearchTo.setLocale(new Locale("vi", "VN"));
 		txtSearchTo.setFont(new Font("Dialog", Font.PLAIN, 20));
 		txtSearchTo.setDateFormatString("d/M/y");
-		txtSearchTo.setBounds(924, 182, 165, 40);
+		txtSearchTo.setBounds(897, 182, 165, 40);
 		panelTop.add(txtSearchTo);
+		cbFilterGioiTinh.setForeground(new Color(50, 102, 133));
 
 		
 		cbFilterGioiTinh.setModel(new DefaultComboBoxModel(new String[] { "Giới tính", "Nam", "Nữ" }));
 		cbFilterGioiTinh.setToolTipText("");
 		cbFilterGioiTinh.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		cbFilterGioiTinh.setBounds(872, 80, 154, 40);
+		cbFilterGioiTinh.setBounds(845, 80, 154, 40);
 		panelTop.add(cbFilterGioiTinh);
+		cbFilterChucVu.setForeground(new Color(50, 102, 133));
 
 		
 		cbFilterChucVu.setModel(new DefaultComboBoxModel(new String[] { "Chức vụ", "Nhân viên", "Quản lý" }));
 		cbFilterChucVu.setToolTipText("");
 		cbFilterChucVu.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		cbFilterChucVu.setBounds(1036, 80, 153, 40);
+		cbFilterChucVu.setBounds(1009, 80, 153, 40);
 		panelTop.add(cbFilterChucVu);
+		txtSearchNV.setForeground(new Color(50, 102, 133));
 
 		txtSearchNV.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		txtSearchNV.setColumns(10);
-		txtSearchNV.setBounds(872, 29, 317, 40);
+		txtSearchNV.setBounds(937, 29, 225, 40);
 		panelTop.add(txtSearchNV);
 		
 		Box boxAvatar = Box.createHorizontalBox();
@@ -275,11 +303,18 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 		
 
 		boxAvatar.add(avt);
+		btnLocNgaySinh.setForeground(new Color(50, 102, 133));
 		
 		
-		btnLocNgaySinh.setBounds(1099, 131, 90, 90);
+		btnLocNgaySinh.setBounds(1072, 131, 90, 90);
 		panelTop.add(btnLocNgaySinh);
 		btnLocNgaySinh.setIcon(MyIcon.getIcon(MaterialDesignF.FILTER, 32, null));
+		
+		JLabel lblBLc = new JLabel("Tìm theo:");
+		lblBLc.setForeground(new Color(50, 102, 133));
+		lblBLc.setFont(new Font("Leelawadee UI", Font.BOLD, 19));
+		lblBLc.setBounds(845, 28, 90, 40);
+		panelTop.add(lblBLc);
 
 		// Table setup
 		createTable();
@@ -288,7 +323,7 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 		tblNhanVien.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		JScrollPane scrollPaneNhanVien = new JScrollPane(tblNhanVien);
-		scrollPaneNhanVien.setBounds(0, 251, 1440, 705);
+		scrollPaneNhanVien.setBounds(0, 252, 1440, 705);
 		add(scrollPaneNhanVien);
 
 		btnThem.addActionListener(this);
@@ -371,6 +406,7 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 			}
 		};
 		tblNhanVien = new JTable(modelNhanVien);
+		tblNhanVien.setForeground(new Color(50, 102, 133));
 
 		tblNhanVien.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tblNhanVien.setFont(new Font("Dialog", Font.PLAIN, 18));

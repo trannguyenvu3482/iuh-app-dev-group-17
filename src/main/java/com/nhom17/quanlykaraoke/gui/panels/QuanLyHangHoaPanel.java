@@ -87,7 +87,8 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 		setLayout(new BorderLayout(0, 0));
 
 		JPanel panelTop = new JPanel();
-		panelTop.setBackground(Color.LIGHT_GRAY);
+		panelTop.setForeground(new Color(50, 102, 133));
+		panelTop.setBackground(new Color(216, 209, 165));
 		panelTop.setBorder(new EmptyBorder(10, 24, 20, 24));
 		add(panelTop, BorderLayout.NORTH);
 		panelTop.setLayout(new BoxLayout(panelTop, BoxLayout.Y_AXIS));
@@ -96,6 +97,7 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 		panelTop.add(boxOne_1);
 
 		JLabel lblTnSnPhm_2 = new JLabel("Thông tin hàng hóa:");
+		lblTnSnPhm_2.setForeground(new Color(50, 102, 133));
 		lblTnSnPhm_2.setFont(new Font("Dialog", Font.BOLD, 24));
 		boxOne_1.add(lblTnSnPhm_2);
 
@@ -109,6 +111,7 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 		panelTop.add(boxOne);
 
 		JLabel lblTnSnPhm = new JLabel("Tên hàng hóa:");
+		lblTnSnPhm.setForeground(new Color(50, 102, 133));
 		lblTnSnPhm.setFont(new Font("Dialog", Font.BOLD, 20));
 		boxOne.add(lblTnSnPhm);
 
@@ -116,6 +119,7 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 		boxOne.add(horizontalStrut);
 
 		txtTenSanPham = new JTextField();
+		txtTenSanPham.setForeground(new Color(50, 102, 133));
 		boxOne.add(txtTenSanPham);
 		txtTenSanPham.setFont(new Font("Dialog", Font.PLAIN, 20));
 
@@ -131,11 +135,13 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 		panelTop.add(boxTwo);
 
 		JLabel lblTnSnPhm_1 = new JLabel("Loại hàng hóa:");
+		lblTnSnPhm_1.setForeground(new Color(50, 102, 133));
 		lblTnSnPhm_1.setFont(new Font("Dialog", Font.BOLD, 20));
 		boxTwo.add(lblTnSnPhm_1);
 
 		Component horizontalStrut_1 = Box.createHorizontalStrut(32);
 		boxTwo.add(horizontalStrut_1);
+		cbTenHH.setForeground(new Color(50, 102, 133));
 
 		cbTenHH.setFont(new Font("Dialog", Font.PLAIN, 20));
 		for (LoaiHangHoa lhh : loaiHangHoaBUS.getAllLoaiHangHoas()) {
@@ -154,6 +160,7 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 		panelTop.add(boxThree);
 
 		JLabel lblTnSnPhm_1_1 = new JLabel("Đơn giá:");
+		lblTnSnPhm_1_1.setForeground(new Color(50, 102, 133));
 		lblTnSnPhm_1_1.setFont(new Font("Dialog", Font.BOLD, 20));
 		boxThree.add(lblTnSnPhm_1_1);
 
@@ -168,6 +175,7 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 		formatter.setAllowsInvalid(false);
 		formatter.setOverwriteMode(true);
 		txtDonGia = new JFormattedTextField(formatter);
+		txtDonGia.setForeground(new Color(50, 102, 133));
 		txtDonGia.setFont(new Font("Dialog", Font.PLAIN, 20));
 		txtDonGia.setColumns(10);
 		txtDonGia.setValue(0);
@@ -184,6 +192,7 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 		panelTop.add(boxFour);
 
 		JLabel lblTnSnPhm_1_1_1 = new JLabel("Số lượng tồn kho:");
+		lblTnSnPhm_1_1_1.setForeground(new Color(50, 102, 133));
 		lblTnSnPhm_1_1_1.setFont(new Font("Dialog", Font.BOLD, 20));
 		boxFour.add(lblTnSnPhm_1_1_1);
 
@@ -204,6 +213,7 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 		panelTop.add(boxFive);
 
 		JLabel lblTnSnPhm_1_1_1_1 = new JLabel("Trạng thái:");
+		lblTnSnPhm_1_1_1_1.setForeground(new Color(50, 102, 133));
 		lblTnSnPhm_1_1_1_1.setFont(new Font("Dialog", Font.BOLD, 20));
 		boxFive.add(lblTnSnPhm_1_1_1_1);
 
@@ -211,6 +221,7 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 		boxFive.add(horizontalStrut_1_1_1);
 
 		boxTrangThai = new JComboBox();
+		boxTrangThai.setForeground(new Color(50, 102, 133));
 		boxTrangThai.setEditable(true);
 		boxTrangThai.setModel(new DefaultComboBoxModel(new String[] { "Còn hoạt động", "Ngưng hoạt động" }));
 		boxTrangThai.setFont(new Font("Dialog", Font.PLAIN, 20));
@@ -224,6 +235,7 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 
 		Box boxSix = Box.createHorizontalBox();
 		panelTop.add(boxSix);
+		btnThem.setForeground(new Color(50, 102, 133));
 		btnThem.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 		btnThem.setIcon(MyIcon.getIcon(MaterialDesignP.PLUS_THICK, 32, null));
@@ -232,6 +244,7 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 
 		Component horizontalStrut_1_2_1 = Box.createHorizontalStrut(20);
 		boxSix.add(horizontalStrut_1_2_1);
+		btnSua.setForeground(new Color(50, 102, 133));
 		btnSua.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 		btnSua.setIcon(MyIcon.getIcon(MaterialDesignP.PENCIL, 32, null));
@@ -240,6 +253,7 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 
 		Component horizontalStrut_1_2_1_1 = Box.createHorizontalStrut(20);
 		boxSix.add(horizontalStrut_1_2_1_1);
+		btnNhapHang.setForeground(new Color(50, 102, 133));
 		btnNhapHang.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 		btnNhapHang.setIcon(MyIcon.getIcon(MaterialDesignA.ARROW_UP_BOLD, 32, null));
@@ -248,6 +262,7 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 
 		Component horizontalStrut_1_2_1_1_1_1 = Box.createHorizontalStrut(20);
 		boxSix.add(horizontalStrut_1_2_1_1_1_1);
+		btnGiamHang.setForeground(new Color(50, 102, 133));
 
 		btnGiamHang.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnGiamHang.setIcon(MyIcon.getIcon(MaterialDesignA.ARROW_DOWN_BOLD, 32, null));
@@ -256,6 +271,7 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 
 		Component horizontalStrut_1_2_1_1_1 = Box.createHorizontalStrut(20);
 		boxSix.add(horizontalStrut_1_2_1_1_1);
+		btnClearFields.setForeground(new Color(50, 102, 133));
 
 		btnClearFields.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnClearFields.setIcon(MyIcon.getIcon(MaterialDesignB.BACKSPACE, 32, null));
@@ -269,8 +285,10 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 		panelTop.add(boxSix_1);
 
 		JLabel lblBLc = new JLabel("Bộ lọc: ");
+		lblBLc.setForeground(new Color(50, 102, 133));
 		lblBLc.setFont(new Font("Dialog", Font.BOLD, 20));
 		boxSix_1.add(lblBLc);
+		boxFilterLoaiHangHoa.setForeground(new Color(50, 102, 133));
 
 	
 		boxFilterLoaiHangHoa.setFont(new Font("Dialog", Font.BOLD, 20));
@@ -285,6 +303,7 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 
 		Component horizontalStrut_1_2 = Box.createHorizontalStrut(40);
 		boxSix_1.add(horizontalStrut_1_2);
+		boxFilterTrangThai.setForeground(new Color(50, 102, 133));
 
 		
 		boxFilterTrangThai.setFont(new Font("Dialog", Font.BOLD, 20));
@@ -296,6 +315,7 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 		boxSix_1.add(horizontalStrut_1_1_2);
 
 		txtSearch = new JTextField();
+		txtSearch.setForeground(new Color(50, 102, 133));
 		txtSearch.setFont(new Font("Dialog", Font.PLAIN, 20));
 		boxSix_1.add(txtSearch);
 		txtSearch.setColumns(10);
@@ -351,6 +371,7 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 		};
 
 		tblDichVu = new JTable(modelDichVu);
+		tblDichVu.setForeground(new Color(50, 102, 133));
 		tblDichVu.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tblDichVu.setFont(new Font("Dialog", Font.PLAIN, 18));
 		tblDichVu.getTableHeader().setFont(new Font("Dialog", Font.BOLD, 18));

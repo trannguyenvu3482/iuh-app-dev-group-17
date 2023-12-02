@@ -221,6 +221,7 @@ public class RoomPanel extends JPanel implements MouseListener {
 		mainPanel.setName("mainPanel");
 		panel.add(mainPanel, "mainPanel");
 		mainPanel.setLayout(new BorderLayout(0, 0));
+		lblRoom.setForeground(new Color(50, 102, 133));
 		mainPanel.add(lblRoom, BorderLayout.SOUTH);
 
 		mainPanel.setBackground(Color.white);

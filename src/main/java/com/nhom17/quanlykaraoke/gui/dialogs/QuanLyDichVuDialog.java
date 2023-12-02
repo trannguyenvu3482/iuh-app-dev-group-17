@@ -98,7 +98,7 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 
 		JPanel panelTop = new JPanel();
 		panelTop.setBorder(new MatteBorder(0, 0, 2, 0, (Color) Color.WHITE));
-		panelTop.setBackground(Color.DARK_GRAY);
+		panelTop.setBackground(new Color(181, 168, 79));
 		getContentPane().add(panelTop, BorderLayout.NORTH);
 
 		JLabel lblTitle = new JLabel("Quản lý dịch vụ");
@@ -112,12 +112,12 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 
 		JPanel panelLeft = new JPanel();
 		panelLeft.setBorder(new LineBorder(new Color(64, 64, 64), 5));
-		panelLeft.setBackground(Color.GRAY);
+		panelLeft.setBackground(new Color(216, 209, 165));
 		panelCenter.add(panelLeft);
 		panelLeft.setLayout(new BorderLayout(0, 0));
 
 		JLabel lblLeftTitle = new JLabel("Danh sách hàng hóa");
-		lblLeftTitle.setForeground(Color.WHITE);
+		lblLeftTitle.setForeground(new Color(50, 102, 133));
 		lblLeftTitle.setFont(new Font("Dialog", Font.BOLD, 24));
 		lblLeftTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		panelLeft.add(lblLeftTitle, BorderLayout.NORTH);
@@ -127,12 +127,13 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 		panel.setLayout(new BorderLayout(0, 0));
 
 		JPanel panel_4 = new JPanel();
-		panel_4.setBackground(Color.GRAY);
+		panel_4.setBackground(new Color(216, 209, 165));
 		panel_4.setBorder(new EmptyBorder(10, 5, 16, 5));
 		panel.add(panel_4, BorderLayout.NORTH);
 		panel_4.setLayout(new BoxLayout(panel_4, BoxLayout.X_AXIS));
 
 		txtSearch = new JTextField();
+		txtSearch.setForeground(new Color(50, 102, 133));
 		txtSearch.putClientProperty("JTextField.placeholderText", "Nhập vào tên hàng hóa cần tìm");
 		txtSearch.setFont(new Font("Dialog", Font.PLAIN, 18));
 		panel_4.add(txtSearch);
@@ -142,6 +143,7 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 		panel_4.add(horizontalStrut);
 
 		JComboBox<String> comboBox = new JComboBox<String>();
+		comboBox.setForeground(new Color(50, 102, 133));
 		comboBox.putClientProperty("JTextField.placeholderText", "Chọn loại hàng hóa");
 		comboBox.setFont(new Font("Dialog", Font.BOLD, 18));
 		comboBox.setModel(
@@ -155,7 +157,7 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 		scrollPaneLeft.setViewportView(tblLeft);
 
 		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(Color.GRAY);
+		panel_1.setBackground(new Color(216, 209, 165));
 		panel.add(panel_1, BorderLayout.SOUTH);
 
 		btnThem.setIcon(MyIcon.getIcon(MaterialDesignP.PLUS_THICK, 32, null));
@@ -166,23 +168,24 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 		JPanel panelLeftBottom = new JPanel();
 		panelLeftBottom.setBorder(new CompoundBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(255, 255, 255)),
 				new EmptyBorder(5, 10, 5, 10)));
-		panelLeftBottom.setBackground(Color.GRAY);
+		panelLeftBottom.setBackground(new Color(216, 209, 165));
 		panelLeft.add(panelLeftBottom, BorderLayout.SOUTH);
 		panelLeftBottom.setLayout(new BoxLayout(panelLeftBottom, BoxLayout.X_AXIS));
+		btnHuy.setForeground(new Color(50, 102, 133));
 
 		btnHuy.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnHuy.setBackground(Color.GREEN);
+		btnHuy.setBackground(new Color(255, 255, 255));
 		btnHuy.setFont(new Font("Dialog", Font.BOLD, 20));
 		panelLeftBottom.add(btnHuy);
 
 		JPanel panelRight = new JPanel();
 		panelRight.setBorder(new LineBorder(Color.DARK_GRAY, 5));
-		panelRight.setBackground(Color.GRAY);
+		panelRight.setBackground(new Color(216, 209, 165));
 		panelCenter.add(panelRight);
 		panelRight.setLayout(new BorderLayout(0, 0));
 
 		JLabel lblRightTitle = new JLabel("Dịch vụ đã chọn");
-		lblRightTitle.setForeground(Color.WHITE);
+		lblRightTitle.setForeground(new Color(50, 102, 133));
 		lblRightTitle.setFont(new Font("Dialog", Font.BOLD, 24));
 		lblRightTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		panelRight.add(lblRightTitle, BorderLayout.NORTH);
@@ -192,18 +195,18 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 		panel_2.setLayout(new BorderLayout(0, 0));
 
 		JPanel panel_5 = new JPanel();
-		panel_5.setBackground(Color.GRAY);
+		panel_5.setBackground(new Color(216, 209, 165));
 		panel_5.setBorder(new EmptyBorder(5, 5, 5, 5));
 		panel_2.add(panel_5, BorderLayout.NORTH);
 		panel_5.setLayout(new BoxLayout(panel_5, BoxLayout.Y_AXIS));
 
 		JLabel lblTenPhong = new JLabel("Tên phòng: Phòng P001");
-		lblTenPhong.setForeground(Color.WHITE);
+		lblTenPhong.setForeground(new Color(50, 102, 133));
 		lblTenPhong.setFont(new Font("Dialog", Font.BOLD, 18));
 		panel_5.add(lblTenPhong);
 
 		JLabel lblTenKhachHang = new JLabel("Tên khách hàng: Trần Ngọc Phát");
-		lblTenKhachHang.setForeground(Color.WHITE);
+		lblTenKhachHang.setForeground(new Color(50, 102, 133));
 		lblTenKhachHang.setFont(new Font("Dialog", Font.BOLD, 18));
 		panel_5.add(lblTenKhachHang);
 
@@ -214,7 +217,7 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 		scrollPaneRight.setViewportView(tblRight);
 
 		JPanel panel_3 = new JPanel();
-		panel_3.setBackground(Color.GRAY);
+		panel_3.setBackground(new Color(216, 209, 165));
 		FlowLayout flowLayout = (FlowLayout) panel_3.getLayout();
 		flowLayout.setHgap(10);
 		panel_2.add(panel_3, BorderLayout.SOUTH);
@@ -228,7 +231,7 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 		panel_3.add(btnCapNhatSoLuong);
 
 		JPanel panelRightBottom = new JPanel();
-		panelRightBottom.setBackground(Color.GRAY);
+		panelRightBottom.setBackground(new Color(216, 209, 165));
 		panelRightBottom.setBorder(new CompoundBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(255, 255, 255)),
 				new EmptyBorder(5, 10, 5, 10)));
 		panelRight.add(panelRightBottom, BorderLayout.SOUTH);
@@ -238,8 +241,8 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 		panelRightBottom.add(horizontalGlue);
 
 		btnXacNhan.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnXacNhan.setBackground(Color.RED);
-		btnXacNhan.setForeground(Color.WHITE);
+		btnXacNhan.setBackground(new Color(255, 255, 255));
+		btnXacNhan.setForeground(new Color(50, 102, 133));
 		btnXacNhan.setFont(new Font("Dialog", Font.BOLD, 20));
 		panelRightBottom.add(btnXacNhan);
 
@@ -395,6 +398,7 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 		};
 
 		tblLeft = new JTable(modelLeft);
+		tblLeft.setBackground(new Color(243, 241, 228));
 		tblLeft.setSelectionMode(DefaultListSelectionModel.SINGLE_SELECTION);
 		tblLeft.setColumnSelectionAllowed(false);
 		tblLeft.setFont(new Font("Dialog", Font.PLAIN, 14));
@@ -444,6 +448,7 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 		};
 
 		tblRight = new JTable(modelRight);
+		tblRight.setBackground(new Color(243, 241, 228));
 		tblRight.setFont(new Font("Dialog", Font.PLAIN, 14));
 		tblRight.getTableHeader().setFont(new Font("Dialog", Font.BOLD, 16));
 		tblRight.getTableHeader().setReorderingAllowed(false);

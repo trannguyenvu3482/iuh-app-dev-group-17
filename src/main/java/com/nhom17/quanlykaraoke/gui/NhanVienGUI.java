@@ -166,7 +166,7 @@ public class NhanVienGUI extends MyFrame implements ActionListener {
 		Image img = icon.getImage().getScaledInstance(200, 150, Image.SCALE_SMOOTH);
 		icon.setImage(img);
 
-		leftPanel.setBackground(Color.BLACK);
+		leftPanel.setBackground(new Color(222, 168, 150));
 		leftPanel.setPreferredSize(new Dimension((int) (screenWidth * 0.25), this.getHeight()));
 		getContentPane().add(leftPanel, BorderLayout.WEST);
 		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
@@ -209,7 +209,7 @@ public class NhanVienGUI extends MyFrame implements ActionListener {
 		userChucVu.setAlignmentY(Component.TOP_ALIGNMENT);
 		userChucVu.setFont(new Font("Dialog", Font.ITALIC, 18));
 		userChucVu.setAlignmentX(CENTER_ALIGNMENT);
-		userChucVu.setForeground(new Color(255, 255, 255, 128));
+		userChucVu.setForeground(new Color(255, 255, 255));
 		vBoxAvatar.add(userFullName);
 		vBoxAvatar.add(userChucVu);
 		leftVBox.add(verticalStrut);
@@ -315,10 +315,10 @@ public class NhanVienGUI extends MyFrame implements ActionListener {
 
 		getContentPane().add(rightPanel, BorderLayout.CENTER);
 		rightPanel.setLayout(new BorderLayout(0, 0));
-		lblName.setForeground(Color.WHITE);
+		lblName.setForeground(new Color(50, 102, 133));
 		lblName.setFont(new Font("Dialog", Font.BOLD, 20));
 		lblName.setText(new SimpleDateFormat("EEEE, dd/MM/yyyy", new Locale("vi", "VN")).format(new Date()));
-		panelTop.setBackground(Color.DARK_GRAY);
+		panelTop.setBackground(new Color(235, 235, 235));
 
 		rightPanel.add(panelTop, BorderLayout.NORTH);
 		panelTop.setLayout(new MigLayout("alignx center, aligny center", "[][]", "[]"));

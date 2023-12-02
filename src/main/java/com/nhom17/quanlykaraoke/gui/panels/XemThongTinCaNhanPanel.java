@@ -56,14 +56,14 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 		setLayout(new BorderLayout(0, 0));
 
 		JPanel panelTop = new JPanel();
-		panelTop.setBackground(Color.DARK_GRAY);
+		panelTop.setBackground(new Color(181, 168, 79));
 		add(panelTop, BorderLayout.NORTH);
 		panelTop.setLayout(new BoxLayout(panelTop, BoxLayout.X_AXIS));
 
 		JLabel lblThngTinNgi = new JLabel("Thông tin người dùng");
 		lblThngTinNgi.setBorder(new EmptyBorder(5, 10, 5, 0));
 		lblThngTinNgi.setFont(new Font("Dialog", Font.BOLD, 30));
-		lblThngTinNgi.setForeground(Color.WHITE);
+		lblThngTinNgi.setForeground(new Color(255, 255, 255));
 		panelTop.add(lblThngTinNgi);
 
 		JPanel panelCenter = new JPanel();
@@ -71,7 +71,7 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 		panelCenter.setLayout(new GridLayout(1, 2, 0, 0));
 
 		JPanel panelLeft = new JPanel();
-		panelLeft.setBackground(Color.GRAY);
+		panelLeft.setBackground(new Color(216, 209, 165));
 		panelCenter.add(panelLeft);
 		panelLeft.setLayout(new BoxLayout(panelLeft, BoxLayout.Y_AXIS));
 
@@ -125,7 +125,7 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 
 		JLabel lblName = new JLabel("Tên: Trần Nguyên Vũ");
 		lblName.setHorizontalAlignment(SwingConstants.LEFT);
-		lblName.setForeground(Color.WHITE);
+		lblName.setForeground(new Color(50, 102, 133));
 		lblName.setFont(new Font("Dialog", Font.BOLD, 36));
 		boxFullName.add(lblName);
 
@@ -143,7 +143,7 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 
 		JLabel lblGioiTinh = new JLabel("Giới tính: Nam");
 		lblGioiTinh.setHorizontalAlignment(SwingConstants.LEFT);
-		lblGioiTinh.setForeground(Color.WHITE);
+		lblGioiTinh.setForeground(new Color(50, 102, 133));
 		lblGioiTinh.setFont(new Font("Dialog", Font.BOLD, 36));
 		boxGioiTinh.add(lblGioiTinh);
 
@@ -158,7 +158,7 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 
 		JLabel lblMaNV = new JLabel("Mã nhân viên: NV001");
 		lblMaNV.setHorizontalAlignment(SwingConstants.LEFT);
-		lblMaNV.setForeground(Color.WHITE);
+		lblMaNV.setForeground(new Color(50, 102, 133));
 		lblMaNV.setFont(new Font("Dialog", Font.BOLD, 36));
 		boxMaNV.add(lblMaNV);
 
@@ -173,7 +173,7 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 
 		JLabel lblChucVu = new JLabel("Chức vụ: Nhân viên");
 		lblChucVu.setHorizontalAlignment(SwingConstants.LEFT);
-		lblChucVu.setForeground(Color.WHITE);
+		lblChucVu.setForeground(new Color(50, 102, 133));
 		lblChucVu.setFont(new Font("Dialog", Font.BOLD, 36));
 		boxChucVu.add(lblChucVu);
 
@@ -188,7 +188,7 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 
 		JLabel lblSDT = new JLabel("Số điện thoại: 0903252508");
 		lblSDT.setHorizontalAlignment(SwingConstants.LEFT);
-		lblSDT.setForeground(Color.WHITE);
+		lblSDT.setForeground(new Color(50, 102, 133));
 		lblSDT.setFont(new Font("Dialog", Font.BOLD, 36));
 		boxSDT.add(lblSDT);
 
@@ -203,7 +203,7 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 
 		JLabel lblNgaySinh = new JLabel("Ngày sinh: 23/11/2003");
 		lblNgaySinh.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNgaySinh.setForeground(Color.WHITE);
+		lblNgaySinh.setForeground(new Color(50, 102, 133));
 		lblNgaySinh.setFont(new Font("Dialog", Font.BOLD, 36));
 		boxNgaySinh.add(lblNgaySinh);
 
@@ -211,7 +211,7 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 		boxNgaySinh.add(horizontalGlue_1_1_1_1_1_1_1);
 
 		JPanel panelRight = new JPanel();
-		panelRight.setBackground(Color.GRAY);
+		panelRight.setBackground(new Color(216, 209, 165));
 		panelCenter.add(panelRight);
 		panelRight.setLayout(new BoxLayout(panelRight, BoxLayout.Y_AXIS));
 
@@ -222,7 +222,7 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 		panelRight.add(horizontalBox_2_1);
 
 		JLabel lblNhpMtKhu_1_1 = new JLabel("Nhập mật khẩu hiện tại");
-		lblNhpMtKhu_1_1.setForeground(Color.WHITE);
+		lblNhpMtKhu_1_1.setForeground(new Color(50, 102, 133));
 		lblNhpMtKhu_1_1.setFont(new Font("Dialog", Font.BOLD, 24));
 		horizontalBox_2_1.add(lblNhpMtKhu_1_1);
 
@@ -248,6 +248,7 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 		txtCurrentPassword.setColumns(10);
 
 		JButton btnShowCurrentPassword = new JButton("");
+		btnShowCurrentPassword.setForeground(new Color(50, 102, 133));
 		btnShowCurrentPassword.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnShowCurrentPassword.setBackground(null);
 		btnShowCurrentPassword.setOpaque(false);
@@ -269,7 +270,7 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 		panelRight.add(horizontalBox_2);
 
 		JLabel lblNhpMtKhu_1 = new JLabel("Nhập mật khẩu mới");
-		lblNhpMtKhu_1.setForeground(Color.WHITE);
+		lblNhpMtKhu_1.setForeground(new Color(50, 102, 133));
 		lblNhpMtKhu_1.setFont(new Font("Dialog", Font.BOLD, 24));
 		horizontalBox_2.add(lblNhpMtKhu_1);
 
@@ -294,6 +295,7 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 		panelNewPassword.add(txtNewPassword, "cell 0 0, aligny center, push, grow");
 
 		JButton btnShowNewPassword = new JButton("");
+		btnShowNewPassword.setForeground(new Color(50, 102, 133));
 		btnShowNewPassword.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnShowNewPassword.setPreferredSize(new Dimension(34, 16));
 		btnShowNewPassword.setOpaque(false);
@@ -310,7 +312,7 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 		panelRight.add(horizontalBox);
 
 		JLabel lblNhpMtKhu = new JLabel("Nhập lại mật khẩu mới");
-		lblNhpMtKhu.setForeground(Color.WHITE);
+		lblNhpMtKhu.setForeground(new Color(50, 102, 133));
 		lblNhpMtKhu.setFont(new Font("Dialog", Font.BOLD, 24));
 		horizontalBox.add(lblNhpMtKhu);
 
@@ -336,6 +338,7 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 		panelConfirmNewPassword.add(txtConfirmNewPassword, "cell 0 0, aligny center, push, grow");
 
 		JButton btnShowConfirmNewPassword = new JButton("");
+		btnShowConfirmNewPassword.setForeground(new Color(50, 102, 133));
 		btnShowConfirmNewPassword.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnShowConfirmNewPassword.setPreferredSize(new Dimension(34, 16));
 		btnShowConfirmNewPassword.setOpaque(false);
@@ -352,6 +355,7 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 		panelRight.add(horizontalBox_1);
 
 		JButton btnNewButton = new JButton("Đổi mật khẩu");
+		btnNewButton.setForeground(new Color(50, 102, 133));
 		btnNewButton.setFont(new Font("Dialog", Font.BOLD, 28));
 		horizontalBox_1.add(btnNewButton);
 
@@ -360,7 +364,7 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 
 		JPanel panelBottom = new JPanel();
 		panelBottom.setBorder(new EmptyBorder(40, 0, 40, 0));
-		panelBottom.setBackground(Color.DARK_GRAY);
+		panelBottom.setBackground(new Color(181, 168, 79));
 		add(panelBottom, BorderLayout.SOUTH);
 	}
 
