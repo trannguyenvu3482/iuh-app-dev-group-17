@@ -337,7 +337,7 @@ public class ThongKePanel extends JPanel implements ActionListener {
 		lblTongTienDichVu.setFont(new Font("Dialog", Font.BOLD, 20));
 		horizontalBox_4.add(lblTongTienDichVu);
 
-		JPanel panelTheoNV = new JPanel();
+		JPanel panelTheoNV = new ThongKeTheoNhanVienPanel();
 		tabbedPane.addTab("Theo nhân viên", MyIcon.getIcon(MaterialDesignB.BADGE_ACCOUNT, 24, null), panelTheoNV, null);
 
 		JPanel panelTheoKhachHang = new JPanel();

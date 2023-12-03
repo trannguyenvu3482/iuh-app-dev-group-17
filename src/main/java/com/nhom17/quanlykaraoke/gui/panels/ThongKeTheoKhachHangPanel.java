@@ -1,5 +1,7 @@
 package com.nhom17.quanlykaraoke.gui.panels;
 
+import java.awt.BorderLayout;
+
 import javax.swing.JPanel;
 
 /**
@@ -15,6 +17,8 @@ public class ThongKeTheoKhachHangPanel extends JPanel {
 	 */
 	public ThongKeTheoKhachHangPanel() {
 		// TODO Auto-generated constructor stub
+		setSize(1200, 800);
+		setLayout(new BorderLayout(0, 0));
 	}
 
 }

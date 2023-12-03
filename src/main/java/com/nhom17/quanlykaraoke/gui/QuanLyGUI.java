@@ -170,10 +170,11 @@ public class QuanLyGUI extends MyFrame implements ActionListener {
 		Image img = icon.getImage().getScaledInstance(200, 150, Image.SCALE_SMOOTH);
 		icon.setImage(img);
 
-		leftPanel.setBackground(new Color(222, 168, 150));
+		leftPanel.setBackground(new Color(26, 37, 46));
 		leftPanel.setPreferredSize(new Dimension((int) (screenWidth * 0.25), this.getHeight()));
 		getContentPane().add(leftPanel, BorderLayout.WEST);
 		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
+		leftVBox.setBackground(new Color(26, 37, 46));
 		leftVBox.setAlignmentY(Component.TOP_ALIGNMENT);
 		leftPanel.add(leftVBox);
 		horizontalBox.setMaximumSize(new Dimension(1200, 50));
@@ -260,12 +261,13 @@ public class QuanLyGUI extends MyFrame implements ActionListener {
 		leftVBox.add(hBoxPanelBtn4);
 
 		leftVBox.add(verticalGlue);
+		hBoxInfo.setBackground(new Color(26, 37, 46));
 		hBoxInfo.setAlignmentY(Component.CENTER_ALIGNMENT);
 
 		leftVBox.add(hBoxInfo);
 		panelInfo.setMaximumSize(new Dimension(32767, 100));
 		panelInfo.setAlignmentY(Component.BOTTOM_ALIGNMENT);
-		panelInfo.setBackground(Color.BLACK);
+		panelInfo.setBackground(new Color(26, 37, 46));
 
 		hBoxInfo.add(panelInfo);
 		panelInfo.setLayout(new MigLayout("alignx center, aligny bottom", "[][][]", "[]"));
@@ -319,10 +321,10 @@ public class QuanLyGUI extends MyFrame implements ActionListener {
 
 		getContentPane().add(rightPanel, BorderLayout.CENTER);
 		rightPanel.setLayout(new BorderLayout(0, 0));
-		lblName.setForeground(new Color(50, 102, 133));
+		lblName.setForeground(Color.WHITE);
 		lblName.setFont(new Font("Dialog", Font.BOLD, 20));
 		lblName.setText(new SimpleDateFormat("EEEE, dd/MM/yyyy", new Locale("vi", "VN")).format(new Date()));
-		panelTop.setBackground(new Color(235, 235, 235));
+		panelTop.setBackground(new Color(26, 37, 46));
 
 		rightPanel.add(panelTop, BorderLayout.NORTH);
 		panelTop.setLayout(new MigLayout("alignx center, aligny center", "[][]", "[]"));

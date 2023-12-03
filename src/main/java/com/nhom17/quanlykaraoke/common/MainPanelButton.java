@@ -70,12 +70,14 @@ public class MainPanelButton extends JPanel implements MouseListener {
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		setBackground(Color.CYAN);
+		setBackground(new Color(49, 98, 240));
+		buttonTitle.setForeground(Color.WHITE);
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		setBackground(Color.WHITE);
+		buttonTitle.setForeground(Color.BLACK);
 	}
 
 	@Override
