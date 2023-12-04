@@ -26,6 +26,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.SwingConstants;
@@ -58,6 +59,7 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 	private JLabel lblNgaySinh;
 	private JLabel userAvatar;
 	private JButton btnDoiMK;
+	private NhanVienBUS nvBUS = new NhanVienBUS();
 	/**
 	 * @param currentNhanVien
 	 * 
@@ -359,7 +361,32 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
 		if(o.equals(btnDoiMK)) {
-			
+			if(txtCurrentPassword.toString().trim().length()==0 || txtNewPassword.toString().trim().length()==0
+					|| txtConfirmNewPassword.toString().trim().length()==0) {
+				JOptionPane.showMessageDialog(null, "Mật khẩu không được để trống!", "Thông báo", JOptionPane.ERROR_MESSAGE);
+			}
+			else {
+				 NhanVien nv = ConstantUtil.currentNhanVien;
+				 char[] oldPass = txtCurrentPassword.getPassword();
+				 char[] newPass = txtCurrentPassword.getPassword();
+				 char[] comfirmNewPass = txtCurrentPassword.getPassword();
+				 String newPassString = new String(newPass);
+				 String comfirmNewPassString = new String(comfirmNewPass);
+				 if(!PasswordUtil.check(new String(oldPass), nv.getMatKhau())) {
+					 JOptionPane.showMessageDialog(null, "Mật khẩu hiện tại không chính xác!", "Thông báo", JOptionPane.ERROR_MESSAGE);
+				 }else if(!newPassString.equalsIgnoreCase(comfirmNewPassString)) {
+					 JOptionPane.showMessageDialog(null, "Mật khẩu mới không đồng nhất!", "Thông báo", JOptionPane.ERROR_MESSAGE);
+				 }else {
+					 NhanVien nhanVien = nvBUS.getNhanVien(nv.getMaNhanVien());
+					 nhanVien.setMatKhau(PasswordUtil.encrypt(newPassString));
+					 nvBUS.updateNV(nhanVien);
+					 JOptionPane.showMessageDialog(null, "Đổi mật khẩu thành công", "Thông báo", JOptionPane.DEFAULT_OPTION);
+					 txtCurrentPassword.setText("");
+					 txtNewPassword.setText("");
+					 txtConfirmNewPassword.setText("");
+				 }
+			}
+				
 		}
 	}
 }

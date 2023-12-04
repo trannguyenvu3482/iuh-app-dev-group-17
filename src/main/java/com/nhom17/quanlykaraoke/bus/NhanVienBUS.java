@@ -24,10 +24,10 @@ public class NhanVienBUS {
 		// TODO Auto-generated method stub
 		return nvDAO.getAllNhanViens();
 	}
-//	
-//	public boolean updateNhanVien(NhanVien nv) {
-//		return nvDAO.updateNhanVien(nv);
-//	}
+	
+	public boolean updateMatKhauNhanVien(NhanVien nv) {
+		return nvDAO.updateMatKhauNhanVien(nv);
+	}
 	
 	public NhanVien updateNV(NhanVien nv) {
 		return nvDAO.updateNV(nv);

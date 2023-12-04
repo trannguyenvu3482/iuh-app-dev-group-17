@@ -99,27 +99,24 @@ public class NhanVienDAO {
 			return false;
 		}
 	}
-//
-//	public boolean updateNhanVien(NhanVien nhanVien) {
-//		Session session = factory.getCurrentSession();
-//		Transaction t = session.beginTransaction();
-//
-//		try {
-//			int tt = nhanVien.isTrangThai() ? 1 : 0;
-//			Query<NhanVien> qr = session.createNativeQuery("update NhanVien set hoTen = N'" + nhanVien.getHoTen()
-//					+ "' ,gioiTinh = " + nhanVien.getGioiTinh() + " ,ngaySinh = '" + nhanVien.getNgaySinh()
-//					+ "',maChucVu = '" + nhanVien.getChucVu().getMaChucVu() + "', soDienThoai = '"
-//					+ nhanVien.getSoDienThoai() + "', CCCD = '" + nhanVien.getCCCD() + "', anhDaiDien = '" + nhanVien.getAnhDaiDien() + "' ,trangThai = " + tt
-//					+ " where maNhanVien = '" + nhanVien.getMaNhanVien() + "'", NhanVien.class);
-//			int hh = qr.executeUpdate();
-//			t.commit();
-//			return true;
-//
-//		} catch (Exception e) {
-//			t.rollback();
-//			return false;
-//		}
-//	}
+
+	public boolean updateMatKhauNhanVien(NhanVien nhanVien) {
+		Session session = factory.getCurrentSession();
+		Transaction t = session.beginTransaction();
+
+		try {
+			int tt = nhanVien.isTrangThai() ? 1 : 0;
+			Query<NhanVien> qr = session.createNativeQuery("update NhanVien set matKhau = '" + nhanVien.getMatKhau() 
+					+ "' where maNhanVien = '" + nhanVien.getMaNhanVien() + "'", NhanVien.class);
+			int hh = qr.executeUpdate();
+			t.commit();
+			return true;
+
+		} catch (Exception e) {
+			t.rollback();
+			return false;
+		}
+	}
 	
 	public NhanVien updateNV(NhanVien nv) {
 		Session session = factory.getCurrentSession();
