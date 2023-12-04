@@ -39,6 +39,23 @@ public class KhachHangDAO {
 		}
 	}
 
+	public List<KhachHang> getAllKhachHangs() {
+		Session session = factory.getCurrentSession();
+		Transaction t = session.beginTransaction();
+		List<KhachHang> listKhachHangs = null;
+
+		try {
+			String hql = "from KhachHang";
+			listKhachHangs = session.createQuery(hql, KhachHang.class).getResultList();
+			t.commit();
+			return listKhachHangs;
+
+		} catch (Exception e) {
+			t.rollback();
+			return null;
+		}
+	}
+
 	public KhachHang updateKhachHang(KhachHang kh) {
 		Session session = factory.getCurrentSession();
 		Transaction t = session.beginTransaction();

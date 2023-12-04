@@ -18,6 +18,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import org.kordamp.ikonli.materialdesign2.MaterialDesignM;
@@ -32,6 +33,7 @@ import com.nhom17.quanlykaraoke.gui.dialogs.ChuyenPhongDialog;
 import com.nhom17.quanlykaraoke.gui.dialogs.QuanLyDichVuDialog;
 import com.nhom17.quanlykaraoke.gui.dialogs.TaoPhieuDatPhongDialog;
 import com.nhom17.quanlykaraoke.gui.dialogs.ThanhToanDialog;
+import com.nhom17.quanlykaraoke.utils.ConstantUtil;
 import com.nhom17.quanlykaraoke.utils.MoneyFormatUtil;
 
 import raven.toast.Notifications;
@@ -185,8 +187,8 @@ public class RoomPanel extends JPanel implements MouseListener {
 	 * Select a Phong
 	 */
 	public void select() {
-		mainPanel.setBackground(Color.cyan);
-		infoPanel.setBackground(Color.cyan);
+		mainPanel.setBackground(ConstantUtil.MAIN_LIGHT_BLUE);
+		infoPanel.setBackground(ConstantUtil.MAIN_LIGHT_BLUE);
 
 		this.isSelected = true;
 	}
@@ -215,9 +217,11 @@ public class RoomPanel extends JPanel implements MouseListener {
 
 		addMouseListener(this);
 		setLayout(new BorderLayout(0, 0));
+		panel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 
 		add(panel);
 		panel.setLayout(new CardLayout(0, 0));
+		mainPanel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		mainPanel.setName("mainPanel");
 		panel.add(mainPanel, "mainPanel");
 		mainPanel.setLayout(new BorderLayout(0, 0));

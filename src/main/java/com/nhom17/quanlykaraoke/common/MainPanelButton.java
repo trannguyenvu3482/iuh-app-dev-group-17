@@ -16,6 +16,8 @@ import javax.swing.JPanel;
 
 import org.kordamp.ikonli.Ikon;
 
+import com.nhom17.quanlykaraoke.utils.ConstantUtil;
+
 public class MainPanelButton extends JPanel implements MouseListener {
 	private static final long serialVersionUID = 1L;
 	private JLabel buttonTitle;
@@ -70,7 +72,7 @@ public class MainPanelButton extends JPanel implements MouseListener {
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		setBackground(new Color(49, 98, 240));
+		setBackground(ConstantUtil.MAIN_BLUE);
 		buttonTitle.setForeground(Color.WHITE);
 	}
 

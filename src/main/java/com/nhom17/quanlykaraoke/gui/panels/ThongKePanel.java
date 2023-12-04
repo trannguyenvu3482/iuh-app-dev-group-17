@@ -340,7 +340,7 @@ public class ThongKePanel extends JPanel implements ActionListener {
 		JPanel panelTheoNV = new ThongKeTheoNhanVienPanel();
 		tabbedPane.addTab("Theo nhân viên", MyIcon.getIcon(MaterialDesignB.BADGE_ACCOUNT, 24, null), panelTheoNV, null);
 
-		JPanel panelTheoKhachHang = new JPanel();
+		JPanel panelTheoKhachHang = new ThongKeTheoKhachHangPanel();
 		tabbedPane.addTab("Theo khách hàng", MyIcon.getIcon(MaterialDesignA.ACCOUNT, 24, null), panelTheoKhachHang,
 				null);
 

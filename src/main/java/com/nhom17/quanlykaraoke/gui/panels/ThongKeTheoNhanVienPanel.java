@@ -8,14 +8,19 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -23,10 +28,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -34,7 +42,12 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.kordamp.ikonli.materialdesign2.MaterialDesignM;
+import org.kordamp.ikonli.materialdesign2.MaterialDesignR;
 
+import com.nhom17.quanlykaraoke.bus.NhanVienBUS;
+import com.nhom17.quanlykaraoke.common.MyIcon;
+import com.nhom17.quanlykaraoke.entities.NhanVien;
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JMonthChooser;
 import com.toedter.calendar.JYearChooser;
@@ -59,6 +72,10 @@ public class ThongKeTheoNhanVienPanel extends JPanel implements ActionListener {
 	private final JDateChooser toDateChooser = new JDateChooser();
 	private final JMonthChooser monthChooser = new JMonthChooser();
 	private final JYearChooser yearChooser = new JYearChooser();
+	private TableRowSorter<TableModel> rowSorter;
+
+	// VARIABLES
+	private final NhanVienBUS nvBUS = new NhanVienBUS();
 
 	/**
 	 * 
@@ -75,6 +92,7 @@ public class ThongKeTheoNhanVienPanel extends JPanel implements ActionListener {
 		panelFilterTheoNgay.setBorder(new EmptyBorder(10, 20, 10, 20));
 		panelCenterTheoNgay.add(panelFilterTheoNgay, BorderLayout.NORTH);
 		panelFilterTheoNgay.setLayout(new BoxLayout(panelFilterTheoNgay, BoxLayout.X_AXIS));
+		boxFilterNgay.setMaximumSize(new Dimension(34, 32767));
 
 		boxFilterNgay.setFont(new Font("Dialog", Font.BOLD, 20));
 		boxFilterNgay
@@ -83,15 +101,17 @@ public class ThongKeTheoNhanVienPanel extends JPanel implements ActionListener {
 
 		Component horizontalStrut = Box.createHorizontalStrut(20);
 		panelFilterTheoNgay.add(horizontalStrut);
+		panelFilters.setMaximumSize(new Dimension(800, 32767));
+		panelFilters.setMinimumSize(new Dimension(10, 21));
 
 		panelFilterTheoNgay.add(panelFilters);
 		panelFilters.setLayout(new CardLayout(0, 0));
 
 		JPanel filtersNgay = new JPanel();
 		FlowLayout flowLayout = (FlowLayout) filtersNgay.getLayout();
+		flowLayout.setAlignment(FlowLayout.LEADING);
 		flowLayout.setHgap(0);
 		flowLayout.setVgap(0);
-		flowLayout.setAlignment(FlowLayout.LEFT);
 		filtersNgay.setName("filtersNgay");
 		panelFilters.add(filtersNgay, "filtersNgay");
 
@@ -145,14 +165,34 @@ public class ThongKeTheoNhanVienPanel extends JPanel implements ActionListener {
 		yearChooser.setFont(new Font("Dialog", Font.PLAIN, 18));
 		filtersNam.add(yearChooser);
 
-		Component horizontalStrut_1_1 = Box.createHorizontalStrut(120);
-		panelFilterTheoNgay.add(horizontalStrut_1_1);
+		Component horizontalStrut_2 = Box.createHorizontalStrut(20);
+		panelFilterTheoNgay.add(horizontalStrut_2);
+
+		JPanel panel = new JPanel();
+		panel.setMaximumSize(new Dimension(100, 32767));
+		panelFilterTheoNgay.add(panel);
+		panel.setLayout(new GridLayout(0, 2, 10, 0));
+
+		JButton btnSearch = new JButton("");
+		btnSearch.putClientProperty("JButton.buttonType", "square");
+		btnSearch.addActionListener(this);
+		btnSearch.setIcon(MyIcon.getIcon(MaterialDesignM.MAGNIFY, 32, null));
+		panel.add(btnSearch);
+
+		JButton btnReset = new JButton("");
+		btnReset.setIcon(MyIcon.getIcon(MaterialDesignR.RESTORE, 32, null));
+		btnReset.putClientProperty("JButton.buttonType", "square");
+		panel.add(btnReset);
 
 		txtSearch = new JTextField();
-		txtSearch.putClientProperty("TextField.placeholderText", "Nhập họ tên nhân viên để tìm kiếm");
+		txtSearch.setMaximumSize(new Dimension(280, 2147483647));
+		txtSearch.putClientProperty("JTextField.placeholderText", "Nhập họ tên nhân viên để tìm kiếm");
+
+		Component horizontalGlue_1 = Box.createHorizontalGlue();
+		panelFilterTheoNgay.add(horizontalGlue_1);
 		txtSearch.setFont(new Font("Dialog", Font.PLAIN, 20));
 		panelFilterTheoNgay.add(txtSearch);
-		txtSearch.setColumns(10);
+		txtSearch.setColumns(20);
 
 		JPanel panelContentTheoNgay = new JPanel();
 		panelCenterTheoNgay.add(panelContentTheoNgay, BorderLayout.CENTER);
@@ -162,8 +202,8 @@ public class ThongKeTheoNhanVienPanel extends JPanel implements ActionListener {
 		panelContentTheoNgay.setLayout(new MigLayout("", "[200,grow][400,grow]", "[280,grow][600,grow]"));
 
 		JPanel leftPane = new JPanel();
-		leftPane.setBorder(new TitledBorder(null, "Th\u1ED1ng k\u00EA chi ti\u1EBFt", TitledBorder.LEADING,
-				TitledBorder.TOP, null, null));
+		leftPane.setBorder(
+				new TitledBorder(null, "Thông tin chi tiết", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		leftPane.setBackground(Color.WHITE);
 		panelContentTheoNgay.add(leftPane, "cell 0 0,push ,grow");
 		leftPane.setLayout(new BoxLayout(leftPane, BoxLayout.Y_AXIS));
@@ -251,8 +291,8 @@ public class ThongKeTheoNhanVienPanel extends JPanel implements ActionListener {
 		leftPane.add(horizontalGlue);
 
 		JPanel bottomPanel = new JPanel();
-		bottomPanel.setBorder(new TitledBorder(null, "Danh s\u00E1ch nh\u00E2n vi\u00EAn", TitledBorder.LEADING,
-				TitledBorder.TOP, null, null));
+		bottomPanel.setBorder(
+				new TitledBorder(null, "Danh sách nhân viên", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		bottomPanel.setBackground(Color.WHITE);
 		panelContentTheoNgay.add(bottomPanel, "cell 0 1 2 1,push ,grow");
 		bottomPanel.setLayout(new BorderLayout(0, 0));
@@ -354,6 +394,20 @@ public class ThongKeTheoNhanVienPanel extends JPanel implements ActionListener {
 //			}
 //		});
 
+		// Handle search
+		txtSearch.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// Handle search with filters
+				String text = txtSearch.getText();
+				if (text.equals("")) {
+					rowSorter.setRowFilter(RowFilter.regexFilter(".*", 1));
+				} else {
+					rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text, 1));
+				}
+			}
+		});
+
 		refreshTable();
 	}
 
@@ -368,7 +422,7 @@ public class ThongKeTheoNhanVienPanel extends JPanel implements ActionListener {
 	 */
 	private void createTable() {
 		// TODO Auto-generated method stub
-		final String[] colNames = { "Họ và tên", "SĐT", "CCCD", "Tổng tiền" };
+		final String[] colNames = { "Mã nhân viên", "Họ và tên", "SĐT", "CCCD" };
 		modelThongKe = new DefaultTableModel(colNames, 0) {
 			private static final long serialVersionUID = 1L;
 
@@ -387,6 +441,10 @@ public class ThongKeTheoNhanVienPanel extends JPanel implements ActionListener {
 		tblThongKe.setAutoCreateRowSorter(true);
 		tblThongKe.getTableHeader().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		tblThongKe.setRowHeight(50);
+
+		// Handle filter
+		rowSorter = new TableRowSorter<TableModel>(modelThongKe);
+		tblThongKe.setRowSorter(rowSorter);
 	}
 
 	/**
@@ -394,9 +452,15 @@ public class ThongKeTheoNhanVienPanel extends JPanel implements ActionListener {
 	 */
 	private void refreshTable() {
 		// TODO Auto-generated method stub
-		Object[] rowData = { "Trần Văn Hiệp", "0123123123", "079201341576", "210.000.000đ" };
+		modelThongKe.setRowCount(0);
 
-		modelThongKe.addRow(rowData);
+		List<NhanVien> listNV = nvBUS.getAllNhanViens();
+
+		for (NhanVien nv : listNV) {
+			Object[] rowData = { nv.getMaNhanVien(), nv.getHoTen(), nv.getSoDienThoai(), nv.getCCCD() };
+			modelThongKe.addRow(rowData);
+		}
+
 	}
 
 	private static CategoryDataset createDataset() {

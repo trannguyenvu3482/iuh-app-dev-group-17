@@ -1,5 +1,7 @@
 package com.nhom17.quanlykaraoke.bus;
 
+import java.util.List;
+
 import com.nhom17.quanlykaraoke.dao.KhachHangDAO;
 import com.nhom17.quanlykaraoke.entities.KhachHang;
 
@@ -20,6 +22,10 @@ public class KhachHangBUS {
 
 	public boolean addKhachHang(KhachHang kh) {
 		return khDAO.addKhachHang(kh);
+	}
+
+	public List<KhachHang> getAllKhachHangs() {
+		return khDAO.getAllKhachHangs();
 	}
 
 	public KhachHang getKhachHang(String maKH) {
