@@ -21,8 +21,10 @@ import com.nhom17.quanlykaraoke.entities.NhanVien;
 public class ConstantUtil {
 	public static final Color MAIN_BLUE = new Color(49, 98, 240);
 	public static final Color MAIN_LIGHT_BLUE = new Color(173, 232, 244);
+
 	public static final int MAXIMUM_PAGE_SIZE = 8;
 	public static NhanVien currentNhanVien = null;
+
 	public static final int DAYTIME_BEGIN_HOUR = 0;
 	public static final int DAYTIME_END_HOUR = 18;
 	public static final double DAYTIME_HOUR_PRICE = 45000;
