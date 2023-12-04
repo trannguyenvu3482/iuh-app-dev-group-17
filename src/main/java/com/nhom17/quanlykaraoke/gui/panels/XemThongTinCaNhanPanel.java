@@ -17,6 +17,8 @@ import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import javax.imageio.ImageIO;
 import javax.swing.Box;
@@ -31,8 +33,11 @@ import javax.swing.border.EmptyBorder;
 
 import org.kordamp.ikonli.materialdesign2.MaterialDesignE;
 
+import com.nhom17.quanlykaraoke.bus.NhanVienBUS;
 import com.nhom17.quanlykaraoke.common.MyIcon;
 import com.nhom17.quanlykaraoke.entities.NhanVien;
+import com.nhom17.quanlykaraoke.utils.ConstantUtil;
+import com.nhom17.quanlykaraoke.utils.PasswordUtil;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -46,7 +51,13 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 	private JPasswordField txtCurrentPassword;
 	private JPasswordField txtNewPassword;
 	private JPasswordField txtConfirmNewPassword;
-
+	private JLabel lblName;
+	private JLabel lblMaNV;
+	private JLabel lblGioiTinh;
+	private JLabel lblSDT;
+	private JLabel lblNgaySinh;
+	private JLabel userAvatar;
+	private JButton btnDoiMK;
 	/**
 	 * @param currentNhanVien
 	 * 
@@ -107,7 +118,7 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 			e.printStackTrace();
 		}
 
-		JLabel userAvatar = new JLabel("");
+		userAvatar = new JLabel("");
 		userAvatar.setHorizontalAlignment(SwingConstants.CENTER);
 		userAvatar.setPreferredSize(new Dimension(200, 200));
 		userAvatar.setAlignmentX(0.5f);
@@ -123,7 +134,7 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 		Component horizontalStrut_2_1 = Box.createHorizontalStrut(20);
 		boxFullName.add(horizontalStrut_2_1);
 
-		JLabel lblName = new JLabel("Tên: Trần Nguyên Vũ");
+		lblName = new JLabel("Tên: Trần Nguyên Vũ");
 		lblName.setHorizontalAlignment(SwingConstants.LEFT);
 		lblName.setForeground(new Color(50, 102, 133));
 		lblName.setFont(new Font("Dialog", Font.BOLD, 36));
@@ -141,7 +152,7 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 		Component horizontalStrut_2_1_1 = Box.createHorizontalStrut(20);
 		boxGioiTinh.add(horizontalStrut_2_1_1);
 
-		JLabel lblGioiTinh = new JLabel("Giới tính: Nam");
+		lblGioiTinh = new JLabel("Giới tính: Nam");
 		lblGioiTinh.setHorizontalAlignment(SwingConstants.LEFT);
 		lblGioiTinh.setForeground(new Color(50, 102, 133));
 		lblGioiTinh.setFont(new Font("Dialog", Font.BOLD, 36));
@@ -156,7 +167,7 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 		Component horizontalStrut_2_1_1_1 = Box.createHorizontalStrut(20);
 		boxMaNV.add(horizontalStrut_2_1_1_1);
 
-		JLabel lblMaNV = new JLabel("Mã nhân viên: NV001");
+		lblMaNV = new JLabel("Mã nhân viên: NV001");
 		lblMaNV.setHorizontalAlignment(SwingConstants.LEFT);
 		lblMaNV.setForeground(new Color(50, 102, 133));
 		lblMaNV.setFont(new Font("Dialog", Font.BOLD, 36));
@@ -186,7 +197,7 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 		Component horizontalStrut_2_1_1_1_1_1 = Box.createHorizontalStrut(20);
 		boxSDT.add(horizontalStrut_2_1_1_1_1_1);
 
-		JLabel lblSDT = new JLabel("Số điện thoại: 0903252508");
+		lblSDT = new JLabel("Số điện thoại: 0903252508");
 		lblSDT.setHorizontalAlignment(SwingConstants.LEFT);
 		lblSDT.setForeground(new Color(50, 102, 133));
 		lblSDT.setFont(new Font("Dialog", Font.BOLD, 36));
@@ -201,7 +212,7 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 		Component horizontalStrut_2_1_1_1_1_1_1 = Box.createHorizontalStrut(20);
 		boxNgaySinh.add(horizontalStrut_2_1_1_1_1_1_1);
 
-		JLabel lblNgaySinh = new JLabel("Ngày sinh: 23/11/2003");
+		lblNgaySinh = new JLabel("");
 		lblNgaySinh.setHorizontalAlignment(SwingConstants.LEFT);
 		lblNgaySinh.setForeground(new Color(50, 102, 133));
 		lblNgaySinh.setFont(new Font("Dialog", Font.BOLD, 36));
@@ -247,22 +258,6 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 		txtCurrentPassword.setFont(new Font("Dialog", Font.PLAIN, 20));
 		txtCurrentPassword.setColumns(10);
 
-		JButton btnShowCurrentPassword = new JButton("");
-		btnShowCurrentPassword.setForeground(new Color(50, 102, 133));
-		btnShowCurrentPassword.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnShowCurrentPassword.setBackground(null);
-		btnShowCurrentPassword.setOpaque(false);
-		btnShowCurrentPassword.setBorder(null);
-		btnShowCurrentPassword.setPreferredSize(new Dimension(34, 16));
-		panelCurrentPassword.add(btnShowCurrentPassword, "cell 1 0,alignx left,aligny center");
-		btnShowCurrentPassword.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnShowCurrentPassword.setBackground(null);
-		btnShowCurrentPassword.setIcon(MyIcon.getIcon(MaterialDesignE.EYE_OFF, 28, null));
-		btnShowCurrentPassword.setRolloverIcon(MyIcon.getIcon(MaterialDesignE.EYE_OFF, 28, Color.red));
-
 		Component horizontalStrut_3 = Box.createHorizontalStrut(20);
 		horizontalBox_1_1_1.add(horizontalStrut_3);
 
@@ -293,17 +288,6 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 		txtNewPassword.setColumns(10);
 		txtNewPassword.setBorder(null);
 		panelNewPassword.add(txtNewPassword, "cell 0 0, aligny center, push, grow");
-
-		JButton btnShowNewPassword = new JButton("");
-		btnShowNewPassword.setForeground(new Color(50, 102, 133));
-		btnShowNewPassword.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnShowNewPassword.setPreferredSize(new Dimension(34, 16));
-		btnShowNewPassword.setOpaque(false);
-		btnShowNewPassword.setBorder(null);
-		btnShowNewPassword.setIcon(MyIcon.getIcon(MaterialDesignE.EYE_OFF, 28, null));
-		btnShowNewPassword.setRolloverIcon(MyIcon.getIcon(MaterialDesignE.EYE_OFF, 28, Color.red));
-		btnShowNewPassword.setBackground((Color) null);
-		panelNewPassword.add(btnShowNewPassword, "cell 1 0,alignx left,aligny center");
 
 		Component horizontalStrut_3_1 = Box.createHorizontalStrut(20);
 		horizontalBox_1_1.add(horizontalStrut_3_1);
@@ -337,27 +321,16 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 		txtConfirmNewPassword.setBorder(null);
 		panelConfirmNewPassword.add(txtConfirmNewPassword, "cell 0 0, aligny center, push, grow");
 
-		JButton btnShowConfirmNewPassword = new JButton("");
-		btnShowConfirmNewPassword.setForeground(new Color(50, 102, 133));
-		btnShowConfirmNewPassword.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnShowConfirmNewPassword.setPreferredSize(new Dimension(34, 16));
-		btnShowConfirmNewPassword.setOpaque(false);
-		btnShowConfirmNewPassword.setBorder(null);
-		btnShowConfirmNewPassword.setBackground((Color) null);
-		btnShowConfirmNewPassword.setIcon(MyIcon.getIcon(MaterialDesignE.EYE_OFF, 28, null));
-		btnShowConfirmNewPassword.setRolloverIcon(MyIcon.getIcon(MaterialDesignE.EYE_OFF, 28, Color.red));
-		panelConfirmNewPassword.add(btnShowConfirmNewPassword, "cell 1 0, alignx left,aligny center");
-
 		Component horizontalStrut_3_1_1 = Box.createHorizontalStrut(20);
 		horizontalBox_1_2.add(horizontalStrut_3_1_1);
 
 		Box horizontalBox_1 = Box.createHorizontalBox();
 		panelRight.add(horizontalBox_1);
 
-		JButton btnNewButton = new JButton("Đổi mật khẩu");
-		btnNewButton.setForeground(new Color(50, 102, 133));
-		btnNewButton.setFont(new Font("Dialog", Font.BOLD, 28));
-		horizontalBox_1.add(btnNewButton);
+		btnDoiMK = new JButton("Đổi mật khẩu");
+		btnDoiMK.setForeground(new Color(50, 102, 133));
+		btnDoiMK.setFont(new Font("Dialog", Font.BOLD, 28));
+		horizontalBox_1.add(btnDoiMK);
 
 		Component verticalStrut_2_1_1 = Box.createVerticalStrut(100);
 		panelRight.add(verticalStrut_2_1_1);
@@ -366,11 +339,27 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 		panelBottom.setBorder(new EmptyBorder(40, 0, 40, 0));
 		panelBottom.setBackground(new Color(181, 168, 79));
 		add(panelBottom, BorderLayout.SOUTH);
+		
+		loadInfo(currentNhanVien);
+		btnDoiMK.addActionListener(this);
 	}
-
+	
+	public void loadInfo(NhanVien currentNhanVien) {
+		String gt = (currentNhanVien.getGioiTinh()==0)?"Nam":"Nữ";
+		DateTimeFormatter df = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		String ngaySinh = df.format(currentNhanVien.getNgaySinh());
+		userAvatar.setIcon(ConstantUtil.byteArrayToImageIcon(currentNhanVien.getAnhDaiDien()));
+		lblName.setText("Họ và tên: " + currentNhanVien.getHoTen());
+		lblGioiTinh.setText("Giới tính: " + gt);
+		lblMaNV.setText("Mã nhân viên: " + currentNhanVien.getMaNhanVien());
+		lblSDT.setText("Số điện thoại: " + currentNhanVien.getSoDienThoai());
+		lblNgaySinh.setText("Ngày sinh: " + ngaySinh);
+	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-
+		Object o = e.getSource();
+		if(o.equals(btnDoiMK)) {
+			
+		}
 	}
 }

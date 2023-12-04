@@ -289,7 +289,7 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 		panelTop.add(btnLocNgaySinh);
 		btnLocNgaySinh.setIcon(MyIcon.getIcon(MaterialDesignF.FILTER, 32, null));
 
-		JLabel lblBLc = new JLabel("Tìm theo:");
+		JLabel lblBLc = new JLabel("Tìm kiếm:");
 		lblBLc.setForeground(new Color(50, 102, 133));
 		lblBLc.setFont(new Font("Leelawadee UI", Font.BOLD, 19));
 		lblBLc.setBounds(845, 28, 90, 40);
