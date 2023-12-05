@@ -37,6 +37,7 @@ import org.kordamp.ikonli.materialdesign2.MaterialDesignE;
 import com.nhom17.quanlykaraoke.bus.NhanVienBUS;
 import com.nhom17.quanlykaraoke.common.MyIcon;
 import com.nhom17.quanlykaraoke.entities.NhanVien;
+import com.nhom17.quanlykaraoke.gui.NhanVienGUI.LogoutListener;
 import com.nhom17.quanlykaraoke.utils.ConstantUtil;
 import com.nhom17.quanlykaraoke.utils.PasswordUtil;
 
@@ -367,18 +368,13 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 			}
 			else {
 				 NhanVien nv = ConstantUtil.currentNhanVien;
-				 char[] oldPass = txtCurrentPassword.getPassword();
-				 char[] newPass = txtCurrentPassword.getPassword();
-				 char[] comfirmNewPass = txtCurrentPassword.getPassword();
-				 String newPassString = new String(newPass);
-				 String comfirmNewPassString = new String(comfirmNewPass);
-				 if(!PasswordUtil.check(new String(oldPass), nv.getMatKhau())) {
+				 if(!PasswordUtil.check(txtCurrentPassword.getText(), nv.getMatKhau())) {
 					 JOptionPane.showMessageDialog(null, "Mật khẩu hiện tại không chính xác!", "Thông báo", JOptionPane.ERROR_MESSAGE);
-				 }else if(!newPassString.equalsIgnoreCase(comfirmNewPassString)) {
+				 }else if(!txtNewPassword.getText().equalsIgnoreCase(txtConfirmNewPassword.getText())) {
 					 JOptionPane.showMessageDialog(null, "Mật khẩu mới không đồng nhất!", "Thông báo", JOptionPane.ERROR_MESSAGE);
 				 }else {
 					 NhanVien nhanVien = nvBUS.getNhanVien(nv.getMaNhanVien());
-					 nhanVien.setMatKhau(PasswordUtil.encrypt(newPassString));
+					 nhanVien.setMatKhau(PasswordUtil.encrypt(txtNewPassword.getText()));
 					 nvBUS.updateNV(nhanVien);
 					 JOptionPane.showMessageDialog(null, "Đổi mật khẩu thành công", "Thông báo", JOptionPane.DEFAULT_OPTION);
 					 txtCurrentPassword.setText("");

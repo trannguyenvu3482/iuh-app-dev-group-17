@@ -124,7 +124,6 @@ public class NhanVienDAO {
 
 		try {
 			NhanVien updatedNV = session.merge(nv);
-
 			t.commit();
 			return nv;
 
