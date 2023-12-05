@@ -73,9 +73,12 @@ public class ThongKeTheoKhachHangPanel extends JPanel implements ActionListener 
 	private final JMonthChooser monthChooser = new JMonthChooser();
 	private final JYearChooser yearChooser = new JYearChooser();
 	private TableRowSorter<TableModel> rowSorter;
+	JButton btnSearch = new JButton("");
+	JButton btnReset = new JButton("");
 
 	// VARIABLES
 	private final KhachHangBUS khBUS = new KhachHangBUS();
+	private boolean isInputValid = false;
 
 	/**
 	 * 
@@ -163,6 +166,7 @@ public class ThongKeTheoKhachHangPanel extends JPanel implements ActionListener 
 		yearChooser.setPreferredSize(new Dimension(100, 46));
 		yearChooser.setLocale(new Locale("vi", "VN"));
 		yearChooser.setFont(new Font("Dialog", Font.PLAIN, 18));
+		yearChooser.setEndYear(2023);
 		filtersNam.add(yearChooser);
 
 		Component horizontalStrut_2 = Box.createHorizontalStrut(20);
@@ -173,13 +177,11 @@ public class ThongKeTheoKhachHangPanel extends JPanel implements ActionListener 
 		panelFilterTheoNgay.add(panel);
 		panel.setLayout(new GridLayout(0, 2, 10, 0));
 
-		JButton btnSearch = new JButton("");
 		btnSearch.putClientProperty("JButton.buttonType", "square");
-		btnSearch.addActionListener(this);
+
 		btnSearch.setIcon(MyIcon.getIcon(MaterialDesignM.MAGNIFY, 32, null));
 		panel.add(btnSearch);
 
-		JButton btnReset = new JButton("");
 		btnReset.setIcon(MyIcon.getIcon(MaterialDesignR.RESTORE, 32, null));
 		btnReset.putClientProperty("JButton.buttonType", "square");
 		panel.add(btnReset);
@@ -308,91 +310,45 @@ public class ThongKeTheoKhachHangPanel extends JPanel implements ActionListener 
 		boxFilterNgay.addActionListener(this);
 
 		// Jcalendar handlers
-//		fromDateChooser.addPropertyChangeListener(evt -> {
-//			if (evt.getPropertyName().equals("date")) {
-//				// Handle date change
-//				Date date = fromDateChooser.getDate();
-//
-//				if (date != null) {
-//					// Set min date for toDateChooser
-//					toDateChooser.setMinSelectableDate(date);
-//
-//					// Handle filter
-//					// Check if from date and to date are valid
-//					if (toDateChooser.getDate() != null && (fromDateChooser.getDate().before(toDateChooser.getDate())
-//							|| fromDateChooser.getDate().equals(toDateChooser.getDate()))) {
-//						// Filter
-//						handleThongKeByDate(fromDateChooser.getDate(), toDateChooser.getDate());
-//						Notifications.getInstance().show(Type.SUCCESS, Location.BOTTOM_RIGHT, "Thống kê từ "
-//								+ fromDateChooser.getDate().toString() + " đến " + toDateChooser.getDate().toString());
-//					} else {
-//						Notifications.getInstance().show(Type.ERROR, Location.BOTTOM_RIGHT, "Ngày không hợp lệ");
-//					}
-//				}
-//			}
-//		});
-//
-//		toDateChooser.addPropertyChangeListener(evt -> {
-//			if (evt.getPropertyName().equals("date")) {
-//				// Handle date change
-//				Date date = fromDateChooser.getDate();
-//
-//				if (date != null) {
-//					// Set min date for toDateChooser
-//					toDateChooser.setMinSelectableDate(date);
-//
-//					// Handle filter
-//					// Check if from date and to date are valid
-//					if (fromDateChooser.getDate() != null && (fromDateChooser.getDate().before(toDateChooser.getDate())
-//							|| fromDateChooser.getDate().equals(toDateChooser.getDate()))) {
-//						// Filter
-//						handleThongKeByDate(fromDateChooser.getDate(), toDateChooser.getDate());
-//						Notifications.getInstance().show(Type.SUCCESS, Location.BOTTOM_RIGHT, "Thống kê từ "
-//								+ fromDateChooser.getDate().toString() + " đến " + toDateChooser.getDate().toString());
-//					} else {
-//						Notifications.getInstance().show(Type.ERROR, Location.BOTTOM_RIGHT, "Ngày không hợp lệ");
-//						resetInputs();
-//					}
-//				}
-//			}
-//		});
-//
-//		monthChooser.addPropertyChangeListener(evt -> {
-//			if (evt.getPropertyName().equals("month")) {
-//				// Handle date change
-//				int month = monthChooser.getMonth() + 1;
-//
-//				// Handle filter
-//				// Check if from date and to date are valid
-//				if (month > 0) {
-//					// Filter
-//					handleThongKeByMonth(month);
-//					Notifications.getInstance().show(Type.SUCCESS, Location.BOTTOM_RIGHT,
-//							"Thống kê theo tháng " + month);
-//				} else {
-//					Notifications.getInstance().show(Type.ERROR, Location.BOTTOM_RIGHT, "Tháng không hợp lệ");
-//					resetInputs();
-//				}
-//			}
-//		});
-//
-//		yearChooser.addPropertyChangeListener(evt -> {
-//			if (evt.getPropertyName().equals("year")) {
-//				// Handle date change
-//				int year = yearChooser.getYear();
-//
-//				// Handle filter
-//				// Check if from date and to date are valid
-//				if (year > 0) {
-//					// Filter
-//					handleThongKeByYear(year);
-//					Notifications.getInstance().show(Type.SUCCESS, Location.BOTTOM_RIGHT, "Thống kê theo năm " + year);
-//				} else {
-//					Notifications.getInstance().show(Type.ERROR, Location.BOTTOM_RIGHT, "Năm không hợp lệ");
-//					resetInputs();
-//				}
-//			}
-//		});
+		fromDateChooser.addPropertyChangeListener(evt -> {
+			if (evt.getPropertyName().equals("date")) {
+				// Handle date change
+				Date date = fromDateChooser.getDate();
+
+				if (date != null) {
+					// Set min date for toDateChooser
+					toDateChooser.setMinSelectableDate(date);
+
+					if (toDateChooser.getDate() != null) {
+						isInputValid = true;
+					} else {
+						isInputValid = false;
+					}
+				} else {
+					isInputValid = false;
+				}
+			}
+		});
+
+		toDateChooser.addPropertyChangeListener(evt -> {
+			if (evt.getPropertyName().equals("date")) {
+				// Handle date change
+				Date date = toDateChooser.getDate();
+
+				if (date != null) {
+					// Set min date for toDateChooser
+					fromDateChooser.setMaxSelectableDate(date);
+
+					if (toDateChooser.getDate() != null) {
+						isInputValid = true;
+					} else {
+						isInputValid = false;
+					}
+				} else {
+					isInputValid = false;
+				}
+			}
+		});
 
 		// Handle search
 		txtSearch.addKeyListener(new KeyAdapter() {
@@ -407,6 +363,10 @@ public class ThongKeTheoKhachHangPanel extends JPanel implements ActionListener 
 				}
 			}
 		});
+
+		// Action listeners
+		btnSearch.addActionListener(this);
+		btnReset.addActionListener(this);
 
 		refreshTable();
 	}
@@ -495,6 +455,18 @@ public class ThongKeTheoKhachHangPanel extends JPanel implements ActionListener 
 			} else if (boxFilterNgay.getSelectedIndex() == 2) {
 				cl.show(panelFilters, "filtersNam");
 			}
+		} else if (o.equals(btnSearch)) {
+			if (isInputValid) {
+				if (boxFilterNgay.getSelectedIndex() == 0) {
+					refreshTable();
+				} else if (boxFilterNgay.getSelectedIndex() == 1) {
+					refreshTable();
+				} else if (boxFilterNgay.getSelectedIndex() == 2) {
+					refreshTable();
+				}
+			}
+		} else if (o.equals(btnReset)) {
+			resetInputs();
 		}
 	}
 }

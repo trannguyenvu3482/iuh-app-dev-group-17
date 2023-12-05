@@ -92,6 +92,7 @@ public class ThongKePanel extends JPanel implements ActionListener {
 	private double tongTienDichVu = 0;
 	private double doanhThuPhongThuong = 0;
 	private double doanhThuPhongVIP = 0;
+	private static DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
 	/**
 	 *
@@ -482,8 +483,11 @@ public class ThongKePanel extends JPanel implements ActionListener {
 
 			System.out.println("Số chi tiết PĐP cho PĐP " + pdp.getMaPhieuDatPhong() + ":" + listCTPDP.size());
 
-			listCTPDP.forEach(ctpdp -> {
-				tongTienPhong += ctpdp.getTienPhongAndPhuPhi();
+			double tienPhong = 0;
+			for (ChiTietPhieuDatPhong ctpdp : listCTPDP) {
+				tienPhong = ctpdp.getTienPhongAndPhuPhi();
+
+				tongTienPhong += tienPhong;
 
 				// Handle doanh thu phòng thường hoặc VIP
 				if (ctpdp.getPhong().getLoaiPhong().getTenLoaiPhong().contains("Thường")) {
@@ -491,15 +495,18 @@ public class ThongKePanel extends JPanel implements ActionListener {
 				} else {
 					doanhThuPhongVIP += ctpdp.getTienPhongAndPhuPhi();
 				}
-			});
+			}
 
 			// Handle doanh thu dịch vụ
-			tongTienDichVu = ctdvBUS.getTongTienDichVuByMaPDP(pdp.getMaPhieuDatPhong());
+			double tienDichVu = ctdvBUS.getTongTienDichVuByMaPDP(pdp.getMaPhieuDatPhong());
+			tongTienDichVu += tienDichVu;
 
-			// Handle tong tien and doanh thu trung binh
-			tongDoanhThu = tongTienPhong + tongTienDichVu;
-			doanhThuTrungBinh = tongDoanhThu / tongHoaDon;
+			System.out.println("Tổng tiền hóa đơn " + pdp.getMaPhieuDatPhong() + ": " + (tienPhong + tienDichVu));
 		});
+
+		// Handle tong tien and doanh thu trung binh
+		tongDoanhThu = tongTienPhong + tongTienDichVu;
+		doanhThuTrungBinh = tongDoanhThu / tongHoaDon;
 	}
 
 	private void handleSetLabel() {
@@ -556,7 +563,6 @@ public class ThongKePanel extends JPanel implements ActionListener {
 	}
 
 	private static CategoryDataset createDataset() {
-		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 		// Load each month data to chart
 		for (int i = 1; i <= 12; i++) {
 			int doanhThu = 0;

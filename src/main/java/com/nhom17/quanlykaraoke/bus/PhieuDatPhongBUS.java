@@ -38,6 +38,11 @@ public class PhieuDatPhongBUS {
 		return pdpDAO.getAllPhieuDatPhongFromDate(fromDate, toDate);
 	}
 
+	public List<PhieuDatPhong> getAllPhieuDatPhongFromDateByNhanVien(String maNV, LocalDateTime fromDate,
+			LocalDateTime toDate) {
+		return pdpDAO.getAllPhieuDatPhongFromDateByNhanVien(maNV, fromDate, toDate);
+	}
+
 	public List<PhieuDatPhong> getAllPhieuDatPhongByMonth(int month) {
 		return pdpDAO.getAllPhieuDatPhongByMonth(month);
 	}

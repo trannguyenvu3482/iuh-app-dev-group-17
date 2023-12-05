@@ -74,6 +74,40 @@ public class PhieuDatPhongDAO {
 		}
 	}
 
+	public List<PhieuDatPhong> getAllPhieuDatPhongFromDateByNhanVien(String maNV, LocalDateTime fromDate,
+			LocalDateTime toDate) {
+		Session session = factory.getCurrentSession();
+		Transaction t = session.beginTransaction();
+
+		try {
+			// Handle PhieuDatPhong inner join ChiTietPhieuDatPhong then query for
+			// thoiGianBatDau and thoiGianKetThuc
+			String sql = "SELECT p.* FROM PhieuDatPhong p "
+					+ "INNER JOIN ChiTietPhieuDatPhong c ON p.maPhieuDatPhong = c.maPhieuDatPhong "
+					+ "WHERE p.maPhieuDatPhong NOT IN (SELECT p.maPhieuDatPhong FROM PhieuDatPhong p "
+					+ "INNER JOIN ChiTietPhieuDatPhong c ON p.maPhieuDatPhong = c.maPhieuDatPhong "
+					+ "AND (c.thoiGianKetThuc IS NULL)) AND (p.maNhanVien = :maNV) "
+					+ "AND ((c.thoiGianBatDau BETWEEN :fromDate AND :toDate) OR (c.thoiGianKetThuc BETWEEN :fromDate AND :toDate))";
+			Query<PhieuDatPhong> query = session.createNativeQuery(sql, PhieuDatPhong.class);
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("toDate", toDate);
+			query.setParameter("maNV", maNV);
+
+			System.out.println("Query: " + query.getQueryString());
+
+			List<PhieuDatPhong> listPhieuDatPhong = query.getResultList();
+
+			// Finish
+			t.commit();
+			return listPhieuDatPhong;
+
+		} catch (Exception e) {
+			t.rollback();
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 	// Get all PhieuDatPhong by month
 	public List<PhieuDatPhong> getAllPhieuDatPhongByMonth(int month) {
 		Session session = factory.getCurrentSession();
