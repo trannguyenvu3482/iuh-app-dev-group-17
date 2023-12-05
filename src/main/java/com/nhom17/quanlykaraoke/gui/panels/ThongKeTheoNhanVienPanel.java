@@ -480,7 +480,6 @@ public class ThongKeTheoNhanVienPanel extends JPanel implements ActionListener {
 		// Reset all fields
 		resetAllStatistics();
 
-		// TODO Auto-generated method stub
 		List<PhieuDatPhong> listPDP = pdpBUS.getAllPhieuDatPhongFromDateByNhanVien(maNV,
 				DateTimeFormatUtil.formatDateToLocalDate(fromDate).atStartOfDay(),
 				DateTimeFormatUtil.formatDateToLocalDate(toDate).atStartOfDay());
@@ -492,6 +491,45 @@ public class ThongKeTheoNhanVienPanel extends JPanel implements ActionListener {
 		}
 
 		System.out.println("Mã nhân viên: " + maNV);
+
+		handleCalculateData(listPDP);
+
+		// Handle set labels
+		handleSetLabel();
+	}
+
+	/**
+	 * 
+	 */
+	private void handleThongKeByMonth(String maNV, int month) {
+		// Reset all fields
+		resetAllStatistics();
+
+		List<PhieuDatPhong> listPDP = pdpBUS.getAllPhieuDatPhongByMonthByNhanVien(maNV, month);
+
+		if (listPDP == null || listPDP.size() == 0) {
+			Notifications.getInstance().show(Type.ERROR, Location.BOTTOM_RIGHT,
+					"Không tìm thấy hóa đơn nào phù hợp theo yêu cầu tìm kiếm");
+			return;
+		}
+
+		handleCalculateData(listPDP);
+
+		// Handle set labels
+		handleSetLabel();
+	}
+
+	private void handleThongKeByYear(String maNV, int year) {
+		// Reset all fields
+		resetAllStatistics();
+
+		List<PhieuDatPhong> listPDP = pdpBUS.getAllPhieuDatPhongByYearByNhanVien(maNV, year);
+
+		if (listPDP == null || listPDP.size() == 0) {
+			Notifications.getInstance().show(Type.ERROR, Location.BOTTOM_RIGHT,
+					"Không tìm thấy hóa đơn nào phù hợp theo yêu cầu tìm kiếm");
+			return;
+		}
 
 		handleCalculateData(listPDP);
 
@@ -563,13 +601,13 @@ public class ThongKeTheoNhanVienPanel extends JPanel implements ActionListener {
 		return dataset;
 	}
 
-	private void updateChart() {
+	private void updateChart(String maNV) {
 		dataset.clear();
 
 		// Load each month data to chart
 		for (int i = 1; i <= 12; i++) {
 			int doanhThu = 0;
-			List<PhieuDatPhong> listPhieuDatPhong = pdpBUS.getAllPhieuDatPhongByMonth(i);
+			List<PhieuDatPhong> listPhieuDatPhong = pdpBUS.getAllPhieuDatPhongByMonthByNhanVien(maNV, i);
 			for (PhieuDatPhong pdp : listPhieuDatPhong) {
 				doanhThu += pdp.getTongTien();
 			}
@@ -607,10 +645,20 @@ public class ThongKeTheoNhanVienPanel extends JPanel implements ActionListener {
 							"Thống kê từ ngày " + fromDateChooser.getDate().toString() + " đến ngày "
 									+ toDateChooser.getDate().toString() + " cho nhân viên " + maNV);
 					handleThongKeByDate(maNV, fromDateChooser.getDate(), toDateChooser.getDate());
-					updateChart();
+					updateChart(maNV);
 				} else if (boxFilterNgay.getSelectedIndex() == 1) {
+					String maNV = modelThongKe.getValueAt(tblThongKe.getSelectedRow(), 0).toString();
+					Notifications.getInstance().show(Type.INFO, Location.BOTTOM_RIGHT,
+							"Thống kê tháng " + monthChooser.getMonth() + " cho nhân viên " + maNV);
+					handleThongKeByMonth(maNV, monthChooser.getMonth());
+					updateChart(maNV);
 					refreshTable();
 				} else if (boxFilterNgay.getSelectedIndex() == 2) {
+					String maNV = modelThongKe.getValueAt(tblThongKe.getSelectedRow(), 0).toString();
+					Notifications.getInstance().show(Type.INFO, Location.BOTTOM_RIGHT,
+							"Thống kê năm " + yearChooser.getYear() + " cho nhân viên " + maNV);
+					handleThongKeByYear(maNV, yearChooser.getYear());
+					updateChart(maNV);
 					refreshTable();
 				}
 			} else {

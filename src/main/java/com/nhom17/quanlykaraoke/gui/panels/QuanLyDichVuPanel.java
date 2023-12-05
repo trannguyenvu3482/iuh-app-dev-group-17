@@ -1,8 +1,3 @@
-/**
-` * @author Trần Nguyên Vũ, Trần Ngọc Phát, Mai Nhật Hào, Trần Thanh Vy
- * @version 1.0
- * @created Nov 3, 2023 2:51:22 PM
- */
 package com.nhom17.quanlykaraoke.gui.panels;
 
 import java.awt.BorderLayout;
@@ -15,8 +10,6 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -31,6 +24,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+import javax.swing.UIManager;
 
 import org.kordamp.ikonli.materialdesign2.MaterialDesignC;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignM;
@@ -46,7 +40,7 @@ import net.miginfocom.swing.MigLayout;
 import raven.toast.Notifications;
 
 /**
- * Màn hình quản lý phiếu đặt phòng
+ * Màn hình quản lý dịch vụ
  *
  * @author Trần Nguyên Vũ, Trần Ngọc Phát, Mai Nhật Hào, Trần Thanh Vy
  * @version 1.0
@@ -70,6 +64,9 @@ public class QuanLyDichVuPanel extends JPanel implements ActionListener {
 	private final JPanel panel6 = new JPanel();
 	private final JPanel panel7 = new JPanel();
 	private final JPanel panel8 = new JPanel();
+	private final JLabel lblChuaDat = new JLabel("Phòng chưa có người đặt: 15");
+	private final JLabel lblDaDat = new JLabel("Phòng đã có người đặt: 8");
+	private final JLabel lblPhongKhongHD = new JLabel("Phòng không hoạt động: 0");
 
 	// VARIABLES
 	private final PhongBUS pBUS = new PhongBUS();
@@ -300,6 +297,11 @@ public class QuanLyDichVuPanel extends JPanel implements ActionListener {
 		if (listBookedRooms != null) {
 			System.out.println("Số phòng được đặt: " + listBookedRooms.size());
 		}
+
+		lblChuaDat.setText("Phòng chưa có người đặt: " + listEmptyRooms.size());
+		lblDaDat.setText("Phòng đã có người đặt: " + listBookedRooms.size());
+		lblPhongKhongHD.setText(
+				"Phòng không hoạt dộng: " + (listRooms.size() - listBookedRooms.size() - listEmptyRooms.size()));
 	}
 
 	/**
@@ -329,7 +331,7 @@ public class QuanLyDichVuPanel extends JPanel implements ActionListener {
 		setLayout(new BorderLayout(0, 0));
 
 		JPanel panelTop = new JPanel();
-		panelTop.setBackground(new Color(216, 209, 165));
+		panelTop.setBackground(Color.BLACK);
 		add(panelTop, BorderLayout.NORTH);
 		panelTop.setLayout(new MigLayout("center", "[][][]", "[]"));
 
@@ -340,10 +342,10 @@ public class QuanLyDichVuPanel extends JPanel implements ActionListener {
 		panel.add(txtSearchMaPhong);
 		txtSearchMaPhong.setFont(new Font("Dialog", Font.PLAIN, 20));
 		txtSearchMaPhong.setForeground(Color.LIGHT_GRAY);
-		txtSearchMaPhong.setText("Nhập vào mã phòng cần tìm...");
+		txtSearchMaPhong.putClientProperty("JTextField.placeholderText", "Nhập vào mã phòng cần tìm...");
 		txtSearchMaPhong.setColumns(20);
 		JPanel panelCenter = new JPanel();
-		panelCenter.setBackground(new Color(216, 209, 165));
+		panelCenter.setBackground(UIManager.getColor("Button.background"));
 		add(panelCenter, BorderLayout.CENTER);
 		GridBagLayout gbl_panelCenter = new GridBagLayout();
 		gbl_panelCenter.columnWidths = new int[] { 60, 250, 60 };
@@ -365,7 +367,7 @@ public class QuanLyDichVuPanel extends JPanel implements ActionListener {
 		gbc_btnLeft.gridy = 0;
 		panelCenter.add(btnLeft, gbc_btnLeft);
 
-		roomsPanel.setBackground(new Color(216, 209, 165));
+		roomsPanel.setBackground(UIManager.getColor("Button.background"));
 		GridBagConstraints gbc_roomsPanel = new GridBagConstraints();
 		gbc_roomsPanel.fill = GridBagConstraints.BOTH;
 		gbc_roomsPanel.insets = new Insets(50, 0, 20, 0);
@@ -488,22 +490,19 @@ public class QuanLyDichVuPanel extends JPanel implements ActionListener {
 
 		JPanel panelBottom = new JPanel();
 		FlowLayout flowLayout = (FlowLayout) panelBottom.getLayout();
-		flowLayout.setHgap(60);
+		flowLayout.setHgap(40);
 		add(panelBottom, BorderLayout.SOUTH);
 
-		JLabel lblChuaDat = new JLabel("Phòng chưa có người đặt: 15");
 		lblChuaDat.setForeground(new Color(50, 102, 133));
 		lblChuaDat.setIcon(MyIcon.getIcon(MaterialDesignM.MICROPHONE_VARIANT, 28, null));
 		lblChuaDat.setFont(new Font("Dialog", Font.BOLD, 24));
 		panelBottom.add(lblChuaDat);
 
-		JLabel lblDaDat = new JLabel("Phòng đã có người đặt: 8");
 		lblDaDat.setForeground(new Color(50, 102, 133));
 		lblDaDat.setIcon(MyIcon.getIcon(MaterialDesignM.MICROPHONE_VARIANT_OFF, 28, null));
 		lblDaDat.setFont(new Font("Dialog", Font.BOLD, 24));
 		panelBottom.add(lblDaDat);
 
-		JLabel lblPhongKhongHD = new JLabel("Phòng không hoạt động: 0");
 		lblPhongKhongHD.setForeground(new Color(50, 102, 133));
 		lblPhongKhongHD.setIcon(MyIcon.getIcon(MaterialDesignC.CANCEL, 28, null));
 		lblPhongKhongHD.setFont(new Font("Dialog", Font.BOLD, 24));
@@ -514,25 +513,6 @@ public class QuanLyDichVuPanel extends JPanel implements ActionListener {
 		btnLeft.addActionListener(this);
 
 		// txtSearch handler
-		txtSearchMaPhong.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent e) {
-				if (txtSearchMaPhong.getText().equals("Nhập vào mã phòng cần tìm...")) {
-					txtSearchMaPhong.setText("");
-					txtSearchMaPhong.setForeground(Color.BLACK);
-				}
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				if (txtSearchMaPhong.getText().isEmpty()) {
-					txtSearchMaPhong.setForeground(Color.GRAY);
-					txtSearchMaPhong.setText("Nhập vào mã phòng cần tìm...");
-				}
-
-			}
-		});
-
 		txtSearchMaPhong.addKeyListener(new KeyAdapter() {
 
 			@Override

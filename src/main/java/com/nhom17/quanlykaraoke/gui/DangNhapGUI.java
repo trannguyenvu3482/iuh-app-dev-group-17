@@ -37,8 +37,11 @@ import org.kordamp.ikonli.materialdesign2.MaterialDesignL;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignP;
 
 import com.nhom17.quanlykaraoke.bus.DangNhapBUS;
+import com.nhom17.quanlykaraoke.bus.NhanVienBUS;
 import com.nhom17.quanlykaraoke.common.MyIcon;
+import com.nhom17.quanlykaraoke.entities.NhanVien;
 import com.nhom17.quanlykaraoke.utils.OTPUtil;
+import com.nhom17.quanlykaraoke.utils.PasswordUtil;
 
 import raven.toast.Notifications;
 
@@ -75,7 +78,8 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 	private final JButton btnReturn = new JButton("");
 	private final JButton btnResetPassword = new JButton("Tạo mật khẩu mới");
 
-	// LOCAL VARIABLES
+	// VARIABLES
+	private final NhanVienBUS nvBUS = new NhanVienBUS();
 	private Map<JPasswordField, Boolean> isPasswordShownStates = new HashMap<>();
 	private LoginListener listener;
 	private long duration = 10000;
@@ -357,6 +361,11 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 		} else if (o.equals(btnResetPassword)) {
 			if (OTPUtil.checkOTP(phoneNo, txtOTP.getText())) {
 				// TODO: Thêm logic reset password tại đây
+				NhanVien nv = nvBUS.getNhanVien(loggedInEmployeeID);
+				nv.setMatKhau(PasswordUtil.encrypt(txtNewPassword.getText().trim()));
+				Notifications.getInstance().show(Notifications.Type.SUCCESS, Notifications.Location.BOTTOM_RIGHT,
+						"Đã thay đổi mật khẩu");
+				btnReturn.doClick();
 			} else {
 				JOptionPane.showMessageDialog(null, "OTP không đúng", "Thông báo", JOptionPane.ERROR_MESSAGE);
 			}

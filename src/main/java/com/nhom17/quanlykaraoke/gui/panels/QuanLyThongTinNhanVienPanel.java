@@ -63,30 +63,34 @@ import com.toedter.calendar.JDateChooser;
 public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
 
-	private final NhanVienBUS nvBUS = new NhanVienBUS();
+	// COMPONENTS
 	private final JComboBox<String> boxFilterKichThuoc = new JComboBox<String>();
-	private DefaultTableModel modelNhanVien;
-	private JTable tblNhanVien;
-	private JTextField txtTenNV = new JTextField();;
-	private JTextField txtCCCD = new JTextField();;
-	private JTextField txtSDT = new JTextField();;
+	private final JTextField txtTenNV = new JTextField();
+	private final JTextField txtCCCD = new JTextField();
+	private final JTextField txtSDT = new JTextField();
+	private final JButton btnLocNgaySinh = new JButton("");
+	private final JButton btnSua = new JButton("");
+	private final JButton btnThem = new JButton("");
+	private final JButton btnClearfields = new JButton("");
 	private JDateChooser txtNgaySinh = new JDateChooser();
-	private JComboBox cbChucVu = new JComboBox();
-	private JComboBox cbTrangThai = new JComboBox();
-	private JComboBox cbGioiTinh = new JComboBox();
+	private JComboBox<String> cbChucVu = new JComboBox<String>();
+	private JComboBox<String> cbTrangThai = new JComboBox<String>();
+	private JComboBox<String> cbGioiTinh = new JComboBox<String>();
 	private JTextField txtSearchNV = new JTextField();
 	private JLabel avt = new JLabel("");
 	private JDateChooser txtSearchFrom = new JDateChooser();
-	private JButton btnLocNgaySinh = new JButton("");
-	private JButton btnSua = new JButton("");
-	private JButton btnThem = new JButton("");
-	private JButton btnClearfields = new JButton("");
-	private JComboBox cbFilterChucVu = new JComboBox();
-	private JComboBox cbFilterGioiTinh = new JComboBox();
+	private JComboBox<String> cbFilterChucVu = new JComboBox<String>();
+	private JComboBox<String> cbFilterGioiTinh = new JComboBox<String>();
 	private JDateChooser txtSearchTo = new JDateChooser();
-	private ChucVuBUS cvBUS = new ChucVuBUS();
+
+	private DefaultTableModel modelNhanVien;
+	private JTable tblNhanVien;
 	private TableRowSorter<TableModel> rowSorter;
 	private List<RowFilter<Object, Object>> filters = new ArrayList<RowFilter<Object, Object>>(4);;
+
+	// VARIABLES
+	private final NhanVienBUS nvBUS = new NhanVienBUS();
+	private ChucVuBUS cvBUS = new ChucVuBUS();
 
 	/**
 	 * 
@@ -320,7 +324,7 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 					fileChoose.setFileFilter(new FileFilter() {
 
 						public String getDescription() {
-							return "JPG Images (*.jpg)";
+							return "Images (*.jpg or *.png)";
 						}
 
 						public boolean accept(File f) {
@@ -526,7 +530,7 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 				System.out.println(y);
 				if (!txtTenNV.getText().matches(rgTen)) {
 					JOptionPane.showMessageDialog(this,
-							"Họ vè tên phải có ít nhất 2 từ\nMỗi từ phái viết hoa chữ cái đầu");
+							"Họ và tên phải có ít nhất 2 từ\nMỗi từ phái viết hoa chữ cái đầu");
 				} else if (!txtCCCD.getText().matches("\\d{12}")) {
 					JOptionPane.showMessageDialog(this, "Căn cước công dân gồm 12 số");
 				} else if (!txtSDT.getText().matches("0\\d{9}")) {

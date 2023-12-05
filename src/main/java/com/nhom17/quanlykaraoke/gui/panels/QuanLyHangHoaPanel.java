@@ -32,8 +32,9 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
-import javax.swing.RowSorter;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -63,8 +64,8 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 	private final JTextField txtTenSanPham;
 	private final JFormattedTextField txtDonGia;
 	private final JTextField txtSoLuongTon;
-	private final JComboBox cbTenHH = new JComboBox();
-	private final JComboBox boxTrangThai;
+	private final JComboBox<String> cbTenHH = new JComboBox<String>();
+	private final JComboBox<String> boxTrangThai;
 	private final JTextField txtSearch;
 	private final JButton btnThem = new JButton("");
 	private final JButton btnSua = new JButton("");
@@ -72,13 +73,14 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 	private final JButton btnGiamHang = new JButton("");
 	private final JButton btnClearFields = new JButton("");
 	private final JComboBox<String> boxFilterTrangThai = new JComboBox<String>();
-	private final 	JComboBox<String> boxFilterLoaiHangHoa = new JComboBox<String>();
+	private final JComboBox<String> boxFilterLoaiHangHoa = new JComboBox<String>();
 	private HangHoaBUS hangHoaBUS = new HangHoaBUS();
 	private LoaiHangHoaBUS loaiHangHoaBUS = new LoaiHangHoaBUS();
 	private NumberFormat format = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
 	private NumberFormatter formatter;
 	private TableRowSorter<TableModel> rowsorter;
-	private List<RowFilter<Object, Object>> filters = new ArrayList<RowFilter<Object,Object>>(4);
+	private List<RowFilter<Object, Object>> filters = new ArrayList<RowFilter<Object, Object>>(4);
+
 	/**
 	 * 
 	 */
@@ -88,7 +90,7 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 
 		JPanel panelTop = new JPanel();
 		panelTop.setForeground(new Color(50, 102, 133));
-		panelTop.setBackground(new Color(216, 209, 165));
+		panelTop.setBackground(UIManager.getColor("Button.background"));
 		panelTop.setBorder(new EmptyBorder(10, 24, 20, 24));
 		add(panelTop, BorderLayout.NORTH);
 		panelTop.setLayout(new BoxLayout(panelTop, BoxLayout.Y_AXIS));
@@ -220,10 +222,10 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 		Component horizontalStrut_1_1_1 = Box.createHorizontalStrut(65);
 		boxFive.add(horizontalStrut_1_1_1);
 
-		boxTrangThai = new JComboBox();
+		boxTrangThai = new JComboBox<String>();
 		boxTrangThai.setForeground(new Color(50, 102, 133));
 		boxTrangThai.setEditable(true);
-		boxTrangThai.setModel(new DefaultComboBoxModel(new String[] { "Còn hoạt động", "Ngưng hoạt động" }));
+		boxTrangThai.setModel(new DefaultComboBoxModel<String>(new String[] { "Còn hoạt động", "Ngưng hoạt động" }));
 		boxTrangThai.setFont(new Font("Dialog", Font.PLAIN, 20));
 		boxFive.add(boxTrangThai);
 
@@ -290,7 +292,6 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 		boxSix_1.add(lblBLc);
 		boxFilterLoaiHangHoa.setForeground(new Color(50, 102, 133));
 
-	
 		boxFilterLoaiHangHoa.setFont(new Font("Dialog", Font.BOLD, 20));
 		String[] dataLHH = { "Loại hàng hoá" };
 
@@ -305,7 +306,6 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 		boxSix_1.add(horizontalStrut_1_2);
 		boxFilterTrangThai.setForeground(new Color(50, 102, 133));
 
-		
 		boxFilterTrangThai.setFont(new Font("Dialog", Font.BOLD, 20));
 		boxFilterTrangThai.setModel(
 				new DefaultComboBoxModel<String>(new String[] { "Trạng thái", "Còn hoạt động", "Ngưng hoạt động" }));
@@ -328,14 +328,13 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 		createTable();
 		scrollPaneTable.setViewportView(tblDichVu);
 
-		
 		// Action listeners
 		btnThem.addActionListener(this);
 		btnSua.addActionListener(this);
 		btnNhapHang.addActionListener(this);
 		btnClearFields.addActionListener(this);
 		btnGiamHang.addActionListener(this);
-		
+
 		boxFilterLoaiHangHoa.addActionListener(this);
 		boxFilterTrangThai.addActionListener(this);
 		// Load data to table
@@ -345,15 +344,15 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				String txtTim = txtSearch.getText();
-				if(txtTim.equals("")) {
-					filters.set(0, RowFilter.regexFilter(".*",1));
+				if (txtTim.equals("")) {
+					filters.set(0, RowFilter.regexFilter(".*", 1));
 					rowsorter.setRowFilter(RowFilter.andFilter(filters));
-				}else {
-					filters.set(0, RowFilter.regexFilter("(?i)" + txtTim ,1));
+				} else {
+					filters.set(0, RowFilter.regexFilter("(?i)" + txtTim, 1));
 					rowsorter.setRowFilter(RowFilter.andFilter(filters));
 				}
 			}
-			
+
 		});
 	}
 
@@ -371,6 +370,8 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 		};
 
 		tblDichVu = new JTable(modelDichVu);
+		tblDichVu.setBorder(new TitledBorder(null, "Danh s\u00E1ch h\u00E0ng h\u00F3a", TitledBorder.LEADING,
+				TitledBorder.TOP, null, null));
 		tblDichVu.setForeground(new Color(50, 102, 133));
 		tblDichVu.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tblDichVu.setFont(new Font("Dialog", Font.PLAIN, 18));
@@ -388,7 +389,7 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 		filters.add(RowFilter.regexFilter(".*", 2));
 		filters.add(RowFilter.regexFilter(".*", 5));
 		filters.add(RowFilter.regexFilter(".*", 0));
-		
+
 		tblDichVu.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -541,20 +542,20 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 			} else {
 				JOptionPane.showMessageDialog(this, "Vui lòng chọn hàng hoá muốn nhập hàng");
 			}
-		}else if(o.equals(boxFilterLoaiHangHoa)) {
-			if(boxFilterLoaiHangHoa.getSelectedIndex()!=0) {
-				filters.set(0,RowFilter.regexFilter("^" + boxFilterLoaiHangHoa.getSelectedItem()+"$", 2));
+		} else if (o.equals(boxFilterLoaiHangHoa)) {
+			if (boxFilterLoaiHangHoa.getSelectedIndex() != 0) {
+				filters.set(0, RowFilter.regexFilter("^" + boxFilterLoaiHangHoa.getSelectedItem() + "$", 2));
 				rowsorter.setRowFilter(RowFilter.andFilter(filters));
-			}else {
-				filters.set(0,RowFilter.regexFilter(".*", 2));
+			} else {
+				filters.set(0, RowFilter.regexFilter(".*", 2));
 				rowsorter.setRowFilter(RowFilter.andFilter(filters));
 			}
-		}else if(o.equals(boxFilterTrangThai)) {
-			if(boxFilterTrangThai.getSelectedIndex()!=0) {
-				filters.set(1,RowFilter.regexFilter("^" + boxFilterTrangThai.getSelectedItem()+"$", 5));
+		} else if (o.equals(boxFilterTrangThai)) {
+			if (boxFilterTrangThai.getSelectedIndex() != 0) {
+				filters.set(1, RowFilter.regexFilter("^" + boxFilterTrangThai.getSelectedItem() + "$", 5));
 				rowsorter.setRowFilter(RowFilter.andFilter(filters));
-			}else {
-				filters.set(1,RowFilter.regexFilter(".*", 5));
+			} else {
+				filters.set(1, RowFilter.regexFilter(".*", 5));
 				rowsorter.setRowFilter(RowFilter.andFilter(filters));
 			}
 		}

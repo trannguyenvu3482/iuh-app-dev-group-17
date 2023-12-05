@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -166,7 +167,7 @@ public class NhanVienGUI extends MyFrame implements ActionListener {
 		Image img = icon.getImage().getScaledInstance(200, 150, Image.SCALE_SMOOTH);
 		icon.setImage(img);
 
-		leftPanel.setBackground(new Color(222, 168, 150));
+		leftPanel.setBackground(Color.BLACK);
 		leftPanel.setPreferredSize(new Dimension((int) (screenWidth * 0.25), this.getHeight()));
 		getContentPane().add(leftPanel, BorderLayout.WEST);
 		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
@@ -177,13 +178,14 @@ public class NhanVienGUI extends MyFrame implements ActionListener {
 		leftVBox.add(horizontalBox);
 
 		horizontalBox.add(horizontalGlue_2);
+		btnBack.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnBack.setToolTipText("(Phím tắt: Esc)");
 		btnBack.setMinimumSize(new Dimension(50, 50));
 		btnBack.setMaximumSize(new Dimension(50, 50));
 		btnBack.setPreferredSize(new Dimension(50, 50));
 		btnBack.setHorizontalAlignment(SwingConstants.CENTER);
 		btnBack.setIcon(MyIcon.getIcon(MaterialDesignC.CHEVRON_LEFT_CIRCLE, 40, Color.white));
-		btnBack.setRolloverIcon(MyIcon.getIcon(MaterialDesignC.CHEVRON_LEFT_CIRCLE, 40, Color.RED));
+		btnBack.setRolloverIcon(MyIcon.getIcon(MaterialDesignC.CHEVRON_LEFT_CIRCLE, 40, ConstantUtil.MAIN_BLUE));
 		btnBack.setOpaque(false);
 		btnBack.setBackground(null);
 		btnBack.setBorder(null);
@@ -266,12 +268,13 @@ public class NhanVienGUI extends MyFrame implements ActionListener {
 
 		hBoxInfo.add(panelInfo);
 		panelInfo.setLayout(new MigLayout("alignx center, aligny bottom", "[][][]", "[]"));
+		btnInfo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnInfo.setFont(new Font("Dialog", Font.BOLD, 20));
 		btnInfo.setOpaque(false);
 		panelInfo.add(btnInfo, "push, cell 0 0, width 50px");
 
 		btnInfo.setIcon(MyIcon.getIcon(MaterialDesignI.INFORMATION, 34, Color.WHITE));
-		btnInfo.setRolloverIcon(MyIcon.getIcon(MaterialDesignI.INFORMATION, 34, Color.RED));
+		btnInfo.setRolloverIcon(MyIcon.getIcon(MaterialDesignI.INFORMATION, 34, ConstantUtil.MAIN_BLUE));
 		btnInfo.setPreferredSize(new Dimension(50, 50));
 		btnInfo.setBackground(null);
 		btnInfo.setBorder(null);
@@ -282,10 +285,11 @@ public class NhanVienGUI extends MyFrame implements ActionListener {
 		lblTime.setFont(new Font("Dialog", Font.BOLD, 50));
 
 		ClockUtil clock = new ClockUtil(lblTime);
+		btnHelp.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnHelp.setOpaque(false);
 		panelInfo.add(btnHelp, "cell 2 0,push,alignx right");
 		btnHelp.setIcon(MyIcon.getIcon(MaterialDesignH.HELP_CIRCLE, 34, Color.WHITE));
-		btnHelp.setRolloverIcon(MyIcon.getIcon(MaterialDesignH.HELP_CIRCLE, 34, Color.RED));
+		btnHelp.setRolloverIcon(MyIcon.getIcon(MaterialDesignH.HELP_CIRCLE, 34, ConstantUtil.MAIN_BLUE));
 		btnHelp.setPreferredSize(new Dimension(50, 50));
 		btnHelp.setToolTipText("Hiển thị file pdf hướng dẫn sử dụng phần mềm");
 		btnHelp.setBackground(null);
@@ -311,14 +315,14 @@ public class NhanVienGUI extends MyFrame implements ActionListener {
 				}
 			}
 		});
-		rightPanel.setBackground(Color.YELLOW);
+		rightPanel.setBackground(Color.BLACK);
 
 		getContentPane().add(rightPanel, BorderLayout.CENTER);
 		rightPanel.setLayout(new BorderLayout(0, 0));
 		lblName.setForeground(new Color(50, 102, 133));
 		lblName.setFont(new Font("Dialog", Font.BOLD, 20));
 		lblName.setText(new SimpleDateFormat("EEEE, dd/MM/yyyy", new Locale("vi", "VN")).format(new Date()));
-		panelTop.setBackground(new Color(235, 235, 235));
+		panelTop.setBackground(Color.BLACK);
 
 		rightPanel.add(panelTop, BorderLayout.NORTH);
 		panelTop.setLayout(new MigLayout("alignx center, aligny center", "[][]", "[]"));
@@ -380,7 +384,8 @@ public class NhanVienGUI extends MyFrame implements ActionListener {
 				btnInfo.setVisible(true);
 				btnHelp.setVisible(true);
 				btnBack.setIcon(MyIcon.getIcon(MaterialDesignC.CHEVRON_LEFT_CIRCLE, 40, Color.white));
-				btnBack.setRolloverIcon(MyIcon.getIcon(MaterialDesignC.CHEVRON_LEFT_CIRCLE, 40, Color.RED));
+				btnBack.setRolloverIcon(
+						MyIcon.getIcon(MaterialDesignC.CHEVRON_LEFT_CIRCLE, 40, ConstantUtil.MAIN_BLUE));
 
 				leftPanel.setPreferredSize(new Dimension((int) (screenWidth * 0.25), leftPanel.getHeight()));
 
@@ -391,7 +396,8 @@ public class NhanVienGUI extends MyFrame implements ActionListener {
 				btnInfo.setVisible(false);
 				btnHelp.setVisible(false);
 				btnBack.setIcon(MyIcon.getIcon(MaterialDesignC.CHEVRON_RIGHT_CIRCLE, 40, Color.white));
-				btnBack.setRolloverIcon(MyIcon.getIcon(MaterialDesignC.CHEVRON_RIGHT_CIRCLE, 40, Color.RED));
+				btnBack.setRolloverIcon(
+						MyIcon.getIcon(MaterialDesignC.CHEVRON_RIGHT_CIRCLE, 40, ConstantUtil.MAIN_BLUE));
 
 				leftPanel.setPreferredSize(new Dimension((int) (screenWidth * 0.04), leftPanel.getHeight()));
 

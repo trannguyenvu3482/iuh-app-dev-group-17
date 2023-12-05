@@ -137,6 +137,35 @@ public class PhieuDatPhongDAO {
 		}
 	}
 
+	public List<PhieuDatPhong> getAllPhieuDatPhongByMonthByNhanVien(String maNV, int month) {
+		Session session = factory.getCurrentSession();
+		Transaction t = session.beginTransaction();
+
+		try {
+			// Handle PhieuDatPhong inner join ChiTietPhieuDatPhong then query for
+			// thoiGianBatDau and thoiGianKetThuc
+			String sql = "SELECT p.* " + "FROM PhieuDatPhong p "
+					+ "INNER JOIN ChiTietPhieuDatPhong c ON p.maPhieuDatPhong = c.maPhieuDatPhong "
+					+ "WHERE p.maPhieuDatPhong NOT IN (SELECT p.maPhieuDatPhong FROM PhieuDatPhong p "
+					+ "INNER JOIN ChiTietPhieuDatPhong c ON p.maPhieuDatPhong = c.maPhieuDatPhong "
+					+ "WHERE (c.thoiGianKetThuc IS NULL)) AND (p.maNhanVien = :maNV)"
+					+ "AND MONTH(c.thoiGianBatDau) = :month OR MONTH(c.thoiGianKetThuc) = :month";
+			Query<PhieuDatPhong> query = session.createNativeQuery(sql, PhieuDatPhong.class);
+			query.setParameter("month", month);
+			query.setParameter("maNV", maNV);
+			List<PhieuDatPhong> listPhieuDatPhong = query.getResultList();
+
+			// Finish
+			t.commit();
+			return listPhieuDatPhong;
+
+		} catch (Exception e) {
+			t.rollback();
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 	// Get all PhieuDatPhong by year
 	public List<PhieuDatPhong> getAllPhieuDatPhongByYear(int year) {
 		Session session = factory.getCurrentSession();
@@ -153,6 +182,35 @@ public class PhieuDatPhongDAO {
 					+ "AND YEAR(c.thoiGianBatDau) = :year OR YEAR(c.thoiGianKetThuc) = :year";
 			Query<PhieuDatPhong> query = session.createNativeQuery(sql, PhieuDatPhong.class);
 			query.setParameter("year", year);
+			List<PhieuDatPhong> listPhieuDatPhong = query.getResultList();
+
+			// Finish
+			t.commit();
+			return listPhieuDatPhong;
+
+		} catch (Exception e) {
+			t.rollback();
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public List<PhieuDatPhong> getAllPhieuDatPhongByYearByNhanVien(String maNV, int year) {
+		Session session = factory.getCurrentSession();
+		Transaction t = session.beginTransaction();
+
+		try {
+			// Handle PhieuDatPhong inner join ChiTietPhieuDatPhong then query for
+			// thoiGianBatDau and thoiGianKetThuc
+			String sql = "SELECT p.* " + "FROM PhieuDatPhong p "
+					+ "INNER JOIN ChiTietPhieuDatPhong c ON p.maPhieuDatPhong = c.maPhieuDatPhong "
+					+ "WHERE p.maPhieuDatPhong NOT IN (SELECT p.maPhieuDatPhong FROM PhieuDatPhong p "
+					+ "INNER JOIN ChiTietPhieuDatPhong c ON p.maPhieuDatPhong = c.maPhieuDatPhong "
+					+ "WHERE (c.thoiGianKetThuc IS NULL)) AND (p.maNhanVien = :maNV) "
+					+ "AND YEAR(c.thoiGianBatDau) = :year OR YEAR(c.thoiGianKetThuc) = :year";
+			Query<PhieuDatPhong> query = session.createNativeQuery(sql, PhieuDatPhong.class);
+			query.setParameter("year", year);
+			query.setParameter("maNV", maNV);
 			List<PhieuDatPhong> listPhieuDatPhong = query.getResultList();
 
 			// Finish

@@ -47,6 +47,18 @@ public class PhieuDatPhongBUS {
 		return pdpDAO.getAllPhieuDatPhongByMonth(month);
 	}
 
+	public List<PhieuDatPhong> getAllPhieuDatPhongByMonthByNhanVien(String maNV, int month) {
+		return pdpDAO.getAllPhieuDatPhongByMonthByNhanVien(maNV, month);
+	}
+
+	public List<PhieuDatPhong> getAllPhieuDatPhongByYear(int year) {
+		return pdpDAO.getAllPhieuDatPhongByYear(year);
+	}
+
+	public List<PhieuDatPhong> getAllPhieuDatPhongByYearByNhanVien(String maNV, int year) {
+		return pdpDAO.getAllPhieuDatPhongByYearByNhanVien(maNV, year);
+	}
+
 	public boolean changeRoomForPhieuDatPhong(String currentMaPhong, String moveToMaPhong) {
 		ChiTietPhieuDatPhong ctpdp = ctpdpDAO.getChiTietPhieuDatPhongByActiveMaPhong(currentMaPhong);
 		Phong p = pDAO.getPhong(moveToMaPhong);

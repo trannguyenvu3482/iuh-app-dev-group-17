@@ -3,7 +3,6 @@ package com.nhom17.quanlykaraoke.gui.panels;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -17,7 +16,6 @@ import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import javax.imageio.ImageIO;
@@ -32,12 +30,8 @@ import javax.swing.JPasswordField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import org.kordamp.ikonli.materialdesign2.MaterialDesignE;
-
 import com.nhom17.quanlykaraoke.bus.NhanVienBUS;
-import com.nhom17.quanlykaraoke.common.MyIcon;
 import com.nhom17.quanlykaraoke.entities.NhanVien;
-import com.nhom17.quanlykaraoke.gui.NhanVienGUI.LogoutListener;
 import com.nhom17.quanlykaraoke.utils.ConstantUtil;
 import com.nhom17.quanlykaraoke.utils.PasswordUtil;
 
@@ -50,6 +44,8 @@ import net.miginfocom.swing.MigLayout;
  */
 public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
+
+	// COMPONENTS
 	private JPasswordField txtCurrentPassword;
 	private JPasswordField txtNewPassword;
 	private JPasswordField txtConfirmNewPassword;
@@ -60,7 +56,10 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 	private JLabel lblNgaySinh;
 	private JLabel userAvatar;
 	private JButton btnDoiMK;
+
+	// VARIABLES
 	private NhanVienBUS nvBUS = new NhanVienBUS();
+
 	/**
 	 * @param currentNhanVien
 	 * 
@@ -342,13 +341,13 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 		panelBottom.setBorder(new EmptyBorder(40, 0, 40, 0));
 		panelBottom.setBackground(new Color(181, 168, 79));
 		add(panelBottom, BorderLayout.SOUTH);
-		
+
 		loadInfo(currentNhanVien);
 		btnDoiMK.addActionListener(this);
 	}
-	
+
 	public void loadInfo(NhanVien currentNhanVien) {
-		String gt = (currentNhanVien.getGioiTinh()==0)?"Nam":"Nữ";
+		String gt = (currentNhanVien.getGioiTinh() == 0) ? "Nam" : "Nữ";
 		DateTimeFormatter df = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		String ngaySinh = df.format(currentNhanVien.getNgaySinh());
 		userAvatar.setIcon(ConstantUtil.byteArrayToImageIcon(currentNhanVien.getAnhDaiDien()));
@@ -358,31 +357,35 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 		lblSDT.setText("Số điện thoại: " + currentNhanVien.getSoDienThoai());
 		lblNgaySinh.setText("Ngày sinh: " + ngaySinh);
 	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
-		if(o.equals(btnDoiMK)) {
-			if(txtCurrentPassword.toString().trim().length()==0 || txtNewPassword.toString().trim().length()==0
-					|| txtConfirmNewPassword.toString().trim().length()==0) {
-				JOptionPane.showMessageDialog(null, "Mật khẩu không được để trống!", "Thông báo", JOptionPane.ERROR_MESSAGE);
+		if (o.equals(btnDoiMK)) {
+			if (txtCurrentPassword.toString().trim().length() == 0 || txtNewPassword.toString().trim().length() == 0
+					|| txtConfirmNewPassword.toString().trim().length() == 0) {
+				JOptionPane.showMessageDialog(null, "Mật khẩu không được để trống!", "Thông báo",
+						JOptionPane.ERROR_MESSAGE);
+			} else {
+				NhanVien nv = ConstantUtil.currentNhanVien;
+				if (!PasswordUtil.check(txtCurrentPassword.getText(), nv.getMatKhau())) {
+					JOptionPane.showMessageDialog(null, "Mật khẩu hiện tại không chính xác!", "Thông báo",
+							JOptionPane.ERROR_MESSAGE);
+				} else if (!txtNewPassword.getText().equalsIgnoreCase(txtConfirmNewPassword.getText())) {
+					JOptionPane.showMessageDialog(null, "Mật khẩu mới không đồng nhất!", "Thông báo",
+							JOptionPane.ERROR_MESSAGE);
+				} else {
+					NhanVien nhanVien = nvBUS.getNhanVien(nv.getMaNhanVien());
+					nhanVien.setMatKhau(PasswordUtil.encrypt(txtNewPassword.getText()));
+					nvBUS.updateNV(nhanVien);
+					JOptionPane.showMessageDialog(null, "Đổi mật khẩu thành công", "Thông báo",
+							JOptionPane.DEFAULT_OPTION);
+					txtCurrentPassword.setText("");
+					txtNewPassword.setText("");
+					txtConfirmNewPassword.setText("");
+				}
 			}
-			else {
-				 NhanVien nv = ConstantUtil.currentNhanVien;
-				 if(!PasswordUtil.check(txtCurrentPassword.getText(), nv.getMatKhau())) {
-					 JOptionPane.showMessageDialog(null, "Mật khẩu hiện tại không chính xác!", "Thông báo", JOptionPane.ERROR_MESSAGE);
-				 }else if(!txtNewPassword.getText().equalsIgnoreCase(txtConfirmNewPassword.getText())) {
-					 JOptionPane.showMessageDialog(null, "Mật khẩu mới không đồng nhất!", "Thông báo", JOptionPane.ERROR_MESSAGE);
-				 }else {
-					 NhanVien nhanVien = nvBUS.getNhanVien(nv.getMaNhanVien());
-					 nhanVien.setMatKhau(PasswordUtil.encrypt(txtNewPassword.getText()));
-					 nvBUS.updateNV(nhanVien);
-					 JOptionPane.showMessageDialog(null, "Đổi mật khẩu thành công", "Thông báo", JOptionPane.DEFAULT_OPTION);
-					 txtCurrentPassword.setText("");
-					 txtNewPassword.setText("");
-					 txtConfirmNewPassword.setText("");
-				 }
-			}
-				
+
 		}
 	}
 }

@@ -31,7 +31,11 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
+import javax.swing.UIManager;
+import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -80,23 +84,13 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 		setLayout(new BorderLayout(0, 0));
 
 		JPanel panelTop = new JPanel();
-		panelTop.setBackground(new Color(216, 209, 165));
-		panelTop.setBorder(new EmptyBorder(10, 24, 20, 24));
+		panelTop.setBackground(UIManager.getColor("Button.background"));
+		panelTop.setBorder(new CompoundBorder(
+				new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Th\u00F4ng tin ph\u00F2ng",
+						TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)),
+				new EmptyBorder(10, 24, 20, 24)));
 		add(panelTop, BorderLayout.NORTH);
 		panelTop.setLayout(new BoxLayout(panelTop, BoxLayout.Y_AXIS));
-		Box boxOne_1 = Box.createHorizontalBox();
-		panelTop.add(boxOne_1);
-
-		JLabel lblTnSnPhm_2 = new JLabel("Thông tin Phòng:");
-		lblTnSnPhm_2.setForeground(new Color(50, 102, 133));
-		lblTnSnPhm_2.setFont(new Font("Dialog", Font.BOLD, 24));
-		boxOne_1.add(lblTnSnPhm_2);
-
-		Component horizontalGlue = Box.createHorizontalGlue();
-		boxOne_1.add(horizontalGlue);
-
-		Component verticalStrut = Box.createVerticalStrut(20);
-		panelTop.add(verticalStrut);
 
 		Box boxOne = Box.createHorizontalBox();
 		panelTop.add(boxOne);
@@ -217,7 +211,7 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 		cbTrangThai.setForeground(new Color(50, 102, 133));
 
 		cbTrangThai.setEditable(true);
-		cbTrangThai.setModel(new DefaultComboBoxModel(new String[] {"Còn hoạt động", "Ngưng hoạt động"}));
+		cbTrangThai.setModel(new DefaultComboBoxModel<String>(new String[] { "Còn hoạt động", "Ngưng hoạt động" }));
 		cbTrangThai.setFont(new Font("Dialog", Font.PLAIN, 20));
 		boxFive.add(cbTrangThai);
 
@@ -349,6 +343,8 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 		};
 
 		tblPhong = new JTable(modelPhong);
+		tblPhong.setBorder(new TitledBorder(null, "Danh s\u00E1ch ph\u00F2ng", TitledBorder.LEADING, TitledBorder.TOP,
+				null, null));
 		tblPhong.setForeground(new Color(50, 102, 133));
 		tblPhong.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tblPhong.setFont(new Font("Dialog", Font.PLAIN, 18));
