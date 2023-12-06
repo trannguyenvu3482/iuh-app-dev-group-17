@@ -47,7 +47,7 @@ import com.nhom17.quanlykaraoke.common.MyFrame;
 import com.nhom17.quanlykaraoke.common.MyIcon;
 import com.nhom17.quanlykaraoke.gui.panels.QuanLyDichVuPanel;
 import com.nhom17.quanlykaraoke.gui.panels.QuanLyPhieuDatPhongPanel;
-import com.nhom17.quanlykaraoke.gui.panels.ThongKePanel;
+import com.nhom17.quanlykaraoke.gui.panels.ThongKeForNhanVienGUIPanel;
 import com.nhom17.quanlykaraoke.gui.panels.ThongTinPhanMemPanel;
 import com.nhom17.quanlykaraoke.gui.panels.XemThongTinCaNhanPanel;
 import com.nhom17.quanlykaraoke.utils.ClockUtil;
@@ -89,15 +89,14 @@ public class NhanVienGUI extends MyFrame implements ActionListener {
 	private final JPanel panelContent = new JPanel();
 	private final JPanel quanLyPDPPanel = (JPanel) new QuanLyPhieuDatPhongPanel();
 	private final JPanel quanLyDichVuPanel = (JPanel) new QuanLyDichVuPanel();
-	private final JPanel thongKePanel = (JPanel) new ThongKePanel();
+	private final JPanel thongKePanel;
 	private final MainPanelButton mainPanelButton = new MainPanelButton(1280, 20, "Quản lý dịch vụ",
 			MaterialDesignS.SILVERWARE_FORK_KNIFE, quanLyDichVuPanel, panelContent);
 	private final Component verticalStrut_1_1 = Box.createVerticalStrut(20);
 	private final Box hBoxPanelBtn3 = Box.createHorizontalBox();
 
 	private final Component verticalStrut_1_1_1 = Box.createVerticalStrut(20);
-	private final MainPanelButton mainPanelButton_1_1 = new MainPanelButton(1280, 20, "Xem báo cáo thống kê",
-			MaterialDesignC.CHART_BAR, thongKePanel, panelContent);
+	private final MainPanelButton mainPanelButton_1_1;
 	private final Box hBoxPanelBtn5 = Box.createHorizontalBox();
 	private final Component horizontalGlue = Box.createHorizontalGlue();
 	private final Component horizontalGlue_1 = Box.createHorizontalGlue();
@@ -135,6 +134,10 @@ public class NhanVienGUI extends MyFrame implements ActionListener {
 		final MainPanelButton mainPanelButton_1 = new MainPanelButton(1280, 20, "Xem thông tin cá nhân",
 				MaterialDesignA.ACCOUNT, xemThongTinCaNhanPanel, panelContent);
 		userFullName.setText(ConstantUtil.currentNhanVien.getHoTen());
+
+		thongKePanel = (JPanel) new ThongKeForNhanVienGUIPanel();
+		mainPanelButton_1_1 = new MainPanelButton(1280, 20, "Xem báo cáo thống kê", MaterialDesignC.CHART_BAR,
+				thongKePanel, panelContent);
 
 		getContentPane().setLayout(new BorderLayout(0, 0));
 

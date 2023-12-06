@@ -43,6 +43,11 @@ public class PhieuDatPhongBUS {
 		return pdpDAO.getAllPhieuDatPhongFromDateByNhanVien(maNV, fromDate, toDate);
 	}
 
+	public List<PhieuDatPhong> getAllPhieuDatPhongFromDateByKhachHang(String maKH, LocalDateTime fromDate,
+			LocalDateTime toDate) {
+		return pdpDAO.getAllPhieuDatPhongFromDateByKhachHang(maKH, fromDate, toDate);
+	}
+
 	public List<PhieuDatPhong> getAllPhieuDatPhongByMonth(int month) {
 		return pdpDAO.getAllPhieuDatPhongByMonth(month);
 	}
@@ -51,12 +56,20 @@ public class PhieuDatPhongBUS {
 		return pdpDAO.getAllPhieuDatPhongByMonthByNhanVien(maNV, month);
 	}
 
+	public List<PhieuDatPhong> getAllPhieuDatPhongByMonthByKhachHang(String maKH, int month) {
+		return pdpDAO.getAllPhieuDatPhongByMonthByKhachHang(maKH, month);
+	}
+
 	public List<PhieuDatPhong> getAllPhieuDatPhongByYear(int year) {
 		return pdpDAO.getAllPhieuDatPhongByYear(year);
 	}
 
 	public List<PhieuDatPhong> getAllPhieuDatPhongByYearByNhanVien(String maNV, int year) {
 		return pdpDAO.getAllPhieuDatPhongByYearByNhanVien(maNV, year);
+	}
+
+	public List<PhieuDatPhong> getAllPhieuDatPhongByYearByKhachHang(String maKH, int year) {
+		return pdpDAO.getAllPhieuDatPhongByYearByKhachHang(maKH, year);
 	}
 
 	public boolean changeRoomForPhieuDatPhong(String currentMaPhong, String moveToMaPhong) {

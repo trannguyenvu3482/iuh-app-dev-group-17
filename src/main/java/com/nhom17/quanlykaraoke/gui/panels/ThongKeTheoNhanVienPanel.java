@@ -41,7 +41,6 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.axis.NumberTickUnit;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
@@ -239,7 +238,7 @@ public class ThongKeTheoNhanVienPanel extends JPanel implements ActionListener {
 		// Format y axis with increments of 1000000
 		yAxis.setNumberFormatOverride(NumberFormat.getNumberInstance());
 		yAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-		yAxis.setTickUnit(new NumberTickUnit(1000000));
+		yAxis.setAutoTickUnitSelection(true);
 		panelContentTheoNgay.setLayout(new BorderLayout(0, 0));
 
 		panelContentTheoNgay.setLayout(new MigLayout("", "[200,grow][700,grow]", "[300,grow][540,grow]"));
@@ -384,6 +383,22 @@ public class ThongKeTheoNhanVienPanel extends JPanel implements ActionListener {
 				}
 			}
 		});
+
+//		monthChooser.addPropertyChangeListener(evt -> {
+//			if (evt.getPropertyName().equals("month")) {
+//				isInputValid = true;
+//			} else {
+//				isInputValid = false;
+//			}
+//		});
+//
+//		yearChooser.addPropertyChangeListener(evt -> {
+//			if (evt.getPropertyName().equals("year")) {
+//				isInputValid = true;
+//			} else {
+//				isInputValid = false;
+//			}
+//		});
 
 		// Handle search
 		txtSearch.addKeyListener(new KeyAdapter() {
@@ -629,8 +644,10 @@ public class ThongKeTheoNhanVienPanel extends JPanel implements ActionListener {
 				cl.show(panelFilters, "filtersNgay");
 			} else if (boxFilterNgay.getSelectedIndex() == 1) {
 				cl.show(panelFilters, "filtersThang");
+				isInputValid = true;
 			} else if (boxFilterNgay.getSelectedIndex() == 2) {
 				cl.show(panelFilters, "filtersNam");
+				isInputValid = true;
 			}
 		} else if (o.equals(btnSearch)) {
 			if (tblThongKe.getSelectedRow() == -1) {

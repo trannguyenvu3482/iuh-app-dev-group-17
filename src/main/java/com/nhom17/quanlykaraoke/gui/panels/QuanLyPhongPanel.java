@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -31,7 +32,6 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
-import javax.swing.UIManager;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
@@ -63,9 +63,9 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 	private final JComboBox<String> cbTrangThai = new JComboBox<String>();
 	private final JFormattedTextField txtPhuPhi;;
 	private final JTextField txtSearch;
-	private final JButton btnThem = new JButton("");
-	private final JButton btnSua = new JButton("");
-	private final JButton btnClearFields = new JButton("");
+	private final JButton btnThem = new JButton("Thêm");
+	private final JButton btnSua = new JButton("Chỉnh sửa");
+	private final JButton btnClearFields = new JButton("Xóa các trường");
 	private final JComboBox<String> boxFilterTrangThai = new JComboBox<String>();
 	private final JComboBox<String> boxFilterKichThuoc = new JComboBox<String>();
 	private final JComboBox<String> boxFilterTenLoaiPhong = new JComboBox<String>();
@@ -84,16 +84,19 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 		setLayout(new BorderLayout(0, 0));
 
 		JPanel panelTop = new JPanel();
-		panelTop.setBackground(UIManager.getColor("Button.background"));
+		panelTop.setBackground(new Color(238, 238, 238));
 		panelTop.setBorder(new CompoundBorder(
 				new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Th\u00F4ng tin ph\u00F2ng",
 						TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)),
-				new EmptyBorder(10, 24, 20, 24)));
+				new EmptyBorder(10, 24, 5, 24)));
 		add(panelTop, BorderLayout.NORTH);
 		panelTop.setLayout(new BoxLayout(panelTop, BoxLayout.Y_AXIS));
 
 		Box boxOne = Box.createHorizontalBox();
 		panelTop.add(boxOne);
+
+		Component horizontalStrut_1_4 = Box.createHorizontalStrut(80);
+		boxOne.add(horizontalStrut_1_4);
 
 		JLabel lbTenPhong = new JLabel("Tên Phòng:");
 		lbTenPhong.setForeground(new Color(50, 102, 133));
@@ -104,6 +107,8 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 		boxOne.add(horizontalStrut);
 
 		txtPhong = new JTextField();
+		txtPhong.setMinimumSize(new Dimension(280, 21));
+		txtPhong.setMaximumSize(new Dimension(280, 2147483647));
 		txtPhong.setForeground(new Color(50, 102, 133));
 		txtPhong.setEditable(false);
 		txtPhong.setEnabled(false);
@@ -112,8 +117,8 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 
 		txtPhong.setColumns(10);
 
-		Component horizontalStrut_1_1_2_1 = Box.createHorizontalStrut(600);
-		boxOne.add(horizontalStrut_1_1_2_1);
+		Component horizontalGlue_4 = Box.createHorizontalGlue();
+		boxOne.add(horizontalGlue_4);
 
 		Component verticalStrut_1 = Box.createVerticalStrut(15);
 		panelTop.add(verticalStrut_1);
@@ -121,13 +126,18 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 		Box boxTwo = Box.createHorizontalBox();
 		panelTop.add(boxTwo);
 
+		Component horizontalStrut_1_4_1 = Box.createHorizontalStrut(80);
+		boxTwo.add(horizontalStrut_1_4_1);
+
 		JLabel lbKichThuoc = new JLabel("Kích thước:");
 		lbKichThuoc.setForeground(new Color(50, 102, 133));
 		lbKichThuoc.setFont(new Font("Dialog", Font.BOLD, 20));
 		boxTwo.add(lbKichThuoc);
 
-		Component horizontalStrut_1 = Box.createHorizontalStrut(52);
+		Component horizontalStrut_1 = Box.createHorizontalStrut(55);
 		boxTwo.add(horizontalStrut_1);
+		cbKichThuoc.setPreferredSize(new Dimension(192, 26));
+		cbKichThuoc.setMaximumSize(new Dimension(280, 32767));
 		cbKichThuoc.setForeground(new Color(50, 102, 133));
 		cbKichThuoc.setModel(new DefaultComboBoxModel<String>(new String[] { "5", "10", "15", "20" }));
 
@@ -135,29 +145,33 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 
 		boxTwo.add(cbKichThuoc);
 
-		Component horizontalStrut_2 = Box.createHorizontalStrut(600);
-		boxTwo.add(horizontalStrut_2);
-
-		Component verticalStrut_1_1 = Box.createVerticalStrut(15);
-		panelTop.add(verticalStrut_1_1);
-
-		Box boxThree = Box.createHorizontalBox();
-		panelTop.add(boxThree);
+		Component horizontalGlue_3 = Box.createHorizontalGlue();
+		boxTwo.add(horizontalGlue_3);
 
 		JLabel lbTenLP = new JLabel("Tên loại phòng:");
+		boxTwo.add(lbTenLP);
 		lbTenLP.setForeground(new Color(50, 102, 133));
 		lbTenLP.setFont(new Font("Dialog", Font.BOLD, 20));
-		boxThree.add(lbTenLP);
 
-		Component horizontalStrut_1_1_2_1_1_12 = Box.createHorizontalStrut(18);
-		boxThree.add(horizontalStrut_1_1_2_1_1_12);
+		Component horizontalStrut_2_1 = Box.createHorizontalStrut(10);
+		boxTwo.add(horizontalStrut_2_1);
+		cbTenLP.setMaximumSize(new Dimension(280, 32767));
+		boxTwo.add(cbTenLP);
 		cbTenLP.setForeground(new Color(50, 102, 133));
 		cbTenLP.setModel(new DefaultComboBoxModel<String>(
 				new String[] { "Phòng thường", "Phòng tiệc", "Phòng VIP", "Phòng tiệc VIP" }));
 
 		cbTenLP.setFont(new Font("Dialog", Font.PLAIN, 20));
 
-		boxThree.add(cbTenLP);
+		Component horizontalGlue = Box.createHorizontalGlue();
+		boxTwo.add(horizontalGlue);
+		cbTenLP.addActionListener(this);
+
+		Box boxThree = Box.createHorizontalBox();
+		panelTop.add(boxThree);
+
+		Component horizontalStrut_1_1_2_1_1_12 = Box.createHorizontalStrut(18);
+		boxThree.add(horizontalStrut_1_1_2_1_1_12);
 
 		Component horizontalStrut_1_1_2_1_1_11 = Box.createHorizontalStrut(600);
 		boxThree.add(horizontalStrut_1_1_2_1_1_11);
@@ -168,12 +182,15 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 		Box boxFour = Box.createHorizontalBox();
 		panelTop.add(boxFour);
 
+		Component horizontalStrut_1_4_1_1 = Box.createHorizontalStrut(80);
+		boxFour.add(horizontalStrut_1_4_1_1);
+
 		JLabel lbPhuPhi = new JLabel("Phụ phí:");
 		lbPhuPhi.setForeground(new Color(50, 102, 133));
 		lbPhuPhi.setFont(new Font("Dialog", Font.BOLD, 20));
 		boxFour.add(lbPhuPhi);
 
-		Component horizontalStrut_1_1 = Box.createHorizontalStrut(88);
+		Component horizontalStrut_1_1 = Box.createHorizontalStrut(87);
 		boxFour.add(horizontalStrut_1_1);
 
 		format.setMaximumFractionDigits(0);
@@ -184,6 +201,8 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 		formatter.setAllowsInvalid(false);
 		formatter.setOverwriteMode(true);
 		txtPhuPhi = new JFormattedTextField(formatter);
+		txtPhuPhi.setPreferredSize(new Dimension(280, 21));
+		txtPhuPhi.setMaximumSize(new Dimension(280, 2147483647));
 		txtPhuPhi.setForeground(new Color(50, 102, 133));
 		txtPhuPhi.setEnabled(false);
 		txtPhuPhi.setEditable(false);
@@ -192,28 +211,31 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 		txtPhuPhi.setValue(0);
 
 		boxFour.add(txtPhuPhi);
-		Component horizontalStrut_1_1_2_1_1_1_1 = Box.createHorizontalStrut(600);
-		boxFour.add(horizontalStrut_1_1_2_1_1_1_1);
 
-		Component verticalStrut_1_1_1_1 = Box.createVerticalStrut(15);
-		panelTop.add(verticalStrut_1_1_1_1);
+		Component horizontalGlue_2 = Box.createHorizontalGlue();
+		boxFour.add(horizontalGlue_2);
+
+		JLabel lblTnSnPhm_1_1_1_1 = new JLabel("Trạng thái:");
+		boxFour.add(lblTnSnPhm_1_1_1_1);
+		lblTnSnPhm_1_1_1_1.setForeground(new Color(50, 102, 133));
+		lblTnSnPhm_1_1_1_1.setFont(new Font("Dialog", Font.BOLD, 20));
+
+		Component horizontalStrut_2 = Box.createHorizontalStrut(30);
+		boxFour.add(horizontalStrut_2);
+		cbTrangThai.setMaximumSize(new Dimension(280, 32767));
+		boxFour.add(cbTrangThai);
+		cbTrangThai.setForeground(new Color(50, 102, 133));
+		cbTrangThai.setModel(new DefaultComboBoxModel<String>(new String[] { "Còn hoạt động", "Ngưng hoạt động" }));
+		cbTrangThai.setFont(new Font("Dialog", Font.PLAIN, 20));
+
+		Component horizontalGlue_1 = Box.createHorizontalGlue();
+		boxFour.add(horizontalGlue_1);
 
 		Box boxFive = Box.createHorizontalBox();
 		panelTop.add(boxFive);
 
-		JLabel lblTnSnPhm_1_1_1_1 = new JLabel("Trạng thái:");
-		lblTnSnPhm_1_1_1_1.setForeground(new Color(50, 102, 133));
-		lblTnSnPhm_1_1_1_1.setFont(new Font("Dialog", Font.BOLD, 20));
-		boxFive.add(lblTnSnPhm_1_1_1_1);
-
 		Component horizontalStrut_1_1_1 = Box.createHorizontalStrut(63);
 		boxFive.add(horizontalStrut_1_1_1);
-		cbTrangThai.setForeground(new Color(50, 102, 133));
-
-		cbTrangThai.setEditable(true);
-		cbTrangThai.setModel(new DefaultComboBoxModel<String>(new String[] { "Còn hoạt động", "Ngưng hoạt động" }));
-		cbTrangThai.setFont(new Font("Dialog", Font.PLAIN, 20));
-		boxFive.add(cbTrangThai);
 
 		Component horizontalStrut_1_1_2_1_1_1_1_1 = Box.createHorizontalStrut(800);
 		boxFive.add(horizontalStrut_1_1_2_1_1_1_1_1);
@@ -223,6 +245,7 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 
 		Box boxSix = Box.createHorizontalBox();
 		panelTop.add(boxSix);
+		btnThem.setFont(new Font("Dialog", Font.BOLD, 20));
 		btnThem.setForeground(new Color(50, 102, 133));
 		btnThem.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
@@ -232,6 +255,7 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 
 		Component horizontalStrut_1_2_1 = Box.createHorizontalStrut(20);
 		boxSix.add(horizontalStrut_1_2_1);
+		btnSua.setFont(new Font("Dialog", Font.BOLD, 20));
 		btnSua.setForeground(new Color(50, 102, 133));
 		btnSua.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
@@ -241,6 +265,7 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 
 		Component horizontalStrut_1_2_1_1_1 = Box.createHorizontalStrut(20);
 		boxSix.add(horizontalStrut_1_2_1_1_1);
+		btnClearFields.setFont(new Font("Dialog", Font.BOLD, 20));
 		btnClearFields.setForeground(new Color(50, 102, 133));
 
 		btnClearFields.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -248,16 +273,13 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 		btnClearFields.putClientProperty("JButton.buttonType", "square");
 		boxSix.add(btnClearFields);
 
-		Component verticalStrut_1_1_1_1_1_1 = Box.createVerticalStrut(40);
+		Component verticalStrut_1_1_1_1_1_1 = Box.createVerticalStrut(20);
 		panelTop.add(verticalStrut_1_1_1_1_1_1);
 
 		Box boxSix_1 = Box.createHorizontalBox();
+		boxSix_1.setBorder(new TitledBorder(null, "B\u1ED9 l\u1ECDc v\u00E0 t\u00ECm ki\u1EBFm", TitledBorder.LEADING,
+				TitledBorder.TOP, null, null));
 		panelTop.add(boxSix_1);
-
-		JLabel lblBLc = new JLabel("Bộ lọc: ");
-		lblBLc.setForeground(new Color(50, 102, 133));
-		lblBLc.setFont(new Font("Dialog", Font.BOLD, 20));
-		boxSix_1.add(lblBLc);
 		boxFilterKichThuoc.setForeground(new Color(50, 102, 133));
 
 		boxFilterKichThuoc.setFont(new Font("Dialog", Font.BOLD, 20));
@@ -266,7 +288,7 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 		boxFilterKichThuoc.setModel(new DefaultComboBoxModel<String>(dataLHH));
 		boxSix_1.add(boxFilterKichThuoc);
 
-		Component horizontalStrut_1_2 = Box.createHorizontalStrut(40);
+		Component horizontalStrut_1_2 = Box.createHorizontalStrut(20);
 		boxSix_1.add(horizontalStrut_1_2);
 		boxFilterTenLoaiPhong.setForeground(new Color(50, 102, 133));
 
@@ -275,7 +297,7 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 		boxFilterTenLoaiPhong.setFont(new Font("Dialog", Font.BOLD, 20));
 		boxSix_1.add(boxFilterTenLoaiPhong);
 
-		Component horizontalStrut_1_2_2 = Box.createHorizontalStrut(40);
+		Component horizontalStrut_1_2_2 = Box.createHorizontalStrut(20);
 		boxSix_1.add(horizontalStrut_1_2_2);
 		boxFilterTrangThai.setForeground(new Color(50, 102, 133));
 		boxFilterTrangThai.setFont(new Font("Dialog", Font.BOLD, 20));
@@ -283,7 +305,7 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 				new DefaultComboBoxModel<String>(new String[] { "Trạng thái", "Còn hoạt động", "Ngưng hoạt động" }));
 		boxSix_1.add(boxFilterTrangThai);
 
-		Component horizontalStrut_1_1_2 = Box.createHorizontalStrut(200);
+		Component horizontalStrut_1_1_2 = Box.createHorizontalStrut(300);
 		boxSix_1.add(horizontalStrut_1_1_2);
 
 		txtSearch = new JTextField();
@@ -293,13 +315,18 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 		txtSearch.setColumns(10);
 		txtSearch.putClientProperty("JTextField.placeholderText", "Nhập vào mã phòng cần tìm");
 
-		JScrollPane scrollPaneTable = new JScrollPane();
-		add(scrollPaneTable, BorderLayout.CENTER);
+		JPanel panelTable = new JPanel();
+		panelTable.setBackground(Color.WHITE);
+		panelTable.setBorder(new TitledBorder(null, "Danh s\u00E1ch ph\u00F2ng", TitledBorder.LEADING, TitledBorder.TOP,
+				null, null));
+		add(panelTable, BorderLayout.CENTER);
+		panelTable.setLayout(new BorderLayout(0, 0));
 
-		tblPhong = new JTable();
 		createTable();
 		refreshTable();
-		scrollPaneTable.setViewportView(tblPhong);
+
+		JScrollPane scrollPaneTable = new JScrollPane(tblPhong);
+		panelTable.add(scrollPaneTable);
 
 		// Action listeners
 		btnThem.addActionListener(this);
@@ -307,11 +334,30 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 		btnClearFields.addActionListener(this);
 
 		cbKichThuoc.addActionListener(this);
-		cbTenLP.addActionListener(this);
 
 		boxFilterKichThuoc.addActionListener(this);
 		boxFilterTenLoaiPhong.addActionListener(this);
 		boxFilterTrangThai.addActionListener(this);
+
+		tblPhong.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (tblPhong.getSelectedRow() != -1) {
+					txtPhong.setText(modelPhong.getValueAt(tblPhong.getSelectedRow(), 0).toString());
+					cbKichThuoc.setSelectedItem(modelPhong.getValueAt(tblPhong.getSelectedRow(), 1).toString());
+					cbTenLP.setSelectedItem(modelPhong.getValueAt(tblPhong.getSelectedRow(), 2).toString());
+					try {
+						txtPhuPhi.setValue(nf.parse(modelPhong.getValueAt(tblPhong.getSelectedRow(), 3).toString()));
+					} catch (ParseException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					cbTrangThai.setSelectedItem(modelPhong.getValueAt(tblPhong.getSelectedRow(), 4).toString());
+				}
+			}
+
+		});
 
 		// Handle search
 		txtSearch.addKeyListener(new KeyAdapter() {
@@ -343,8 +389,6 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 		};
 
 		tblPhong = new JTable(modelPhong);
-		tblPhong.setBorder(new TitledBorder(null, "Danh s\u00E1ch ph\u00F2ng", TitledBorder.LEADING, TitledBorder.TOP,
-				null, null));
 		tblPhong.setForeground(new Color(50, 102, 133));
 		tblPhong.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tblPhong.setFont(new Font("Dialog", Font.PLAIN, 18));
@@ -353,36 +397,16 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 		tblPhong.setAutoCreateRowSorter(false);
 		tblPhong.getTableHeader().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		tblPhong.setRowHeight(50);
+		tblPhong.setRowSorter(rowSorter);
 
 		// Handle filter
 		rowSorter = new TableRowSorter<TableModel>(modelPhong);
-		tblPhong.setRowSorter(rowSorter);
 
 		// Add filters
 		filters.add(RowFilter.regexFilter(".*", 1));
 		filters.add(RowFilter.regexFilter(".*", 2));
 		filters.add(RowFilter.regexFilter(".*", 4));
 		filters.add(RowFilter.regexFilter(".*", 0));
-
-		tblPhong.addMouseListener(new MouseAdapter() {
-
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (tblPhong.getSelectedRow() != -1) {
-					txtPhong.setText(modelPhong.getValueAt(tblPhong.getSelectedRow(), 0).toString());
-					cbKichThuoc.setSelectedItem(modelPhong.getValueAt(tblPhong.getSelectedRow(), 1).toString());
-					cbTenLP.setSelectedItem(modelPhong.getValueAt(tblPhong.getSelectedRow(), 2).toString());
-					try {
-						txtPhuPhi.setValue(nf.parse(modelPhong.getValueAt(tblPhong.getSelectedRow(), 3).toString()));
-					} catch (ParseException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					cbTrangThai.setSelectedItem(modelPhong.getValueAt(tblPhong.getSelectedRow(), 4).toString());
-				}
-			}
-
-		});
 	}
 
 	Locale lc = new Locale("vi", "VN");
