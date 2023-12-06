@@ -42,7 +42,4 @@ public class PhongBUS {
 //		return pDAO.getPhongPage(page);
 //	}
 	
-	public List<Phong> filterPhongByKichThuoc(int kt) {
-		return pDAO.filterPhongByKichThuoc(kt);
-	}
 }

@@ -51,7 +51,7 @@ public class LoaiPhongDAO {
 			return null;
 		}
 
-		return idPrefix + String.format("%03d", count+1);
+		return idPrefix + String.format("%03d", count + 1);
 	}
 
 	private int countLoaiPhong() {
@@ -68,7 +68,7 @@ public class LoaiPhongDAO {
 			return -1;
 		}
 	}
-	
+
 	public List<LoaiPhong> getAllLoaiPhongs() {
 		Session session = factory.getCurrentSession();
 		Transaction t = session.beginTransaction();
@@ -84,18 +84,16 @@ public class LoaiPhongDAO {
 			return listLoaiPhong;
 		}
 	}
-	
-	public LoaiPhong getLoaiPhong(String tenLP,int kt) {
+
+	public LoaiPhong getLoaiPhong(String tenLP, int kt) {
 		Session session = factory.getCurrentSession();
 		Transaction t = session.beginTransaction();
 
 		try {
-			Query<LoaiPhong> query = session
-					.createNativeQuery("select * FROM LoaiPhong WHERE tenLoaiPhong = N'" + tenLP + "'" + 
-							" AND kichThuoc = " + kt, LoaiPhong.class);
+			Query<LoaiPhong> query = session.createNativeQuery(
+					"select * FROM LoaiPhong WHERE tenLoaiPhong = N'" + tenLP + "'" + " AND kichThuoc = " + kt,
+					LoaiPhong.class);
 
-			System.out.println(query.getQueryString());
-			
 			LoaiPhong lp = query.getResultList().get(0);
 
 			t.commit();

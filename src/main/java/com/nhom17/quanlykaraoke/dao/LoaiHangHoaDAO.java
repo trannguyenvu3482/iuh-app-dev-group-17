@@ -57,11 +57,11 @@ public class LoaiHangHoaDAO {
 
 		int count = countLoaiHangHoa();
 
-		if (count < 1 || count > 999) {
+		if (count < 0 || count > 999) {
 			return null;
 		}
 
-		return idPrefix + String.format("%03d", count);
+		return idPrefix + String.format("%03d", count + 1);
 	}
 
 	private int countLoaiHangHoa() {
@@ -78,7 +78,7 @@ public class LoaiHangHoaDAO {
 			return -1;
 		}
 	}
-	
+
 	public List<LoaiHangHoa> getAllLoaiHangHoas() {
 		Session session = factory.getCurrentSession();
 		Transaction t = session.beginTransaction();
@@ -94,14 +94,14 @@ public class LoaiHangHoaDAO {
 			return listLoaiHangHoa;
 		}
 	}
-	
+
 	public LoaiHangHoa getLoaiHangHoaByName(String name) {
 		Session session = factory.getCurrentSession();
 		Transaction t = session.beginTransaction();
 
 		try {
-			Query<LoaiHangHoa> query = session
-					.createNativeQuery("select * FROM LoaiHangHoa WHERE tenLoaiHangHoa = N'" + name + "'", LoaiHangHoa.class);			
+			Query<LoaiHangHoa> query = session.createNativeQuery(
+					"select * FROM LoaiHangHoa WHERE tenLoaiHangHoa = N'" + name + "'", LoaiHangHoa.class);
 			LoaiHangHoa lhh = query.getResultList().get(0);
 			t.commit();
 			return lhh;

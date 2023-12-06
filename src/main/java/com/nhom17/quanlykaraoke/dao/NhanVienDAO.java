@@ -25,7 +25,6 @@ public class NhanVienDAO {
 
 		try {
 			String maNV = getNextMaNV();
-			System.out.println("MaNV: " + getNextMaNV());
 			nv.setMaNhanVien(maNV);
 			session.persist(nv);
 			t.commit();
@@ -106,7 +105,7 @@ public class NhanVienDAO {
 
 		try {
 			int tt = nhanVien.isTrangThai() ? 1 : 0;
-			Query<NhanVien> qr = session.createNativeQuery("update NhanVien set matKhau = '" + nhanVien.getMatKhau() 
+			Query<NhanVien> qr = session.createNativeQuery("update NhanVien set matKhau = '" + nhanVien.getMatKhau()
 					+ "' where maNhanVien = '" + nhanVien.getMaNhanVien() + "'", NhanVien.class);
 			int hh = qr.executeUpdate();
 			t.commit();
@@ -117,7 +116,7 @@ public class NhanVienDAO {
 			return false;
 		}
 	}
-	
+
 	public NhanVien updateNV(NhanVien nv) {
 		Session session = factory.getCurrentSession();
 		Transaction t = session.beginTransaction();
@@ -132,7 +131,7 @@ public class NhanVienDAO {
 			return null;
 		}
 	}
-	
+
 	public List<NhanVien> getAllNhanViens() {
 		Session session = factory.getCurrentSession();
 		Transaction t = session.beginTransaction();

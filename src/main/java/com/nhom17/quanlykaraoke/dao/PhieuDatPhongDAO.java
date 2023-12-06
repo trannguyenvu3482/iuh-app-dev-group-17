@@ -277,7 +277,6 @@ public class PhieuDatPhongDAO {
 		Transaction t = session.beginTransaction();
 
 		try {
-			System.out.println("maPhong: " + maPhong);
 			// Handle PhieuDatPhong
 			Query<ChiTietPhieuDatPhong> query3 = session
 					.createNativeQuery("SELECT * FROM ChiTietPhieuDatPhong c WHERE (c.maPhong = '" + maPhong

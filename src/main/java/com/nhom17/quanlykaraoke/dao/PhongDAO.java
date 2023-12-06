@@ -32,10 +32,7 @@ public class PhongDAO {
 
 		try {
 			String maP = getNextMaPhong();
-			
-			System.out.println("Ma HH: " + maP);
-			
-			
+
 			p.setMaPhong(maP);
 			session.persist(p);
 			t.commit();
@@ -56,7 +53,7 @@ public class PhongDAO {
 			return null;
 		}
 
-		return idPrefix + String.format("%03d", count+1);
+		return idPrefix + String.format("%03d", count + 1);
 	}
 
 	private int countPhong() {
@@ -135,11 +132,13 @@ public class PhongDAO {
 		Session session = factory.getCurrentSession();
 		Transaction t = session.beginTransaction();
 
-		
 		try {
-			int tt = phong.isTrangThai()?1:0;
-			Query<Phong> qr = session.createNativeQuery("update Phong set maLoaiPhong = '" + phong.getLoaiPhong().getMaLoaiPhong() +
-					"',trangThai = " + tt + " where maPhong = '" + phong.getMaPhong()+"'",Phong.class);
+			int tt = phong.isTrangThai() ? 1 : 0;
+			Query<Phong> qr = session
+					.createNativeQuery(
+							"update Phong set maLoaiPhong = '" + phong.getLoaiPhong().getMaLoaiPhong()
+									+ "',trangThai = " + tt + " where maPhong = '" + phong.getMaPhong() + "'",
+							Phong.class);
 			int p = qr.executeUpdate();
 
 			t.commit();
@@ -189,21 +188,5 @@ public class PhongDAO {
 //			return listPhong;
 //		}
 //	}
-	
-	public List<Phong> filterPhongByKichThuoc(int kt) {
-		Session session = factory.getCurrentSession();
-		Transaction t = session.beginTransaction();
-		
-		try {
-			Query<Phong> qr = session.createNativeQuery("select maPhong, p.maLoaiPhong, trangThai from Phong p "
-					+ "inner join LoaiPhong lp on p.maLoaiPhong = lp.maLoaiPhong where kichThuoc = " + kt,Phong.class);
-			List<Phong> p = qr.getResultList();
-			t.commit();
-			return p;
 
-		} catch (Exception e) {
-			t.rollback();
-			return null;
-		}
-	}
 }

@@ -96,7 +96,6 @@ public class KhachHangDAO {
 			Query<KhachHang> query = session
 					.createNativeQuery("SELECT * FROM KhachHang WHERE soDienThoai = " + soDienThoai, KhachHang.class);
 
-			System.out.println(query.getQueryString());
 			@SuppressWarnings("deprecation")
 			KhachHang kh = (KhachHang) query.getResultList().get(0);
 
@@ -130,11 +129,11 @@ public class KhachHangDAO {
 
 		int count = countKhachHang();
 
-		if (count < 1 || count > 999) {
+		if (count < 0 || count > 999) {
 			return null;
 		}
 
-		return idPrefix + String.format("%03d", count);
+		return idPrefix + String.format("%03d", count + 1);
 	}
 
 	private int countKhachHang() {

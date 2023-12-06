@@ -32,7 +32,7 @@ public class ChucVuDAO {
 			return null;
 		}
 	}
-	
+
 	public List<ChucVu> getAllChucVus() {
 		Session session = factory.getCurrentSession();
 		Transaction t = session.beginTransaction();
@@ -48,14 +48,14 @@ public class ChucVuDAO {
 			return listChucVu;
 		}
 	}
-	
+
 	public ChucVu getChucVuByName(String name) {
 		Session session = factory.getCurrentSession();
 		Transaction t = session.beginTransaction();
 
 		try {
-			Query<ChucVu> query = session
-					.createNativeQuery("select * FROM ChucVu WHERE tenChucVu = N'" + name + "'", ChucVu.class);			
+			Query<ChucVu> query = session.createNativeQuery("select * FROM ChucVu WHERE tenChucVu = N'" + name + "'",
+					ChucVu.class);
 			ChucVu cv = query.getResultList().get(0);
 			t.commit();
 			return cv;

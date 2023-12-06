@@ -275,6 +275,7 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 		txtSearchNV.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		txtSearchNV.setColumns(10);
 		txtSearchNV.setBounds(937, 29, 225, 40);
+		txtSearchNV.putClientProperty("JTextField.placeholderText", "Nhập vào họ tên");
 		panelTop.add(txtSearchNV);
 
 		Box boxAvatar = Box.createHorizontalBox();
@@ -347,7 +348,7 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 									.getNhanVien(modelNhanVien.getValueAt(tblNhanVien.getSelectedRow(), 0).toString());
 							nv.setAnhDaiDien(avtToByte);
 							nvBUS.updateNV(nv);
-							refreshTable();
+							refreshTable(nvBUS.getAllNhanViens());
 							clearFields();
 						} catch (IOException e1) {
 							// TODO Auto-generated catch block
@@ -357,7 +358,7 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 				}
 			}
 		});
-		refreshTable();
+		refreshTable(nvBUS.getAllNhanViens());
 
 		txtSearchNV.addKeyListener(new KeyAdapter() {
 
@@ -452,18 +453,7 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 			return 1;
 	}
 
-	private void refreshTable() {
-		modelNhanVien.setRowCount(0);
-		for (NhanVien nv : nvBUS.getAllNhanViens()) {
-			Object[] data = { nv.getMaNhanVien(), nv.getHoTen(), gioiTinh(nv.getGioiTinh()),
-					DateTimeFormatter.ofPattern("dd/MM/yyyy").format(nv.getNgaySinh()), nv.getChucVu().getTenChucVu(),
-					nv.isTrangThai() ? "Đang làm" : "Đã nghỉ" };
-			modelNhanVien.addRow(data);
-		}
-
-	}
-
-	private void refreshTableByDOB(List<NhanVien> ls) {
+	private void refreshTable(List<NhanVien> ls) {
 		modelNhanVien.setRowCount(0);
 		for (NhanVien nv : ls) {
 			Object[] data = { nv.getMaNhanVien(), nv.getHoTen(), gioiTinh(nv.getGioiTinh()),
@@ -499,7 +489,6 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 			LocalDate today = LocalDate.now();
 			Period p = Period.between(ns, today);
 			int y = p.getYears();
-			System.out.println(y);
 			if (!txtTenNV.getText().matches(rgTen)) {
 				JOptionPane.showMessageDialog(this, "Họ vè tên phải có ít nhất 2 từ\nMỗi từ phái viết hoa chữ cái đầu");
 			} else if (!txtCCCD.getText().matches("\\d{12}")) {
@@ -515,7 +504,7 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 						txtCCCD.getText(), cbGioiTinh.getSelectedIndex() == 0 ? ConstantUtil.getDefaultMaleAvatar()
 								: ConstantUtil.getDefaultFemaleAvatar());
 				nvBUS.addNhanVien(nv);
-				refreshTable();
+				refreshTable(nvBUS.getAllNhanViens());
 				clearFields();
 				JOptionPane.showMessageDialog(this, "Thêm thành công!");
 			}
@@ -527,7 +516,6 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 				LocalDate today = LocalDate.now();
 				Period p = Period.between(ns, today);
 				int y = p.getYears();
-				System.out.println(y);
 				if (!txtTenNV.getText().matches(rgTen)) {
 					JOptionPane.showMessageDialog(this,
 							"Họ và tên phải có ít nhất 2 từ\nMỗi từ phái viết hoa chữ cái đầu");
@@ -546,7 +534,7 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 							txtCCCD.getText(), nvBUS.getNhanVien(maNV).getAnhDaiDien(),
 							cbTrangThai.getSelectedIndex() == 1 ? true : false);
 					nvBUS.updateNV(nv);
-					refreshTable();
+					refreshTable(nvBUS.getAllNhanViens());
 					clearFields();
 					JOptionPane.showMessageDialog(this, "Cập nhật thành công!");
 				}

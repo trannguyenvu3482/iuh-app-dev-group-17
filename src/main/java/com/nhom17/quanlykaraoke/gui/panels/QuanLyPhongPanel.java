@@ -421,9 +421,7 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 		if (o.equals(btnThem)) {
 			LoaiPhong lp = lpBUS.getLoaiPhong(cbTenLP.getSelectedItem().toString(),
 					Integer.parseInt(cbKichThuoc.getSelectedItem().toString()));
-			System.out.println(lp);
 			Phong p = new Phong("", lp, trangThai(cbTrangThai.getSelectedItem().toString()));
-			System.out.println(p);
 			pBUS.addPhong(p);
 			refreshTable();
 			clearFields();
@@ -433,9 +431,7 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 			if (tblPhong.getSelectedRow() != -1) {
 				LoaiPhong lp = lpBUS.getLoaiPhong(cbTenLP.getSelectedItem().toString(),
 						Integer.parseInt(cbKichThuoc.getSelectedItem().toString()));
-				System.out.println(lp);
 				Phong p = new Phong(txtPhong.getText(), lp, trangThai(cbTrangThai.getSelectedItem().toString()));
-				System.out.println(p);
 				pBUS.updatePhong(p);
 				refreshTable();
 				clearFields();
@@ -453,7 +449,6 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 					Integer.parseInt(cbKichThuoc.getSelectedItem().toString()));
 			txtPhuPhi.setValue(lp.getPhuPhi());
 		} else if (o.equals(boxFilterKichThuoc)) {
-			System.out.println("SELECTED: " + boxFilterKichThuoc.getSelectedIndex());
 			if (boxFilterKichThuoc.getSelectedIndex() != 0) {
 				// Handle table filter
 				filters.set(0, RowFilter.regexFilter("^" + boxFilterKichThuoc.getSelectedItem() + "$", 1));
