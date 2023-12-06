@@ -1,5 +1,7 @@
 package com.nhom17.quanlykaraoke.bus;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import com.nhom17.quanlykaraoke.dao.NhanVienDAO;
@@ -31,5 +33,9 @@ public class NhanVienBUS {
 	
 	public NhanVien updateNV(NhanVien nv) {
 		return nvDAO.updateNV(nv);
+	}
+	
+	public List<NhanVien> getNhanViensByDOB(String dateFrom,String dateTo) {
+		return nvDAO.getNhanViensByDOB(dateFrom, dateTo);
 	}
 }

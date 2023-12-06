@@ -19,6 +19,7 @@ import java.time.Period;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -558,33 +559,22 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 				rowSorter.setRowFilter(RowFilter.andFilter(filters));
 			}
 		} else if (o.equals(btnLocNgaySinh)) {
-//			LocalDate dateFrom = txtSearchFrom.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-//			LocalDate dateTo = txtSearchTo.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-//			List<NhanVien> lsNV = new ArrayList<NhanVien>();
-//			if(dateFrom!=null&&dateTo!=null) {
-//				for(NhanVien nv : nvBUS.getAllNhanViens()) {
-//					if(dateFrom.isBefore(nv.getNgaySinh())&&dateTo.isAfter(nv.getNgaySinh()))
-//						lsNV.add(nv);
-//					
-//				}
-//				refreshTableByDOB(lsNV);
-//			}else if(dateFrom!=null) {
-//				for(NhanVien nv : nvBUS.getAllNhanViens()) {
-//					if(dateFrom.isBefore(nv.getNgaySinh()))
-//						lsNV.add(nv);
-//					
-//				}
-//				refreshTableByDOB(lsNV);
-//			}else if(dateTo!=null) {
-//				for(NhanVien nv : nvBUS.getAllNhanViens()) {
-//					if(dateTo.isAfter(nv.getNgaySinh()))
-//						lsNV.add(nv);
-//					
-//				}
-//				refreshTableByDOB(lsNV);
-//			}else {
-//				refreshTable();
-//			}
+			Date dateFrom = txtSearchFrom.getDate();
+			Date dateTo = txtSearchTo.getDate();
+			String dOBFrom="";
+			String dOBTo="";
+			if(dateFrom!=null&&dateTo!=null) {
+				dOBFrom = DateTimeFormatUtil.formatDateToLocalDate(dateFrom).toString();
+				dOBTo = DateTimeFormatUtil.formatDateToLocalDate(dateTo).toString();
+			}else if(dateFrom!=null) {
+				dOBFrom = DateTimeFormatUtil.formatDateToLocalDate(dateFrom).toString();
+			}else if(dateTo!=null) {
+				dOBTo = DateTimeFormatUtil.formatDateToLocalDate(dateTo).toString();
+			}
+			System.out.println(dOBFrom);
+			System.out.println(dOBTo);
+			List<NhanVien> ls = nvBUS.getNhanViensByDOB(dOBFrom, dOBTo);
+			refreshTable(ls);
 		}
 	}
 }

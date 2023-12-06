@@ -1,5 +1,7 @@
 package com.nhom17.quanlykaraoke.dao;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -139,6 +141,36 @@ public class NhanVienDAO {
 		try {
 			String hql = "from NhanVien";
 			listNhanVien = session.createQuery(hql, NhanVien.class).getResultList();
+			t.commit();
+			return listNhanVien;
+		} catch (Exception e) {
+			System.out.println("ROLLBACK!");
+			t.rollback();
+			return listNhanVien;
+		}
+	}
+	
+	public List<NhanVien> getNhanViensByDOB(String dateFrom,String dateTo) {
+		Session session = factory.getCurrentSession();
+		Transaction t = session.beginTransaction();
+		List<NhanVien> listNhanVien = null;
+		String sql;
+		try {
+			if(dateFrom!=""&&dateTo!="") {
+				sql = "select * from NhanVien where ngaySinh between '"+ dateFrom+
+						"' and '"+ dateTo+"'";
+			}else if(dateFrom!="") {
+				sql = "select * from NhanVien where ngaySinh >= '"+ dateFrom +
+						"'";
+			}else if(dateTo!="") {
+				sql = "select * from NhanVien where ngaySinh <= '"+ dateTo+
+						"'";
+			}else {
+				sql = "select * from NhanVien";
+			}
+			
+			Query<NhanVien> qr = session.createNativeQuery(sql,NhanVien.class);
+			listNhanVien = qr.getResultList();
 			t.commit();
 			return listNhanVien;
 		} catch (Exception e) {
