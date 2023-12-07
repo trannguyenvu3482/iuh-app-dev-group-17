@@ -137,6 +137,9 @@ public class QuanLyGUI extends MyFrame implements ActionListener {
 	public QuanLyGUI(String maNV) {
 		// Init
 		this.currentNhanVien = nvBUS.getNhanVien(maNV);
+
+		ConstantUtil.currentNhanVien = this.currentNhanVien;
+
 		Notifications.getInstance().setJFrame(this);
 
 		getContentPane().setLayout(new BorderLayout(0, 0));

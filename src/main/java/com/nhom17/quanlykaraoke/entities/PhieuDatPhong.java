@@ -50,6 +50,7 @@ public class PhieuDatPhong {
 		this.nhanVien = nhanVien;
 		this.trangThai = trangThai;
 		this.khachHang = khachHang;
+		this.tongTien = 0;
 	}
 
 	/**

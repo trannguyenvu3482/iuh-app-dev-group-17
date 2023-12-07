@@ -24,11 +24,11 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
-import javax.swing.UIManager;
 
 import org.kordamp.ikonli.materialdesign2.MaterialDesignC;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignM;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignP;
+import org.kordamp.ikonli.materialdesign2.MaterialDesignR;
 
 import com.nhom17.quanlykaraoke.bus.PhongBUS;
 import com.nhom17.quanlykaraoke.common.MyIcon;
@@ -81,6 +81,7 @@ public class QuanLyDichVuPanel extends JPanel implements ActionListener {
 	private final List<JPanel> roomUIPanels = List.of(panel1, panel2, panel3, panel4, panel5, panel6, panel7, panel8);
 	private String searchString = "";
 	private Timer timer;
+	private final JButton btnRefresh = new JButton("Làm mới");
 
 	/**
 	 * Instantiates a new quan ly phieu dat phong panel.
@@ -248,6 +249,13 @@ public class QuanLyDichVuPanel extends JPanel implements ActionListener {
 				currentPage++;
 				loadPageRoom(listEmptyRooms, currentPage);
 			});
+		} else if (o.equals(btnRefresh)) {
+			refreshRoomList();
+
+			// Load first page
+			this.currentPage = 1;
+			this.maxPageSize = (int) Math.ceil((double) listBookedRooms.size() / ConstantUtil.MAXIMUM_PAGE_SIZE);
+			loadPageRoom(listBookedRooms, currentPage);
 		}
 	}
 
@@ -345,7 +353,7 @@ public class QuanLyDichVuPanel extends JPanel implements ActionListener {
 		txtSearchMaPhong.putClientProperty("JTextField.placeholderText", "Nhập vào mã phòng cần tìm...");
 		txtSearchMaPhong.setColumns(20);
 		JPanel panelCenter = new JPanel();
-		panelCenter.setBackground(UIManager.getColor("Button.background"));
+		panelCenter.setBackground(new Color(238, 238, 238));
 		add(panelCenter, BorderLayout.CENTER);
 		GridBagLayout gbl_panelCenter = new GridBagLayout();
 		gbl_panelCenter.columnWidths = new int[] { 60, 250, 60 };
@@ -367,7 +375,7 @@ public class QuanLyDichVuPanel extends JPanel implements ActionListener {
 		gbc_btnLeft.gridy = 0;
 		panelCenter.add(btnLeft, gbc_btnLeft);
 
-		roomsPanel.setBackground(UIManager.getColor("Button.background"));
+		roomsPanel.setBackground(new Color(238, 238, 238));
 		GridBagConstraints gbc_roomsPanel = new GridBagConstraints();
 		gbc_roomsPanel.fill = GridBagConstraints.BOTH;
 		gbc_roomsPanel.insets = new Insets(50, 0, 20, 0);
@@ -487,6 +495,12 @@ public class QuanLyDichVuPanel extends JPanel implements ActionListener {
 
 		btnAdd.setIcon(MyIcon.getIcon(MaterialDesignP.PLUS_THICK, 40, null));
 		panelControls.add(btnAdd);
+		btnRefresh.setIcon(MyIcon.getIcon(MaterialDesignR.REFRESH, 40, null));
+		btnRefresh.setForeground(Color.BLACK);
+		btnRefresh.setFont(new Font("Dialog", Font.BOLD, 20));
+		btnRefresh.setBackground(Color.WHITE);
+
+		panelControls.add(btnRefresh);
 
 		JPanel panelBottom = new JPanel();
 		FlowLayout flowLayout = (FlowLayout) panelBottom.getLayout();
@@ -511,6 +525,7 @@ public class QuanLyDichVuPanel extends JPanel implements ActionListener {
 		// Button listeners
 		btnAdd.addActionListener(this);
 		btnLeft.addActionListener(this);
+		btnRefresh.addActionListener(this);
 
 		// txtSearch handler
 		txtSearchMaPhong.addKeyListener(new KeyAdapter() {

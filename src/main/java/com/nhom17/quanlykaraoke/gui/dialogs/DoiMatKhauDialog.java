@@ -9,7 +9,6 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -24,9 +23,9 @@ import com.nhom17.quanlykaraoke.entities.NhanVien;
 import com.nhom17.quanlykaraoke.utils.ConstantUtil;
 import com.nhom17.quanlykaraoke.utils.PasswordUtil;
 
-public class DoiMatKhauDialog extends JDialog implements ActionListener{
+public class DoiMatKhauDialog extends JDialog implements ActionListener {
 	private static final long serialVersionUID = 1L;
-	
+
 	private JLabel lblTenNhanVien = new JLabel("");
 	private JLabel lblCurrentPass = new JLabel("Nhập mật khẩu hiện tại: ");
 	private JPasswordField txtCurrentPass = new JPasswordField();
@@ -36,17 +35,17 @@ public class DoiMatKhauDialog extends JDialog implements ActionListener{
 	private JPasswordField txtComfirmPass = new JPasswordField();
 	private final JButton btnDoiMatKhau = new JButton("Đổi mật khẩu");
 	private final JButton btnHuy = new JButton("Hủy");
-	
+
 	private final NhanVienBUS nvBUS = new NhanVienBUS();
 	private final NhanVien nhanVienCurrent;
+
 	public DoiMatKhauDialog(NhanVien nhanVien) {
-		this.nhanVienCurrent = ConstantUtil.currentNhanVien;
+		this.nhanVienCurrent = nhanVien;
 		getUI();
 		btnDoiMatKhau.addActionListener(this);
 		btnHuy.addActionListener(this);
 	}
-	
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
@@ -77,14 +76,13 @@ public class DoiMatKhauDialog extends JDialog implements ActionListener{
 		}
 	}
 
-
 	public void getUI() {
 		setSize(800, 500);
 		setTitle("Đổi mật khẩu");
 		setResizable(false);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout(0, 0));
-		
+
 		JPanel panelTop = new JPanel();
 		FlowLayout fl_panelTop = (FlowLayout) panelTop.getLayout();
 		fl_panelTop.setVgap(20);
@@ -93,7 +91,7 @@ public class DoiMatKhauDialog extends JDialog implements ActionListener{
 		getContentPane().add(panelTop, BorderLayout.NORTH);
 
 		lblTenNhanVien.setFont(new Font("Dialog", Font.BOLD, 26));
-		lblTenNhanVien.setText("Nhân viên: " +nhanVienCurrent.getHoTen());
+		lblTenNhanVien.setText("Nhân viên: " + nhanVienCurrent.getHoTen());
 		panelTop.add(lblTenNhanVien);
 
 		JPanel panelBot = new JPanel();
@@ -147,19 +145,18 @@ public class DoiMatKhauDialog extends JDialog implements ActionListener{
 		lblCurrentPass.setFont(new Font("Dialog", Font.BOLD, 24));
 		horizontalBox_1_1.add(lblCurrentPass);
 
-		
 		txtCurrentPass.setFont(new Font("Dialog", Font.PLAIN, 24));
 		horizontalBox_1_1.add(lblCurrentPass);
 		txtCurrentPass.setColumns(10);
 
 		Component horizontalStrut_4 = Box.createHorizontalStrut(20);
 		horizontalBox_1_1.add(horizontalStrut_4);
-		
+
 		txtCurrentPass.setEditable(false);
 		txtCurrentPass.setFont(new Font("Dialog", Font.PLAIN, 24));
 		txtCurrentPass.setColumns(10);
 		horizontalBox_1_1.add(txtCurrentPass);
-		
+
 		Component horizontalStrut_3_3 = Box.createHorizontalStrut(50);
 		horizontalBox_1_1.add(horizontalStrut_3_3);
 
@@ -197,7 +194,7 @@ public class DoiMatKhauDialog extends JDialog implements ActionListener{
 
 		lblComfirmPass.setFont(new Font("Dialog", Font.BOLD, 24));
 		horizontalBox_1.add(lblComfirmPass);
-		
+
 		Component horizontalStrut_4_1 = Box.createHorizontalStrut(25);
 		horizontalBox_1.add(horizontalStrut_4_1);
 

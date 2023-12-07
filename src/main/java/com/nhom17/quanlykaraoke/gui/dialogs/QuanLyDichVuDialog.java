@@ -8,6 +8,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,12 +26,15 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import org.kordamp.ikonli.materialdesign2.MaterialDesignC;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignN;
@@ -43,6 +48,7 @@ import com.nhom17.quanlykaraoke.common.MyIcon;
 import com.nhom17.quanlykaraoke.entities.ChiTietDichVu;
 import com.nhom17.quanlykaraoke.entities.PhieuDatPhong;
 import com.nhom17.quanlykaraoke.entities.Phong;
+import com.nhom17.quanlykaraoke.utils.ConstantUtil;
 import com.nhom17.quanlykaraoke.utils.MoneyFormatUtil;
 
 import raven.toast.Notifications;
@@ -80,6 +86,8 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 	private List<ChiTietDichVu> listCTDVCurrent = new ArrayList<ChiTietDichVu>();
 	private List<ChiTietDichVu> listCTDVPending = new ArrayList<ChiTietDichVu>();
 	private List<ChiTietDichVu> listCTDVDelete = new ArrayList<ChiTietDichVu>();
+	private TableRowSorter<TableModel> rowSorter;
+	private List<RowFilter<Object, Object>> filters = new ArrayList<RowFilter<Object, Object>>(2);
 
 	/**
 	 * 
@@ -98,7 +106,7 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 
 		JPanel panelTop = new JPanel();
 		panelTop.setBorder(new MatteBorder(0, 0, 2, 0, (Color) Color.WHITE));
-		panelTop.setBackground(new Color(181, 168, 79));
+		panelTop.setBackground(ConstantUtil.MAIN_BLUE);
 		getContentPane().add(panelTop, BorderLayout.NORTH);
 
 		JLabel lblTitle = new JLabel("Quản lý dịch vụ");
@@ -112,12 +120,13 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 
 		JPanel panelLeft = new JPanel();
 		panelLeft.setBorder(new LineBorder(new Color(64, 64, 64), 5));
-		panelLeft.setBackground(new Color(216, 209, 165));
+		panelLeft.setBackground(new Color(238, 238, 238));
 		panelCenter.add(panelLeft);
 		panelLeft.setLayout(new BorderLayout(0, 0));
 
 		JLabel lblLeftTitle = new JLabel("Danh sách hàng hóa");
-		lblLeftTitle.setForeground(new Color(50, 102, 133));
+		lblLeftTitle.setBackground(new Color(238, 238, 238));
+		lblLeftTitle.setForeground(Color.BLACK);
 		lblLeftTitle.setFont(new Font("Dialog", Font.BOLD, 24));
 		lblLeftTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		panelLeft.add(lblLeftTitle, BorderLayout.NORTH);
@@ -127,8 +136,8 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 		panel.setLayout(new BorderLayout(0, 0));
 
 		JPanel panel_4 = new JPanel();
-		panel_4.setBackground(new Color(216, 209, 165));
-		panel_4.setBorder(new EmptyBorder(10, 5, 16, 5));
+		panel_4.setBackground(new Color(238, 238, 238));
+		panel_4.setBorder(new CompoundBorder(new LineBorder(new Color(0, 0, 0)), new EmptyBorder(10, 5, 16, 5)));
 		panel.add(panel_4, BorderLayout.NORTH);
 		panel_4.setLayout(new BoxLayout(panel_4, BoxLayout.X_AXIS));
 
@@ -157,7 +166,7 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 		scrollPaneLeft.setViewportView(tblLeft);
 
 		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(new Color(216, 209, 165));
+		panel_1.setBackground(new Color(238, 238, 238));
 		panel.add(panel_1, BorderLayout.SOUTH);
 
 		btnThem.setIcon(MyIcon.getIcon(MaterialDesignP.PLUS_THICK, 32, null));
@@ -168,7 +177,7 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 		JPanel panelLeftBottom = new JPanel();
 		panelLeftBottom.setBorder(new CompoundBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(255, 255, 255)),
 				new EmptyBorder(5, 10, 5, 10)));
-		panelLeftBottom.setBackground(new Color(216, 209, 165));
+		panelLeftBottom.setBackground(new Color(238, 238, 238));
 		panelLeft.add(panelLeftBottom, BorderLayout.SOUTH);
 		panelLeftBottom.setLayout(new BoxLayout(panelLeftBottom, BoxLayout.X_AXIS));
 		btnHuy.setForeground(new Color(50, 102, 133));
@@ -180,33 +189,34 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 
 		JPanel panelRight = new JPanel();
 		panelRight.setBorder(new LineBorder(Color.DARK_GRAY, 5));
-		panelRight.setBackground(new Color(216, 209, 165));
+		panelRight.setBackground(new Color(238, 238, 238));
 		panelCenter.add(panelRight);
 		panelRight.setLayout(new BorderLayout(0, 0));
 
 		JLabel lblRightTitle = new JLabel("Dịch vụ đã chọn");
-		lblRightTitle.setForeground(new Color(50, 102, 133));
+		lblRightTitle.setForeground(Color.BLACK);
 		lblRightTitle.setFont(new Font("Dialog", Font.BOLD, 24));
 		lblRightTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		panelRight.add(lblRightTitle, BorderLayout.NORTH);
 
 		JPanel panel_2 = new JPanel();
+		panel_2.setBorder(null);
 		panelRight.add(panel_2, BorderLayout.CENTER);
 		panel_2.setLayout(new BorderLayout(0, 0));
 
 		JPanel panel_5 = new JPanel();
-		panel_5.setBackground(new Color(216, 209, 165));
-		panel_5.setBorder(new EmptyBorder(5, 5, 5, 5));
+		panel_5.setBackground(new Color(238, 238, 238));
+		panel_5.setBorder(new CompoundBorder(new LineBorder(new Color(0, 0, 0)), new EmptyBorder(5, 10, 5, 10)));
 		panel_2.add(panel_5, BorderLayout.NORTH);
 		panel_5.setLayout(new BoxLayout(panel_5, BoxLayout.Y_AXIS));
 
 		JLabel lblTenPhong = new JLabel("Tên phòng: Phòng P001");
-		lblTenPhong.setForeground(new Color(50, 102, 133));
+		lblTenPhong.setForeground(Color.BLACK);
 		lblTenPhong.setFont(new Font("Dialog", Font.BOLD, 18));
 		panel_5.add(lblTenPhong);
 
 		JLabel lblTenKhachHang = new JLabel("Tên khách hàng: Trần Ngọc Phát");
-		lblTenKhachHang.setForeground(new Color(50, 102, 133));
+		lblTenKhachHang.setForeground(Color.BLACK);
 		lblTenKhachHang.setFont(new Font("Dialog", Font.BOLD, 18));
 		panel_5.add(lblTenKhachHang);
 
@@ -217,7 +227,7 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 		scrollPaneRight.setViewportView(tblRight);
 
 		JPanel panel_3 = new JPanel();
-		panel_3.setBackground(new Color(216, 209, 165));
+		panel_3.setBackground(new Color(238, 238, 238));
 		FlowLayout flowLayout = (FlowLayout) panel_3.getLayout();
 		flowLayout.setHgap(10);
 		panel_2.add(panel_3, BorderLayout.SOUTH);
@@ -231,7 +241,7 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 		panel_3.add(btnCapNhatSoLuong);
 
 		JPanel panelRightBottom = new JPanel();
-		panelRightBottom.setBackground(new Color(216, 209, 165));
+		panelRightBottom.setBackground(new Color(238, 238, 238));
 		panelRightBottom.setBorder(new CompoundBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(255, 255, 255)),
 				new EmptyBorder(5, 10, 5, 10)));
 		panelRight.add(panelRightBottom, BorderLayout.SOUTH);
@@ -247,6 +257,23 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 		panelRightBottom.add(btnXacNhan);
 
 		// Refresh tables
+
+		// Search and Filter
+		txtSearch.addKeyListener(new KeyAdapter() {
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				String text = txtSearch.getText();
+				if (text.equals("")) {
+					filters.set(0, RowFilter.regexFilter(".*", 0));
+					rowSorter.setRowFilter(RowFilter.andFilter(filters));
+				} else {
+					filters.set(0, RowFilter.regexFilter("(?i)" + text, 0));
+					rowSorter.setRowFilter(RowFilter.andFilter(filters));
+				}
+			}
+
+		});
 
 		// Action listeners
 		btnThem.addActionListener(this);
@@ -415,6 +442,13 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 		tblLeft.getColumnModel().getColumn(4).setPreferredWidth(35);
 		tblLeft.getColumnModel().getColumn(5).setPreferredWidth(40);
 		tblLeft.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+
+		rowSorter = new TableRowSorter<TableModel>(modelLeft);
+		tblLeft.setRowSorter(rowSorter);
+
+		// Add filters
+		filters.add(RowFilter.regexFilter(".*", 0));
+		filters.add(RowFilter.regexFilter(".*", 1));
 
 		// Load data
 		refreshLeftTable();
