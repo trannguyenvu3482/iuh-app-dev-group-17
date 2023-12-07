@@ -366,10 +366,10 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 				// Handle search with filters
 				String text = txtSearch.getText();
 				if (text.equals("")) {
-					filters.set(3, RowFilter.regexFilter(".*", 0));
+					filters.set(0, RowFilter.regexFilter(".*", 0));
 					rowSorter.setRowFilter(RowFilter.andFilter(filters));
 				} else {
-					filters.set(3, RowFilter.regexFilter("(?i)" + text, 0));
+					filters.set(0, RowFilter.regexFilter("(?i)" + text, 0));
 					rowSorter.setRowFilter(RowFilter.andFilter(filters));
 				}
 			}
@@ -401,12 +401,13 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 
 		// Handle filter
 		rowSorter = new TableRowSorter<TableModel>(modelPhong);
-
+		tblPhong.setRowSorter(rowSorter);
 		// Add filters
+		filters.add(RowFilter.regexFilter(".*", 0));
 		filters.add(RowFilter.regexFilter(".*", 1));
 		filters.add(RowFilter.regexFilter(".*", 2));
 		filters.add(RowFilter.regexFilter(".*", 3));
-		filters.add(RowFilter.regexFilter(".*", 0));
+		
 	}
 
 	Locale lc = new Locale("vi", "VN");
@@ -448,6 +449,7 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 			pBUS.addPhong(p);
 			refreshTable();
 			clearFields();
+			JOptionPane.showMessageDialog(this, "Thêm phòng mới thành công!");
 		} else if (o.equals(btnClearFields)) {
 			clearFields();
 		} else if (o.equals(btnSua)) {
@@ -474,28 +476,28 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 		} else if (o.equals(boxFilterKichThuoc)) {
 			if (boxFilterKichThuoc.getSelectedIndex() != 0) {
 				// Handle table filter
-				filters.set(0, RowFilter.regexFilter("^" + boxFilterKichThuoc.getSelectedItem() + "$", 1));
+				filters.set(1, RowFilter.regexFilter("^" + boxFilterKichThuoc.getSelectedItem() + "$", 1));
 				rowSorter.setRowFilter(RowFilter.andFilter(filters));
 			} else {
-				filters.set(0, RowFilter.regexFilter(".*", 1));
+				filters.set(1, RowFilter.regexFilter(".*", 1));
 				rowSorter.setRowFilter(RowFilter.andFilter(filters));
 			}
 		} else if (o.equals(boxFilterTenLoaiPhong)) {
 			if (boxFilterTenLoaiPhong.getSelectedIndex() != 0) {
 				// Handle table filter
-				filters.set(1, RowFilter.regexFilter("^" + boxFilterTenLoaiPhong.getSelectedItem() + "$", 2));
+				filters.set(2, RowFilter.regexFilter("^" + boxFilterTenLoaiPhong.getSelectedItem() + "$", 2));
 				rowSorter.setRowFilter(RowFilter.andFilter(filters));
 			} else {
-				filters.set(1, RowFilter.regexFilter(".*", 2));
+				filters.set(2, RowFilter.regexFilter(".*", 2));
 				rowSorter.setRowFilter(RowFilter.andFilter(filters));
 			}
 		} else if (o.equals(boxFilterTrangThai)) {
 			if (boxFilterTrangThai.getSelectedIndex() != 0) {
 				// Handle table filter
-				filters.set(2, RowFilter.regexFilter("^" + boxFilterTrangThai.getSelectedItem() + "$", 4));
+				filters.set(3, RowFilter.regexFilter("^" + boxFilterTrangThai.getSelectedItem() + "$", 4));
 				rowSorter.setRowFilter(RowFilter.andFilter(filters));
 			} else {
-				filters.set(2, RowFilter.regexFilter(".*", 4));
+				filters.set(3, RowFilter.regexFilter(".*", 4));
 				rowSorter.setRowFilter(RowFilter.andFilter(filters));
 			}
 		}
