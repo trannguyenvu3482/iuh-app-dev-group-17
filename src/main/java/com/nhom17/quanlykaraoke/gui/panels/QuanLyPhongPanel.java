@@ -153,7 +153,7 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 		lbTenLP.setForeground(new Color(50, 102, 133));
 		lbTenLP.setFont(new Font("Dialog", Font.BOLD, 20));
 
-		Component horizontalStrut_2_1 = Box.createHorizontalStrut(10);
+		Component horizontalStrut_2_1 = Box.createHorizontalStrut(30);
 		boxTwo.add(horizontalStrut_2_1);
 		cbTenLP.setMaximumSize(new Dimension(280, 32767));
 		boxTwo.add(cbTenLP);
@@ -405,7 +405,7 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 		// Add filters
 		filters.add(RowFilter.regexFilter(".*", 1));
 		filters.add(RowFilter.regexFilter(".*", 2));
-		filters.add(RowFilter.regexFilter(".*", 4));
+		filters.add(RowFilter.regexFilter(".*", 3));
 		filters.add(RowFilter.regexFilter(".*", 0));
 	}
 
@@ -419,7 +419,6 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 					nf.format(p.getLoaiPhong().getPhuPhi()), p.isTrangThai() ? "Còn hoạt động" : "Ngưng hoạt động" };
 			modelPhong.addRow(data);
 		}
-
 	}
 
 	private void clearFields() {

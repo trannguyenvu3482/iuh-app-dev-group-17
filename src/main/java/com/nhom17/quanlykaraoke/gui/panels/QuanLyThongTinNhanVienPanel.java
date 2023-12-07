@@ -25,6 +25,7 @@ import java.util.Locale;
 
 import javax.swing.Box;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
@@ -46,6 +47,7 @@ import javax.swing.table.TableRowSorter;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignA;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignB;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignF;
+import org.kordamp.ikonli.materialdesign2.MaterialDesignK;
 
 import com.nhom17.quanlykaraoke.bus.ChucVuBUS;
 import com.nhom17.quanlykaraoke.bus.NhanVienBUS;
@@ -65,7 +67,6 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 	private static final long serialVersionUID = 1L;
 
 	// COMPONENTS
-	private final JComboBox<String> boxFilterKichThuoc = new JComboBox<String>();
 	private final JTextField txtTenNV = new JTextField();
 	private final JTextField txtCCCD = new JTextField();
 	private final JTextField txtSDT = new JTextField();
@@ -80,18 +81,19 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 	private JTextField txtSearchNV = new JTextField();
 	private JLabel avt = new JLabel("");
 	private JDateChooser txtSearchFrom = new JDateChooser();
+	private JDateChooser txtSearchTo = new JDateChooser();
 	private JComboBox<String> cbFilterChucVu = new JComboBox<String>();
 	private JComboBox<String> cbFilterGioiTinh = new JComboBox<String>();
-	private JDateChooser txtSearchTo = new JDateChooser();
-
+	private JComboBox<String> cbFilterTrangThai = new JComboBox<String>();
 	private DefaultTableModel modelNhanVien;
 	private JTable tblNhanVien;
 	private TableRowSorter<TableModel> rowSorter;
-	private List<RowFilter<Object, Object>> filters = new ArrayList<RowFilter<Object, Object>>(4);;
+	private List<RowFilter<Object, Object>> filters = new ArrayList<RowFilter<Object, Object>>(5);;
 
 	// VARIABLES
 	private final NhanVienBUS nvBUS = new NhanVienBUS();
 	private ChucVuBUS cvBUS = new ChucVuBUS();
+	private final JButton btnDoiMatKhau = new JButton("");
 
 	/**
 	 * 
@@ -102,7 +104,7 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 
 		JPanel panelTop = new JPanel();
 		panelTop.setForeground(new Color(0, 0, 0));
-		panelTop.setBounds(0, 0, 1440, 252);
+		panelTop.setBounds(0, 0, 1445, 252);
 		panelTop.setBorder(new EmptyBorder(240, 0, 0, 0));
 		panelTop.setBackground(UIManager.getColor("Button.background"));
 		add(panelTop);
@@ -227,7 +229,7 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 		JLabel lbSearchForm = new JLabel("Từ:");
 		lbSearchForm.setForeground(new Color(50, 102, 133));
 		lbSearchForm.setFont(new Font("Leelawadee UI", Font.BOLD, 19));
-		lbSearchForm.setBounds(845, 131, 44, 40);
+		lbSearchForm.setBounds(955, 131, 44, 40);
 		panelTop.add(lbSearchForm);
 
 		txtSearchFrom.getCalendarButton().setPreferredSize(new Dimension(26, 19));
@@ -238,13 +240,13 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 		txtSearchFrom.setLocale(new Locale("vi", "VN"));
 		txtSearchFrom.setFont(new Font("Dialog", Font.PLAIN, 20));
 		txtSearchFrom.setDateFormatString("d/M/y");
-		txtSearchFrom.setBounds(897, 131, 165, 40);
+		txtSearchFrom.setBounds(1005, 131, 179, 40);
 		panelTop.add(txtSearchFrom);
 
 		JLabel lbSearchTo = new JLabel("Đến:");
 		lbSearchTo.setForeground(new Color(50, 102, 133));
 		lbSearchTo.setFont(new Font("Leelawadee UI", Font.BOLD, 19));
-		lbSearchTo.setBounds(845, 182, 54, 40);
+		lbSearchTo.setBounds(955, 189, 54, 40);
 		panelTop.add(lbSearchTo);
 
 		txtSearchTo.getCalendarButton().setPreferredSize(new Dimension(26, 19));
@@ -255,28 +257,28 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 		txtSearchTo.setLocale(new Locale("vi", "VN"));
 		txtSearchTo.setFont(new Font("Dialog", Font.PLAIN, 20));
 		txtSearchTo.setDateFormatString("d/M/y");
-		txtSearchTo.setBounds(897, 182, 165, 40);
+		txtSearchTo.setBounds(1005, 189, 179, 40);
 		panelTop.add(txtSearchTo);
 		cbFilterGioiTinh.setForeground(new Color(50, 102, 133));
 
 		cbFilterGioiTinh.setModel(new DefaultComboBoxModel(new String[] { "Giới tính", "Nam", "Nữ" }));
 		cbFilterGioiTinh.setToolTipText("");
 		cbFilterGioiTinh.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		cbFilterGioiTinh.setBounds(845, 80, 154, 40);
+		cbFilterGioiTinh.setBounds(845, 80, 139, 40);
 		panelTop.add(cbFilterGioiTinh);
 		cbFilterChucVu.setForeground(new Color(50, 102, 133));
 
 		cbFilterChucVu.setModel(new DefaultComboBoxModel(new String[] { "Chức vụ", "Nhân viên", "Quản lý" }));
 		cbFilterChucVu.setToolTipText("");
 		cbFilterChucVu.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		cbFilterChucVu.setBounds(1009, 80, 153, 40);
+		cbFilterChucVu.setBounds(994, 80, 140, 40);
 		panelTop.add(cbFilterChucVu);
 		txtSearchNV.setForeground(new Color(50, 102, 133));
 
 		txtSearchNV.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		txtSearchNV.setColumns(10);
-		txtSearchNV.setBounds(937, 29, 225, 40);
-		txtSearchNV.putClientProperty("JTextField.placeholderText", "Nhập vào họ tên");
+		txtSearchNV.setBounds(937, 29, 347, 40);
+		txtSearchNV.putClientProperty("JTextField.placeholderText", "Nhập vào họ tên nhân viên");
 		panelTop.add(txtSearchNV);
 
 		Box boxAvatar = Box.createHorizontalBox();
@@ -291,7 +293,7 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 		boxAvatar.add(avt);
 		btnLocNgaySinh.setForeground(new Color(50, 102, 133));
 
-		btnLocNgaySinh.setBounds(1072, 131, 90, 90);
+		btnLocNgaySinh.setBounds(1194, 132, 90, 97);
 		panelTop.add(btnLocNgaySinh);
 		btnLocNgaySinh.setIcon(MyIcon.getIcon(MaterialDesignF.FILTER, 32, null));
 
@@ -300,6 +302,18 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 		lblBLc.setFont(new Font("Leelawadee UI", Font.BOLD, 19));
 		lblBLc.setBounds(845, 28, 90, 40);
 		panelTop.add(lblBLc);
+		btnDoiMatKhau.setForeground(new Color(50, 102, 133));
+		btnDoiMatKhau.setBounds(845, 131, 100, 98);
+		btnDoiMatKhau.setIcon(MyIcon.getIcon(MaterialDesignK.KEY, 32, null));
+		panelTop.add(btnDoiMatKhau);
+		
+		
+		cbFilterTrangThai.setModel(new DefaultComboBoxModel(new String[] {"Trạng thái", "Đang làm", "Đã nghỉ"}));
+		cbFilterTrangThai.setToolTipText("");
+		cbFilterTrangThai.setForeground(new Color(50, 102, 133));
+		cbFilterTrangThai.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		cbFilterTrangThai.setBounds(1144, 80, 140, 40);
+		panelTop.add(cbFilterTrangThai);
 
 		// Table setup
 		createTable();
@@ -308,7 +322,7 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 		tblNhanVien.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		JScrollPane scrollPaneNhanVien = new JScrollPane(tblNhanVien);
-		scrollPaneNhanVien.setBounds(0, 252, 1440, 705);
+		scrollPaneNhanVien.setBounds(0, 252, 1440, 715);
 		add(scrollPaneNhanVien);
 
 		btnThem.addActionListener(this);
@@ -316,6 +330,7 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 		btnClearfields.addActionListener(this);
 		cbFilterChucVu.addActionListener(this);
 		cbFilterGioiTinh.addActionListener(this);
+		cbFilterTrangThai.addActionListener(this);
 		btnLocNgaySinh.addActionListener(this);
 
 		avt.addMouseListener(new MouseAdapter() {
@@ -409,6 +424,7 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 		filters.add(RowFilter.regexFilter(".*", 0));
 		filters.add(RowFilter.regexFilter(".*", 1));
 		filters.add(RowFilter.regexFilter(".*", 2));
+		filters.add(RowFilter.regexFilter(".*", 3));
 
 		tblNhanVien.addMouseListener(new MouseAdapter() {
 
@@ -486,40 +502,15 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 			clearFields();
 		} else if (o.equals(btnThem)) {
 			String rgTen = "^\\p{Lu}\\p{Ll}+(\\s+\\p{Lu}\\p{Ll}+)+$";
-			LocalDate ns = txtNgaySinh.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-			LocalDate today = LocalDate.now();
-			Period p = Period.between(ns, today);
-			int y = p.getYears();
-			if (!txtTenNV.getText().matches(rgTen)) {
-				JOptionPane.showMessageDialog(this, "Họ vè tên phải có ít nhất 2 từ\nMỗi từ phái viết hoa chữ cái đầu");
-			} else if (!txtCCCD.getText().matches("\\d{12}")) {
-				JOptionPane.showMessageDialog(this, "Căn cước công dân gồm 12 số");
-			} else if (!txtSDT.getText().matches("0\\d{9}")) {
-				JOptionPane.showMessageDialog(this, "Số điện thoại gồm 10 số và bắt đầu bằng số 0");
-			} else if (y < 18 || ns.isAfter(today)) {
-				JOptionPane.showMessageDialog(this, "Ngày sinh phải có định dạng dd/MM/yyyy\nPhải đủ 18 tuổi");
-			} else {
-				NhanVien nv = new NhanVien(txtTenNV.getText(), cbGioiTinh.getSelectedIndex(), PasswordUtil.encrypt("1"),
-						txtNgaySinh.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
-						cvBUS.getChucVuByName(cbChucVu.getSelectedItem().toString()), txtSDT.getText(),
-						txtCCCD.getText(), cbGioiTinh.getSelectedIndex() == 0 ? ConstantUtil.getDefaultMaleAvatar()
-								: ConstantUtil.getDefaultFemaleAvatar());
-				nvBUS.addNhanVien(nv);
-				refreshTable(nvBUS.getAllNhanViens());
-				clearFields();
-				JOptionPane.showMessageDialog(this, "Thêm thành công!");
-			}
-		} else if (o.equals(btnSua)) {
-			if (tblNhanVien.getSelectedRow() != -1) {
-
-				String rgTen = "^\\p{Lu}\\p{Ll}+(\\s+\\p{Lu}\\p{Ll}+)+$";
+			if(txtNgaySinh.getDate()==null) {
+				JOptionPane.showMessageDialog(this, "Ngày sinh không hợp lệ!");
+			}else {
 				LocalDate ns = txtNgaySinh.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 				LocalDate today = LocalDate.now();
 				Period p = Period.between(ns, today);
 				int y = p.getYears();
 				if (!txtTenNV.getText().matches(rgTen)) {
-					JOptionPane.showMessageDialog(this,
-							"Họ và tên phải có ít nhất 2 từ\nMỗi từ phái viết hoa chữ cái đầu");
+					JOptionPane.showMessageDialog(this, "Họ vè tên phải có ít nhất 2 từ\nMỗi từ phái viết hoa chữ cái đầu");
 				} else if (!txtCCCD.getText().matches("\\d{12}")) {
 					JOptionPane.showMessageDialog(this, "Căn cước công dân gồm 12 số");
 				} else if (!txtSDT.getText().matches("0\\d{9}")) {
@@ -527,18 +518,52 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 				} else if (y < 18 || ns.isAfter(today)) {
 					JOptionPane.showMessageDialog(this, "Ngày sinh phải có định dạng dd/MM/yyyy\nPhải đủ 18 tuổi");
 				} else {
-					String maNV = modelNhanVien.getValueAt(tblNhanVien.getSelectedRow(), 0).toString();
-					NhanVien nv = new NhanVien(maNV, txtTenNV.getText(), cbGioiTinh.getSelectedIndex(),
-							PasswordUtil.encrypt("1"),
+					NhanVien nv = new NhanVien(txtTenNV.getText(), cbGioiTinh.getSelectedIndex(), PasswordUtil.encrypt("1"),
 							txtNgaySinh.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
 							cvBUS.getChucVuByName(cbChucVu.getSelectedItem().toString()), txtSDT.getText(),
-							txtCCCD.getText(), nvBUS.getNhanVien(maNV).getAnhDaiDien(),
-							cbTrangThai.getSelectedIndex() == 1 ? true : false);
-					nvBUS.updateNV(nv);
+							txtCCCD.getText(), cbGioiTinh.getSelectedIndex() == 0 ? ConstantUtil.getDefaultMaleAvatar()
+									: ConstantUtil.getDefaultFemaleAvatar());
+					nvBUS.addNhanVien(nv);
 					refreshTable(nvBUS.getAllNhanViens());
 					clearFields();
-					JOptionPane.showMessageDialog(this, "Cập nhật thành công!");
+					JOptionPane.showMessageDialog(this, "Thêm thành công!");
 				}
+			}
+			
+		} else if (o.equals(btnSua)) {
+			if (tblNhanVien.getSelectedRow() != -1) {
+				if(txtNgaySinh.getDate()==null) {
+					JOptionPane.showMessageDialog(this, "Ngày sinh không hợp lệ!");
+				}else {
+					String rgTen = "^\\p{Lu}\\p{Ll}+(\\s+\\p{Lu}\\p{Ll}+)+$";
+					LocalDate ns = txtNgaySinh.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+					LocalDate today = LocalDate.now();
+					Period p = Period.between(ns, today);
+					int y = p.getYears();
+					if (!txtTenNV.getText().matches(rgTen)) {
+						JOptionPane.showMessageDialog(this,
+								"Họ và tên phải có ít nhất 2 từ\nMỗi từ phái viết hoa chữ cái đầu");
+					} else if (!txtCCCD.getText().matches("\\d{12}")) {
+						JOptionPane.showMessageDialog(this, "Căn cước công dân gồm 12 số");
+					} else if (!txtSDT.getText().matches("0\\d{9}")) {
+						JOptionPane.showMessageDialog(this, "Số điện thoại gồm 10 số và bắt đầu bằng số 0");
+					} else if (y < 18 || ns.isAfter(today)) {
+						JOptionPane.showMessageDialog(this, "Ngày sinh phải có định dạng dd/MM/yyyy\nPhải đủ 18 tuổi");
+					} else {
+						String maNV = modelNhanVien.getValueAt(tblNhanVien.getSelectedRow(), 0).toString();
+						NhanVien nv = new NhanVien(maNV, txtTenNV.getText(), cbGioiTinh.getSelectedIndex(),
+								PasswordUtil.encrypt("1"),
+								txtNgaySinh.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
+								cvBUS.getChucVuByName(cbChucVu.getSelectedItem().toString()), txtSDT.getText(),
+								txtCCCD.getText(), nvBUS.getNhanVien(maNV).getAnhDaiDien(),
+								cbTrangThai.getSelectedIndex() == 1 ? true : false);
+						nvBUS.updateNV(nv);
+						refreshTable(nvBUS.getAllNhanViens());
+						clearFields();
+						JOptionPane.showMessageDialog(this, "Cập nhật thành công!");
+					}
+				}
+				
 			} else {
 				JOptionPane.showMessageDialog(this, "Vui lòng chọn nhân viên muốn cập nhật");
 			}
@@ -558,6 +583,14 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 				filters.set(2, RowFilter.regexFilter(".*", 2));
 				rowSorter.setRowFilter(RowFilter.andFilter(filters));
 			}
+		}else if (o.equals(cbFilterTrangThai)) {
+			if (cbFilterTrangThai.getSelectedIndex() != 0) {
+				filters.set(3, RowFilter.regexFilter("^" + cbFilterTrangThai.getSelectedItem() + "$", 5));
+				rowSorter.setRowFilter(RowFilter.andFilter(filters));
+			} else {
+				filters.set(3, RowFilter.regexFilter(".*", 5));
+				rowSorter.setRowFilter(RowFilter.andFilter(filters));
+			}
 		} else if (o.equals(btnLocNgaySinh)) {
 			Date dateFrom = txtSearchFrom.getDate();
 			Date dateTo = txtSearchTo.getDate();
@@ -571,8 +604,6 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 			}else if(dateTo!=null) {
 				dOBTo = DateTimeFormatUtil.formatDateToLocalDate(dateTo).toString();
 			}
-			System.out.println(dOBFrom);
-			System.out.println(dOBTo);
 			List<NhanVien> ls = nvBUS.getNhanViensByDOB(dOBFrom, dOBTo);
 			refreshTable(ls);
 		}
