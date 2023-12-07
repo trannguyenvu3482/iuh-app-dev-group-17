@@ -380,9 +380,6 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 					nvBUS.updateNV(nhanVien);
 					JOptionPane.showMessageDialog(null, "Đổi mật khẩu thành công", "Thông báo",
 							JOptionPane.DEFAULT_OPTION);
-					txtCurrentPassword.setText("");
-					txtNewPassword.setText("");
-					txtConfirmNewPassword.setText("");
 				}
 			}
 

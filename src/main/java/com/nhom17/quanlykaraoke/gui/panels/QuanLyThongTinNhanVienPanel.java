@@ -25,9 +25,9 @@ import java.util.Locale;
 
 import javax.swing.Box;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -94,6 +94,8 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 	private final NhanVienBUS nvBUS = new NhanVienBUS();
 	private ChucVuBUS cvBUS = new ChucVuBUS();
 	private final JButton btnDoiMatKhau = new JButton("");
+
+	private JDialog DoiMatKhauDialog;
 
 	/**
 	 * 
@@ -606,6 +608,9 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 			}
 			List<NhanVien> ls = nvBUS.getNhanViensByDOB(dOBFrom, dOBTo);
 			refreshTable(ls);
+		}else if(o.equals(btnDoiMatKhau)) {
+			JDialog doiMK = DoiMatKhauDialog;
+			doiMK.setVisible(true);
 		}
 	}
 }
