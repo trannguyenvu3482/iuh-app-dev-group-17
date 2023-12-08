@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
+import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,6 +12,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -23,6 +26,7 @@ import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -35,6 +39,7 @@ import javax.swing.RowFilter;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.filechooser.FileFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -42,6 +47,7 @@ import javax.swing.text.NumberFormatter;
 
 import org.kordamp.ikonli.materialdesign2.MaterialDesignA;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignB;
+import org.kordamp.ikonli.materialdesign2.MaterialDesignM;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignP;
 
 import com.nhom17.quanlykaraoke.bus.HangHoaBUS;
@@ -49,6 +55,11 @@ import com.nhom17.quanlykaraoke.bus.LoaiHangHoaBUS;
 import com.nhom17.quanlykaraoke.common.MyIcon;
 import com.nhom17.quanlykaraoke.entities.HangHoa;
 import com.nhom17.quanlykaraoke.entities.LoaiHangHoa;
+import com.nhom17.quanlykaraoke.utils.ExcelUtil;
+
+import raven.toast.Notifications;
+import raven.toast.Notifications.Location;
+import raven.toast.Notifications.Type;
 
 /**
  * @author Trần Nguyên Vũ, Trần Ngọc Phát, Mai Nhật Hào, Trần Thanh Vy
@@ -72,6 +83,7 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 	private final JButton btnNhapHang = new JButton("");
 	private final JButton btnGiamHang = new JButton("");
 	private final JButton btnClearFields = new JButton("");
+	private final JButton btnExportToExcel = new JButton("");
 	private final JComboBox<String> boxFilterTrangThai = new JComboBox<String>();
 	private final JComboBox<String> boxFilterLoaiHangHoa = new JComboBox<String>();
 	private HangHoaBUS hangHoaBUS = new HangHoaBUS();
@@ -280,6 +292,13 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 		btnClearFields.putClientProperty("JButton.buttonType", "square");
 		boxSix.add(btnClearFields);
 
+		Component horizontalStrut_1_2_1_1_1_2 = Box.createHorizontalStrut(20);
+		boxSix.add(horizontalStrut_1_2_1_1_1_2);
+
+		btnExportToExcel.setIcon(MyIcon.getIcon(MaterialDesignM.MICROSOFT_EXCEL, 32, null));
+		btnExportToExcel.setForeground(new Color(50, 102, 133));
+		boxSix.add(btnExportToExcel);
+
 		Component verticalStrut_1_1_1_1_1_1 = Box.createVerticalStrut(40);
 		panelTop.add(verticalStrut_1_1_1_1_1_1);
 
@@ -334,6 +353,7 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 		btnNhapHang.addActionListener(this);
 		btnClearFields.addActionListener(this);
 		btnGiamHang.addActionListener(this);
+		btnExportToExcel.addActionListener(this);
 
 		boxFilterLoaiHangHoa.addActionListener(this);
 		boxFilterTrangThai.addActionListener(this);
@@ -442,6 +462,7 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 			return false;
 	}
 
+	@SuppressWarnings("resource")
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
@@ -557,6 +578,47 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 			} else {
 				filters.set(1, RowFilter.regexFilter(".*", 5));
 				rowsorter.setRowFilter(RowFilter.andFilter(filters));
+			}
+		} else if (o.equals(btnExportToExcel)) {
+			JFileChooser chooser = new JFileChooser();
+			chooser.setDialogTitle("Lưu file Excel");
+			chooser.setFileFilter(new FileFilter() {
+				@Override
+				public boolean accept(File f) {
+					return f.getName().toLowerCase().endsWith(".xlsx") || f.isDirectory();
+				}
+
+				@Override
+				public String getDescription() {
+					return "Excel file (*.xlsx)";
+				}
+			});
+			int result = chooser.showSaveDialog(null);
+			if (result == JFileChooser.APPROVE_OPTION) {
+				String excelFilePath = chooser.getSelectedFile().toString();
+				try {
+					List<String> listTitle = new ArrayList<String>();
+					listTitle.add("Mã hàng hóa");
+					listTitle.add("Tên hàng hóa");
+					listTitle.add("Loại hàng hóa");
+					listTitle.add("Số lượng tồn");
+					listTitle.add("Đơn giá");
+					listTitle.add("Trạng thái");
+					ExcelUtil.writeExcel(listTitle, hangHoaBUS.getAllHangHoas(), excelFilePath);
+
+					int status = JOptionPane.showConfirmDialog(null, "Bạn có muốn mở file excel vừa xuất không?",
+							"Thông báo", JOptionPane.YES_NO_OPTION);
+
+					if (status == JOptionPane.YES_OPTION) {
+						Desktop.getDesktop().open(chooser.getSelectedFile());
+					}
+
+					Notifications.getInstance().show(Type.SUCCESS, Location.BOTTOM_RIGHT, "Xuất file Excel thành công");
+
+				} catch (IOException ex) {
+					JOptionPane.showMessageDialog(this, "Lưu file thất bại!");
+					ex.printStackTrace();
+				}
 			}
 		}
 	}

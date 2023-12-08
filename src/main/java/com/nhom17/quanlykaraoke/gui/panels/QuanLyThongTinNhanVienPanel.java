@@ -100,7 +100,7 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 	 * 
 	 */
 	public QuanLyThongTinNhanVienPanel() {
-		setSize(1500, 1000);
+		setSize(1600, 1100);
 		setLayout(null);
 
 		JPanel panelTop = new JPanel();
@@ -197,7 +197,7 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 		panelTop.add(lbChucVu);
 		cbChucVu.setForeground(new Color(50, 102, 133));
 
-		cbChucVu.setModel(new DefaultComboBoxModel(new String[] { "Nhân viên", "Quản lý" }));
+		cbChucVu.setModel(new DefaultComboBoxModel<String>(new String[] { "Nhân viên", "Quản lý" }));
 		cbChucVu.setToolTipText("");
 		cbChucVu.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		cbChucVu.setBounds(397, 180, 160, 40);
@@ -262,14 +262,14 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 		panelTop.add(txtSearchTo);
 		cbFilterGioiTinh.setForeground(new Color(50, 102, 133));
 
-		cbFilterGioiTinh.setModel(new DefaultComboBoxModel(new String[] { "Giới tính", "Nam", "Nữ" }));
+		cbFilterGioiTinh.setModel(new DefaultComboBoxModel<String>(new String[] { "Giới tính", "Nam", "Nữ" }));
 		cbFilterGioiTinh.setToolTipText("");
 		cbFilterGioiTinh.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		cbFilterGioiTinh.setBounds(845, 80, 139, 40);
 		panelTop.add(cbFilterGioiTinh);
 		cbFilterChucVu.setForeground(new Color(50, 102, 133));
 
-		cbFilterChucVu.setModel(new DefaultComboBoxModel(new String[] { "Chức vụ", "Nhân viên", "Quản lý" }));
+		cbFilterChucVu.setModel(new DefaultComboBoxModel<String>(new String[] { "Chức vụ", "Nhân viên", "Quản lý" }));
 		cbFilterChucVu.setToolTipText("");
 		cbFilterChucVu.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		cbFilterChucVu.setBounds(994, 80, 140, 40);
@@ -323,7 +323,7 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 		tblNhanVien.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		JScrollPane scrollPaneNhanVien = new JScrollPane(tblNhanVien);
-		scrollPaneNhanVien.setBounds(0, 252, 1440, 715);
+		scrollPaneNhanVien.setBounds(0, 252, 1440, 772);
 		add(scrollPaneNhanVien);
 
 		btnThem.addActionListener(this);
@@ -611,9 +611,9 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 			List<NhanVien> ls = nvBUS.getNhanViensByDOB(dOBFrom, dOBTo);
 			refreshTable(ls);
 		} else if (o.equals(btnDoiMatKhau)) {
-				NhanVien nv = nvBUS.getNhanVien(ConstantUtil.currentNhanVien.getMaNhanVien());
-				JDialog doiMatKhauDialog = new DoiMatKhauDialog(nv);
-				doiMatKhauDialog.setVisible(true);
+			NhanVien nv = nvBUS.getNhanVien(ConstantUtil.currentNhanVien.getMaNhanVien());
+			JDialog doiMatKhauDialog = new DoiMatKhauDialog(nv);
+			doiMatKhauDialog.setVisible(true);
 		}
 	}
 }
