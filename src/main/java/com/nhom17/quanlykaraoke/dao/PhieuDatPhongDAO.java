@@ -379,8 +379,8 @@ public class PhieuDatPhongDAO {
 			session.merge(ctpdp);
 
 			PhieuDatPhong pdp = ctpdp.getPhieuDatPhong();
-			pdp.setTienDichVu(pdp.getTienDichVu() + tienDichVu);
-			pdp.setTienPhong(pdp.getTienPhong() + tienPhong);
+			pdp.setTienDichVu(tienDichVu);
+			pdp.setTienPhong(tienPhong);
 			pdp.setTrangThai(true);
 			session.merge(pdp);
 

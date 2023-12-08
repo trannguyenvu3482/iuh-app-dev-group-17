@@ -1,7 +1,5 @@
 package com.nhom17.quanlykaraoke.dao;
 
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -9,7 +7,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
-import com.nhom17.quanlykaraoke.entities.ChiTietDichVu;
 import com.nhom17.quanlykaraoke.entities.NhanVien;
 import com.nhom17.quanlykaraoke.utils.HibernateUtil;
 import com.nhom17.quanlykaraoke.utils.PasswordUtil;
@@ -71,6 +68,24 @@ public class NhanVienDAO {
 
 		try {
 			NhanVien nv = session.get(NhanVien.class, maNV);
+
+			t.commit();
+			return nv;
+
+		} catch (Exception e) {
+			t.rollback();
+			return null;
+		}
+	}
+
+	public NhanVien getNhanVienBySDT(String sdt) {
+		Session session = factory.getCurrentSession();
+		Transaction t = session.beginTransaction();
+
+		try {
+			Query<NhanVien> query = session.createNativeQuery(
+					"SELECT * FROM NhanVien WHERE soDienThoai = '" + sdt.trim() + "'", NhanVien.class);
+			NhanVien nv = query.getSingleResult();
 
 			t.commit();
 			return nv;
@@ -149,27 +164,24 @@ public class NhanVienDAO {
 			return listNhanVien;
 		}
 	}
-	
-	public List<NhanVien> getNhanViensByDOB(String dateFrom,String dateTo) {
+
+	public List<NhanVien> getNhanViensByDOB(String dateFrom, String dateTo) {
 		Session session = factory.getCurrentSession();
 		Transaction t = session.beginTransaction();
 		List<NhanVien> listNhanVien = null;
 		String sql;
 		try {
-			if(dateFrom!=""&&dateTo!="") {
-				sql = "select * from NhanVien where ngaySinh between '"+ dateFrom+
-						"' and '"+ dateTo+"'";
-			}else if(dateFrom!="") {
-				sql = "select * from NhanVien where ngaySinh >= '"+ dateFrom +
-						"'";
-			}else if(dateTo!="") {
-				sql = "select * from NhanVien where ngaySinh <= '"+ dateTo+
-						"'";
-			}else {
+			if (dateFrom != "" && dateTo != "") {
+				sql = "select * from NhanVien where ngaySinh between '" + dateFrom + "' and '" + dateTo + "'";
+			} else if (dateFrom != "") {
+				sql = "select * from NhanVien where ngaySinh >= '" + dateFrom + "'";
+			} else if (dateTo != "") {
+				sql = "select * from NhanVien where ngaySinh <= '" + dateTo + "'";
+			} else {
 				sql = "select * from NhanVien";
 			}
-			
-			Query<NhanVien> qr = session.createNativeQuery(sql,NhanVien.class);
+
+			Query<NhanVien> qr = session.createNativeQuery(sql, NhanVien.class);
 			listNhanVien = qr.getResultList();
 			t.commit();
 			return listNhanVien;

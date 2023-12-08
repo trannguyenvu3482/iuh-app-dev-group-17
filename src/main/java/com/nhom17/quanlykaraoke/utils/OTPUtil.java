@@ -5,7 +5,6 @@ import java.util.Random;
 
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
-import com.twilio.type.PhoneNumber;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
@@ -45,7 +44,7 @@ public class OTPUtil {
 	public static String sendSMS(String toPhoneNumber) {
 		// Create OTP
 		String otp = createRandomOTP();
-		addToOTPMap(toPhoneNumber, otp);
+		addToOTPMap(toPhoneNumber.trim(), otp);
 
 		// Send SMS
 		try {
@@ -67,12 +66,16 @@ public class OTPUtil {
 	}
 
 	public static boolean checkOTP(String phoneNumber, String otp) {
-		if (!OTPMap.containsKey(phoneNumber)) {
+		System.out.println("OTP MAP: " + OTPMap.toString());
+
+		if (!OTPMap.containsKey(phoneNumber.trim())) {
 			// OTP not found for number
 			return false;
 		}
 
 		String storedOtp = OTPMap.get(phoneNumber);
+
+		System.out.println("Correct OTP:" + storedOtp);
 
 		if (storedOtp == null) {
 			// OTP is null

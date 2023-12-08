@@ -22,7 +22,6 @@ import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.SwingConstants;
@@ -352,22 +351,25 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 			panelForgot.setVisible(true);
 		} else if (o.equals(btnGetOTP)) {
 			phoneNo = "+84" + txtPhoneNo.getText().substring(1);
-			OTPUtil.sendSMS("+" + phoneNo);
+			OTPUtil.sendSMS(phoneNo);
 			System.out.println("Send SMS to: " + phoneNo);
 			timeoutBtnGetOTP();
 			Notifications.getInstance().show(Notifications.Type.SUCCESS, Notifications.Location.BOTTOM_RIGHT,
 					"Đã gửi OTP thành công");
 
 		} else if (o.equals(btnResetPassword)) {
-			if (OTPUtil.checkOTP(phoneNo, txtOTP.getText())) {
+			System.out.println("phoneNo: " + phoneNo);
+
+			if (OTPUtil.checkOTP(phoneNo, txtOTP.getText().trim())) {
 				// TODO: Thêm logic reset password tại đây
-				NhanVien nv = nvBUS.getNhanVien(loggedInEmployeeID);
+				NhanVien nv = nvBUS.getNhanVienBySDT(txtPhoneNo.getText().trim());
 				nv.setMatKhau(PasswordUtil.encrypt(txtNewPassword.getText().trim()));
 				Notifications.getInstance().show(Notifications.Type.SUCCESS, Notifications.Location.BOTTOM_RIGHT,
 						"Đã thay đổi mật khẩu");
 				btnReturn.doClick();
 			} else {
-				JOptionPane.showMessageDialog(null, "OTP không đúng", "Thông báo", JOptionPane.ERROR_MESSAGE);
+				Notifications.getInstance().show(Notifications.Type.ERROR, Notifications.Location.BOTTOM_RIGHT,
+						"OTP không đúng, vui lòng nhập lại");
 			}
 		} else if (o.equals(btnReturn)) {
 			setTitle("Đăng nhập");

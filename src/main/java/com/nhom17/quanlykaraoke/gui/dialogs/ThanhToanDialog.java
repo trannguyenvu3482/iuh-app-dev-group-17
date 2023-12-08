@@ -68,7 +68,8 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 	private final JLabel lblGioNhanPhong = new JLabel("Giờ nhận phòng: ");
 	private final JLabel lblGioTraPhong = new JLabel("Giờ trả phòng: ");
 	private final JLabel lblThueVAT = new JLabel("Thuế VAT: 10%");
-	JLabel lblTienDichVu = new JLabel("Tiền dịch vụ: ");
+	private final JButton btnQuayLai = new JButton("Quay lại");
+	private final JLabel lblTienDichVu = new JLabel("Tiền dịch vụ: ");
 	private JTable tbl;
 	private DefaultTableModel model;
 	private JButton btnXacNhan = new JButton("Xác nhận");
@@ -143,7 +144,6 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 		getContentPane().add(panelBottom, BorderLayout.SOUTH);
 		panelBottom.setLayout(new BoxLayout(panelBottom, BoxLayout.X_AXIS));
 
-		JButton btnQuayLai = new JButton("Quay lại");
 		btnQuayLai.setForeground(Color.WHITE);
 		btnQuayLai.setBackground(Color.DARK_GRAY);
 		btnQuayLai.setFont(new Font("Dialog", Font.BOLD, 20));
@@ -258,8 +258,10 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 		lblGioNhanPhong.setText(lblGioNhanPhong.getText().concat(DateTimeFormatUtil.formatFullDate(thoiGianBatDau)));
 		lblGioTraPhong.setText(lblGioTraPhong.getText().concat(DateTimeFormatUtil.formatFullDate(LocalDateTime.now())));
 		lblTienDichVu.setText(lblTienDichVu.getText().concat(MoneyFormatUtil.format(tienDichVu)));
+
 		// Action listeners
 		btnXacNhan.addActionListener(this);
+		btnQuayLai.addActionListener(this);
 	}
 
 	@Override
@@ -269,7 +271,7 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 
 		if (o.equals(btnXacNhan)) {
 			// TODO: UNCOMMENT THIS WHEN DONE
-			pdpBUS.finishPhieuDatPhong(p.getMaPhong(), tienPhong, tienDichVu);
+			pdpBUS.finishPhieuDatPhong(p.getMaPhong(), tienDichVu, tienPhong);
 
 			if (chkXuatHoaDon.isSelected()) {
 				try {
@@ -282,6 +284,8 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 				}
 			}
 
+			dispose();
+		} else if (o.equals(btnQuayLai)) {
 			dispose();
 		}
 
@@ -356,7 +360,7 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 		// Load booked rooms
 		pdp = ctpdpBUS.getChiTietPhieuDatPhongByActiveMaPhong(p.getMaPhong()).getPhieuDatPhong();
 
-		kh = ctpdpBUS.getChiTietPhieuDatPhongByActiveMaPhong(p.getMaPhong()).getPhieuDatPhong().getKhachHang();
+		kh = pdp.getKhachHang();
 
 		List<ChiTietPhieuDatPhong> listCTPDP = ctpdpBUS
 				.getAllChiTietPhieuDatPhongByMaPhieuDatPhong(pdp.getMaPhieuDatPhong());
@@ -365,11 +369,19 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 
 		for (ChiTietPhieuDatPhong ctpdp : listCTPDP) {
 			double phuPhi = ctpdp.getPhong().getLoaiPhong().getPhuPhi();
-			double thanhTien = ChronoUnit.HOURS.between(ctpdp.getThoiGianBatDau(), LocalDateTime.now())
-					* ConstantUtil.getStandardHourPrice(LocalDateTime.now()) + phuPhi;
+			LocalDateTime thoiGianKetThuc;
+
+			if (ctpdp.getThoiGianKetThuc() == null) {
+				thoiGianKetThuc = LocalDateTime.now();
+			} else {
+				thoiGianKetThuc = ctpdp.getThoiGianKetThuc();
+			}
+
+			double thanhTien = ChronoUnit.HOURS.between(ctpdp.getThoiGianBatDau(), thoiGianKetThuc)
+					* ConstantUtil.getStandardHourPrice(thoiGianKetThuc) + phuPhi;
 
 			Object[] rowData = { stt, "Phòng " + ctpdp.getPhong().getMaPhong(),
-					DateTimeFormatUtil.formatTimeBetween(ctpdp.getThoiGianBatDau(), LocalDateTime.now()), "", "",
+					DateTimeFormatUtil.formatTimeBetween(ctpdp.getThoiGianBatDau(), thoiGianKetThuc), "", "",
 					MoneyFormatUtil.format(phuPhi), MoneyFormatUtil.format(thanhTien) };
 
 			model.addRow(rowData);
