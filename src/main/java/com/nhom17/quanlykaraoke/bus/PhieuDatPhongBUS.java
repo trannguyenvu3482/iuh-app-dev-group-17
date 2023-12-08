@@ -29,8 +29,8 @@ public class PhieuDatPhongBUS {
 		return pdpDAO.getAllPhieuDatPhongs();
 	}
 
-	public boolean finishPhieuDatPhong(String maPhong, double tongTien) {
-		return pdpDAO.finishPhieuDatPhong(maPhong.trim(), tongTien);
+	public boolean finishPhieuDatPhong(String maPhong, double tienDichVu, double tienPhong) {
+		return pdpDAO.finishPhieuDatPhong(maPhong.trim(), tienDichVu, tienPhong);
 
 	}
 
@@ -78,7 +78,7 @@ public class PhieuDatPhongBUS {
 
 		if (ctpdpDAO.addChiTietPhieuDatPhong(
 				new ChiTietPhieuDatPhong(p, ctpdp.getPhieuDatPhong(), LocalDateTime.now(), null))) {
-			return pdpDAO.finishPhieuDatPhong(currentMaPhong, 0);
+			return pdpDAO.finishPhieuDatPhong(currentMaPhong, 0, 0);
 		}
 
 		return false;

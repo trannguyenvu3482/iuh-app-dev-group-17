@@ -364,7 +364,7 @@ public class PhieuDatPhongDAO {
 		}
 	}
 
-	public boolean finishPhieuDatPhong(String maPhong, double tongTien) {
+	public boolean finishPhieuDatPhong(String maPhong, double tienDichVu, double tienPhong) {
 		Session session = factory.getCurrentSession();
 		Transaction t = session.beginTransaction();
 
@@ -376,10 +376,11 @@ public class PhieuDatPhongDAO {
 
 			ChiTietPhieuDatPhong ctpdp = query3.getSingleResult();
 			ctpdp.setThoiGianKetThuc(LocalDateTime.now());
-			ctpdp.getPhieuDatPhong().setTongTien(tongTien);
 			session.merge(ctpdp);
 
 			PhieuDatPhong pdp = ctpdp.getPhieuDatPhong();
+			pdp.setTienDichVu(pdp.getTienDichVu() + tienDichVu);
+			pdp.setTienPhong(pdp.getTienPhong() + tienPhong);
 			pdp.setTrangThai(true);
 			session.merge(pdp);
 

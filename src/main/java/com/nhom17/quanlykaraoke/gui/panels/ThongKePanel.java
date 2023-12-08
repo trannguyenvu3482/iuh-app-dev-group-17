@@ -567,7 +567,8 @@ public class ThongKePanel extends JPanel implements ActionListener {
 			int doanhThu = 0;
 			List<PhieuDatPhong> listPhieuDatPhong = pdpDAO.getAllPhieuDatPhongByMonth(i);
 			for (PhieuDatPhong pdp : listPhieuDatPhong) {
-				doanhThu += pdp.getTongTien();
+				double tongTien = pdp.getTienDichVu() + pdp.getTienPhong();
+				doanhThu += tongTien;
 			}
 			dataset.addValue(doanhThu, "Doanh thu", "Tháng " + i);
 		}

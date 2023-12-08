@@ -39,7 +39,10 @@ public class PhieuDatPhong {
 	private KhachHang khachHang;
 
 	@Column(columnDefinition = "money")
-	private double tongTien;
+	private double tienDichVu;
+
+	@Column(columnDefinition = "money")
+	private double tienPhong;
 
 	public PhieuDatPhong() {
 		// TODO Auto-generated constructor stub
@@ -50,7 +53,8 @@ public class PhieuDatPhong {
 		this.nhanVien = nhanVien;
 		this.trangThai = trangThai;
 		this.khachHang = khachHang;
-		this.tongTien = 0;
+		this.tienDichVu = 0;
+		this.tienPhong = 0;
 	}
 
 	/**
@@ -104,6 +108,34 @@ public class PhieuDatPhong {
 		this.khachHang = khachHang;
 	}
 
+	/**
+	 * @return the tienDichVu
+	 */
+	public double getTienDichVu() {
+		return tienDichVu;
+	}
+
+	/**
+	 * @param tienDichVu the tienDichVu to set
+	 */
+	public void setTienDichVu(double tienDichVu) {
+		this.tienDichVu = tienDichVu;
+	}
+
+	/**
+	 * @return the tienPhong
+	 */
+	public double getTienPhong() {
+		return tienPhong;
+	}
+
+	/**
+	 * @param tienPhong the tienPhong to set
+	 */
+	public void setTienPhong(double tienPhong) {
+		this.tienPhong = tienPhong;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(maPhieuDatPhong);
@@ -125,14 +157,6 @@ public class PhieuDatPhong {
 	public String toString() {
 		return "PhieuDatPhong [maPhieuDatPhong=" + maPhieuDatPhong + ", nhanVien=" + nhanVien + ", trangThai="
 				+ trangThai + ", khachHang=" + khachHang + "]";
-	}
-
-	public double getTongTien() {
-		return tongTien;
-	}
-
-	public void setTongTien(double tongTien) {
-		this.tongTien = tongTien;
 	}
 
 }

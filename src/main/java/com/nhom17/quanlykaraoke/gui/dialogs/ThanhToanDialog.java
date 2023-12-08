@@ -82,7 +82,6 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 	private final ChiTietDichVuBUS ctdvBUS = new ChiTietDichVuBUS();
 	private final PhieuDatPhongBUS pdpBUS = new PhieuDatPhongBUS();
 
-	
 	private double tienPhong = 0;
 	private double tienDichVu = 0;
 	private double tongTien = 0;
@@ -270,7 +269,8 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 
 		if (o.equals(btnXacNhan)) {
 			// TODO: UNCOMMENT THIS WHEN DONE
-			pdpBUS.finishPhieuDatPhong(p.getMaPhong(), tongTien);
+			pdpBUS.finishPhieuDatPhong(p.getMaPhong(), tienPhong, tienDichVu);
+
 			if (chkXuatHoaDon.isSelected()) {
 				try {
 					exportPDF();
