@@ -29,6 +29,8 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.border.MatteBorder;
 
 import com.nhom17.quanlykaraoke.bus.NhanVienBUS;
 import com.nhom17.quanlykaraoke.entities.NhanVien;
@@ -36,7 +38,6 @@ import com.nhom17.quanlykaraoke.utils.ConstantUtil;
 import com.nhom17.quanlykaraoke.utils.PasswordUtil;
 
 import net.miginfocom.swing.MigLayout;
-import javax.swing.border.LineBorder;
 
 /**
  * @author Trần Nguyên Vũ, Trần Ngọc Phát, Mai Nhật Hào, Trần Thanh Vy
@@ -70,14 +71,14 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 		setLayout(new BorderLayout(0, 0));
 
 		JPanel panelTop = new JPanel();
-		panelTop.setBackground(new Color(204, 204, 255));
+		panelTop.setBackground(ConstantUtil.MAIN_BLUE);
 		add(panelTop, BorderLayout.NORTH);
 		panelTop.setLayout(new BoxLayout(panelTop, BoxLayout.X_AXIS));
 
 		JLabel lblThngTinNgi = new JLabel("Thông tin người dùng");
 		lblThngTinNgi.setBorder(new EmptyBorder(5, 10, 5, 0));
 		lblThngTinNgi.setFont(new Font("Dialog", Font.BOLD, 30));
-		lblThngTinNgi.setForeground(new Color(50, 102, 133));
+		lblThngTinNgi.setForeground(Color.WHITE);
 		panelTop.add(lblThngTinNgi);
 
 		JPanel panelCenter = new JPanel();
@@ -85,6 +86,7 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 		panelCenter.setLayout(new GridLayout(1, 2, 0, 0));
 
 		JPanel panelLeft = new JPanel();
+		panelLeft.setBorder(new MatteBorder(0, 0, 0, 5, (Color) new Color(0, 0, 0)));
 		panelLeft.setBackground(new Color(238, 238, 238));
 		panelCenter.add(panelLeft);
 		panelLeft.setLayout(new BoxLayout(panelLeft, BoxLayout.Y_AXIS));
@@ -225,12 +227,10 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 		boxNgaySinh.add(horizontalGlue_1_1_1_1_1_1_1);
 
 		JPanel panelRight = new JPanel();
+		panelRight.setBorder(new EmptyBorder(16, 24, 0, 24));
 		panelRight.setBackground(new Color(238, 238, 238));
 		panelCenter.add(panelRight);
 		panelRight.setLayout(new BoxLayout(panelRight, BoxLayout.Y_AXIS));
-
-		Component verticalStrut_1 = Box.createVerticalStrut(40);
-		panelRight.add(verticalStrut_1);
 
 		Box horizontalBox_2_1 = Box.createHorizontalBox();
 		panelRight.add(horizontalBox_2_1);
@@ -244,6 +244,7 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 		horizontalBox_2_1.add(horizontalGlue_2);
 
 		Box horizontalBox_1_1_1 = Box.createHorizontalBox();
+		horizontalBox_1_1_1.setAlignmentY(Component.CENTER_ALIGNMENT);
 		panelRight.add(horizontalBox_1_1_1);
 
 		JPanel panelCurrentPassword = new JPanel();
@@ -252,7 +253,7 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 		panelCurrentPassword.setBackground(Color.white);
 		panelCurrentPassword.setBounds(new Rectangle(0, 0, 0, 50));
 		horizontalBox_1_1_1.add(panelCurrentPassword);
-		panelCurrentPassword.setLayout(new MigLayout("", "[546px][34px]", "[:40px:40px,center]"));
+		panelCurrentPassword.setLayout(new MigLayout("", "[546px][34px]", "[:40px:40px,center][]"));
 
 		txtCurrentPassword = new JPasswordField();
 		txtCurrentPassword.setMaximumSize(new Dimension(2147483647, 40));
@@ -262,8 +263,8 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 		txtCurrentPassword.setFont(new Font("Dialog", Font.PLAIN, 20));
 		txtCurrentPassword.setColumns(10);
 
-		Component horizontalStrut_3 = Box.createHorizontalStrut(20);
-		horizontalBox_1_1_1.add(horizontalStrut_3);
+		Component verticalStrut_1_1 = Box.createVerticalStrut(20);
+		panelRight.add(verticalStrut_1_1);
 
 		Box horizontalBox_2 = Box.createHorizontalBox();
 		panelRight.add(horizontalBox_2);
@@ -292,10 +293,10 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 		txtNewPassword.setFont(new Font("Dialog", Font.PLAIN, 20));
 		txtNewPassword.setColumns(10);
 		txtNewPassword.setBorder(null);
-		panelNewPassword.add(txtNewPassword, "cell 0 0 2 1,push ,aligny center,grow");
+		panelNewPassword.add(txtNewPassword, "flowy,cell 0 0 2 1,push ,aligny center,grow");
 
-		Component horizontalStrut_3_1 = Box.createHorizontalStrut(20);
-		horizontalBox_1_1.add(horizontalStrut_3_1);
+		Component verticalStrut_1_1_1 = Box.createVerticalStrut(20);
+		panelRight.add(verticalStrut_1_1_1);
 
 		Box horizontalBox = Box.createHorizontalBox();
 		panelRight.add(horizontalBox);
@@ -327,8 +328,8 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 		txtConfirmNewPassword.setBorder(null);
 		panelConfirmNewPassword.add(txtConfirmNewPassword, "cell 0 0 2 1,push ,aligny center,grow");
 
-		Component horizontalStrut_3_1_1 = Box.createHorizontalStrut(20);
-		horizontalBox_1_2.add(horizontalStrut_3_1_1);
+		Component verticalStrut_1_1_1_1 = Box.createVerticalStrut(20);
+		panelRight.add(verticalStrut_1_1_1_1);
 
 		Box horizontalBox_1 = Box.createHorizontalBox();
 		panelRight.add(horizontalBox_1);
@@ -338,12 +339,9 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 		btnDoiMK.setFont(new Font("Dialog", Font.BOLD, 28));
 		horizontalBox_1.add(btnDoiMK);
 
-		Component verticalStrut_2_1_1 = Box.createVerticalStrut(100);
-		panelRight.add(verticalStrut_2_1_1);
-
 		JPanel panelBottom = new JPanel();
 		panelBottom.setBorder(new EmptyBorder(40, 0, 40, 0));
-		panelBottom.setBackground(new Color(204, 204, 255));
+		panelBottom.setBackground(ConstantUtil.MAIN_BLUE);
 		add(panelBottom, BorderLayout.SOUTH);
 
 		loadInfo(currentNhanVien);
@@ -380,7 +378,7 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 					JOptionPane.showMessageDialog(null, "Mật khẩu mới không đồng nhất!", "Thông báo",
 							JOptionPane.ERROR_MESSAGE);
 				} else {
-					
+
 					nhanVien.setMatKhau(PasswordUtil.encrypt(txtNewPassword.getText()));
 					nvBUS.updateNV(nhanVien);
 					JOptionPane.showMessageDialog(null, "Đổi mật khẩu thành công", "Thông báo",
