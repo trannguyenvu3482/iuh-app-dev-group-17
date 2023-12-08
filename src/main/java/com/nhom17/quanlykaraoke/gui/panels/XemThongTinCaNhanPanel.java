@@ -69,14 +69,14 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 		setLayout(new BorderLayout(0, 0));
 
 		JPanel panelTop = new JPanel();
-		panelTop.setBackground(new Color(181, 168, 79));
+		panelTop.setBackground(new Color(255, 255, 255));
 		add(panelTop, BorderLayout.NORTH);
 		panelTop.setLayout(new BoxLayout(panelTop, BoxLayout.X_AXIS));
 
 		JLabel lblThngTinNgi = new JLabel("Thông tin người dùng");
 		lblThngTinNgi.setBorder(new EmptyBorder(5, 10, 5, 0));
 		lblThngTinNgi.setFont(new Font("Dialog", Font.BOLD, 30));
-		lblThngTinNgi.setForeground(new Color(255, 255, 255));
+		lblThngTinNgi.setForeground(new Color(50, 102, 133));
 		panelTop.add(lblThngTinNgi);
 
 		JPanel panelCenter = new JPanel();
@@ -84,7 +84,7 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 		panelCenter.setLayout(new GridLayout(1, 2, 0, 0));
 
 		JPanel panelLeft = new JPanel();
-		panelLeft.setBackground(new Color(216, 209, 165));
+		panelLeft.setBackground(new Color(255, 255, 255));
 		panelCenter.add(panelLeft);
 		panelLeft.setLayout(new BoxLayout(panelLeft, BoxLayout.Y_AXIS));
 
@@ -224,7 +224,7 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 		boxNgaySinh.add(horizontalGlue_1_1_1_1_1_1_1);
 
 		JPanel panelRight = new JPanel();
-		panelRight.setBackground(new Color(216, 209, 165));
+		panelRight.setBackground(new Color(255, 255, 255));
 		panelCenter.add(panelRight);
 		panelRight.setLayout(new BoxLayout(panelRight, BoxLayout.Y_AXIS));
 
@@ -339,7 +339,7 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 
 		JPanel panelBottom = new JPanel();
 		panelBottom.setBorder(new EmptyBorder(40, 0, 40, 0));
-		panelBottom.setBackground(new Color(181, 168, 79));
+		panelBottom.setBackground(new Color(255, 255, 255));
 		add(panelBottom, BorderLayout.SOUTH);
 
 		loadInfo(currentNhanVien);
@@ -368,18 +368,23 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 						JOptionPane.ERROR_MESSAGE);
 			} else {
 				NhanVien nv = ConstantUtil.currentNhanVien;
-				if (!PasswordUtil.check(txtCurrentPassword.getText(), nv.getMatKhau())) {
+				NhanVien nhanVien = nvBUS.getNhanVien(nv.getMaNhanVien());
+				if (!PasswordUtil.check(txtCurrentPassword.getText(), nhanVien.getMatKhau())) {
 					JOptionPane.showMessageDialog(null, "Mật khẩu hiện tại không chính xác!", "Thông báo",
 							JOptionPane.ERROR_MESSAGE);
 				} else if (!txtNewPassword.getText().equalsIgnoreCase(txtConfirmNewPassword.getText())) {
 					JOptionPane.showMessageDialog(null, "Mật khẩu mới không đồng nhất!", "Thông báo",
 							JOptionPane.ERROR_MESSAGE);
 				} else {
-					NhanVien nhanVien = nvBUS.getNhanVien(nv.getMaNhanVien());
+					
 					nhanVien.setMatKhau(PasswordUtil.encrypt(txtNewPassword.getText()));
 					nvBUS.updateNV(nhanVien);
 					JOptionPane.showMessageDialog(null, "Đổi mật khẩu thành công", "Thông báo",
 							JOptionPane.DEFAULT_OPTION);
+					txtConfirmNewPassword.setText("");
+					txtCurrentPassword.setText("");
+					txtNewPassword.setText("");
+					txtCurrentPassword.grabFocus();
 				}
 			}
 

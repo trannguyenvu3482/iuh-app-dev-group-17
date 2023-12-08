@@ -611,9 +611,9 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 			List<NhanVien> ls = nvBUS.getNhanViensByDOB(dOBFrom, dOBTo);
 			refreshTable(ls);
 		} else if (o.equals(btnDoiMatKhau)) {
-			JDialog doiMatKhauDialog = new DoiMatKhauDialog(
-					nvBUS.getNhanVien(modelNhanVien.getValueAt(tblNhanVien.getSelectedRow(), 0).toString()));
-			doiMatKhauDialog.setVisible(true);
+				NhanVien nv = nvBUS.getNhanVien(ConstantUtil.currentNhanVien.getMaNhanVien());
+				JDialog doiMatKhauDialog = new DoiMatKhauDialog(nv);
+				doiMatKhauDialog.setVisible(true);
 		}
 	}
 }

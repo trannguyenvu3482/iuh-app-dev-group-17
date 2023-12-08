@@ -57,15 +57,14 @@ public class DoiMatKhauDialog extends JDialog implements ActionListener {
 				JOptionPane.showMessageDialog(null, "Mật khẩu không được để trống!", "Thông báo",
 						JOptionPane.ERROR_MESSAGE);
 			} else {
-				NhanVien nv = ConstantUtil.currentNhanVien;
-				if (!PasswordUtil.check(txtCurrentPass.getText(), nv.getMatKhau())) {
+				NhanVien nhanVien = nvBUS.getNhanVien(ConstantUtil.currentNhanVien.getMaNhanVien());
+				if (!PasswordUtil.check(txtCurrentPass.getText(), nhanVien.getMatKhau())) {
 					JOptionPane.showMessageDialog(null, "Mật khẩu hiện tại không chính xác!", "Thông báo",
 							JOptionPane.ERROR_MESSAGE);
 				} else if (!txtNewPass.getText().equalsIgnoreCase(txtComfirmPass.getText())) {
 					JOptionPane.showMessageDialog(null, "Mật khẩu mới không đồng nhất!", "Thông báo",
 							JOptionPane.ERROR_MESSAGE);
-				} else {
-					NhanVien nhanVien = nvBUS.getNhanVien(nv.getMaNhanVien());
+				} else {	
 					nhanVien.setMatKhau(PasswordUtil.encrypt(txtNewPass.getText()));
 					nvBUS.updateNV(nhanVien);
 					JOptionPane.showMessageDialog(null, "Đổi mật khẩu thành công", "Thông báo",
@@ -115,7 +114,6 @@ public class DoiMatKhauDialog extends JDialog implements ActionListener {
 
 		btnDoiMatKhau.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnDoiMatKhau.setBackground(Color.GREEN);
-		btnDoiMatKhau.setEnabled(false);
 		btnDoiMatKhau.setFont(new Font("Dialog", Font.BOLD, 26));
 		panel_2.add(btnDoiMatKhau);
 
@@ -151,8 +149,6 @@ public class DoiMatKhauDialog extends JDialog implements ActionListener {
 
 		Component horizontalStrut_4 = Box.createHorizontalStrut(20);
 		horizontalBox_1_1.add(horizontalStrut_4);
-
-		txtCurrentPass.setEditable(false);
 		txtCurrentPass.setFont(new Font("Dialog", Font.PLAIN, 24));
 		txtCurrentPass.setColumns(10);
 		horizontalBox_1_1.add(txtCurrentPass);
@@ -174,8 +170,6 @@ public class DoiMatKhauDialog extends JDialog implements ActionListener {
 
 		Component horizontalStrut_2_1 = Box.createHorizontalStrut(60);
 		horizontalBox.add(horizontalStrut_2_1);
-
-		txtNewPass.setEditable(false);
 		txtNewPass.setFont(new Font("Dialog", Font.PLAIN, 24));
 		txtNewPass.setColumns(10);
 		horizontalBox.add(txtNewPass);
@@ -197,8 +191,6 @@ public class DoiMatKhauDialog extends JDialog implements ActionListener {
 
 		Component horizontalStrut_4_1 = Box.createHorizontalStrut(25);
 		horizontalBox_1.add(horizontalStrut_4_1);
-
-		txtComfirmPass.setEditable(false);
 		txtComfirmPass.setFont(new Font("Dialog", Font.PLAIN, 24));
 		txtComfirmPass.setColumns(10);
 		horizontalBox_1.add(txtComfirmPass);
