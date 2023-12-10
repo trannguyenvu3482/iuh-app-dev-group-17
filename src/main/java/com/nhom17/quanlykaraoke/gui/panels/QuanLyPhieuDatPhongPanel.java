@@ -427,7 +427,7 @@ public class QuanLyPhieuDatPhongPanel extends JPanel implements ActionListener {
 		setLayout(new BorderLayout(0, 0));
 
 		JPanel panelTop = new JPanel();
-		panelTop.setBackground(new Color(204, 204, 255));
+		panelTop.setBackground(ConstantUtil.MAIN_BLUE);
 		add(panelTop, BorderLayout.NORTH);
 		panelTop.setLayout(new MigLayout("center", "[][][]", "[]"));
 
@@ -611,22 +611,22 @@ public class QuanLyPhieuDatPhongPanel extends JPanel implements ActionListener {
 		btnLichSuPDP.setIcon(MyIcon.getIcon(MaterialDesignH.HISTORY, 40, null));
 
 		JPanel panelBottom = new JPanel();
-		panelBottom.setBackground(new Color(204, 204, 255));
+		panelBottom.setBackground(ConstantUtil.MAIN_BLUE);
 		FlowLayout flowLayout = (FlowLayout) panelBottom.getLayout();
 		flowLayout.setHgap(40);
 		add(panelBottom, BorderLayout.SOUTH);
 
-		lblChuaDat.setForeground(new Color(50, 102, 133));
+		lblChuaDat.setForeground(Color.WHITE);
 		lblChuaDat.setIcon(MyIcon.getIcon(MaterialDesignM.MICROPHONE_VARIANT, 28, null));
 		lblChuaDat.setFont(new Font("Dialog", Font.BOLD, 24));
 		panelBottom.add(lblChuaDat);
 
-		lblDaDat.setForeground(new Color(50, 102, 133));
+		lblDaDat.setForeground(Color.WHITE);
 		lblDaDat.setIcon(MyIcon.getIcon(MaterialDesignM.MICROPHONE_VARIANT_OFF, 28, null));
 		lblDaDat.setFont(new Font("Dialog", Font.BOLD, 24));
 		panelBottom.add(lblDaDat);
 
-		lblPhongKhongHD.setForeground(new Color(50, 102, 133));
+		lblPhongKhongHD.setForeground(Color.WHITE);
 		lblPhongKhongHD.setIcon(MyIcon.getIcon(MaterialDesignC.CANCEL, 28, null));
 		lblPhongKhongHD.setFont(new Font("Dialog", Font.BOLD, 24));
 		panelBottom.add(lblPhongKhongHD);

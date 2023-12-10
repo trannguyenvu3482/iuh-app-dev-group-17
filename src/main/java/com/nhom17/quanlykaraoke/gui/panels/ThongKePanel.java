@@ -114,7 +114,7 @@ public class ThongKePanel extends JPanel implements ActionListener {
 		panelCenterTheoNgay.setLayout(new BorderLayout(0, 0));
 
 		JPanel panelFilterTheoNgay = new JPanel();
-		panelFilterTheoNgay.setBackground(new Color(216, 209, 165));
+		panelFilterTheoNgay.setBackground(new Color(240,240,240));
 		panelFilterTheoNgay.setBorder(new EmptyBorder(10, 20, 10, 20));
 		panelCenterTheoNgay.add(panelFilterTheoNgay, BorderLayout.NORTH);
 		panelFilterTheoNgay.setLayout(new BoxLayout(panelFilterTheoNgay, BoxLayout.X_AXIS));
@@ -228,7 +228,7 @@ public class ThongKePanel extends JPanel implements ActionListener {
 
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		panel_1.setBackground(new Color(216, 209, 165));
+		panel_1.setBackground(new Color(240, 240, 240));
 		panel.add(panel_1);
 		panel_1.setLayout(new BoxLayout(panel_1, BoxLayout.Y_AXIS));
 
@@ -284,7 +284,7 @@ public class ThongKePanel extends JPanel implements ActionListener {
 
 		JPanel panel_2 = new JPanel();
 		panel_2.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		panel_2.setBackground(new Color(216, 209, 165));
+		panel_2.setBackground(new Color(240, 240, 240));
 		panel.add(panel_2);
 		panel_2.setLayout(new BoxLayout(panel_2, BoxLayout.Y_AXIS));
 
