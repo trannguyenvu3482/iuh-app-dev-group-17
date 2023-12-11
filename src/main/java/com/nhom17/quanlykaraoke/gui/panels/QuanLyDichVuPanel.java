@@ -38,6 +38,8 @@ import com.nhom17.quanlykaraoke.utils.ConstantUtil;
 
 import net.miginfocom.swing.MigLayout;
 import raven.toast.Notifications;
+import raven.toast.Notifications.Location;
+import raven.toast.Notifications.Type;
 
 /**
  * Màn hình quản lý dịch vụ
@@ -82,6 +84,7 @@ public class QuanLyDichVuPanel extends JPanel implements ActionListener {
 	private String searchString = "";
 	private Timer timer;
 	private final JButton btnRefresh = new JButton("Làm mới");
+	private boolean isSelectedARoom = false;
 
 	/**
 	 * Instantiates a new quan ly phieu dat phong panel.
@@ -94,10 +97,7 @@ public class QuanLyDichVuPanel extends JPanel implements ActionListener {
 		refreshRoomList();
 
 		// Load first page
-		this.currentPage = 1;
-		this.maxPageSize = (int) Math.ceil((double) listBookedRooms.size() / ConstantUtil.MAXIMUM_PAGE_SIZE);
-		loadPageRoom(listBookedRooms, currentPage);
-
+		btnRefresh.doClick();
 	}
 
 	/**
@@ -212,6 +212,8 @@ public class QuanLyDichVuPanel extends JPanel implements ActionListener {
 		// Select clicked
 		clickedPanel.select();
 		currentSelectedRoomPanel = clickedPanel;
+
+		isSelectedARoom = true;
 	}
 
 	/**
@@ -240,23 +242,36 @@ public class QuanLyDichVuPanel extends JPanel implements ActionListener {
 
 		if (o.equals(btnLeft)) {
 			currentPage--;
-			loadPageRoom(listEmptyRooms, currentPage);
+			loadPageRoom(listBookedRooms, currentPage);
 		} else if (o.equals(btnRight)) {
 			currentPage++;
-			loadPageRoom(listEmptyRooms, currentPage);
+			loadPageRoom(listBookedRooms, currentPage);
 		} else if (o.equals(btnAdd)) {
+			if (!isSelectedARoom) {
+				Notifications.getInstance().show(Type.ERROR, Location.BOTTOM_RIGHT, "Bạn chưa chọn phòng nào!");
+				return;
+			}
+
 			currentSelectedRoomPanel.addDichVu(() -> {
-				currentPage++;
-				loadPageRoom(listEmptyRooms, currentPage);
+				handleRefresh();
 			});
 		} else if (o.equals(btnRefresh)) {
-			refreshRoomList();
-
-			// Load first page
-			this.currentPage = 1;
-			this.maxPageSize = (int) Math.ceil((double) listBookedRooms.size() / ConstantUtil.MAXIMUM_PAGE_SIZE);
-			loadPageRoom(listBookedRooms, currentPage);
+			handleRefresh();
 		}
+	}
+
+	/**
+	 * 
+	 */
+	private void handleRefresh() {
+		// TODO Auto-generated method stub
+		refreshRoomList();
+
+		this.currentPage = 1;
+		this.maxPageSize = (int) Math.ceil((double) listBookedRooms.size() / ConstantUtil.MAXIMUM_PAGE_SIZE);
+		loadPageRoom(listBookedRooms, currentPage);
+
+		isSelectedARoom = false;
 	}
 
 	/**
@@ -353,7 +368,7 @@ public class QuanLyDichVuPanel extends JPanel implements ActionListener {
 		txtSearchMaPhong.putClientProperty("JTextField.placeholderText", "Nhập vào mã phòng cần tìm...");
 		txtSearchMaPhong.setColumns(20);
 		JPanel panelCenter = new JPanel();
-		panelCenter.setBackground(new Color(238, 238, 238));
+		panelCenter.setBackground(ConstantUtil.MAIN_LIGHTEST_BLUE);
 		add(panelCenter, BorderLayout.CENTER);
 		GridBagLayout gbl_panelCenter = new GridBagLayout();
 		gbl_panelCenter.columnWidths = new int[] { 60, 250, 60 };
@@ -375,7 +390,7 @@ public class QuanLyDichVuPanel extends JPanel implements ActionListener {
 		gbc_btnLeft.gridy = 0;
 		panelCenter.add(btnLeft, gbc_btnLeft);
 
-		roomsPanel.setBackground(new Color(238, 238, 238));
+		roomsPanel.setBackground(null);
 		GridBagConstraints gbc_roomsPanel = new GridBagConstraints();
 		gbc_roomsPanel.fill = GridBagConstraints.BOTH;
 		gbc_roomsPanel.insets = new Insets(50, 0, 20, 0);

@@ -43,7 +43,6 @@ import org.kordamp.ikonli.materialdesign2.MaterialDesignP;
 import com.nhom17.quanlykaraoke.bus.ChiTietDichVuBUS;
 import com.nhom17.quanlykaraoke.bus.ChiTietPhieuDatPhongBUS;
 import com.nhom17.quanlykaraoke.bus.HangHoaBUS;
-import com.nhom17.quanlykaraoke.bus.LoaiHangHoaBUS;
 import com.nhom17.quanlykaraoke.common.MyIcon;
 import com.nhom17.quanlykaraoke.entities.ChiTietDichVu;
 import com.nhom17.quanlykaraoke.entities.PhieuDatPhong;
@@ -68,18 +67,20 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 	private DefaultTableModel modelLeft;
 	private DefaultTableModel modelRight;
 	private JTextField txtSearch;
-	private JButton btnThem = new JButton("");
-	private JButton btnXoa = new JButton("");
-	private JButton btnXacNhan = new JButton("Xác nhận");
-	private JButton btnHuy = new JButton("Hủy");
-	private JButton btnCapNhatSoLuong = new JButton("");
+	private final JButton btnThem = new JButton("");
+	private final JButton btnXoa = new JButton("");
+	private final JButton btnXacNhan = new JButton("Xác nhận");
+	private final JButton btnHuy = new JButton("Hủy");
+	private final JButton btnCapNhatSoLuong = new JButton("");
+	private final JLabel lblTenNhanVien = new JLabel("");
+	private final JLabel lblTenPhong = new JLabel("");
+	private final JComboBox<String> boxFilter = new JComboBox<String>();
 
 	// VARIABLES
 	private Phong p;
 	private PhieuDatPhong pdp;
 	private HangHoaBUS hhBUS = new HangHoaBUS();
 	private ChiTietDichVuBUS ctdvBUS = new ChiTietDichVuBUS();
-	private LoaiHangHoaBUS lhhBUS = new LoaiHangHoaBUS();
 
 	private ChiTietPhieuDatPhongBUS ctpdpBUS = new ChiTietPhieuDatPhongBUS();
 	private int stt = 1;
@@ -151,13 +152,12 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 		Component horizontalStrut = Box.createHorizontalStrut(100);
 		panel_4.add(horizontalStrut);
 
-		JComboBox<String> comboBox = new JComboBox<String>();
-		comboBox.setForeground(new Color(50, 102, 133));
-		comboBox.putClientProperty("JTextField.placeholderText", "Chọn loại hàng hóa");
-		comboBox.setFont(new Font("Dialog", Font.BOLD, 18));
-		comboBox.setModel(
+		boxFilter.setForeground(new Color(50, 102, 133));
+		boxFilter.putClientProperty("JTextField.placeholderText", "Chọn loại hàng hóa");
+		boxFilter.setFont(new Font("Dialog", Font.BOLD, 18));
+		boxFilter.setModel(
 				new DefaultComboBoxModel<String>(new String[] { "Loại hàng hóa", "Đồ uống có cồn", "Thức ăn" }));
-		panel_4.add(comboBox);
+		panel_4.add(boxFilter);
 
 		JScrollPane scrollPaneLeft = new JScrollPane();
 		panel.add(scrollPaneLeft);
@@ -210,15 +210,13 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 		panel_2.add(panel_5, BorderLayout.NORTH);
 		panel_5.setLayout(new BoxLayout(panel_5, BoxLayout.Y_AXIS));
 
-		JLabel lblTenPhong = new JLabel("Tên phòng: Phòng P001");
 		lblTenPhong.setForeground(Color.BLACK);
 		lblTenPhong.setFont(new Font("Dialog", Font.BOLD, 18));
 		panel_5.add(lblTenPhong);
 
-		JLabel lblTenKhachHang = new JLabel("Tên khách hàng: Trần Ngọc Phát");
-		lblTenKhachHang.setForeground(Color.BLACK);
-		lblTenKhachHang.setFont(new Font("Dialog", Font.BOLD, 18));
-		panel_5.add(lblTenKhachHang);
+		lblTenNhanVien.setForeground(Color.BLACK);
+		lblTenNhanVien.setFont(new Font("Dialog", Font.BOLD, 18));
+		panel_5.add(lblTenNhanVien);
 
 		JScrollPane scrollPaneRight = new JScrollPane();
 		panel_2.add(scrollPaneRight);
@@ -281,6 +279,11 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 		btnCapNhatSoLuong.addActionListener(this);
 		btnHuy.addActionListener(this);
 		btnXacNhan.addActionListener(this);
+		boxFilter.addActionListener(this);
+
+		// Set labels
+		lblTenNhanVien.setText("Tên nhân vieê:" + ConstantUtil.currentNhanVien.getHoTen());
+		lblTenPhong.setText("Tên phòng: Phòng " + p.getMaPhong());
 	}
 
 	@Override
@@ -357,6 +360,13 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 				String result = JOptionPane.showInputDialog(null, "Nhập vào số lượng mới", "Thông báo",
 						JOptionPane.QUESTION_MESSAGE);
 
+				// Check if result is int > 0
+				if (!ConstantUtil.isStringInteger(result)) {
+					Notifications.getInstance().show(raven.toast.Notifications.Type.ERROR, Location.BOTTOM_RIGHT,
+							"Số lượng không hợp lệ");
+					return;
+				}
+
 				if (Integer.valueOf(result) > Integer.valueOf(modelLeft.getValueAt(row, 4).toString())) {
 					Notifications.getInstance().show(raven.toast.Notifications.Type.ERROR, Location.BOTTOM_RIGHT,
 							"Số lượng không hợp lệ");
@@ -371,20 +381,31 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 						c = listCTDVPending.stream().filter(ctdv -> modelRight.getValueAt(row, 1).toString()
 								.equals(ctdv.getHangHoa().getTenHangHoa())).findAny().orElse(null);
 
+						int index = 0;
 						for (ChiTietDichVu ctdv : listCTDVPending) {
 							if (ctdv.equals(c)) {
 								ctdv.setSoLuong(Integer.valueOf(result));
+
+								listCTDVPending.set(index, ctdv);
 							}
+
+							index++;
 						}
 					} else {
+						int index = 0;
 						for (ChiTietDichVu ctdv : listCTDVCurrent) {
+
 							if (ctdv.equals(c)) {
 								ctdv.setSoLuong(Integer.valueOf(result));
+
+								listCTDVCurrent.set(index, ctdv);
 							}
+
+							index++;
 						}
 					}
 
-					modelRight.removeRow(row);
+					modelRight.setValueAt(Integer.valueOf(result), row, 3);
 
 				}
 
@@ -399,6 +420,10 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 				ctdvBUS.addChiTietDichVu(ctdv);
 			});
 
+			listCTDVCurrent.forEach((ctdv) -> {
+				ctdvBUS.updateChiTietDichVu(ctdv);
+			});
+
 			listCTDVDelete.forEach((ctdv) -> {
 				ctdvBUS.deleteChiTietDichVu(ctdv);
 			});
@@ -407,6 +432,23 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 					"Thêm dịch vụ thành công");
 
 			dispose();
+		} else if (o.equals(boxFilter)) {
+			handleBoxFilter();
+		}
+	}
+
+	/**
+	 * 
+	 */
+	private void handleBoxFilter() {
+		// TODO Auto-generated method stub
+		if (boxFilter.getSelectedIndex() == 0) {
+			filters.set(1, RowFilter.regexFilter(".*", 2));
+			rowSorter.setRowFilter(RowFilter.andFilter(filters));
+		} else {
+			filters.set(1, RowFilter.regexFilter("(?i)" + boxFilter.getSelectedItem().toString(), 2));
+			rowSorter.setRowFilter(RowFilter.andFilter(filters));
+
 		}
 	}
 

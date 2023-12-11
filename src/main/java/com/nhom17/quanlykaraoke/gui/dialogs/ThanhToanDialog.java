@@ -70,6 +70,7 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 	private final JLabel lblThueVAT = new JLabel("Thuế VAT: 10%");
 	private final JButton btnQuayLai = new JButton("Quay lại");
 	private final JLabel lblTienDichVu = new JLabel("Tiền dịch vụ: ");
+	private final JLabel lblTongThoiLuong = new JLabel("Tổng thời lượng: ");
 	private JTable tbl;
 	private DefaultTableModel model;
 	private JButton btnXacNhan = new JButton("Xác nhận");
@@ -145,14 +146,14 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 		panelBottom.setLayout(new BoxLayout(panelBottom, BoxLayout.X_AXIS));
 
 		btnQuayLai.setForeground(Color.WHITE);
-		btnQuayLai.setBackground(Color.DARK_GRAY);
+		btnQuayLai.setBackground(Color.GREEN);
 		btnQuayLai.setFont(new Font("Dialog", Font.BOLD, 20));
 		panelBottom.add(btnQuayLai);
 
 		Component horizontalGlue_2 = Box.createHorizontalGlue();
 		panelBottom.add(horizontalGlue_2);
-		chkXuatHoaDon.setForeground(new Color(50, 102, 133));
-		chkXuatHoaDon.setBackground(new Color(216, 209, 165));
+		chkXuatHoaDon.setForeground(Color.WHITE);
+		chkXuatHoaDon.setBackground(null);
 
 		chkXuatHoaDon.setFont(new Font("Dialog", Font.BOLD | Font.ITALIC, 20));
 		panelBottom.add(chkXuatHoaDon);
@@ -166,7 +167,7 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 		panelBottom.add(btnXacNhan);
 
 		JPanel panelCenter = new JPanel();
-		panelCenter.setBackground(new Color(216, 209, 165));
+		panelCenter.setBackground(ConstantUtil.MAIN_LIGHTEST_BLUE);
 		getContentPane().add(panelCenter, BorderLayout.CENTER);
 		panelCenter.setLayout(new BorderLayout(0, 0));
 
@@ -220,7 +221,6 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 		Component horizontalGlue_3_1_1 = Box.createHorizontalGlue();
 		hBox5.add(horizontalGlue_3_1_1);
 
-		JLabel lblTongThoiLuong = new JLabel("Tổng thời lượng: 60 phút");
 		lblTongThoiLuong.setForeground(Color.WHITE);
 		lblTongThoiLuong.setFont(new Font("Dialog", Font.BOLD, 20));
 		hBox5.add(lblTongThoiLuong);
@@ -258,6 +258,8 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 		lblGioNhanPhong.setText(lblGioNhanPhong.getText().concat(DateTimeFormatUtil.formatFullDate(thoiGianBatDau)));
 		lblGioTraPhong.setText(lblGioTraPhong.getText().concat(DateTimeFormatUtil.formatFullDate(LocalDateTime.now())));
 		lblTienDichVu.setText(lblTienDichVu.getText().concat(MoneyFormatUtil.format(tienDichVu)));
+		lblTongThoiLuong.setText(lblTongThoiLuong.getText()
+				.concat(DateTimeFormatUtil.formatTimeBetween(thoiGianBatDau, LocalDateTime.now())));
 
 		// Action listeners
 		btnXacNhan.addActionListener(this);
@@ -271,7 +273,7 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 
 		if (o.equals(btnXacNhan)) {
 			// TODO: UNCOMMENT THIS WHEN DONE
-			pdpBUS.finishPhieuDatPhong(p.getMaPhong(), tienDichVu, tienPhong);
+//			pdpBUS.finishPhieuDatPhong(p.getMaPhong(), tienDichVu, tienPhong);
 
 			if (chkXuatHoaDon.isSelected()) {
 				try {
@@ -306,7 +308,7 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 		d.open();
 
 		PdfContentByte contentByte = writer.getDirectContent();
-		Image image = Image.getInstance(contentByte, ConstantUtil.scaleImage(400, height, img), 1);
+		Image image = Image.getInstance(contentByte, ConstantUtil.scaleImage(600, height - 40, img), 1);
 
 		PdfTemplate template = contentByte.createTemplate(width, height);
 		image.setAbsolutePosition(0, 0);
@@ -332,20 +334,18 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 		tbl = new JTable(model);
 		tbl.setBackground(new Color(243, 241, 228));
 		tbl.setForeground(new Color(0, 0, 0));
-		tbl.setRowSelectionAllowed(false);
 		tbl.setColumnSelectionAllowed(false);
-		tbl.setCellSelectionEnabled(false);
 		tbl.setFont(new Font("Dialog", Font.PLAIN, 18));
 		tbl.getTableHeader().setFont(new Font("Dialog", Font.BOLD, 20));
 		tbl.getTableHeader().setReorderingAllowed(false);
-		tbl.setAutoCreateRowSorter(true);
+		tbl.setAutoCreateRowSorter(false);
 		tbl.getTableHeader().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		tbl.setRowHeight(40);
 
 		// Col width
-		tbl.getColumnModel().getColumn(0).setPreferredWidth(8);
+		tbl.getColumnModel().getColumn(0).setPreferredWidth(6);
 		tbl.getColumnModel().getColumn(1).setPreferredWidth(125);
-		tbl.getColumnModel().getColumn(2).setPreferredWidth(125);
+		tbl.getColumnModel().getColumn(2).setPreferredWidth(130);
 		tbl.getColumnModel().getColumn(3).setPreferredWidth(100);
 		tbl.getColumnModel().getColumn(4).setPreferredWidth(75);
 		tbl.getColumnModel().getColumn(5).setPreferredWidth(100);
@@ -406,7 +406,7 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 
 				Object[] rowData = { stt, c.getHangHoa().getTenHangHoa(), c.getSoLuong(),
 						MoneyFormatUtil.format(c.getHangHoa().getDonGia()),
-						c.getHangHoa().getLoaiHangHoa().getDonViTinh(), "", "", MoneyFormatUtil.format(thanhTien) };
+						c.getHangHoa().getLoaiHangHoa().getDonViTinh(), "", MoneyFormatUtil.format(thanhTien) };
 
 				model.addRow(rowData);
 				stt++;

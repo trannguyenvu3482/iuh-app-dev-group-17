@@ -31,7 +31,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
-import javax.swing.UIManager;
 
 import org.kordamp.ikonli.materialdesign2.MaterialDesignC;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignF;
@@ -99,6 +98,7 @@ public class QuanLyPhieuDatPhongPanel extends JPanel implements ActionListener {
 	private final List<JPanel> roomUIPanels = List.of(panel1, panel2, panel3, panel4, panel5, panel6, panel7, panel8);
 	private String searchString = "";
 	private Timer timer;
+	private boolean isSelectedARoom = false;
 
 	/**
 	 * Instantiates a new quan ly phieu dat phong panel.
@@ -234,6 +234,8 @@ public class QuanLyPhieuDatPhongPanel extends JPanel implements ActionListener {
 		// Select clicked
 		clickedPanel.select();
 		currentSelectedRoomPanel = clickedPanel;
+
+		isSelectedARoom = true;
 	}
 
 	/**
@@ -262,17 +264,27 @@ public class QuanLyPhieuDatPhongPanel extends JPanel implements ActionListener {
 
 		if (o.equals(btnLeft)) {
 			currentPage--;
-			loadPageRoom(listRooms, currentPage);
+			loadPageRoom(listEmptyRooms, currentPage);
 		} else if (o.equals(btnRight)) {
 			currentPage++;
-			loadPageRoom(listRooms, currentPage);
+			loadPageRoom(listEmptyRooms, currentPage);
 		} else if (o.equals(btnAdd)) {
+			if (!isSelectedARoom) {
+				Notifications.getInstance().show(Type.ERROR, Location.BOTTOM_RIGHT, "Bạn chưa chọn phòng nào!");
+				return;
+			}
+
 			currentSelectedRoomPanel.createPDP(() -> {
 				// Refresh rooms
 				refreshRoomList();
 				boxFilter.setSelectedIndex(0);
 			});
 		} else if (o.equals(btnRemove)) {
+			if (!isSelectedARoom) {
+				Notifications.getInstance().show(Type.ERROR, Location.BOTTOM_RIGHT, "Bạn chưa chọn phòng nào!");
+				return;
+			}
+
 			if (currentSelectedRoomPanel.removePDP()) {
 				// Refresh rooms
 				refreshRoomList();
@@ -284,13 +296,25 @@ public class QuanLyPhieuDatPhongPanel extends JPanel implements ActionListener {
 
 		} else if (o.equals(boxFilter)) {
 			handleBoxFilter();
+
+			isSelectedARoom = false;
 		} else if (o.equals(btnChangeRoom)) {
+			if (!isSelectedARoom) {
+				Notifications.getInstance().show(Type.ERROR, Location.BOTTOM_RIGHT, "Bạn chưa chọn phòng nào!");
+				return;
+			}
+
 			currentSelectedRoomPanel.changeRoom(() -> {
 				// Refresh rooms
 				refreshRoomList();
 				boxFilter.setSelectedIndex(0);
 			});
 		} else if (o.equals(btnCheckout)) {
+			if (!isSelectedARoom) {
+				Notifications.getInstance().show(Type.ERROR, Location.BOTTOM_RIGHT, "Bạn chưa chọn phòng nào!");
+				return;
+			}
+
 			currentSelectedRoomPanel.checkout(() -> {
 				// Refresh rooms
 				refreshRoomList();
@@ -329,6 +353,8 @@ public class QuanLyPhieuDatPhongPanel extends JPanel implements ActionListener {
 				handleControlButtonsVisibility();
 			}
 		}
+
+		isSelectedARoom = false;
 	}
 
 	/**
@@ -452,8 +478,9 @@ public class QuanLyPhieuDatPhongPanel extends JPanel implements ActionListener {
 		txtSearchMaPhong.setForeground(Color.LIGHT_GRAY);
 		txtSearchMaPhong.putClientProperty("JTextField.placeholderText", "Nhập vào mã phòng cần tìm...");
 		txtSearchMaPhong.setColumns(20);
+
 		JPanel panelCenter = new JPanel();
-		panelCenter.setBackground(UIManager.getColor("Button.background"));
+		panelCenter.setBackground(ConstantUtil.MAIN_LIGHTEST_BLUE);
 		add(panelCenter, BorderLayout.CENTER);
 		GridBagLayout gbl_panelCenter = new GridBagLayout();
 		gbl_panelCenter.columnWidths = new int[] { 60, 250, 60 };
@@ -475,7 +502,7 @@ public class QuanLyPhieuDatPhongPanel extends JPanel implements ActionListener {
 		gbc_btnLeft.gridy = 0;
 		panelCenter.add(btnLeft, gbc_btnLeft);
 
-		roomsPanel.setBackground(UIManager.getColor("Button.background"));
+		roomsPanel.setBackground(null);
 		GridBagConstraints gbc_roomsPanel = new GridBagConstraints();
 		gbc_roomsPanel.fill = GridBagConstraints.BOTH;
 		gbc_roomsPanel.insets = new Insets(50, 0, 20, 0);
