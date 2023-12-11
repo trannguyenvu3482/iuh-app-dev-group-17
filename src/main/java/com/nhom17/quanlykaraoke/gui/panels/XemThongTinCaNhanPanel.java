@@ -32,7 +32,10 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
 
+import org.kordamp.ikonli.materialdesign2.MaterialDesignL;
+
 import com.nhom17.quanlykaraoke.bus.NhanVienBUS;
+import com.nhom17.quanlykaraoke.common.MyIcon;
 import com.nhom17.quanlykaraoke.entities.NhanVien;
 import com.nhom17.quanlykaraoke.utils.ConstantUtil;
 import com.nhom17.quanlykaraoke.utils.PasswordUtil;
@@ -141,7 +144,7 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 
 		lblName = new JLabel("Tên: Trần Nguyên Vũ");
 		lblName.setHorizontalAlignment(SwingConstants.LEFT);
-		lblName.setForeground(new Color(50, 102, 133));
+		lblName.setForeground(Color.BLACK);
 		lblName.setFont(new Font("Dialog", Font.BOLD, 36));
 		boxFullName.add(lblName);
 
@@ -159,7 +162,7 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 
 		lblGioiTinh = new JLabel("Giới tính: Nam");
 		lblGioiTinh.setHorizontalAlignment(SwingConstants.LEFT);
-		lblGioiTinh.setForeground(new Color(50, 102, 133));
+		lblGioiTinh.setForeground(Color.BLACK);
 		lblGioiTinh.setFont(new Font("Dialog", Font.BOLD, 36));
 		boxGioiTinh.add(lblGioiTinh);
 
@@ -174,7 +177,7 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 
 		lblMaNV = new JLabel("Mã nhân viên: NV001");
 		lblMaNV.setHorizontalAlignment(SwingConstants.LEFT);
-		lblMaNV.setForeground(new Color(50, 102, 133));
+		lblMaNV.setForeground(Color.BLACK);
 		lblMaNV.setFont(new Font("Dialog", Font.BOLD, 36));
 		boxMaNV.add(lblMaNV);
 
@@ -189,7 +192,7 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 
 		JLabel lblChucVu = new JLabel("Chức vụ: Nhân viên");
 		lblChucVu.setHorizontalAlignment(SwingConstants.LEFT);
-		lblChucVu.setForeground(new Color(50, 102, 133));
+		lblChucVu.setForeground(Color.BLACK);
 		lblChucVu.setFont(new Font("Dialog", Font.BOLD, 36));
 		boxChucVu.add(lblChucVu);
 
@@ -204,7 +207,7 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 
 		lblSDT = new JLabel("Số điện thoại: 0903252508");
 		lblSDT.setHorizontalAlignment(SwingConstants.LEFT);
-		lblSDT.setForeground(new Color(50, 102, 133));
+		lblSDT.setForeground(Color.BLACK);
 		lblSDT.setFont(new Font("Dialog", Font.BOLD, 36));
 		boxSDT.add(lblSDT);
 
@@ -219,12 +222,15 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 
 		lblNgaySinh = new JLabel("");
 		lblNgaySinh.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNgaySinh.setForeground(new Color(50, 102, 133));
+		lblNgaySinh.setForeground(Color.BLACK);
 		lblNgaySinh.setFont(new Font("Dialog", Font.BOLD, 36));
 		boxNgaySinh.add(lblNgaySinh);
 
 		Component horizontalGlue_1_1_1_1_1_1_1 = Box.createHorizontalGlue();
 		boxNgaySinh.add(horizontalGlue_1_1_1_1_1_1_1);
+
+		Component verticalStrut_1_1_1_1_1 = Box.createVerticalStrut(50);
+		panelLeft.add(verticalStrut_1_1_1_1_1);
 
 		JPanel panelRight = new JPanel();
 		panelRight.setBorder(new EmptyBorder(16, 24, 0, 24));
@@ -236,7 +242,7 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 		panelRight.add(horizontalBox_2_1);
 
 		JLabel lblNhpMtKhu_1_1 = new JLabel("Nhập mật khẩu hiện tại");
-		lblNhpMtKhu_1_1.setForeground(new Color(50, 102, 133));
+		lblNhpMtKhu_1_1.setForeground(Color.BLACK);
 		lblNhpMtKhu_1_1.setFont(new Font("Dialog", Font.BOLD, 24));
 		horizontalBox_2_1.add(lblNhpMtKhu_1_1);
 
@@ -270,7 +276,7 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 		panelRight.add(horizontalBox_2);
 
 		JLabel lblNhpMtKhu_1 = new JLabel("Nhập mật khẩu mới");
-		lblNhpMtKhu_1.setForeground(new Color(50, 102, 133));
+		lblNhpMtKhu_1.setForeground(Color.BLACK);
 		lblNhpMtKhu_1.setFont(new Font("Dialog", Font.BOLD, 24));
 		horizontalBox_2.add(lblNhpMtKhu_1);
 
@@ -302,7 +308,7 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 		panelRight.add(horizontalBox);
 
 		JLabel lblNhpMtKhu = new JLabel("Nhập lại mật khẩu mới");
-		lblNhpMtKhu.setForeground(new Color(50, 102, 133));
+		lblNhpMtKhu.setForeground(Color.BLACK);
 		lblNhpMtKhu.setFont(new Font("Dialog", Font.BOLD, 24));
 		horizontalBox.add(lblNhpMtKhu);
 
@@ -335,7 +341,8 @@ public class XemThongTinCaNhanPanel extends JPanel implements ActionListener {
 		panelRight.add(horizontalBox_1);
 
 		btnDoiMK = new JButton("Đổi mật khẩu");
-		btnDoiMK.setForeground(new Color(50, 102, 133));
+		btnDoiMK.setForeground(Color.BLACK);
+		btnDoiMK.setIcon(MyIcon.getIcon(MaterialDesignL.LOCK_RESET, 32, null));
 		btnDoiMK.setFont(new Font("Dialog", Font.BOLD, 28));
 		horizontalBox_1.add(btnDoiMK);
 

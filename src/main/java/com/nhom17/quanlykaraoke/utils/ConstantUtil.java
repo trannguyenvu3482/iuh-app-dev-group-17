@@ -19,8 +19,12 @@ import javax.swing.ImageIcon;
 import com.nhom17.quanlykaraoke.entities.NhanVien;
 
 public class ConstantUtil {
-	public static final Color MAIN_BLUE = new Color(49, 98, 240);
-	public static final Color MAIN_LIGHT_BLUE = new Color(173, 232, 244);
+	public static final Color DARKER_BLUE = new Color(3, 4, 94);
+	public static final Color DARK_BLUE = new Color(2, 62, 138);
+	public static final Color MAIN_BLUE = new Color(0, 119, 182);
+	public static final Color MAIN_LIGHT_BLUE = new Color(72, 202, 228);
+	public static final Color MAIN_LIGHTER_BLUE = new Color(144, 224, 239);
+	public static final Color MAIN_LIGHTEST_BLUE = new Color(202, 240, 248);
 
 	public static final int MAXIMUM_PAGE_SIZE = 8;
 	public static NhanVien currentNhanVien = null;
@@ -149,6 +153,16 @@ public class ConstantUtil {
 
 		// Display circular image
 		return new ImageIcon(bi.getScaledInstance(200, 200, Image.SCALE_SMOOTH));
+	}
+
+	public static final boolean isStringInteger(String value) {
+		try {
+			Integer.parseInt(value);
+			return true;
+		} catch (NumberFormatException e) {
+			return false;
+		}
+
 	}
 
 }

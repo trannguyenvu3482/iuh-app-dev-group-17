@@ -11,12 +11,14 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -33,6 +35,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
 
 import org.kordamp.ikonli.materialdesign2.MaterialDesignA;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignC;
@@ -152,15 +155,14 @@ public class NhanVienGUI extends MyFrame implements ActionListener {
 			BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g2 = bi.createGraphics();
 
-//			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-//			int circleDiameter = Math.min(width, height);
-//			Ellipse2D.Double circle = new Ellipse2D.Double(0, 0, circleDiameter, circleDiameter);
-//			g2.setClip(circle);
+			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			int circleDiameter = Math.min(width, height);
+			Ellipse2D.Double circle = new Ellipse2D.Double(0, 0, circleDiameter, circleDiameter);
+			g2.setClip(circle);
 			g2.drawImage(img, 0, 0, null);
 
 			// Display circular image
 			avatar = new ImageIcon(bi.getScaledInstance(200, 200, Image.SCALE_SMOOTH));
-//			avatar.setImage(avatar.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -169,8 +171,9 @@ public class NhanVienGUI extends MyFrame implements ActionListener {
 		ImageIcon icon = new ImageIcon("src/main/resources/images/logo.png");
 		Image img = icon.getImage().getScaledInstance(200, 150, Image.SCALE_SMOOTH);
 		icon.setImage(img);
+		leftPanel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 
-		leftPanel.setBackground(Color.BLACK);
+		leftPanel.setBackground(new Color(1, 62, 138));
 		leftPanel.setPreferredSize(new Dimension((int) (screenWidth * 0.25), this.getHeight()));
 		getContentPane().add(leftPanel, BorderLayout.WEST);
 		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
@@ -267,7 +270,7 @@ public class NhanVienGUI extends MyFrame implements ActionListener {
 		leftVBox.add(hBoxInfo);
 		panelInfo.setMaximumSize(new Dimension(32767, 100));
 		panelInfo.setAlignmentY(Component.BOTTOM_ALIGNMENT);
-		panelInfo.setBackground(Color.BLACK);
+		panelInfo.setBackground(null);
 
 		hBoxInfo.add(panelInfo);
 		panelInfo.setLayout(new MigLayout("alignx center, aligny bottom", "[][][]", "[]"));
@@ -322,10 +325,10 @@ public class NhanVienGUI extends MyFrame implements ActionListener {
 
 		getContentPane().add(rightPanel, BorderLayout.CENTER);
 		rightPanel.setLayout(new BorderLayout(0, 0));
-		lblName.setForeground(new Color(50, 102, 133));
-		lblName.setFont(new Font("Dialog", Font.BOLD, 20));
+		lblName.setForeground(Color.WHITE);
+		lblName.setFont(new Font("Dialog", Font.BOLD, 22));
 		lblName.setText(new SimpleDateFormat("EEEE, dd/MM/yyyy", new Locale("vi", "VN")).format(new Date()));
-		panelTop.setBackground(Color.BLACK);
+		panelTop.setBackground(ConstantUtil.DARKER_BLUE);
 
 		rightPanel.add(panelTop, BorderLayout.NORTH);
 		panelTop.setLayout(new MigLayout("alignx center, aligny center", "[][]", "[]"));
@@ -355,7 +358,6 @@ public class NhanVienGUI extends MyFrame implements ActionListener {
 		btnSend.setFont(new Font("Tahoma", Font.PLAIN, 42));
 		btnSend.addActionListener(this);
 		clock.startClock();
-//		startWorkTimer();
 
 		// Handle key presser
 		this.addKeyListener(new KeyAdapter() {
@@ -412,7 +414,7 @@ public class NhanVienGUI extends MyFrame implements ActionListener {
 				File helpPDF = new File("src/main/resources/pdf/HUONG_DAN_SU_DUNG.pdf");
 				Desktop.getDesktop().open(helpPDF);
 			} catch (IOException ex) {
-				// no application registered for PDFs
+				ex.printStackTrace()
 			}
 		} else if (o.equals(btnInfo)) {
 			CardLayout layout = (CardLayout) panelContent.getLayout();
