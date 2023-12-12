@@ -415,7 +415,7 @@ public class QuanLyPhieuDatPhongPanel extends JPanel implements ActionListener {
 			btnRemove.setVisible(false);
 			btnChangeRoom.setVisible(false);
 			btnCheckout.setVisible(false);
-			btnLichSuPDP.setVisible(false);
+			btnLichSuPDP.setVisible(true);
 		} else if (boxFilter.getSelectedIndex() == 1) {
 			btnAdd.setVisible(false);
 

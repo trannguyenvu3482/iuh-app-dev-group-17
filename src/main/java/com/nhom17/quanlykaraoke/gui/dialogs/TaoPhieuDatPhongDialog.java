@@ -18,8 +18,6 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.event.CaretEvent;
-import javax.swing.event.CaretListener;
 import javax.swing.text.MaskFormatter;
 
 import org.kordamp.ikonli.materialdesign2.MaterialDesignA;
@@ -75,25 +73,23 @@ public class TaoPhieuDatPhongDialog extends JDialog implements ActionListener {
 		btnSearch.addActionListener(this);
 
 		// Caret listeners
-		txtSDT.addCaretListener(new CaretListener() {
-
-			@Override
-			public void caretUpdate(CaretEvent e) {
-				// TODO Auto-generated method stub
-				if (txtSDT.getText().trim().length() != 10) {
-					btnSearch.setEnabled(false);
-				} else {
-					btnSearch.setEnabled(true);
-				}
-			}
-		});
+//		txtSDT.addCaretListener(new CaretListener() {
+//
+//			@Override
+//			public void caretUpdate(CaretEvent e) {
+//				// TODO Auto-generated method stub
+//				
+//			}
+//		});
 	}
+
 	public boolean checkTonTai(KhachHang kh) {
 		boolean ketQua = true;
-		if(kh==null)
-			ketQua=false;
+		if (kh == null)
+			ketQua = false;
 		return ketQua;
 	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
@@ -102,6 +98,13 @@ public class TaoPhieuDatPhongDialog extends JDialog implements ActionListener {
 		if (o.equals(btnHuy)) {
 			this.dispose();
 		} else if (o.equals(btnSearch)) {
+			if (txtSDT.getText().trim().length() != 10) {
+				Notifications.getInstance().show(raven.toast.Notifications.Type.ERROR, Location.BOTTOM_RIGHT,
+						"Số điện thoại phải là chuỗi có 10 chữ số!");
+
+				return;
+			}
+
 			khachHang = khBUS.getKhachHangBySDT(txtSDT.getText().trim());
 
 			if (checkTonTai(khachHang)) {
