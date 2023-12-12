@@ -96,7 +96,7 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 	public QuanLyDichVuDialog(Phong p) {
 		this.p = p;
 		setSize(1200, 800);
-		setTitle("Quản lý dịch vụ");
+		setTitle("Danh sách dịch vụ");
 		setResizable(false);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout(0, 0));
