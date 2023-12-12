@@ -88,7 +88,12 @@ public class TaoPhieuDatPhongDialog extends JDialog implements ActionListener {
 			}
 		});
 	}
-
+	public boolean checkTonTai(KhachHang kh) {
+		boolean ketQua = true;
+		if(kh==null)
+			ketQua=false;
+		return ketQua;
+	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
@@ -99,7 +104,7 @@ public class TaoPhieuDatPhongDialog extends JDialog implements ActionListener {
 		} else if (o.equals(btnSearch)) {
 			khachHang = khBUS.getKhachHangBySDT(txtSDT.getText().trim());
 
-			if (khachHang != null) {
+			if (checkTonTai(khachHang)) {
 				txtHoTen.setText(khachHang.getHoTen());
 				txtCCCD.setText(khachHang.getCCCD());
 				btnLapPhieu.setEnabled(true);
@@ -173,7 +178,6 @@ public class TaoPhieuDatPhongDialog extends JDialog implements ActionListener {
 
 		btnLapPhieu.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnLapPhieu.setBackground(Color.GREEN);
-		btnLapPhieu.setEnabled(false);
 		btnLapPhieu.setFont(new Font("Dialog", Font.BOLD, 26));
 		panel_2.add(btnLapPhieu);
 
@@ -245,7 +249,6 @@ public class TaoPhieuDatPhongDialog extends JDialog implements ActionListener {
 		horizontalBox.add(horizontalStrut_2_1);
 
 		txtHoTen = new JTextField();
-		txtHoTen.setEditable(false);
 		txtHoTen.setFont(new Font("Dialog", Font.PLAIN, 24));
 		txtHoTen.setColumns(10);
 		horizontalBox.add(txtHoTen);
@@ -274,7 +277,6 @@ public class TaoPhieuDatPhongDialog extends JDialog implements ActionListener {
 			e.printStackTrace();
 		}
 		txtCCCD = new JFormattedTextField(txtCCCDFormatter);
-		txtCCCD.setEditable(false);
 		txtCCCD.setFont(new Font("Dialog", Font.PLAIN, 24));
 		txtCCCD.setColumns(10);
 		horizontalBox_1.add(txtCCCD);

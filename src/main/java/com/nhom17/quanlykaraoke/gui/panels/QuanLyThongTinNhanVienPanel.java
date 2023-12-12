@@ -482,7 +482,16 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 		}
 
 	}
-
+	
+	public boolean checkTonTai(String cccd,String sdt,List<NhanVien> ls) {
+		boolean ketQua=true;
+		for(NhanVien nv : ls) {
+			if(nv.getCCCD().equals(cccd)||nv.getSoDienThoai().equals(sdt)) {
+				ketQua = false;
+			}
+		}
+		return ketQua;
+	}
 	public void clearFields() {
 		txtTenNV.setText("");
 		txtCCCD.setText("");
@@ -496,7 +505,7 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 		tblNhanVien.clearSelection();
 
 	}
-
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
@@ -521,16 +530,21 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 				} else if (y < 18 || ns.isAfter(today)) {
 					JOptionPane.showMessageDialog(this, "Ngày sinh phải có định dạng dd/MM/yyyy\nPhải đủ 18 tuổi");
 				} else {
-					NhanVien nv = new NhanVien(txtTenNV.getText(), cbGioiTinh.getSelectedIndex(),
-							PasswordUtil.encrypt("1"),
-							txtNgaySinh.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
-							cvBUS.getChucVuByName(cbChucVu.getSelectedItem().toString()), txtSDT.getText(),
-							txtCCCD.getText(), cbGioiTinh.getSelectedIndex() == 0 ? ConstantUtil.getDefaultMaleAvatar()
-									: ConstantUtil.getDefaultFemaleAvatar());
-					nvBUS.addNhanVien(nv);
-					refreshTable(nvBUS.getAllNhanViens());
-					clearFields();
-					JOptionPane.showMessageDialog(this, "Thêm thành công!");
+					List<NhanVien> ls = nvBUS.getAllNhanViens();
+					if(checkTonTai(txtCCCD.getText(),txtSDT.getText(),ls)) {
+						NhanVien nv = new NhanVien(txtTenNV.getText(), cbGioiTinh.getSelectedIndex(),
+								PasswordUtil.encrypt("1"),
+								txtNgaySinh.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
+								cvBUS.getChucVuByName(cbChucVu.getSelectedItem().toString()), txtSDT.getText(),
+								txtCCCD.getText(), cbGioiTinh.getSelectedIndex() == 0 ? ConstantUtil.getDefaultMaleAvatar()
+										: ConstantUtil.getDefaultFemaleAvatar());
+						nvBUS.addNhanVien(nv);
+						refreshTable(ls);
+						clearFields();
+						JOptionPane.showMessageDialog(this, "Thêm thành công!");
+					}else {
+						JOptionPane.showMessageDialog(this, "Nhân viên đã tồn tại!");
+					}
 				}
 			}
 
@@ -554,17 +568,22 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 					} else if (y < 18 || ns.isAfter(today)) {
 						JOptionPane.showMessageDialog(this, "Ngày sinh phải có định dạng dd/MM/yyyy\nPhải đủ 18 tuổi");
 					} else {
+						List<NhanVien> ls = nvBUS.getAllNhanViens();
 						String maNV = modelNhanVien.getValueAt(tblNhanVien.getSelectedRow(), 0).toString();
-						NhanVien nv = new NhanVien(maNV, txtTenNV.getText(), cbGioiTinh.getSelectedIndex(),
-								PasswordUtil.encrypt("1"),
-								txtNgaySinh.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
-								cvBUS.getChucVuByName(cbChucVu.getSelectedItem().toString()), txtSDT.getText(),
-								txtCCCD.getText(), nvBUS.getNhanVien(maNV).getAnhDaiDien(),
-								cbTrangThai.getSelectedIndex() == 1 ? true : false);
-						nvBUS.updateNV(nv);
-						refreshTable(nvBUS.getAllNhanViens());
-						clearFields();
-						JOptionPane.showMessageDialog(this, "Cập nhật thành công!");
+						if(checkTonTai(txtCCCD.getText(),txtSDT.getText(),ls)) {
+							NhanVien nv = new NhanVien(maNV, txtTenNV.getText(), cbGioiTinh.getSelectedIndex(),
+									PasswordUtil.encrypt("1"),
+									txtNgaySinh.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
+									cvBUS.getChucVuByName(cbChucVu.getSelectedItem().toString()), txtSDT.getText(),
+									txtCCCD.getText(), nvBUS.getNhanVien(maNV).getAnhDaiDien(),
+									cbTrangThai.getSelectedIndex() == 1 ? true : false);
+							nvBUS.updateNV(nv);
+							refreshTable(ls);
+							clearFields();
+							JOptionPane.showMessageDialog(this, "Cập nhật thành công!");
+						}else {
+							JOptionPane.showMessageDialog(this, "Căn cước công dân này đã tồn tại!");
+						}
 					}
 				}
 
