@@ -55,6 +55,7 @@ import com.nhom17.quanlykaraoke.common.MyIcon;
 import com.nhom17.quanlykaraoke.entities.ChiTietPhieuDatPhong;
 import com.nhom17.quanlykaraoke.entities.NhanVien;
 import com.nhom17.quanlykaraoke.entities.PhieuDatPhong;
+import com.nhom17.quanlykaraoke.utils.ConstantUtil;
 import com.nhom17.quanlykaraoke.utils.DateTimeFormatUtil;
 import com.nhom17.quanlykaraoke.utils.MoneyFormatUtil;
 import com.toedter.calendar.JDateChooser;
@@ -124,6 +125,7 @@ public class ThongKeTheoNhanVienPanel extends JPanel implements ActionListener {
 		panelCenterTheoNgay.setLayout(new BorderLayout(0, 0));
 
 		JPanel panelFilterTheoNgay = new JPanel();
+		panelFilterTheoNgay.setBackground(ConstantUtil.MAIN_BLUE);
 		panelFilterTheoNgay.setBorder(new EmptyBorder(10, 20, 10, 20));
 		panelCenterTheoNgay.add(panelFilterTheoNgay, BorderLayout.NORTH);
 		panelFilterTheoNgay.setLayout(new BoxLayout(panelFilterTheoNgay, BoxLayout.X_AXIS));
@@ -148,6 +150,7 @@ public class ThongKeTheoNhanVienPanel extends JPanel implements ActionListener {
 		flowLayout.setHgap(0);
 		flowLayout.setVgap(0);
 		filtersNgay.setName("filtersNgay");
+		filtersNgay.setBackground(ConstantUtil.MAIN_BLUE);
 		panelFilters.add(filtersNgay, "filtersNgay");
 
 		filtersNgay.add(fromDateChooser);
@@ -205,6 +208,7 @@ public class ThongKeTheoNhanVienPanel extends JPanel implements ActionListener {
 		panelFilterTheoNgay.add(horizontalStrut_2);
 
 		JPanel panel = new JPanel();
+		panel.setBackground(ConstantUtil.MAIN_BLUE);
 		panel.setMaximumSize(new Dimension(100, 32767));
 		panelFilterTheoNgay.add(panel);
 		panel.setLayout(new GridLayout(0, 2, 10, 0));
@@ -229,7 +233,7 @@ public class ThongKeTheoNhanVienPanel extends JPanel implements ActionListener {
 
 		JPanel panelContentTheoNgay = new JPanel();
 		panelCenterTheoNgay.add(panelContentTheoNgay, BorderLayout.CENTER);
-
+		panelContentTheoNgay.setBackground(ConstantUtil.MAIN_LIGHTEST_BLUE);
 		barChart = ChartFactory.createBarChart("BIỂU ĐỒ THỐNG KÊ DOANH SỐ THEO THÁNG", "Tháng", "Doanh thu",
 				createDataset(), PlotOrientation.VERTICAL, false, false, false);
 
@@ -246,7 +250,7 @@ public class ThongKeTheoNhanVienPanel extends JPanel implements ActionListener {
 		JPanel leftPane = new JPanel();
 		leftPane.setBorder(
 				new TitledBorder(null, "Thông tin chi tiết", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		leftPane.setBackground(Color.WHITE);
+		leftPane.setBackground(ConstantUtil.MAIN_LIGHT_BLUE);
 		panelContentTheoNgay.add(leftPane, "cell 0 0,push ,grow");
 		leftPane.setLayout(new BoxLayout(leftPane, BoxLayout.Y_AXIS));
 
@@ -329,7 +333,7 @@ public class ThongKeTheoNhanVienPanel extends JPanel implements ActionListener {
 		JPanel bottomPanel = new JPanel();
 		bottomPanel.setBorder(
 				new TitledBorder(null, "Danh sách nhân viên", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		bottomPanel.setBackground(Color.WHITE);
+		bottomPanel.setBackground(ConstantUtil.MAIN_LIGHTER_BLUE);
 		panelContentTheoNgay.add(bottomPanel, "cell 0 1 2 1,push ,grow");
 		bottomPanel.setLayout(new BorderLayout(0, 0));
 

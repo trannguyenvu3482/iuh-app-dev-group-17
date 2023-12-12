@@ -175,7 +175,7 @@ public class QuanLyGUI extends MyFrame implements ActionListener {
 		Image img = icon.getImage().getScaledInstance(200, 150, Image.SCALE_SMOOTH);
 		icon.setImage(img);
 
-		leftPanel.setBackground(Color.BLACK);
+		leftPanel.setBackground(new Color(1, 62, 138));
 		leftPanel.setPreferredSize(new Dimension((int) (screenWidth * 0.25), this.getHeight()));
 		getContentPane().add(leftPanel, BorderLayout.WEST);
 		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
@@ -332,7 +332,7 @@ public class QuanLyGUI extends MyFrame implements ActionListener {
 		lblName.setForeground(Color.WHITE);
 		lblName.setFont(new Font("Dialog", Font.BOLD, 20));
 		lblName.setText(new SimpleDateFormat("EEEE, dd/MM/yyyy", new Locale("vi", "VN")).format(new Date()));
-		panelTop.setBackground(new Color(26, 37, 46));
+		panelTop.setBackground(ConstantUtil.DARKER_BLUE);
 
 		rightPanel.add(panelTop, BorderLayout.NORTH);
 		panelTop.setLayout(new MigLayout("alignx center, aligny center", "[][]", "[]"));

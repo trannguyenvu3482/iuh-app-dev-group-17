@@ -45,6 +45,7 @@ import com.nhom17.quanlykaraoke.common.MyIcon;
 import com.nhom17.quanlykaraoke.dao.PhieuDatPhongDAO;
 import com.nhom17.quanlykaraoke.entities.ChiTietPhieuDatPhong;
 import com.nhom17.quanlykaraoke.entities.PhieuDatPhong;
+import com.nhom17.quanlykaraoke.utils.ConstantUtil;
 import com.nhom17.quanlykaraoke.utils.DateTimeFormatUtil;
 import com.nhom17.quanlykaraoke.utils.MoneyFormatUtil;
 import com.toedter.calendar.JDateChooser;
@@ -114,7 +115,7 @@ public class ThongKePanel extends JPanel implements ActionListener {
 		panelCenterTheoNgay.setLayout(new BorderLayout(0, 0));
 
 		JPanel panelFilterTheoNgay = new JPanel();
-		panelFilterTheoNgay.setBackground(new Color(240,240,240));
+		panelFilterTheoNgay.setBackground(ConstantUtil.MAIN_BLUE);
 		panelFilterTheoNgay.setBorder(new EmptyBorder(10, 20, 10, 20));
 		panelCenterTheoNgay.add(panelFilterTheoNgay, BorderLayout.NORTH);
 		panelFilterTheoNgay.setLayout(new BoxLayout(panelFilterTheoNgay, BoxLayout.X_AXIS));
@@ -132,6 +133,7 @@ public class ThongKePanel extends JPanel implements ActionListener {
 		panelFilters.setLayout(new CardLayout(0, 0));
 
 		JPanel filtersNgay = new JPanel();
+		filtersNgay.setBackground(ConstantUtil.MAIN_BLUE);
 		FlowLayout flowLayout = (FlowLayout) filtersNgay.getLayout();
 		flowLayout.setHgap(0);
 		flowLayout.setVgap(0);
@@ -218,17 +220,18 @@ public class ThongKePanel extends JPanel implements ActionListener {
 
 		ChartPanel chartPanel = new ChartPanel(barChart);
 		chartPanel.setBorder(new EmptyBorder(10, 20, 10, 20));
-
+		chartPanel.setBackground(ConstantUtil.MAIN_LIGHTEST_BLUE);
 		panelContentTheoNgay.add(chartPanel);
 
 		JPanel panel = new JPanel();
 		panel.setBorder(new EmptyBorder(10, 20, 10, 20));
+		panel.setBackground(ConstantUtil.MAIN_LIGHTEST_BLUE);
 		panelContentTheoNgay.add(panel, BorderLayout.NORTH);
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		panel_1.setBackground(new Color(240, 240, 240));
+		panel_1.setBackground(ConstantUtil.MAIN_LIGHTER_BLUE);
 		panel.add(panel_1);
 		panel_1.setLayout(new BoxLayout(panel_1, BoxLayout.Y_AXIS));
 
@@ -284,7 +287,7 @@ public class ThongKePanel extends JPanel implements ActionListener {
 
 		JPanel panel_2 = new JPanel();
 		panel_2.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		panel_2.setBackground(new Color(240, 240, 240));
+		panel_2.setBackground(ConstantUtil.MAIN_LIGHTER_BLUE);
 		panel.add(panel_2);
 		panel_2.setLayout(new BoxLayout(panel_2, BoxLayout.Y_AXIS));
 
