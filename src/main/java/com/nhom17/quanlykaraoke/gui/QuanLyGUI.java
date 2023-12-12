@@ -95,14 +95,14 @@ public class QuanLyGUI extends MyFrame implements ActionListener {
 	private final JPanel quanLyPhongPanel = (JPanel) new QuanLyPhongPanel();
 	private final JPanel QuanLyHangHoaPanel = (JPanel) new QuanLyHangHoaPanel();
 	private final JPanel thongKePanel = (JPanel) new ThongKePanel();
-	private final MainPanelButton mainPanelButton = new MainPanelButton(1280, 20, "Quản lý phòng", MaterialDesignH.HOME,
+	private final MainPanelButton btnPhong = new MainPanelButton(1280, 20, "Quản lý phòng", MaterialDesignH.HOME,
 			quanLyPhongPanel, panelContent);
 	private final Component verticalStrut_1_1 = Box.createVerticalStrut(20);
 	private final Box hBoxPanelBtn3 = Box.createHorizontalBox();
 
-	private final MainPanelButton mainPanelButton_1_1 = new MainPanelButton(1280, 20, "Thống kê",
-			MaterialDesignC.CHART_BAR, (JPanel) thongKePanel, panelContent);
-	private final MainPanelButton mainPanelButton_1 = new MainPanelButton(1280, 20, "Quản lý hàng hóa",
+	private final MainPanelButton btnThongKe = new MainPanelButton(1280, 20, "Thống kê", MaterialDesignC.CHART_BAR,
+			(JPanel) thongKePanel, panelContent);
+	private final MainPanelButton btnQLHangHoa = new MainPanelButton(1280, 20, "Quản lý hàng hóa",
 			MaterialDesignS.SILVERWARE_FORK_KNIFE, QuanLyHangHoaPanel, panelContent);
 	private final Box horizontalBox_1 = Box.createHorizontalBox();
 	private final Component verticalStrut_1_1_1 = Box.createVerticalStrut(20);
@@ -235,23 +235,23 @@ public class QuanLyGUI extends MyFrame implements ActionListener {
 
 		leftVBox.add(verticalStrut_1);
 		leftVBox.add(hBoxPanelBtn2);
-		mainPanelButton.setToolTipText("(Phím tắt: F4)");
+		btnPhong.setToolTipText("(Phím tắt: F4)");
 
-		hBoxPanelBtn2.add(mainPanelButton);
+		hBoxPanelBtn2.add(btnPhong);
 
 		hBoxPanelBtn2.add(horizontalGlue_1);
 		leftVBox.add(verticalStrut_1_1);
 		hBoxPanelBtn3.setAlignmentY(Component.CENTER_ALIGNMENT);
 		leftVBox.add(hBoxPanelBtn3);
-		mainPanelButton_1.setToolTipText("(Phím tắt: F5)");
+		btnQLHangHoa.setToolTipText("(Phím tắt: F5)");
 
-		hBoxPanelBtn3.add(mainPanelButton_1);
+		hBoxPanelBtn3.add(btnQLHangHoa);
 
 		hBoxPanelBtn3.add(horizontalGlue_1_1);
 		leftVBox.add(verticalStrut_1_1_1_1);
 		leftVBox.add(horizontalBox_1);
-		horizontalBox_1.add(mainPanelButton_1_1);
-		mainPanelButton_1_1.setToolTipText("(Phím tắt: F5)");
+		horizontalBox_1.add(btnThongKe);
+		btnThongKe.setToolTipText("(Phím tắt: F5)");
 
 		leftVBox.add(verticalStrut_1_1_1);
 		hBoxPanelBtn4.setToolTipText("");
@@ -303,11 +303,11 @@ public class QuanLyGUI extends MyFrame implements ActionListener {
 		btnHelp.setToolTipText("Hiển thị file pdf hướng dẫn sử dụng phần mềm");
 		btnHelp.setBackground(null);
 		btnHelp.setBorder(null);
-		MainPanelButton mainPanelButton_2 = new MainPanelButton(this.getWidth(), 20, "Quản lý nhân viên",
+		MainPanelButton btnTTNV = new MainPanelButton(this.getWidth(), 20, "Quản lý thông tin nhân viên",
 				MaterialDesignA.ACCOUNT, quanLyThongTinNhanVienPanel, panelContent);
-		mainPanelButton_2.setBackground(new Color(255, 255, 255));
-		mainPanelButton_2.setToolTipText("(Phím tắt: F3)");
-		hBoxPanelBtn.add(mainPanelButton_2);
+		btnTTNV.setBackground(new Color(255, 255, 255));
+		btnTTNV.setToolTipText("(Phím tắt: F3)");
+		hBoxPanelBtn.add(btnTTNV);
 
 		btnInfo.addActionListener(this);
 		btnHelp.addActionListener(this);

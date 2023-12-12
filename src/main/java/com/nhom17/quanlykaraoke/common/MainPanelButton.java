@@ -51,7 +51,7 @@ public class MainPanelButton extends JPanel implements MouseListener {
 		add(horizontalStrut);
 
 		this.buttonTitle = new JLabel(title);
-		buttonTitle.setFont(new Font("Dialog", Font.BOLD, 26));
+		buttonTitle.setFont(new Font("Dialog", Font.BOLD, 24));
 		buttonTitle.setForeground(Color.BLACK);
 		add(buttonTitle);
 

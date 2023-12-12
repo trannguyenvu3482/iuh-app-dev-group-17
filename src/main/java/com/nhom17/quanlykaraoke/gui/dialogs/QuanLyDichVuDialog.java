@@ -282,7 +282,7 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 		boxFilter.addActionListener(this);
 
 		// Set labels
-		lblTenNhanVien.setText("Tên nhân vieê:" + ConstantUtil.currentNhanVien.getHoTen());
+		lblTenNhanVien.setText("Tên nhân viên:" + ConstantUtil.currentNhanVien.getHoTen());
 		lblTenPhong.setText("Tên phòng: Phòng " + p.getMaPhong());
 	}
 
