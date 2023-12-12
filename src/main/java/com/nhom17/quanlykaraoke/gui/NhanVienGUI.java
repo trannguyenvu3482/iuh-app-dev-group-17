@@ -414,7 +414,7 @@ public class NhanVienGUI extends MyFrame implements ActionListener {
 				File helpPDF = new File("src/main/resources/pdf/HUONG_DAN_SU_DUNG.pdf");
 				Desktop.getDesktop().open(helpPDF);
 			} catch (IOException ex) {
-				ex.printStackTrace()
+				ex.printStackTrace();
 			}
 		} else if (o.equals(btnInfo)) {
 			CardLayout layout = (CardLayout) panelContent.getLayout();
