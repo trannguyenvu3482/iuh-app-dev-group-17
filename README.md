@@ -54,6 +54,7 @@ pom.xml (File config dự án Maven)
 9. twilio 9.13.1
 10. dotenv-java 3.0.0
 11. ikonli-swing 12.3.1
+12. Apache POI 5.2.5
 
 ## Các công cụ khác
 1. maven-shade-plugin để xuất file .jar cho project Maven
