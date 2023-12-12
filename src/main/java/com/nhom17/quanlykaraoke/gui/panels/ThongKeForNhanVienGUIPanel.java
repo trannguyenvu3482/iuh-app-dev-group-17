@@ -40,7 +40,6 @@ import com.nhom17.quanlykaraoke.bus.ChiTietDichVuBUS;
 import com.nhom17.quanlykaraoke.bus.ChiTietPhieuDatPhongBUS;
 import com.nhom17.quanlykaraoke.bus.PhieuDatPhongBUS;
 import com.nhom17.quanlykaraoke.common.MyIcon;
-import com.nhom17.quanlykaraoke.entities.ChiTietPhieuDatPhong;
 import com.nhom17.quanlykaraoke.entities.PhieuDatPhong;
 import com.nhom17.quanlykaraoke.utils.ConstantUtil;
 import com.nhom17.quanlykaraoke.utils.DateTimeFormatUtil;
@@ -486,30 +485,9 @@ public class ThongKeForNhanVienGUIPanel extends JPanel implements ActionListener
 			tongHoaDon++;
 
 			// Handle doanh thu phòng
-			List<ChiTietPhieuDatPhong> listCTPDP = ctpdpBUS
-					.getAllChiTietPhieuDatPhongByMaPhieuDatPhong(pdp.getMaPhieuDatPhong());
+			tongTienPhong += pdp.getTienPhong();
+			tongTienDichVu += pdp.getTienDichVu();
 
-			System.out.println("Số chi tiết PĐP cho PĐP " + pdp.getMaPhieuDatPhong() + ":" + listCTPDP.size());
-
-			double tienPhong = 0;
-			for (ChiTietPhieuDatPhong ctpdp : listCTPDP) {
-				tienPhong = ctpdp.getTienPhongAndPhuPhi();
-
-				tongTienPhong += tienPhong;
-
-				// Handle doanh thu phòng thường hoặc VIP
-				if (ctpdp.getPhong().getLoaiPhong().getTenLoaiPhong().contains("Thường")) {
-					doanhThuPhongThuong += ctpdp.getTienPhongAndPhuPhi();
-				} else {
-					doanhThuPhongVIP += ctpdp.getTienPhongAndPhuPhi();
-				}
-			}
-
-			// Handle doanh thu dịch vụ
-			double tienDichVu = ctdvBUS.getTongTienDichVuByMaPDP(pdp.getMaPhieuDatPhong());
-			tongTienDichVu += tienDichVu;
-
-			System.out.println("Tổng tiền hóa đơn " + pdp.getMaPhieuDatPhong() + ": " + (tienPhong + tienDichVu));
 		});
 
 		// Handle tong tien and doanh thu trung binh

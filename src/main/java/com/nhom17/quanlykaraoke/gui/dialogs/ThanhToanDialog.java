@@ -33,6 +33,8 @@ import javax.swing.table.DefaultTableModel;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Image;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfTemplate;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -71,6 +73,7 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 	private final JButton btnQuayLai = new JButton("Quay lại");
 	private final JLabel lblTienDichVu = new JLabel("Tiền dịch vụ: ");
 	private final JLabel lblTongThoiLuong = new JLabel("Tổng thời lượng: ");
+	private final JPanel panelBottom = new JPanel();
 	private JTable tbl;
 	private DefaultTableModel model;
 	private JButton btnXacNhan = new JButton("Xác nhận");
@@ -93,12 +96,12 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 	 * 
 	 */
 	public ThanhToanDialog(Phong p) {
-		getContentPane().setBackground(new Color(216, 209, 165));
 		setSize(1200, 800);
 		setTitle("Thanh toán phiếu đặt phòng");
 		setResizable(false);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout(0, 0));
+		getContentPane().setBackground(ConstantUtil.MAIN_BLUE);
 
 		this.p = p;
 
@@ -139,7 +142,6 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 		lblSDTKhachHang.setFont(new Font("Dialog", Font.BOLD, 20));
 		hBox2.add(lblSDTKhachHang);
 
-		JPanel panelBottom = new JPanel();
 		panelBottom.setBackground(ConstantUtil.MAIN_BLUE);
 		panelBottom.setBorder(new EmptyBorder(0, 30, 20, 30));
 		getContentPane().add(panelBottom, BorderLayout.SOUTH);
@@ -273,7 +275,7 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 
 		if (o.equals(btnXacNhan)) {
 			// TODO: UNCOMMENT THIS WHEN DONE
-//			pdpBUS.finishPhieuDatPhong(p.getMaPhong(), tienDichVu, tienPhong);
+			pdpBUS.finishPhieuDatPhong(p.getMaPhong(), tienDichVu, tienPhong);
 
 			if (chkXuatHoaDon.isSelected()) {
 				try {
@@ -295,6 +297,7 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 
 	public void exportPDF() throws IOException, DocumentException {
 		Container content = this.getContentPane();
+		content.remove(panelBottom);
 		int height = content.getHeight();
 		int width = content.getHeight();
 		BufferedImage img = new BufferedImage(content.getWidth(), content.getHeight(), BufferedImage.TYPE_INT_RGB);
@@ -304,16 +307,17 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 
 		String path = "src/main/resources/pdf/HoaDon" + pdp.getMaPhieuDatPhong() + ".pdf";
 		Document d = new Document();
+		d.setPageSize(new Rectangle(PageSize.A4.getWidth(), PageSize.A4.getHeight() - 160));
 		PdfWriter writer = PdfWriter.getInstance(d, new FileOutputStream(path));
 		d.open();
 
 		PdfContentByte contentByte = writer.getDirectContent();
-		Image image = Image.getInstance(contentByte, ConstantUtil.scaleImage(600, height - 40, img), 1);
+		Image image = Image.getInstance(contentByte, ConstantUtil.scaleImage(600, height, img), 1);
 
 		PdfTemplate template = contentByte.createTemplate(width, height);
 		image.setAbsolutePosition(0, 0);
 		template.addImage(image);
-		contentByte.addTemplate(template, 0, 100);
+		contentByte.addTemplate(template, 0, -80);
 		d.close();
 
 		Desktop.getDesktop().open(new File(path));
