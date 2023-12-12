@@ -29,6 +29,9 @@ public class Phong implements Serializable {
 	@JoinColumn(name = "maLoaiPhong", columnDefinition = "char(5)")
 	private LoaiPhong loaiPhong;
 
+	@Column(columnDefinition = "bit")
+	private boolean trangThai;
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(maPhong);
@@ -45,9 +48,6 @@ public class Phong implements Serializable {
 		Phong other = (Phong) obj;
 		return Objects.equals(maPhong, other.maPhong);
 	}
-
-	@Column(columnDefinition = "bit")
-	private boolean trangThai;
 
 	public Phong() {
 		// TODO Auto-generated constructor stub
@@ -111,6 +111,5 @@ public class Phong implements Serializable {
 	public String toString() {
 		return "Phong [maPhong=" + maPhong + ", loaiPhong=" + loaiPhong + ", trangThai=" + trangThai + "]";
 	}
-	
-	
+
 }
