@@ -52,7 +52,6 @@ import com.nhom17.quanlykaraoke.bus.ChiTietPhieuDatPhongBUS;
 import com.nhom17.quanlykaraoke.bus.KhachHangBUS;
 import com.nhom17.quanlykaraoke.bus.PhieuDatPhongBUS;
 import com.nhom17.quanlykaraoke.common.MyIcon;
-import com.nhom17.quanlykaraoke.entities.ChiTietPhieuDatPhong;
 import com.nhom17.quanlykaraoke.entities.KhachHang;
 import com.nhom17.quanlykaraoke.entities.PhieuDatPhong;
 import com.nhom17.quanlykaraoke.utils.ConstantUtil;
@@ -452,7 +451,7 @@ public class ThongKeTheoKhachHangPanel extends JPanel implements ActionListener 
 	 */
 	private void createTable() {
 		// TODO Auto-generated method stub
-		final String[] colNames = { "Mã nhân viên", "Họ và tên", "SĐT", "CCCD" };
+		final String[] colNames = { "Mã khách hàng", "Họ và tên", "SĐT", "CCCD" };
 		modelThongKe = new DefaultTableModel(colNames, 0) {
 			private static final long serialVersionUID = 1L;
 
@@ -563,30 +562,9 @@ public class ThongKeTheoKhachHangPanel extends JPanel implements ActionListener 
 			tongHoaDon++;
 
 			// Handle doanh thu phòng
-			List<ChiTietPhieuDatPhong> listCTPDP = ctpdpBUS
-					.getAllChiTietPhieuDatPhongByMaPhieuDatPhong(pdp.getMaPhieuDatPhong());
+			tongTienPhong += pdp.getTienPhong();
+			tongTienDichVu += pdp.getTienDichVu();
 
-			System.out.println("Số chi tiết PĐP cho PĐP " + pdp.getMaPhieuDatPhong() + ":" + listCTPDP.size());
-
-			double tienPhong = 0;
-			for (ChiTietPhieuDatPhong ctpdp : listCTPDP) {
-				tienPhong = ctpdp.getTienPhongAndPhuPhi();
-
-				tongTienPhong += tienPhong;
-
-				// Handle doanh thu phòng thường hoặc VIP
-				if (ctpdp.getPhong().getLoaiPhong().getTenLoaiPhong().contains("Thường")) {
-					doanhThuPhongThuong += ctpdp.getTienPhongAndPhuPhi();
-				} else {
-					doanhThuPhongVIP += ctpdp.getTienPhongAndPhuPhi();
-				}
-			}
-
-			// Handle doanh thu dịch vụ
-			double tienDichVu = ctdvBUS.getTongTienDichVuByMaPDP(pdp.getMaPhieuDatPhong());
-			tongTienDichVu += tienDichVu;
-
-			System.out.println("Tổng tiền hóa đơn " + pdp.getMaPhieuDatPhong() + ": " + (tienPhong + tienDichVu));
 		});
 
 		// Handle tong tien and doanh thu trung binh
@@ -668,10 +646,12 @@ public class ThongKeTheoKhachHangPanel extends JPanel implements ActionListener 
 					updateChart(maKH);
 					refreshTable();
 				} else if (boxFilterNgay.getSelectedIndex() == 1) {
+					int month = monthChooser.getMonth() + 1;
 					String maKH = modelThongKe.getValueAt(tblThongKe.getSelectedRow(), 0).toString();
+
 					Notifications.getInstance().show(Type.INFO, Location.BOTTOM_RIGHT,
-							"Thống kê tháng " + monthChooser.getMonth() + " cho khách hàng " + maKH);
-					handleThongKeByMonth(maKH, monthChooser.getMonth());
+							"Thống kê tháng " + month + " cho khách hàng " + maKH);
+					handleThongKeByMonth(maKH, month);
 					updateChart(maKH);
 					refreshTable();
 				} else if (boxFilterNgay.getSelectedIndex() == 2) {

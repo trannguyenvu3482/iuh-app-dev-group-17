@@ -47,12 +47,9 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignM;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignR;
 
-import com.nhom17.quanlykaraoke.bus.ChiTietDichVuBUS;
-import com.nhom17.quanlykaraoke.bus.ChiTietPhieuDatPhongBUS;
 import com.nhom17.quanlykaraoke.bus.NhanVienBUS;
 import com.nhom17.quanlykaraoke.bus.PhieuDatPhongBUS;
 import com.nhom17.quanlykaraoke.common.MyIcon;
-import com.nhom17.quanlykaraoke.entities.ChiTietPhieuDatPhong;
 import com.nhom17.quanlykaraoke.entities.NhanVien;
 import com.nhom17.quanlykaraoke.entities.PhieuDatPhong;
 import com.nhom17.quanlykaraoke.utils.ConstantUtil;
@@ -99,8 +96,7 @@ public class ThongKeTheoNhanVienPanel extends JPanel implements ActionListener {
 	// VARIABLES
 	private final NhanVienBUS nvBUS = new NhanVienBUS();
 	private final PhieuDatPhongBUS pdpBUS = new PhieuDatPhongBUS();
-	private final ChiTietPhieuDatPhongBUS ctpdpBUS = new ChiTietPhieuDatPhongBUS();
-	private final ChiTietDichVuBUS ctdvBUS = new ChiTietDichVuBUS();
+	private ChartPanel chartPanel;
 
 	private double tongDoanhThu = 0;
 	private int tongHoaDon = 0;
@@ -341,7 +337,7 @@ public class ThongKeTheoNhanVienPanel extends JPanel implements ActionListener {
 		JScrollPane tblScrollPane = new JScrollPane(tblThongKe);
 		bottomPanel.add(tblScrollPane, BorderLayout.CENTER);
 
-		ChartPanel chartPanel = new ChartPanel(barChart);
+		chartPanel = new ChartPanel(barChart);
 		panelContentTheoNgay.add(chartPanel, "cell 1 0, push, grow");
 
 		// Action listeners
@@ -423,6 +419,7 @@ public class ThongKeTheoNhanVienPanel extends JPanel implements ActionListener {
 		btnSearch.addActionListener(this);
 
 		refreshTable();
+		chartPanel.setVisible(false);
 	}
 
 	private void resetInputs() {
@@ -565,30 +562,9 @@ public class ThongKeTheoNhanVienPanel extends JPanel implements ActionListener {
 			tongHoaDon++;
 
 			// Handle doanh thu phòng
-			List<ChiTietPhieuDatPhong> listCTPDP = ctpdpBUS
-					.getAllChiTietPhieuDatPhongByMaPhieuDatPhong(pdp.getMaPhieuDatPhong());
+			tongTienPhong += pdp.getTienPhong();
+			tongTienDichVu += pdp.getTienDichVu();
 
-			System.out.println("Số chi tiết PĐP cho PĐP " + pdp.getMaPhieuDatPhong() + ":" + listCTPDP.size());
-
-			double tienPhong = 0;
-			for (ChiTietPhieuDatPhong ctpdp : listCTPDP) {
-				tienPhong = ctpdp.getTienPhongAndPhuPhi();
-
-				tongTienPhong += tienPhong;
-
-				// Handle doanh thu phòng thường hoặc VIP
-				if (ctpdp.getPhong().getLoaiPhong().getTenLoaiPhong().contains("Thường")) {
-					doanhThuPhongThuong += ctpdp.getTienPhongAndPhuPhi();
-				} else {
-					doanhThuPhongVIP += ctpdp.getTienPhongAndPhuPhi();
-				}
-			}
-
-			// Handle doanh thu dịch vụ
-			double tienDichVu = ctdvBUS.getTongTienDichVuByMaPDP(pdp.getMaPhieuDatPhong());
-			tongTienDichVu += tienDichVu;
-
-			System.out.println("Tổng tiền hóa đơn " + pdp.getMaPhieuDatPhong() + ": " + (tienPhong + tienDichVu));
 		});
 
 		// Handle tong tien and doanh thu trung binh
@@ -621,6 +597,7 @@ public class ThongKeTheoNhanVienPanel extends JPanel implements ActionListener {
 	}
 
 	private void updateChart(String maNV) {
+		chartPanel.setVisible(true);
 		dataset.clear();
 
 		// Load each month data to chart
@@ -670,9 +647,11 @@ public class ThongKeTheoNhanVienPanel extends JPanel implements ActionListener {
 					updateChart(maNV);
 				} else if (boxFilterNgay.getSelectedIndex() == 1) {
 					String maNV = modelThongKe.getValueAt(tblThongKe.getSelectedRow(), 0).toString();
+					int month = monthChooser.getMonth() + 1;
+
 					Notifications.getInstance().show(Type.INFO, Location.BOTTOM_RIGHT,
-							"Thống kê tháng " + monthChooser.getMonth() + " cho nhân viên " + maNV);
-					handleThongKeByMonth(maNV, monthChooser.getMonth());
+							"Thống kê tháng " + month + " cho nhân viên " + maNV);
+					handleThongKeByMonth(maNV, month);
 					updateChart(maNV);
 					refreshTable();
 				} else if (boxFilterNgay.getSelectedIndex() == 2) {
