@@ -2,24 +2,39 @@ package com.nhom17.quanlykaraoke.gui.panels;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Desktop;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import javax.imageio.ImageIO;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.MatteBorder;
 
+import org.kordamp.ikonli.materialdesign2.MaterialDesignF;
+import org.kordamp.ikonli.materialdesign2.MaterialDesignG;
+
+import com.nhom17.quanlykaraoke.common.MyIcon;
 import com.nhom17.quanlykaraoke.utils.ConstantUtil;
 
 /**
@@ -27,8 +42,12 @@ import com.nhom17.quanlykaraoke.utils.ConstantUtil;
  * @version 1.0
  * @created 01-Dec-2023 2:34:29 AM
  */
-public class ThongTinPhanMemPanel extends JPanel {
+public class ThongTinPhanMemPanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
+
+	// COMPONENTS
+	private final JButton btnGithub = new JButton("");
+	private final JButton btnFacebook = new JButton("");
 
 	/**
 	 * 
@@ -56,9 +75,11 @@ public class ThongTinPhanMemPanel extends JPanel {
 		add(panelCenter, BorderLayout.CENTER);
 		panelCenter.setLayout(new GridLayout(1, 2, 0, 0));
 
-		JPanel panel_1 = new JPanel();
-		panelCenter.add(panel_1);
-		panel_1.setLayout(new GridLayout(0, 1, 0, 0));
+		JPanel panelLogo = new JPanel();
+		panelLogo.setBorder(new MatteBorder(0, 0, 0, 2, (Color) new Color(0, 0, 0)));
+		panelLogo.setBackground(null);
+		panelCenter.add(panelLogo);
+		panelLogo.setLayout(new GridLayout(0, 1, 0, 0));
 
 		JLabel lblLogo = new JLabel("");
 		lblLogo.setHorizontalAlignment(SwingConstants.CENTER);
@@ -81,7 +102,7 @@ public class ThongTinPhanMemPanel extends JPanel {
 			g2.drawImage(img, 0, 0, null);
 
 			// Display circular image
-			icon = new ImageIcon(bi.getScaledInstance(200, 200, Image.SCALE_SMOOTH));
+			icon = new ImageIcon(bi.getScaledInstance(300, 300, Image.SCALE_SMOOTH));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -89,89 +110,75 @@ public class ThongTinPhanMemPanel extends JPanel {
 
 		lblLogo.setIcon(icon);
 
-		panel_1.add(lblLogo);
+		panelLogo.add(lblLogo);
 
-		JPanel panel = new JPanel();
-		panelCenter.add(panel);
-		panel.setLayout(null);
+		JPanel panelInfo = new JPanel();
+		panelInfo.setBackground(null);
+		panelCenter.add(panelInfo);
+		panelInfo.setLayout(new BoxLayout(panelInfo, BoxLayout.Y_AXIS));
 
-		JLabel lblNewLabel_1 = new JLabel("Thông tin doanh nghiệp của Quản Lý Karaoke NNice         ");
-		lblNewLabel_1.setBounds(0, 0, 551, 26);
-		panel.add(lblNewLabel_1);
+		Component verticalStrut_1_1 = Box.createVerticalStrut(250);
+		panelInfo.add(verticalStrut_1_1);
+
+		Box horizontalBox = Box.createHorizontalBox();
+		panelInfo.add(horizontalBox);
+
+		JLabel lblNewLabel_1 = new JLabel("Phần mềm quản lý karaoke Nnice");
+		horizontalBox.add(lblNewLabel_1);
+		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_1.setForeground(Color.BLACK);
-		lblNewLabel_1.setFont(new Font("Dialog", Font.BOLD, 20));
+		lblNewLabel_1.setFont(new Font("Dialog", Font.BOLD, 32));
 
-		JLabel lblNewLabel_2 = new JLabel("Phiên bản: 1.0.0");
-		lblNewLabel_2.setBounds(0, 28, 106, 14);
-		panel.add(lblNewLabel_2);
-		lblNewLabel_2.setForeground(Color.BLACK);
-		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		Box horizontalBox_1 = Box.createHorizontalBox();
+		panelInfo.add(horizontalBox_1);
 
-		JLabel lblNewLabel = new JLabel("Ngày cập nhật: 07/12/2023");
-		lblNewLabel.setBounds(0, 44, 146, 14);
-		panel.add(lblNewLabel);
+		JLabel lblNewLabel_2 = new JLabel("Phiên bản: v1.0.0");
+		horizontalBox_1.add(lblNewLabel_2);
+		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_2.setForeground(Color.LIGHT_GRAY);
+		lblNewLabel_2.setFont(new Font("Dialog", Font.ITALIC, 18));
 
-		JLabel lblNewLabel_3 = new JLabel(
-				"Phần mềm quản lý quán karaoke được thiết kế để tối ưu hóa quy trình vận hành và cung cấp một trải nghiệm quản lý hiệu quả cho các quán karaoke. Với giao diện đơn giản ");
-		lblNewLabel_3.setBounds(0, 119, 837, 42);
-		panel.add(lblNewLabel_3);
+		Box horizontalBox_1_1 = Box.createHorizontalBox();
+		panelInfo.add(horizontalBox_1_1);
 
-		JLabel lblNewLabel_4 = new JLabel(
-				"và tính năng đa dạng, chúng tôi cam kết giúp doanh nghiệp của bạn hoạt động mượt mà và hiệu quả.");
-		lblNewLabel_4.setBounds(0, 151, 777, 14);
-		panel.add(lblNewLabel_4);
+		JLabel lblNewLabel_2_1 = new JLabel("© Nhóm 17 - IUH - Đồ án Phát triển ứng dụng");
+		lblNewLabel_2_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_2_1.setForeground(Color.BLACK);
+		lblNewLabel_2_1.setFont(new Font("Dialog", Font.BOLD, 20));
+		horizontalBox_1_1.add(lblNewLabel_2_1);
 
-		JLabel lblNewLabel_5 = new JLabel("Nhóm 17 - PTUD 17B 2023 , Trường Đại học Công Nghiệp TPHCM.");
-		lblNewLabel_5.setBounds(0, 61, 335, 14);
-		panel.add(lblNewLabel_5);
+		Component verticalStrut_2 = Box.createVerticalStrut(20);
+		panelInfo.add(verticalStrut_2);
 
-		JLabel lblNewLabel_6 = new JLabel("12 Nguyễn Văn Bảo, P.4, Q. Gò Vấp, TP.HCM");
-		lblNewLabel_6.setBounds(0, 79, 238, 14);
-		panel.add(lblNewLabel_6);
+		Box horizontalBox_1_1_1 = Box.createHorizontalBox();
+		horizontalBox_1_1_1.setAlignmentY(Component.CENTER_ALIGNMENT);
+		panelInfo.add(horizontalBox_1_1_1);
+		btnGithub.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-		JLabel lblNewLabel_7 = new JLabel("Cấu hình phần cừng - phần mềm được cập nhật");
-		lblNewLabel_7.setBounds(0, 191, 316, 32);
-		panel.add(lblNewLabel_7);
+		btnGithub.setIcon(MyIcon.getIcon(MaterialDesignG.GITHUB, 40, null));
+		btnGithub.setRolloverIcon(MyIcon.getIcon(MaterialDesignG.GITHUB, 40, Color.blue));
+		btnGithub.setBackground(null);
+		btnGithub.setOpaque(false);
+		btnGithub.setContentAreaFilled(false);
+		btnGithub.setBorderPainted(false);
+		btnGithub.setBorder(null);
+		horizontalBox_1_1_1.add(btnGithub);
 
-		JLabel lblNewLabel_8 = new JLabel("Intel Core i5, 2.3 GHz");
-		lblNewLabel_8.setBounds(0, 218, 137, 14);
-		panel.add(lblNewLabel_8);
+		Component horizontalStrut = Box.createHorizontalStrut(20);
+		horizontalBox_1_1_1.add(horizontalStrut);
+		btnFacebook.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-		JLabel lblNewLabel_9 = new JLabel("Ram 8GB trở lên");
-		lblNewLabel_9.setBounds(0, 234, 93, 14);
-		panel.add(lblNewLabel_9);
+		btnFacebook.setIcon(MyIcon.getIcon(MaterialDesignF.FACEBOOK, 40, null));
+		btnFacebook.setRolloverIcon(MyIcon.getIcon(MaterialDesignF.FACEBOOK, 40, Color.blue));
+		btnFacebook.setBackground(null);
+		btnFacebook.setOpaque(false);
+		btnFacebook.setContentAreaFilled(false);
+		btnFacebook.setBorderPainted(false);
+		btnFacebook.setBorder(null);
+		horizontalBox_1_1_1.add(btnFacebook);
 
-		JLabel lblNewLabel_10 = new JLabel("HDD 256GB");
-		lblNewLabel_10.setBounds(0, 248, 78, 14);
-		panel.add(lblNewLabel_10);
-
-		JLabel lblNewLabel_11 = new JLabel("Độ phân giải màn hình 1920x1020 trở lên");
-		lblNewLabel_11.setBounds(0, 262, 335, 14);
-		panel.add(lblNewLabel_11);
-
-		JLabel lblNewLabel_12 = new JLabel(
-				"Sử dụng Microsoft SQL Server 2014, Microsoft Windows 10 và Eclipse IDE for Java Developers  23-06  ");
-		lblNewLabel_12.setBounds(0, 282, 715, 14);
-		panel.add(lblNewLabel_12);
-
-		JLabel lblNewLabel_13 = new JLabel(
-				"Phần mềm quản lý ứng dụng Karaoke yêu cầu quyền truy cập Internet/Dữ liệu truy cập để sử dụng.");
-		lblNewLabel_13.setBounds(0, 332, 575, 14);
-		panel.add(lblNewLabel_13);
-
-		JLabel lblNewLabel_14 = new JLabel("Hỗ trợ và Liên lạc");
-		lblNewLabel_14.setBounds(0, 382, 137, 14);
-		panel.add(lblNewLabel_14);
-
-		JLabel lblNewLabel_15 = new JLabel(
-				"Chúng tôi cam kết cung cấp sự hỗ trợ nhanh chóng và hiệu quả cho mọi vấn đề phát sinh.");
-		lblNewLabel_15.setBounds(0, 396, 681, 14);
-		panel.add(lblNewLabel_15);
-
-		JLabel lblNewLabel_16 = new JLabel(
-				"Để biết thêm chi tiết hoặc bất kỳ câu hỏi nào, vui lòng liên hệ với chúng tôi qua địa chỉ email: support@karaoke17biuh2023.com");
-		lblNewLabel_16.setBounds(0, 416, 668, 14);
-		panel.add(lblNewLabel_16);
+		Component verticalStrut_1 = Box.createVerticalStrut(450);
+		panelInfo.add(verticalStrut_1);
 
 		JPanel panelBottom = new JPanel();
 		panelBottom.setBackground(ConstantUtil.MAIN_BLUE);
@@ -180,5 +187,31 @@ public class ThongTinPhanMemPanel extends JPanel {
 		JLabel lblNewLabel_17 = new JLabel("                                                                      ");
 		lblNewLabel_17.setFont(new Font("Tahoma", Font.PLAIN, 44));
 		panelBottom.add(lblNewLabel_17);
+
+		btnGithub.addActionListener(this);
+		btnFacebook.addActionListener(this);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		Object o = e.getSource();
+
+		if (o.equals(btnGithub)) {
+			try {
+				Desktop.getDesktop().browse(new URI("https://github.com/trannguyenvu3482/iuh-app-dev-group-17"));
+			} catch (IOException | URISyntaxException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		} else if (o.equals(btnFacebook)) {
+			try {
+				Desktop.getDesktop().browse(new URI("https://www.facebook.com/DuzFromSOL"));
+			} catch (IOException | URISyntaxException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+
 	}
 }
