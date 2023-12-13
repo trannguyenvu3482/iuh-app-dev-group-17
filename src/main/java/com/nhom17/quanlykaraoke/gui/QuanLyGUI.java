@@ -196,7 +196,7 @@ public class QuanLyGUI extends MyFrame implements ActionListener {
 		btnBack.setIcon(MyIcon.getIcon(MaterialDesignC.CHEVRON_LEFT_CIRCLE, 40, Color.white));
 		btnBack.setRolloverIcon(MyIcon.getIcon(MaterialDesignC.CHEVRON_LEFT_CIRCLE, 40, ConstantUtil.MAIN_BLUE));
 		btnBack.setOpaque(false);
-		btnBack.setBackground(null);
+		btnBack.setBackground(new Color(1, 62, 138));
 		btnBack.setBorder(null);
 
 		horizontalBox.add(btnBack);

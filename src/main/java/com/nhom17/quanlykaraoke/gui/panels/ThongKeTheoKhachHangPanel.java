@@ -176,6 +176,7 @@ public class ThongKeTheoKhachHangPanel extends JPanel implements ActionListener 
 		toDateChooser.setDateFormatString("d/M/y");
 
 		JPanel filtersThang = new JPanel();
+		filtersThang.setBackground(ConstantUtil.MAIN_BLUE);
 		FlowLayout flowLayout_1 = (FlowLayout) filtersThang.getLayout();
 		flowLayout_1.setVgap(0);
 		flowLayout_1.setHgap(0);
@@ -190,6 +191,7 @@ public class ThongKeTheoKhachHangPanel extends JPanel implements ActionListener 
 		filtersThang.add(monthChooser);
 
 		JPanel filtersNam = new JPanel();
+		filtersNam.setBackground(ConstantUtil.MAIN_BLUE);
 		FlowLayout flowLayout_2 = (FlowLayout) filtersNam.getLayout();
 		flowLayout_2.setVgap(0);
 		flowLayout_2.setHgap(0);

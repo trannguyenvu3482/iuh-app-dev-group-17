@@ -77,7 +77,7 @@ public class ThongKePanel extends JPanel implements ActionListener {
 	private final JLabel lblDoanhThuPhongVIP = new JLabel("");
 	private final JLabel lblTongTienPhong = new JLabel("");
 	private final JLabel lblTongTienDichVu = new JLabel("");
-
+	private final JPanel filtersNgay = new JPanel();
 	private final JDateChooser fromDateChooser = new JDateChooser();
 	private final JDateChooser toDateChooser = new JDateChooser();
 
@@ -131,7 +131,6 @@ public class ThongKePanel extends JPanel implements ActionListener {
 		panelFilterTheoNgay.add(panelFilters);
 		panelFilters.setLayout(new CardLayout(0, 0));
 
-		JPanel filtersNgay = new JPanel();
 		filtersNgay.setBackground(ConstantUtil.MAIN_BLUE);
 		FlowLayout flowLayout = (FlowLayout) filtersNgay.getLayout();
 		flowLayout.setHgap(0);
@@ -164,6 +163,7 @@ public class ThongKePanel extends JPanel implements ActionListener {
 
 		JPanel filtersThang = new JPanel();
 		FlowLayout flowLayout_1 = (FlowLayout) filtersThang.getLayout();
+		filtersThang.setBackground(ConstantUtil.MAIN_BLUE);
 		flowLayout_1.setVgap(0);
 		flowLayout_1.setHgap(0);
 		flowLayout_1.setAlignment(FlowLayout.LEFT);
@@ -177,6 +177,7 @@ public class ThongKePanel extends JPanel implements ActionListener {
 		filtersThang.add(monthChooser);
 
 		JPanel filtersNam = new JPanel();
+		filtersNam.setBackground(ConstantUtil.MAIN_BLUE);
 		FlowLayout flowLayout_2 = (FlowLayout) filtersNam.getLayout();
 		flowLayout_2.setVgap(0);
 		flowLayout_2.setHgap(0);
@@ -584,10 +585,13 @@ public class ThongKePanel extends JPanel implements ActionListener {
 
 			if (boxFilterNgay.getSelectedIndex() == 0) {
 				cl.show(panelFilters, "filtersNgay");
+			
 			} else if (boxFilterNgay.getSelectedIndex() == 1) {
 				cl.show(panelFilters, "filtersThang");
+				
 			} else if (boxFilterNgay.getSelectedIndex() == 2) {
 				cl.show(panelFilters, "filtersNam");
+				
 			}
 		}
 	}
