@@ -49,6 +49,7 @@ import com.nhom17.quanlykaraoke.bus.PhongBUS;
 import com.nhom17.quanlykaraoke.common.MyIcon;
 import com.nhom17.quanlykaraoke.entities.LoaiPhong;
 import com.nhom17.quanlykaraoke.entities.Phong;
+import com.nhom17.quanlykaraoke.utils.ConstantUtil;
 
 /**
  * @author Trần Nguyên Vũ, Trần Ngọc Phát, Mai Nhật Hào, Trần Thanh Vy
@@ -84,11 +85,12 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 		setLayout(new BorderLayout(0, 0));
 
 		JPanel panelTop = new JPanel();
-		panelTop.setBackground(new Color(238, 238, 238));
-		panelTop.setBorder(new CompoundBorder(
-				new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Th\u00F4ng tin ph\u00F2ng",
-						TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)),
-				new EmptyBorder(10, 24, 5, 24)));
+		panelTop.setBackground(ConstantUtil.MAIN_LIGHTEST_BLUE);
+		panelTop.setBorder(
+				new CompoundBorder(
+						new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Thông tin phòng",
+								TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)),
+						new EmptyBorder(10, 24, 5, 24)));
 		add(panelTop, BorderLayout.NORTH);
 		panelTop.setLayout(new BoxLayout(panelTop, BoxLayout.Y_AXIS));
 
@@ -407,7 +409,7 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 		filters.add(RowFilter.regexFilter(".*", 1));
 		filters.add(RowFilter.regexFilter(".*", 2));
 		filters.add(RowFilter.regexFilter(".*", 3));
-		
+
 	}
 
 	Locale lc = new Locale("vi", "VN");

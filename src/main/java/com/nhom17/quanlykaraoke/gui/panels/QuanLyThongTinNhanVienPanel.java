@@ -37,7 +37,6 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
-import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.table.DefaultTableModel;
@@ -58,6 +57,10 @@ import com.nhom17.quanlykaraoke.utils.ConstantUtil;
 import com.nhom17.quanlykaraoke.utils.DateTimeFormatUtil;
 import com.nhom17.quanlykaraoke.utils.PasswordUtil;
 import com.toedter.calendar.JDateChooser;
+
+import raven.toast.Notifications;
+import raven.toast.Notifications.Location;
+import raven.toast.Notifications.Type;
 
 /**
  * @author Trần Nguyên Vũ, Trần Ngọc Phát, Mai Nhật Hào, Trần Thanh Vy
@@ -107,7 +110,7 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 		panelTop.setForeground(new Color(0, 0, 0));
 		panelTop.setBounds(0, 0, 1445, 252);
 		panelTop.setBorder(new EmptyBorder(240, 0, 0, 0));
-		panelTop.setBackground(UIManager.getColor("Button.background"));
+		panelTop.setBackground(ConstantUtil.MAIN_LIGHTEST_BLUE);
 		add(panelTop);
 		panelTop.setLayout(null);
 		txtTenNV.setForeground(new Color(50, 102, 133));
@@ -482,16 +485,20 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 		}
 
 	}
-	
-	public boolean checkTonTai(String cccd,String sdt,List<NhanVien> ls) {
-		boolean ketQua=true;
-		for(NhanVien nv : ls) {
-			if(nv.getCCCD().equals(cccd)||nv.getSoDienThoai().equals(sdt)) {
+
+	public boolean checkTonTai(NhanVien nhanVien, List<NhanVien> ls) {
+		boolean ketQua = true;
+
+		ls.remove(nhanVien);
+
+		for (NhanVien nv : ls) {
+			if (nv.getCCCD().equals(nhanVien.getCCCD()) || nv.getSoDienThoai().equals(nhanVien.getSoDienThoai())) {
 				ketQua = false;
 			}
 		}
 		return ketQua;
 	}
+
 	public void clearFields() {
 		txtTenNV.setText("");
 		txtCCCD.setText("");
@@ -505,7 +512,7 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 		tblNhanVien.clearSelection();
 
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
@@ -515,35 +522,41 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 			String rgTen = "^\\p{Lu}\\p{Ll}+(\\s+\\p{Lu}\\p{Ll}+)+$";
 			if (txtNgaySinh.getDate() == null) {
 				JOptionPane.showMessageDialog(this, "Ngày sinh không hợp lệ!");
+
+				Notifications.getInstance().show(Type.ERROR, Location.BOTTOM_RIGHT, "Ngày sinh không hợp lệ!");
 			} else {
 				LocalDate ns = txtNgaySinh.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 				LocalDate today = LocalDate.now();
 				Period p = Period.between(ns, today);
 				int y = p.getYears();
 				if (!txtTenNV.getText().matches(rgTen)) {
-					JOptionPane.showMessageDialog(this,
-							"Họ vè tên phải có ít nhất 2 từ\nMỗi từ phái viết hoa chữ cái đầu");
+					Notifications.getInstance().show(Type.ERROR, Location.BOTTOM_RIGHT,
+							"Họ và tên phải có ít nhất 2 từ, mỗi từ phái viết hoa chữ cái đầu");
 				} else if (!txtCCCD.getText().matches("\\d{12}")) {
-					JOptionPane.showMessageDialog(this, "Căn cước công dân gồm 12 số");
+					Notifications.getInstance().show(Type.ERROR, Location.BOTTOM_RIGHT, "Căn cước công dân gồm 12 số");
 				} else if (!txtSDT.getText().matches("0\\d{9}")) {
-					JOptionPane.showMessageDialog(this, "Số điện thoại gồm 10 số và bắt đầu bằng số 0");
+					Notifications.getInstance().show(Type.ERROR, Location.BOTTOM_RIGHT,
+							"Số điện thoại gồm 10 số và bắt đầu bằng số 0");
 				} else if (y < 18 || ns.isAfter(today)) {
-					JOptionPane.showMessageDialog(this, "Ngày sinh phải có định dạng dd/MM/yyyy\nPhải đủ 18 tuổi");
+					Notifications.getInstance().show(Type.ERROR, Location.BOTTOM_RIGHT,
+							"Ngày sinh phải có định dạng dd/MM/yyyy và phải đủ 18 tuổi");
 				} else {
 					List<NhanVien> ls = nvBUS.getAllNhanViens();
-					if(checkTonTai(txtCCCD.getText(),txtSDT.getText(),ls)) {
-						NhanVien nv = new NhanVien(txtTenNV.getText(), cbGioiTinh.getSelectedIndex(),
-								PasswordUtil.encrypt("1"),
-								txtNgaySinh.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
-								cvBUS.getChucVuByName(cbChucVu.getSelectedItem().toString()), txtSDT.getText(),
-								txtCCCD.getText(), cbGioiTinh.getSelectedIndex() == 0 ? ConstantUtil.getDefaultMaleAvatar()
-										: ConstantUtil.getDefaultFemaleAvatar());
+
+					NhanVien nv = new NhanVien(txtTenNV.getText(), cbGioiTinh.getSelectedIndex(),
+							PasswordUtil.encrypt("1"),
+							txtNgaySinh.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
+							cvBUS.getChucVuByName(cbChucVu.getSelectedItem().toString()), txtSDT.getText(),
+							txtCCCD.getText(), cbGioiTinh.getSelectedIndex() == 0 ? ConstantUtil.getDefaultMaleAvatar()
+									: ConstantUtil.getDefaultFemaleAvatar());
+
+					if (checkTonTai(nv, ls)) {
 						nvBUS.addNhanVien(nv);
 						refreshTable(ls);
 						clearFields();
-						JOptionPane.showMessageDialog(this, "Thêm thành công!");
-					}else {
-						JOptionPane.showMessageDialog(this, "Nhân viên đã tồn tại!");
+						Notifications.getInstance().show(Type.SUCCESS, Location.BOTTOM_RIGHT, "Thêm thành công!");
+					} else {
+						Notifications.getInstance().show(Type.ERROR, Location.BOTTOM_RIGHT, "Nhân viên đã tồn tại!");
 					}
 				}
 			}
@@ -559,30 +572,37 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 					Period p = Period.between(ns, today);
 					int y = p.getYears();
 					if (!txtTenNV.getText().matches(rgTen)) {
-						JOptionPane.showMessageDialog(this,
-								"Họ và tên phải có ít nhất 2 từ\nMỗi từ phái viết hoa chữ cái đầu");
+						Notifications.getInstance().show(Type.ERROR, Location.BOTTOM_RIGHT,
+								"Họ và tên phải có ít nhất 2 từ và mỗi từ phái viết hoa chữ cái đầu");
 					} else if (!txtCCCD.getText().matches("\\d{12}")) {
-						JOptionPane.showMessageDialog(this, "Căn cước công dân gồm 12 số");
+						Notifications.getInstance().show(Type.ERROR, Location.BOTTOM_RIGHT,
+								"Căn cước công dân gồm 12 số");
 					} else if (!txtSDT.getText().matches("0\\d{9}")) {
-						JOptionPane.showMessageDialog(this, "Số điện thoại gồm 10 số và bắt đầu bằng số 0");
+						Notifications.getInstance().show(Type.ERROR, Location.BOTTOM_RIGHT,
+								"Số điện thoại gồm 10 số và bắt đầu bằng số 0");
 					} else if (y < 18 || ns.isAfter(today)) {
-						JOptionPane.showMessageDialog(this, "Ngày sinh phải có định dạng dd/MM/yyyy\nPhải đủ 18 tuổi");
+						Notifications.getInstance().show(Type.ERROR, Location.BOTTOM_RIGHT,
+								"Ngày sinh phải có định dạng dd/MM/yyyy và phải đủ 18 tuổi");
 					} else {
 						List<NhanVien> ls = nvBUS.getAllNhanViens();
 						String maNV = modelNhanVien.getValueAt(tblNhanVien.getSelectedRow(), 0).toString();
-						if(checkTonTai(txtCCCD.getText(),txtSDT.getText(),ls)) {
-							NhanVien nv = new NhanVien(maNV, txtTenNV.getText(), cbGioiTinh.getSelectedIndex(),
-									PasswordUtil.encrypt("1"),
-									txtNgaySinh.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
-									cvBUS.getChucVuByName(cbChucVu.getSelectedItem().toString()), txtSDT.getText(),
-									txtCCCD.getText(), nvBUS.getNhanVien(maNV).getAnhDaiDien(),
-									cbTrangThai.getSelectedIndex() == 1 ? true : false);
+
+						NhanVien nv = new NhanVien(maNV, txtTenNV.getText(), cbGioiTinh.getSelectedIndex(),
+								PasswordUtil.encrypt("1"),
+								txtNgaySinh.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
+								cvBUS.getChucVuByName(cbChucVu.getSelectedItem().toString()), txtSDT.getText(),
+								txtCCCD.getText(), nvBUS.getNhanVien(maNV).getAnhDaiDien(),
+								cbTrangThai.getSelectedIndex() == 1 ? true : false);
+
+						if (checkTonTai(nv, ls)) {
 							nvBUS.updateNV(nv);
 							refreshTable(ls);
 							clearFields();
-							JOptionPane.showMessageDialog(this, "Cập nhật thành công!");
-						}else {
-							JOptionPane.showMessageDialog(this, "Căn cước công dân này đã tồn tại!");
+							Notifications.getInstance().show(Type.SUCCESS, Location.BOTTOM_RIGHT,
+									"Cập nhật thành công!");
+						} else {
+							Notifications.getInstance().show(Type.ERROR, Location.BOTTOM_RIGHT,
+									"Căn cước công dân hoặc số điện thoại này đã tồn tại!");
 						}
 					}
 				}

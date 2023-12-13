@@ -55,6 +55,7 @@ public class TaoPhieuDatPhongDialog extends JDialog implements ActionListener {
 	private final PhieuDatPhongBUS pdpBUS = new PhieuDatPhongBUS();
 	private KhachHang khachHang = null;
 	private Phong phong = null;
+	private boolean isNewKhachHang = false;
 
 	/**
 	* 
@@ -116,7 +117,9 @@ public class TaoPhieuDatPhongDialog extends JDialog implements ActionListener {
 						"Đã tìm thấy khách hàng trong hệ thống!");
 			} else {
 				Notifications.getInstance().show(raven.toast.Notifications.Type.ERROR, Location.BOTTOM_RIGHT,
-						"Không tìm thấy khách hàng có số điện thoại trên!");
+						"Không tìm thấy khách hàng có số điện thoại trên, nếu bạn vẫn tiếp tục thêm, sẽ được tính là thêm mới khách hàng!");
+
+				isNewKhachHang = true;
 			}
 		} else if (o.equals(btnLapPhieu)) {
 			handleLapPhieu();
@@ -127,6 +130,13 @@ public class TaoPhieuDatPhongDialog extends JDialog implements ActionListener {
 	 * 
 	 */
 	private void handleLapPhieu() {
+		if (isNewKhachHang) {
+			khachHang = new KhachHang(txtHoTen.getText().trim(), txtSDT.getText().trim(), txtCCCD.getText().trim());
+			khBUS.addKhachHang(khachHang);
+			Notifications.getInstance().show(raven.toast.Notifications.Type.SUCCESS, Location.BOTTOM_RIGHT,
+					"Đã thêm khách hàng " + khachHang.getHoTen() + "!");
+		}
+
 		PhieuDatPhong pdp = new PhieuDatPhong("", ConstantUtil.currentNhanVien, false, khachHang);
 		if (pdpBUS.addPhieuDatPhong(pdp, phong)) {
 			Notifications.getInstance().show(raven.toast.Notifications.Type.SUCCESS, Location.BOTTOM_RIGHT,
@@ -235,7 +245,7 @@ public class TaoPhieuDatPhongDialog extends JDialog implements ActionListener {
 		Component horizontalStrut_3_3 = Box.createHorizontalStrut(50);
 		horizontalBox_1_1.add(horizontalStrut_3_3);
 
-		Component verticalStrut_1_2 = Box.createVerticalStrut(50);
+		Component verticalStrut_1_2 = Box.createVerticalStrut(20);
 		verticalBox.add(verticalStrut_1_2);
 
 		Box horizontalBox = Box.createHorizontalBox();
@@ -259,7 +269,7 @@ public class TaoPhieuDatPhongDialog extends JDialog implements ActionListener {
 		Component horizontalStrut_3_3_1 = Box.createHorizontalStrut(50);
 		horizontalBox.add(horizontalStrut_3_3_1);
 
-		Component verticalStrut_1_2_1 = Box.createVerticalStrut(30);
+		Component verticalStrut_1_2_1 = Box.createVerticalStrut(20);
 		verticalBox.add(verticalStrut_1_2_1);
 
 		Box horizontalBox_1 = Box.createHorizontalBox();
@@ -287,7 +297,7 @@ public class TaoPhieuDatPhongDialog extends JDialog implements ActionListener {
 		Component horizontalStrut_3_3_1_1 = Box.createHorizontalStrut(50);
 		horizontalBox_1.add(horizontalStrut_3_3_1_1);
 
-		Component verticalStrut_1_1 = Box.createVerticalStrut(40);
+		Component verticalStrut_1_1 = Box.createVerticalStrut(100);
 		verticalBox.add(verticalStrut_1_1);
 	}
 

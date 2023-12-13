@@ -47,8 +47,6 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignM;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignR;
 
-import com.nhom17.quanlykaraoke.bus.ChiTietDichVuBUS;
-import com.nhom17.quanlykaraoke.bus.ChiTietPhieuDatPhongBUS;
 import com.nhom17.quanlykaraoke.bus.KhachHangBUS;
 import com.nhom17.quanlykaraoke.bus.PhieuDatPhongBUS;
 import com.nhom17.quanlykaraoke.common.MyIcon;
@@ -98,8 +96,6 @@ public class ThongKeTheoKhachHangPanel extends JPanel implements ActionListener 
 	// VARIABLES
 	private final KhachHangBUS khBUS = new KhachHangBUS();
 	private final PhieuDatPhongBUS pdpBUS = new PhieuDatPhongBUS();
-	private final ChiTietPhieuDatPhongBUS ctpdpBUS = new ChiTietPhieuDatPhongBUS();
-	private final ChiTietDichVuBUS ctdvBUS = new ChiTietDichVuBUS();
 
 	private double tongDoanhThu = 0;
 	private int tongHoaDon = 0;

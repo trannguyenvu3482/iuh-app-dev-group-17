@@ -84,6 +84,7 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 	private long duration = 10000;
 	private String loggedInEmployeeID = null;
 	private String phoneNo = "";
+	private NhanVien currentForgotPasswordNV;
 
 	public void setLoginListener(LoginListener listener) {
 		this.listener = listener;
@@ -208,19 +209,6 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 
 		MaskFormatter txtphoneNoFormatter = new MaskFormatter("0#########");
 		txtPhoneNo = new JFormattedTextField(txtphoneNoFormatter);
-
-		txtPhoneNo.addCaretListener(new CaretListener() {
-
-			@Override
-			public void caretUpdate(CaretEvent e) {
-				// TODO Auto-generated method stub
-				if (txtPhoneNo.getText().trim().length() == 10) {
-					btnGetOTP.setEnabled(true);
-				} else {
-					btnGetOTP.setEnabled(false);
-				}
-			}
-		});
 
 		txtPhoneNo.setFont(new Font(Font.DIALOG, Font.PLAIN, 20));
 		txtPhoneNo.setColumns(10);
@@ -350,6 +338,22 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 			panelLogin.setVisible(false);
 			panelForgot.setVisible(true);
 		} else if (o.equals(btnGetOTP)) {
+			if (txtPhoneNo.getText().trim().length() != 10) {
+				Notifications.getInstance().show(Notifications.Type.ERROR, Notifications.Location.BOTTOM_RIGHT,
+						"Số điện thoại không đúng định dạng");
+				return;
+			}
+
+			NhanVien nv = nvBUS.getNhanVienBySDT(txtPhoneNo.getText().trim());
+
+			if (nv == null) {
+				Notifications.getInstance().show(Notifications.Type.ERROR, Notifications.Location.BOTTOM_RIGHT,
+						"Không có nhân viên nào có số điện thoại trên");
+				return;
+			}
+
+			currentForgotPasswordNV = nv;
+
 			phoneNo = "+84" + txtPhoneNo.getText().substring(1);
 			OTPUtil.sendSMS(phoneNo);
 			System.out.println("Send SMS to: " + phoneNo);
@@ -362,8 +366,10 @@ public class DangNhapGUI extends JFrame implements ActionListener {
 
 			if (OTPUtil.checkOTP(phoneNo, txtOTP.getText().trim())) {
 				// TODO: Thêm logic reset password tại đây
-				NhanVien nv = nvBUS.getNhanVienBySDT(txtPhoneNo.getText().trim());
-				nv.setMatKhau(PasswordUtil.encrypt(txtNewPassword.getText().trim()));
+				currentForgotPasswordNV.setMatKhau(PasswordUtil.encrypt(txtNewPassword.getText().trim()));
+
+				nvBUS.updateNV(currentForgotPasswordNV);
+
 				Notifications.getInstance().show(Notifications.Type.SUCCESS, Notifications.Location.BOTTOM_RIGHT,
 						"Đã thay đổi mật khẩu");
 				btnReturn.doClick();

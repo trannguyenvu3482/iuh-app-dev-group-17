@@ -316,26 +316,6 @@ public class PhieuDatPhongDAO {
 		}
 	}
 
-	// Get tongTien of PhieuDatPhong
-//	public double getTongTienOfPhieuDatPhong(String maPhieuDatPhong) {
-//		Session session = factory.getCurrentSession();
-//		Transaction t = session.beginTransaction();
-//
-//		try {
-//			// Get all chiTietPhieuDatPhong by maPhieuDatPhong
-//
-//
-//			// Finish
-//			t.commit();
-//			return tongTien;
-//
-//		} catch (Exception e) {
-//			t.rollback();
-//			e.printStackTrace();
-//			return 0;
-//		}
-//	}
-
 	public boolean changeRoomForPhieuDatPhong(String currentMaPhong, String moveToMaPhong) {
 		Session session = factory.getCurrentSession();
 		Transaction t = session.beginTransaction();

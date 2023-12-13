@@ -36,7 +36,6 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
-import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileFilter;
@@ -55,6 +54,7 @@ import com.nhom17.quanlykaraoke.bus.LoaiHangHoaBUS;
 import com.nhom17.quanlykaraoke.common.MyIcon;
 import com.nhom17.quanlykaraoke.entities.HangHoa;
 import com.nhom17.quanlykaraoke.entities.LoaiHangHoa;
+import com.nhom17.quanlykaraoke.utils.ConstantUtil;
 import com.nhom17.quanlykaraoke.utils.ExcelUtil;
 
 import raven.toast.Notifications;
@@ -102,7 +102,7 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 
 		JPanel panelTop = new JPanel();
 		panelTop.setForeground(new Color(50, 102, 133));
-		panelTop.setBackground(UIManager.getColor("Button.background"));
+		panelTop.setBackground(ConstantUtil.MAIN_LIGHTEST_BLUE);
 		panelTop.setBorder(new EmptyBorder(10, 24, 20, 24));
 		add(panelTop, BorderLayout.NORTH);
 		panelTop.setLayout(new BoxLayout(panelTop, BoxLayout.Y_AXIS));
