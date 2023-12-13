@@ -20,11 +20,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 
-import org.kordamp.ikonli.materialdesign2.MaterialDesignA;
-
 import com.nhom17.quanlykaraoke.bus.KhachHangBUS;
 import com.nhom17.quanlykaraoke.bus.PhieuDatPhongBUS;
-import com.nhom17.quanlykaraoke.common.MyIcon;
 import com.nhom17.quanlykaraoke.entities.KhachHang;
 import com.nhom17.quanlykaraoke.entities.PhieuDatPhong;
 import com.nhom17.quanlykaraoke.entities.Phong;
@@ -48,14 +45,13 @@ public class TaoPhieuDatPhongDialog extends JDialog implements ActionListener {
 	private final JButton btnLapPhieu = new JButton("Lập phiếu");
 	private final JButton btnHuy = new JButton("Hủy");
 	private final JLabel lblTenPhong = new JLabel("Tên phòng: Phòng ");
-	private final JButton btnSearch = new JButton("");
 
 	// VARIABLES
 	private final KhachHangBUS khBUS = new KhachHangBUS();
 	private final PhieuDatPhongBUS pdpBUS = new PhieuDatPhongBUS();
-	private KhachHang khachHang = null;
 	private Phong phong = null;
-	private boolean isNewKhachHang = false;
+	private boolean isChecked = false;
+	private KhachHang kh = null;
 
 	/**
 	* 
@@ -71,17 +67,7 @@ public class TaoPhieuDatPhongDialog extends JDialog implements ActionListener {
 		// Action listeners
 		btnLapPhieu.addActionListener(this);
 		btnHuy.addActionListener(this);
-		btnSearch.addActionListener(this);
 
-		// Caret listeners
-//		txtSDT.addCaretListener(new CaretListener() {
-//
-//			@Override
-//			public void caretUpdate(CaretEvent e) {
-//				// TODO Auto-generated method stub
-//				
-//			}
-//		});
 	}
 
 	public boolean checkTonTai(KhachHang kh) {
@@ -98,29 +84,6 @@ public class TaoPhieuDatPhongDialog extends JDialog implements ActionListener {
 
 		if (o.equals(btnHuy)) {
 			this.dispose();
-		} else if (o.equals(btnSearch)) {
-			if (txtSDT.getText().trim().length() != 10) {
-				Notifications.getInstance().show(raven.toast.Notifications.Type.ERROR, Location.BOTTOM_RIGHT,
-						"Số điện thoại phải là chuỗi có 10 chữ số!");
-
-				return;
-			}
-
-			khachHang = khBUS.getKhachHangBySDT(txtSDT.getText().trim());
-
-			if (checkTonTai(khachHang)) {
-				txtHoTen.setText(khachHang.getHoTen());
-				txtCCCD.setText(khachHang.getCCCD());
-				btnLapPhieu.setEnabled(true);
-
-				Notifications.getInstance().show(raven.toast.Notifications.Type.SUCCESS, Location.BOTTOM_RIGHT,
-						"Đã tìm thấy khách hàng trong hệ thống!");
-			} else {
-				Notifications.getInstance().show(raven.toast.Notifications.Type.ERROR, Location.BOTTOM_RIGHT,
-						"Không tìm thấy khách hàng có số điện thoại trên, nếu bạn vẫn tiếp tục thêm, sẽ được tính là thêm mới khách hàng!");
-
-				isNewKhachHang = true;
-			}
 		} else if (o.equals(btnLapPhieu)) {
 			handleLapPhieu();
 		}
@@ -130,14 +93,33 @@ public class TaoPhieuDatPhongDialog extends JDialog implements ActionListener {
 	 * 
 	 */
 	private void handleLapPhieu() {
-		if (isNewKhachHang) {
-			khachHang = new KhachHang(txtHoTen.getText().trim(), txtSDT.getText().trim(), txtCCCD.getText().trim());
-			khBUS.addKhachHang(khachHang);
+		kh = khBUS.getKhachHangBySDT(txtSDT.getText().trim());
+
+		// Khách hàng cũ
+		if (!isChecked && kh != null) {
+			txtHoTen.setText(kh.getHoTen());
+			txtCCCD.setText(kh.getCCCD());
+
 			Notifications.getInstance().show(raven.toast.Notifications.Type.SUCCESS, Location.BOTTOM_RIGHT,
-					"Đã thêm khách hàng " + khachHang.getHoTen() + "!");
+					"Đã tìm thấy khách hàng có số điện thoại " + kh.getSoDienThoai() + "!");
+
+			isChecked = true;
+			return;
+		} else if (kh == null) {
+			if (txtSDT.getText().trim().matches("0\\d{9}") && txtCCCD.getText().trim().matches("0\\d{11}")) {
+				kh = new KhachHang(txtHoTen.getText().trim(), txtSDT.getText().trim(), txtCCCD.getText().trim());
+
+				khBUS.addKhachHang(kh);
+				Notifications.getInstance().show(raven.toast.Notifications.Type.SUCCESS, Location.BOTTOM_RIGHT,
+						"Đã thêm khách hàng " + kh.getHoTen() + "!");
+			} else {
+				Notifications.getInstance().show(raven.toast.Notifications.Type.ERROR, Location.BOTTOM_RIGHT,
+						"Số điện thoại hoặc CCCD không đúng định dạng");
+			}
+
 		}
 
-		PhieuDatPhong pdp = new PhieuDatPhong("", ConstantUtil.currentNhanVien, false, khachHang);
+		PhieuDatPhong pdp = new PhieuDatPhong("", ConstantUtil.currentNhanVien, false, kh);
 		if (pdpBUS.addPhieuDatPhong(pdp, phong)) {
 			Notifications.getInstance().show(raven.toast.Notifications.Type.SUCCESS, Location.BOTTOM_RIGHT,
 					"Đã thêm phiếu đặt phòng thành công");
@@ -238,9 +220,6 @@ public class TaoPhieuDatPhongDialog extends JDialog implements ActionListener {
 
 		Component horizontalStrut_4 = Box.createHorizontalStrut(20);
 		horizontalBox_1_1.add(horizontalStrut_4);
-
-		btnSearch.setIcon(MyIcon.getIcon(MaterialDesignA.ACCOUNT_SEARCH, 32, null));
-		horizontalBox_1_1.add(btnSearch);
 
 		Component horizontalStrut_3_3 = Box.createHorizontalStrut(50);
 		horizontalBox_1_1.add(horizontalStrut_3_3);
