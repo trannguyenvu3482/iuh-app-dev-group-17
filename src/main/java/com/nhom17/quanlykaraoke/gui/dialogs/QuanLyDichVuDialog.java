@@ -297,9 +297,12 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 						JOptionPane.QUESTION_MESSAGE);
 
 				int row = tblLeft.getSelectedRow();
-				if (Integer.valueOf(result) > Integer.valueOf(modelLeft.getValueAt(row, 4).toString())) {
+				if (!result.matches("^([1-9][0-9]?)$")
+						|| Integer.valueOf(result) > Integer.valueOf(modelLeft.getValueAt(row, 4).toString())) {
 					Notifications.getInstance().show(raven.toast.Notifications.Type.ERROR, Location.BOTTOM_RIGHT,
-							"Số lượng không hợp lệ");
+							"Số lượng phải từ 1-99");
+
+					return;
 				} else {
 					ChiTietDichVu c = new ChiTietDichVu(pdp, hhBUS.getHangHoa(modelLeft.getValueAt(row, 0).toString()),
 							p, Integer.valueOf(result));
@@ -361,9 +364,9 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 						JOptionPane.QUESTION_MESSAGE);
 
 				// Check if result is int > 0
-				if (!ConstantUtil.isStringInteger(result) || Integer.valueOf(result) < 0) {
+				if (!result.matches("^([1-9][0-9]?)$")) {
 					Notifications.getInstance().show(raven.toast.Notifications.Type.ERROR, Location.BOTTOM_RIGHT,
-							"Số lượng không hợp lệ");
+							"Số lượng phải từ 1-99");
 					return;
 				}
 
