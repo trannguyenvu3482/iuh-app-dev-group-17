@@ -154,9 +154,11 @@ public class RoomPanel extends JPanel implements MouseListener {
 
 	public boolean addDichVu(DialogClosedListener listener) {
 		SwingUtilities.invokeLater(() -> {
-			if (ctpdpBUS.getChiTietPhieuDatPhongByActiveMaPhong(p.getMaPhong()).getPhieuDatPhong().isTrangThai()) {
+			if (ctpdpBUS.getChiTietPhieuDatPhongByActiveMaPhong(p.getMaPhong()) == null) {
 				Notifications.getInstance().show(Type.ERROR, Location.BOTTOM_RIGHT,
 						"Phòng này đã hoàn tất, vui lòng làm mới");
+
+				return;
 			}
 
 			QuanLyDichVuDialog dialog = new QuanLyDichVuDialog(p);

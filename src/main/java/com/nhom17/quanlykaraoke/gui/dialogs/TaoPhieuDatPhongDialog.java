@@ -105,16 +105,22 @@ public class TaoPhieuDatPhongDialog extends JDialog implements ActionListener {
 
 			isChecked = true;
 			return;
-		} else if (kh == null) {
-			if (txtSDT.getText().trim().matches("0\\d{9}") && txtCCCD.getText().trim().matches("0\\d{11}")) {
+		} else if (!isChecked && kh == null) {
+			if (txtSDT.getText().trim().matches("^0\\d{9}$") && txtCCCD.getText().trim().matches("^0\\d{11}$")
+					&& txtHoTen.getText().trim().matches("^\\p{Lu}\\p{Ll}+(\\s+\\p{Lu}\\p{Ll}+)+$")) {
 				kh = new KhachHang(txtHoTen.getText().trim(), txtSDT.getText().trim(), txtCCCD.getText().trim());
 
 				khBUS.addKhachHang(kh);
 				Notifications.getInstance().show(raven.toast.Notifications.Type.SUCCESS, Location.BOTTOM_RIGHT,
 						"Đã thêm khách hàng " + kh.getHoTen() + "!");
+
+				isChecked = true;
 			} else {
 				Notifications.getInstance().show(raven.toast.Notifications.Type.ERROR, Location.BOTTOM_RIGHT,
-						"Số điện thoại hoặc CCCD không đúng định dạng");
+						"Số điện thoại hoặc CCCD hoặc họ tên không đúng định dạng");
+
+				isChecked = false;
+				return;
 			}
 
 		}
