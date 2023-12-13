@@ -86,8 +86,6 @@ public class ThongKeTheoKhachHangPanel extends JPanel implements ActionListener 
 	private final JLabel lblTongHoaDon = new JLabel("Tổng số hóa đơn: 0");
 	private final JLabel lblTongTienPhong = new JLabel("Tổng tiền phòng: 0");
 	private final JLabel lblTongTienDichVu = new JLabel("Tổng tiền dịch vụ: 0");
-	private final JLabel lblDoanhThuPhongThuong = new JLabel("Doanh thu phòng thường: 0");
-	private final JLabel lblDoanhThuPhongVIP = new JLabel("Doanh thu phòng VIP: 0");
 	private final JButton btnSearch = new JButton("");
 	private final JButton btnReset = new JButton("");
 	private TableRowSorter<TableModel> rowSorter;
@@ -101,8 +99,6 @@ public class ThongKeTheoKhachHangPanel extends JPanel implements ActionListener 
 	private int tongHoaDon = 0;
 	private double tongTienPhong = 0;
 	private double tongTienDichVu = 0;
-	private double doanhThuPhongThuong = 0;
-	private double doanhThuPhongVIP = 0;
 
 	private static DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
@@ -282,10 +278,6 @@ public class ThongKeTheoKhachHangPanel extends JPanel implements ActionListener 
 		Component horizontalStrut_3_1_1_1_1 = Box.createHorizontalStrut(20);
 		horizontalBox_2.add(horizontalStrut_3_1_1_1_1);
 
-		lblDoanhThuPhongThuong.setForeground(new Color(50, 102, 133));
-		lblDoanhThuPhongThuong.setFont(new Font("Dialog", Font.BOLD, 20));
-		horizontalBox_2.add(lblDoanhThuPhongThuong);
-
 		Box horizontalBox_3 = Box.createHorizontalBox();
 		horizontalBox_3.setAlignmentY(0.5f);
 		horizontalBox_3.setAlignmentX(0.0f);
@@ -293,11 +285,6 @@ public class ThongKeTheoKhachHangPanel extends JPanel implements ActionListener 
 
 		Component horizontalStrut_3_1_1_1 = Box.createHorizontalStrut(20);
 		horizontalBox_3.add(horizontalStrut_3_1_1_1);
-
-		lblDoanhThuPhongVIP.setHorizontalAlignment(SwingConstants.LEFT);
-		lblDoanhThuPhongVIP.setForeground(new Color(50, 102, 133));
-		lblDoanhThuPhongVIP.setFont(new Font("Dialog", Font.BOLD, 20));
-		horizontalBox_3.add(lblDoanhThuPhongVIP);
 
 		Box horizontalBox_1 = Box.createHorizontalBox();
 		leftPane.add(horizontalBox_1);
@@ -307,7 +294,7 @@ public class ThongKeTheoKhachHangPanel extends JPanel implements ActionListener 
 		horizontalBox_1.add(horizontalStrut_3_1_1_1_1_1);
 
 		lblTongTienPhong.setForeground(new Color(50, 102, 133));
-		lblTongTienPhong.setFont(new Font("Dialog", Font.BOLD, 20));
+		lblTongTienPhong.setFont(new Font("Dialog", Font.BOLD, 24));
 		horizontalBox_1.add(lblTongTienPhong);
 
 		Box horizontalBox_1_1 = Box.createHorizontalBox();
@@ -318,7 +305,7 @@ public class ThongKeTheoKhachHangPanel extends JPanel implements ActionListener 
 		horizontalBox_1_1.add(horizontalStrut_3_1_1_1_1_1_1);
 
 		lblTongTienDichVu.setForeground(new Color(50, 102, 133));
-		lblTongTienDichVu.setFont(new Font("Dialog", Font.BOLD, 20));
+		lblTongTienDichVu.setFont(new Font("Dialog", Font.BOLD, 24));
 		horizontalBox_1_1.add(lblTongTienDichVu);
 
 		Component verticalStrut = Box.createVerticalStrut(20);
@@ -433,12 +420,8 @@ public class ThongKeTheoKhachHangPanel extends JPanel implements ActionListener 
 		tongHoaDon = 0;
 		tongTienPhong = 0;
 		tongTienDichVu = 0;
-		doanhThuPhongThuong = 0;
-		doanhThuPhongVIP = 0;
 
 		lblTongHoaDon.setText("Tổng số hóa đơn: 0");
-		lblDoanhThuPhongThuong.setText("Doanh thu phòng thường: 0");
-		lblDoanhThuPhongVIP.setText("Doanh thu phòng VIP: 0");
 		lblTongTienPhong.setText("Tổng tiền phòng: 0");
 		lblTongTienDichVu.setText("Tổng tiền dịch vụ: 0");
 		lblTongDoanhThu.setText("Tổng doanh thu: 0");
@@ -572,8 +555,6 @@ public class ThongKeTheoKhachHangPanel extends JPanel implements ActionListener 
 
 	private void handleSetLabel() {
 		lblTongHoaDon.setText("Tổng số hóa đơn: " + (String.valueOf(tongHoaDon)));
-		lblDoanhThuPhongThuong.setText("Doanh thu phòng thường: " + (MoneyFormatUtil.format(doanhThuPhongThuong)));
-		lblDoanhThuPhongVIP.setText("Doanh thu phòng VIP: " + (MoneyFormatUtil.format(doanhThuPhongVIP)));
 		lblTongTienPhong.setText("Tổng tiền phòng: " + (MoneyFormatUtil.format(tongTienPhong)));
 		lblTongTienDichVu.setText("Tổng tiền dịch vụ: " + (MoneyFormatUtil.format(tongTienDichVu)));
 		lblTongDoanhThu.setText("Tổng doanh thu: " + (MoneyFormatUtil.format(tongDoanhThu)));

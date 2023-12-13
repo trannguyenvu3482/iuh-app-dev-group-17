@@ -64,8 +64,6 @@ public class ThongKeForNhanVienGUIPanel extends JPanel implements ActionListener
 	private final JLabel lblDoanhThuTrungBinh = new JLabel("");
 	private final JLabel lblTongDoanhThu = new JLabel("");
 	private final JLabel lblTongHoaDon = new JLabel("");
-	private final JLabel lblDoanhThuPhongThuong = new JLabel("");
-	private final JLabel lblDoanhThuPhongVIP = new JLabel("");
 	private final JLabel lblTongTienPhong = new JLabel("");
 	private final JLabel lblTongTienDichVu = new JLabel("");
 
@@ -188,6 +186,7 @@ public class ThongKeForNhanVienGUIPanel extends JPanel implements ActionListener
 		panelFilterTheoNgay.add(horizontalStrut_4);
 
 		JPanel panel_3 = new JPanel();
+		panel_3.setAlignmentX(Component.LEFT_ALIGNMENT);
 		panel_3.setBorder(new EmptyBorder(0, 0, 0, 400));
 		panel_3.setBackground(null);
 		panelFilterTheoNgay.add(panel_3);
@@ -299,30 +298,6 @@ public class ThongKeForNhanVienGUIPanel extends JPanel implements ActionListener
 		panel.add(panel_2);
 		panel_2.setLayout(new BoxLayout(panel_2, BoxLayout.Y_AXIS));
 
-		Box horizontalBox_3_1 = Box.createHorizontalBox();
-		horizontalBox_3_1.setAlignmentY(0.5f);
-		horizontalBox_3_1.setAlignmentX(0.0f);
-		panel_2.add(horizontalBox_3_1);
-
-		Component horizontalStrut_3 = Box.createHorizontalStrut(20);
-		horizontalBox_3_1.add(horizontalStrut_3);
-		lblDoanhThuPhongThuong.setForeground(new Color(50, 102, 133));
-
-		lblDoanhThuPhongThuong.setHorizontalAlignment(SwingConstants.LEFT);
-		lblDoanhThuPhongThuong.setFont(new Font("Dialog", Font.BOLD, 20));
-		horizontalBox_3_1.add(lblDoanhThuPhongThuong);
-
-		Box horizontalBox_2_1 = Box.createHorizontalBox();
-		horizontalBox_2_1.setAlignmentX(0.0f);
-		panel_2.add(horizontalBox_2_1);
-
-		Component horizontalStrut_3_1 = Box.createHorizontalStrut(20);
-		horizontalBox_2_1.add(horizontalStrut_3_1);
-		lblDoanhThuPhongVIP.setForeground(new Color(50, 102, 133));
-
-		lblDoanhThuPhongVIP.setFont(new Font("Dialog", Font.BOLD, 20));
-		horizontalBox_2_1.add(lblDoanhThuPhongVIP);
-
 		Box horizontalBox_1_1 = Box.createHorizontalBox();
 		horizontalBox_1_1.setAlignmentX(0.0f);
 		panel_2.add(horizontalBox_1_1);
@@ -331,7 +306,7 @@ public class ThongKeForNhanVienGUIPanel extends JPanel implements ActionListener
 		horizontalBox_1_1.add(horizontalStrut_3_1_1);
 		lblTongTienPhong.setForeground(new Color(50, 102, 133));
 
-		lblTongTienPhong.setFont(new Font("Dialog", Font.BOLD, 20));
+		lblTongTienPhong.setFont(new Font("Dialog", Font.BOLD, 24));
 		horizontalBox_1_1.add(lblTongTienPhong);
 
 		Component horizontalGlue_1 = Box.createHorizontalGlue();
@@ -345,7 +320,7 @@ public class ThongKeForNhanVienGUIPanel extends JPanel implements ActionListener
 		horizontalBox_4.add(horizontalStrut_3_1_1_2);
 		lblTongTienDichVu.setForeground(new Color(50, 102, 133));
 
-		lblTongTienDichVu.setFont(new Font("Dialog", Font.BOLD, 20));
+		lblTongTienDichVu.setFont(new Font("Dialog", Font.BOLD, 24));
 		horizontalBox_4.add(lblTongTienDichVu);
 
 		// Action listeners
@@ -457,8 +432,6 @@ public class ThongKeForNhanVienGUIPanel extends JPanel implements ActionListener
 		doanhThuPhongVIP = 0;
 
 		lblTongHoaDon.setText("Tổng số hóa đơn: 0");
-		lblDoanhThuPhongThuong.setText("Doanh thu phòng thường: 0");
-		lblDoanhThuPhongVIP.setText("Doanh thu phòng VIP: 0");
 		lblTongTienPhong.setText("Tổng tiền phòng: 0");
 		lblTongTienDichVu.setText("Tổng tiền dịch vụ: 0");
 		lblTongDoanhThu.setText("Tổng doanh thu: 0");
@@ -493,8 +466,6 @@ public class ThongKeForNhanVienGUIPanel extends JPanel implements ActionListener
 
 	private void handleSetLabel() {
 		lblTongHoaDon.setText("Tổng số hóa đơn: " + (String.valueOf(tongHoaDon)));
-		lblDoanhThuPhongThuong.setText("Doanh thu phòng thường: " + (MoneyFormatUtil.format(doanhThuPhongThuong)));
-		lblDoanhThuPhongVIP.setText("Doanh thu phòng VIP: " + (MoneyFormatUtil.format(doanhThuPhongVIP)));
 		lblTongTienPhong.setText("Tổng tiền phòng: " + (MoneyFormatUtil.format(tongTienPhong)));
 		lblTongTienDichVu.setText("Tổng tiền dịch vụ: " + (MoneyFormatUtil.format(tongTienDichVu)));
 		lblTongDoanhThu.setText("Tổng doanh thu: " + (MoneyFormatUtil.format(tongDoanhThu)));
