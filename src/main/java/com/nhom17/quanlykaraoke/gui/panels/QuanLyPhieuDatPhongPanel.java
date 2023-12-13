@@ -263,11 +263,24 @@ public class QuanLyPhieuDatPhongPanel extends JPanel implements ActionListener {
 		Object o = e.getSource();
 
 		if (o.equals(btnLeft)) {
-			currentPage--;
-			loadPageRoom(listEmptyRooms, currentPage);
+			if (boxFilter.getSelectedIndex() == 0) {
+				currentPage--;
+				loadPageRoom(listEmptyRooms, currentPage);
+
+			} else {
+				currentPage--;
+				loadPageRoom(listBookedRooms, currentPage);
+			}
+
 		} else if (o.equals(btnRight)) {
-			currentPage++;
-			loadPageRoom(listEmptyRooms, currentPage);
+			if (boxFilter.getSelectedIndex() == 0) {
+				currentPage++;
+				loadPageRoom(listEmptyRooms, currentPage);
+
+			} else {
+				currentPage++;
+				loadPageRoom(listBookedRooms, currentPage);
+			}
 		} else if (o.equals(btnAdd)) {
 			if (!isSelectedARoom) {
 				Notifications.getInstance().show(Type.ERROR, Location.BOTTOM_RIGHT, "Bạn chưa chọn phòng nào!");

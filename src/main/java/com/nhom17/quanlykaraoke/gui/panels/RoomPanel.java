@@ -67,6 +67,7 @@ public class RoomPanel extends JPanel implements MouseListener {
 	// VARIABLES
 	private PhongBUS pBUS = new PhongBUS();
 	private PhieuDatPhongBUS pdpBUS = new PhieuDatPhongBUS();
+	private ChiTietPhieuDatPhongBUS ctpdpBUS = new ChiTietPhieuDatPhongBUS();
 	private String roomName = "Phòng ";
 	private boolean isSelected = false;
 	private boolean isBooked = false;
@@ -153,6 +154,11 @@ public class RoomPanel extends JPanel implements MouseListener {
 
 	public boolean addDichVu(DialogClosedListener listener) {
 		SwingUtilities.invokeLater(() -> {
+			if (ctpdpBUS.getChiTietPhieuDatPhongByActiveMaPhong(p.getMaPhong()).getPhieuDatPhong().isTrangThai()) {
+				Notifications.getInstance().show(Type.ERROR, Location.BOTTOM_RIGHT,
+						"Phòng này đã hoàn tất, vui lòng làm mới");
+			}
+
 			QuanLyDichVuDialog dialog = new QuanLyDichVuDialog(p);
 
 			dialog.addWindowListener(new WindowAdapter() {
