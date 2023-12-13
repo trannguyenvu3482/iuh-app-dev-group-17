@@ -7,6 +7,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
@@ -39,10 +40,8 @@ import org.kordamp.ikonli.materialdesign2.MaterialDesignB;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignC;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignR;
 
-import com.nhom17.quanlykaraoke.bus.ChiTietDichVuBUS;
-import com.nhom17.quanlykaraoke.bus.ChiTietPhieuDatPhongBUS;
+import com.nhom17.quanlykaraoke.bus.PhieuDatPhongBUS;
 import com.nhom17.quanlykaraoke.common.MyIcon;
-import com.nhom17.quanlykaraoke.dao.PhieuDatPhongDAO;
 import com.nhom17.quanlykaraoke.entities.PhieuDatPhong;
 import com.nhom17.quanlykaraoke.utils.ConstantUtil;
 import com.nhom17.quanlykaraoke.utils.DateTimeFormatUtil;
@@ -66,10 +65,8 @@ public class ThongKePanel extends JPanel implements ActionListener {
 	// COMPONENTS
 	private final JComboBox<String> boxFilterNgay = new JComboBox<String>();
 	private final JPanel panelFilters = new JPanel();
-	private static final PhieuDatPhongDAO pdpDAO = new PhieuDatPhongDAO();
-	private final ChiTietPhieuDatPhongBUS ctpdpBUS = new ChiTietPhieuDatPhongBUS();
+	private static final PhieuDatPhongBUS pdpBUS = new PhieuDatPhongBUS();
 
-	private final ChiTietDichVuBUS ctdvBUS = new ChiTietDichVuBUS();
 	private final JLabel lblDoanhThuTrungBinh = new JLabel("");
 	private final JLabel lblTongDoanhThu = new JLabel("");
 	private final JLabel lblTongHoaDon = new JLabel("");
@@ -118,6 +115,7 @@ public class ThongKePanel extends JPanel implements ActionListener {
 		panelFilterTheoNgay.setBorder(new EmptyBorder(10, 20, 10, 20));
 		panelCenterTheoNgay.add(panelFilterTheoNgay, BorderLayout.NORTH);
 		panelFilterTheoNgay.setLayout(new BoxLayout(panelFilterTheoNgay, BoxLayout.X_AXIS));
+		boxFilterNgay.setMaximumSize(new Dimension(150, 32767));
 		boxFilterNgay.setForeground(new Color(50, 102, 133));
 
 		boxFilterNgay.setFont(new Font("Dialog", Font.BOLD, 20));
@@ -127,6 +125,7 @@ public class ThongKePanel extends JPanel implements ActionListener {
 
 		Component horizontalStrut = Box.createHorizontalStrut(20);
 		panelFilterTheoNgay.add(horizontalStrut);
+		panelFilters.setMaximumSize(new Dimension(300, 32767));
 
 		panelFilterTheoNgay.add(panelFilters);
 		panelFilters.setLayout(new CardLayout(0, 0));
@@ -191,18 +190,27 @@ public class ThongKePanel extends JPanel implements ActionListener {
 		yearChooser.setFont(new Font("Dialog", Font.PLAIN, 18));
 		filtersNam.add(yearChooser);
 
+		Component horizontalStrut_4 = Box.createHorizontalStrut(20);
+		panelFilterTheoNgay.add(horizontalStrut_4);
+
+		JPanel panel_3 = new JPanel();
+		panel_3.setMaximumSize(new Dimension(40, 32767));
+		panel_3.setBackground(null);
+		panelFilterTheoNgay.add(panel_3);
+		panel_3.setLayout(new GridLayout(0, 1, 0, 0));
+
 		JButton btnReset = new JButton("");
+		panel_3.add(btnReset);
 		btnReset.putClientProperty("JButton.buttonType", "square");
 		btnReset.setIcon(MyIcon.getIcon(MaterialDesignR.REFRESH, 32, null));
+
+		Component horizontalGlue_2 = Box.createHorizontalGlue();
+		panelFilterTheoNgay.add(horizontalGlue_2);
 		btnReset.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				resetAllStatistics();
 			}
 		});
-		panelFilterTheoNgay.add(btnReset);
-
-		Component horizontalStrut_1_1 = Box.createHorizontalStrut(800);
-		panelFilterTheoNgay.add(horizontalStrut_1_1);
 
 		JPanel panelContentTheoNgay = new JPanel();
 		panelCenterTheoNgay.add(panelContentTheoNgay, BorderLayout.CENTER);
@@ -504,7 +512,7 @@ public class ThongKePanel extends JPanel implements ActionListener {
 		// Reset all fields
 		resetAllStatistics();
 
-		List<PhieuDatPhong> listPDP = pdpDAO.getAllPhieuDatPhongFromDate(
+		List<PhieuDatPhong> listPDP = pdpBUS.getAllPhieuDatPhongFromDate(
 				DateTimeFormatUtil.formatDateToLocalDate(fromDate).atStartOfDay(),
 				DateTimeFormatUtil.formatDateToLocalDate(toDate).atStartOfDay());
 
@@ -521,7 +529,7 @@ public class ThongKePanel extends JPanel implements ActionListener {
 		// Reset all fields
 		resetAllStatistics();
 
-		List<PhieuDatPhong> listPDP = pdpDAO.getAllPhieuDatPhongByMonth(month);
+		List<PhieuDatPhong> listPDP = pdpBUS.getAllPhieuDatPhongByMonth(month);
 
 		// Calculate data
 		handleCalculateData(listPDP);
@@ -534,7 +542,7 @@ public class ThongKePanel extends JPanel implements ActionListener {
 		// Reset all fields
 		resetAllStatistics();
 
-		List<PhieuDatPhong> listPDP = pdpDAO.getAllPhieuDatPhongByYear(year);
+		List<PhieuDatPhong> listPDP = pdpBUS.getAllPhieuDatPhongByYear(year);
 
 		// Calculate data
 		handleCalculateData(listPDP);
@@ -547,7 +555,7 @@ public class ThongKePanel extends JPanel implements ActionListener {
 		// Load each month data to chart
 		for (int i = 1; i <= 12; i++) {
 			int doanhThu = 0;
-			List<PhieuDatPhong> listPhieuDatPhong = pdpDAO.getAllPhieuDatPhongByMonth(i);
+			List<PhieuDatPhong> listPhieuDatPhong = pdpBUS.getAllPhieuDatPhongByMonth(i);
 			for (PhieuDatPhong pdp : listPhieuDatPhong) {
 				double tongTien = pdp.getTienDichVu() + pdp.getTienPhong();
 				doanhThu += tongTien;
@@ -585,13 +593,13 @@ public class ThongKePanel extends JPanel implements ActionListener {
 
 			if (boxFilterNgay.getSelectedIndex() == 0) {
 				cl.show(panelFilters, "filtersNgay");
-			
+
 			} else if (boxFilterNgay.getSelectedIndex() == 1) {
 				cl.show(panelFilters, "filtersThang");
-				
+
 			} else if (boxFilterNgay.getSelectedIndex() == 2) {
 				cl.show(panelFilters, "filtersNam");
-				
+
 			}
 		}
 	}

@@ -396,6 +396,7 @@ public class QuanLyPhongPanel extends JPanel implements ActionListener {
 		tblPhong.setFont(new Font("Dialog", Font.PLAIN, 18));
 		tblPhong.getTableHeader().setFont(new Font("Dialog", Font.BOLD, 18));
 		tblPhong.getTableHeader().setReorderingAllowed(false);
+		tblPhong.getTableHeader().setEnabled(false);
 		tblPhong.setAutoCreateRowSorter(false);
 		tblPhong.getTableHeader().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		tblPhong.setRowHeight(50);

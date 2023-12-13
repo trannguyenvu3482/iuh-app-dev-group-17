@@ -398,6 +398,7 @@ public class QuanLyHangHoaPanel extends JPanel implements ActionListener {
 		tblDichVu.getTableHeader().setFont(new Font("Dialog", Font.BOLD, 18));
 		tblDichVu.getTableHeader().setReorderingAllowed(false);
 		tblDichVu.setAutoCreateRowSorter(false);
+		tblDichVu.getTableHeader().setEnabled(false);
 		tblDichVu.getTableHeader().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		tblDichVu.setRowHeight(50);
 

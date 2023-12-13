@@ -90,6 +90,7 @@ public class LichSuPhieuDatPhongDialog extends JDialog {
 		tbl.setFont(new Font("Dialog", Font.PLAIN, 18));
 		tbl.getTableHeader().setFont(new Font("Dialog", Font.BOLD, 20));
 		tbl.getTableHeader().setReorderingAllowed(false);
+		tbl.getTableHeader().setEnabled(false);
 		tbl.setAutoCreateRowSorter(true);
 		tbl.getTableHeader().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		tbl.setRowHeight(40);

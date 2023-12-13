@@ -361,7 +361,7 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 						JOptionPane.QUESTION_MESSAGE);
 
 				// Check if result is int > 0
-				if (!ConstantUtil.isStringInteger(result)) {
+				if (!ConstantUtil.isStringInteger(result) || Integer.valueOf(result) < 0) {
 					Notifications.getInstance().show(raven.toast.Notifications.Type.ERROR, Location.BOTTOM_RIGHT,
 							"Số lượng không hợp lệ");
 					return;
@@ -473,6 +473,7 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 		tblLeft.setFont(new Font("Dialog", Font.PLAIN, 14));
 		tblLeft.getTableHeader().setFont(new Font("Dialog", Font.BOLD, 16));
 		tblLeft.getTableHeader().setReorderingAllowed(false);
+		tblLeft.getTableHeader().setEnabled(false);
 		tblLeft.getTableHeader().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		tblLeft.setRowHeight(40);
 
@@ -528,6 +529,7 @@ public class QuanLyDichVuDialog extends JDialog implements ActionListener {
 		tblRight.setFont(new Font("Dialog", Font.PLAIN, 14));
 		tblRight.getTableHeader().setFont(new Font("Dialog", Font.BOLD, 16));
 		tblRight.getTableHeader().setReorderingAllowed(false);
+		tblRight.getTableHeader().setEnabled(false);
 		tblRight.getTableHeader().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		tblRight.setRowHeight(40);
 

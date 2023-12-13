@@ -465,6 +465,7 @@ public class ThongKeTheoKhachHangPanel extends JPanel implements ActionListener 
 		tblThongKe.setFont(new Font("Dialog", Font.PLAIN, 18));
 		tblThongKe.getTableHeader().setFont(new Font("Dialog", Font.BOLD, 18));
 		tblThongKe.getTableHeader().setReorderingAllowed(false);
+		tblThongKe.getTableHeader().setEnabled(false);
 		tblThongKe.setAutoCreateRowSorter(true);
 		tblThongKe.getTableHeader().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		tblThongKe.setRowHeight(50);

@@ -324,6 +324,7 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 		tblNhanVien.setFont(new Font("Dialog", Font.PLAIN, 20));
 		tblNhanVien.setRowHeight(50);
 		tblNhanVien.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tblNhanVien.setAutoCreateRowSorter(false);
 
 		JScrollPane scrollPaneNhanVien = new JScrollPane(tblNhanVien);
 		scrollPaneNhanVien.setBounds(0, 252, 1440, 772);
@@ -418,7 +419,7 @@ public class QuanLyThongTinNhanVienPanel extends JPanel implements ActionListene
 		tblNhanVien.setFont(new Font("Dialog", Font.PLAIN, 18));
 		tblNhanVien.getTableHeader().setFont(new Font("Dialog", Font.BOLD, 18));
 		tblNhanVien.getTableHeader().setReorderingAllowed(false);
-		tblNhanVien.setAutoCreateRowSorter(true);
+		tblNhanVien.getTableHeader().setEnabled(false);
 		tblNhanVien.getTableHeader().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		tblNhanVien.setRowHeight(50);
 

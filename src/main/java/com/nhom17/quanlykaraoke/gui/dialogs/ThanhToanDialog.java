@@ -343,6 +343,7 @@ public class ThanhToanDialog extends JDialog implements ActionListener {
 		tbl.getTableHeader().setFont(new Font("Dialog", Font.BOLD, 20));
 		tbl.getTableHeader().setReorderingAllowed(false);
 		tbl.setAutoCreateRowSorter(false);
+		tbl.getTableHeader().setEnabled(false);
 		tbl.getTableHeader().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		tbl.setRowHeight(40);
 
